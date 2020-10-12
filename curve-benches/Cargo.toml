@@ -24,9 +24,9 @@ build = "build.rs"
 ################################# Dependencies ################################
 
 [dependencies]
-ark-ec = { git = "https://github.com/arkworks-rs/algebra" }
-ark-ff = { git = "https://github.com/arkworks-rs/algebra" }
-ark-serialize = { git = "https://github.com/arkworks-rs/algebra" }
+ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 
 ark-mnt4-298 = { path = "../mnt4_298", optional = true }
 ark-mnt6-298 = { path = "../mnt6_298", optional = true }
