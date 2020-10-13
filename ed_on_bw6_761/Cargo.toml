@@ -15,6 +15,12 @@ edition = "2018"
 [dependencies]
 ark-ed-on-cp6-782 = { path = "../ed_on_cp6_782", default-features = false }
 
+[dev-dependencies]
+ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
+ark-r1cs-std = {  git = "https://github.com/arkworks-rs/r1cs-std", default-features = false }
+ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+
 [features]
 default = []
 std = [ "ark-ed-on-cp6-782/std" ]
+r1cs = [ "ark-ed-on-cp6-782/r1cs" ]

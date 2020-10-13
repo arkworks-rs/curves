@@ -27,6 +27,8 @@
 //!    * B = Fq2(0, b * NON_RESIDUE)
 //!    * NON_RESIDUE = 13 is the quadratic non-residue used to construct the extension field Fq2
 
+#[cfg(feature = "r1cs")]
+pub mod constraints;
 #[cfg(feature = "curve")]
 mod curves;
 #[cfg(any(feature = "scalar_field", feature = "base_field"))]

@@ -16,3 +16,6 @@
 //!    * d = 79743
 
 pub use ark_ed_on_cp6_782::*;
+
+#[cfg(feature = "r1cs")]
+pub mod constraints;

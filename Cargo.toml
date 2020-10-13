@@ -3,6 +3,7 @@
 members = [
     "curve-benches",
     "curve-tests",
+    "curve-constraint-tests",
 
     "bls12_377",
     "ed_on_bls12_377",
