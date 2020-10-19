@@ -97,13 +97,6 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: thumbv6m-none-eabi
-          override: true
-
-      - name: Install Rust ARM64 (${{ matrix.rust }})
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
           target: aarch64-unknown-none
           override: true
 
@@ -119,10 +112,10 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
             command: check
-            args: --examples --workspace --exclude ark-curve-tests --exclude ark-curve-benches --target thumbv6m-none-eabi
+            args: --examples --workspace --exclude ark-curve-tests --exclude ark-curve-constraint-tests --exclude ark-curve-benches --target aarch64-unknown-none
 
       - name: build
         uses: actions-rs/cargo@v1
         with:
             command: build
-            args: --workspace --exclude ark-curve-tests --exclude ark-curve-benches --target thumbv6m-none-eabi
+            args: --workspace --exclude ark-curve-tests --exclude ark-curve-constraint-tests --exclude ark-curve-benches --target aarch64-unknown-none

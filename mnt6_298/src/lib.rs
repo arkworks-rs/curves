@@ -28,6 +28,8 @@
 //!    * B = Fq2(b * NON_RESIDUE, 0, 0)
 //!    * NON_RESIDUE = 5 is the cubic non-residue used to construct the field extension Fq3
 
+#[cfg(feature = "r1cs")]
+pub mod constraints;
 mod curves;
 mod fields;
 

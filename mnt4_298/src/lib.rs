@@ -33,6 +33,9 @@ mod curves;
 #[cfg(any(feature = "scalar_field", feature = "base_field"))]
 mod fields;
 
+#[cfg(feature = "r1cs")]
+pub mod constraints;
+
 #[cfg(feature = "curve")]
 pub use curves::*;
 #[cfg(any(feature = "scalar_field", feature = "base_field"))]

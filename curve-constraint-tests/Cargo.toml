@@ -1,0 +1,27 @@
+[package]
+name = "ark-curve-constraint-tests"
+version = "0.1.0"
+authors = [ "arkworks contributors" ]
+description = "A library for testing constraints for finite fields, elliptic curves, and pairings"
+homepage = "https://arworks.rs"
+repository = "https://github.com/arkworks/curves"
+documentation = "https://docs.rs/ark-curve-constraint-tests/"
+keywords = ["cryptography", "finite fields", "elliptic curves", "r1cs" ]
+categories = ["cryptography"]
+include = ["Cargo.toml", "src", "README.md", "LICENSE-APACHE", "LICENSE-MIT"]
+license = "MIT/Apache-2.0"
+edition = "2018"
+
+[dependencies]
+ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = false }
+ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
+ark-r1cs-std = {  git = "https://github.com/arkworks-rs/r1cs-std", default-features = false }
+ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+rand = { version = "0.7", default-features = false}
+rand_xorshift = { version = "0.2", default-features = false}
+
+[features]
+default = []
+std = [ "ark-std/std", "ark-ff/std", "ark-serialize/std", "ark-ec/std", "ark-relations/std", "ark-r1cs-std/std" ]

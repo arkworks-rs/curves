@@ -22,6 +22,8 @@
 //!    * a = -1
 //!    * d = -(10240/10241)
 
+#[cfg(feature = "r1cs")]
+pub mod constraints;
 mod curves;
 mod fields;
 

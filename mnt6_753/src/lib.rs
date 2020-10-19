@@ -27,6 +27,8 @@
 //!    * B = Fq3(b * NON_RESIDUE, 0, 0)
 //!    * NON_RESIDUE = 11 is the cubic non-residue used to construct the extension field Fq3
 
+#[cfg(feature = "r1cs")]
+pub mod constraints;
 mod curves;
 mod fields;
 
