@@ -1,6 +1,6 @@
 # Curve implementations
 
-This directory contains implementations of some popular elliptic curves. The curve API implemented here matches the curve traits defined [here](https://github.com/arkworks-rs/algebra/blob/master/ec/src/lib.rs) in the [arkworks-rs/algebra](https://github.com/arkworks-rs/algebra) repository.
+This repository contains implementations of some popular elliptic curves. The curve API implemented here matches the curve traits defined [here](https://github.com/arkworks-rs/algebra/blob/master/ec/src/lib.rs) in the [arkworks-rs/algebra](https://github.com/arkworks-rs/algebra) repository.
 
 ### BLS12-381 and embedded curves
 * [`ark-bls12-381`](bls12-381): Implements the BLS12-381 pairing-friendly curve
