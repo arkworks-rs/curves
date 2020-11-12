@@ -10,12 +10,20 @@ use ark_ff::{
     biginteger::BigInteger320 as FqRepr, BigInteger, Field, PrimeField, SquareRootField,
     UniformRand,
 };
-use ark_mnt_298::mnt6_298::{
+use ark_mnt6_298::{
     fq::Fq, fq3::Fq3, fr::Fr, Fq6, G1Affine, G1Projective as G1, G2Affine, G2Projective as G2,
     Parameters, MNT6_298,
 };
 
-ec_bench!();
+mod g1 {
+    use super::*;
+    ec_bench!(G1, G1Affine);
+}
+mod g2 {
+    use super::*;
+    ec_bench!(G2, G2Affine);
+}
+
 f_bench!(1, Fq3, Fq3, fq3);
 f_bench!(2, Fq6, Fq6, fq6);
 f_bench!(Fq, Fq, FqRepr, FqRepr, fq);

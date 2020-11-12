@@ -2,7 +2,7 @@ use rand::SeedableRng;
 use rand_xorshift::XorShiftRng;
 use std::ops::{AddAssign, MulAssign, SubAssign};
 
-use ark_bls12_381::bls12_381::{
+use ark_bls12_381::{
     fq::Fq, fq2::Fq2, fr::Fr, Bls12_381, Fq12, G1Affine, G1Projective as G1, G2Affine,
     G2Projective as G2, Parameters,
 };
@@ -15,7 +15,15 @@ use ark_ff::{
     BigInteger, Field, PrimeField, SquareRootField, UniformRand,
 };
 
-ec_bench!();
+mod g1 {
+    use super::*;
+    ec_bench!(G1, G1Affine);
+}
+mod g2 {
+    use super::*;
+    ec_bench!(G2, G2Affine);
+}
+
 f_bench!(1, Fq2, Fq2, fq2);
 f_bench!(2, Fq12, Fq12, fq12);
 f_bench!(Fq, Fq, FqRepr, FqRepr, fq);
