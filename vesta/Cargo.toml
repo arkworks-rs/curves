@@ -1,0 +1,33 @@
+[package]
+name = "ark-vesta"
+version = "0.1.0"
+authors = [ "Ying Tong Lai", "Daira Hopwood", "O(1) Labs", "arkworks contributors" ]
+description = "The Vesta prime-order elliptic curve"
+homepage = "https://arkworks.rs"
+repository = "https://github.com/arkworks-rs/curves"
+documentation = "https://docs.rs/ark-vesta/"
+keywords = ["cryptography", "finite fields", "elliptic curves" ]
+categories = ["cryptography"]
+include = ["Cargo.toml", "src"]
+license = "MIT/Apache-2.0"
+edition = "2018"
+
+[dependencies]
+ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-r1cs-std = {  git = "https://github.com/arkworks-rs/r1cs-std", default-features = false, optional = true }
+ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = false }
+ark-pallas = { path = "../pallas", default-features = false, features = [ "scalar_field", "base_field" ] }
+
+[dev-dependencies]
+ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
+ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-curve-tests = { path = "../curve-tests", default-features = false }
+ark-curve-constraint-tests = { path = "../curve-constraint-tests", default-features = false }
+rand = { version = "0.7", default-features = false }
+rand_xorshift = "0.2"
+
+[features]
+default = []
+std = [ "ark-std/std", "ark-ff/std", "ark-ec/std" ]
+r1cs = [ "ark-r1cs-std" ]
