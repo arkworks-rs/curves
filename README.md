@@ -29,3 +29,6 @@ This repository contains implementations of some popular elliptic curves. The cu
 * [`ark-mnt4-753`](mnt4-753): Implements the MNT4-753 pairing-friendly curve. This curve forms a pairing-friendly cycle with MNT6-753
 * [`ark-mnt6-753`](mnt6-753): Implements the MNT6-753 pairing-friendly curve. This curve forms a pairing-friendly cycle with MNT4-753
 * [`ark-ed-on-mnt4-753`](ed-on-mnt4-753): Implements a Twisted Edwards curve atop the scalar field of MNT4-753
+
+### Tweedle cycle of curves
+* [`ark-tweedle`](tweedle): Implements Tweedledum and Tweedledee, an amicable pair of prime-order curves
