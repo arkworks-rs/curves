@@ -1,5 +1,8 @@
 pub mod fp;
-pub mod fq;
+pub use self::fp::*;
 
-pub use fp::*;
-pub use fq::*;
+pub mod fq;
+pub use self::fq::*;
+
+#[cfg(test)]
+mod tests;

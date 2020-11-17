@@ -5,6 +5,9 @@ use ark_ec::{
 };
 use ark_ff::{biginteger::BigInteger256, field_new, Zero};
 
+#[cfg(test)]
+mod tests;
+
 #[derive(Copy, Clone, Default, PartialEq, Eq)]
 pub struct TweedledumParameters;
 

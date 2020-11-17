@@ -7,3 +7,6 @@ pub use self::fp::*;
 pub mod fq;
 #[cfg(feature = "scalar_field")]
 pub use self::fq::*;
+
+#[cfg(all(feature = "curve", test))]
+mod tests;
