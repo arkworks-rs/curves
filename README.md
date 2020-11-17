@@ -31,4 +31,5 @@ This repository contains implementations of some popular elliptic curves. The cu
 * [`ark-ed-on-mnt4-753`](ed-on-mnt4-753): Implements a Twisted Edwards curve atop the scalar field of MNT4-753
 
 ### Tweedle cycle of curves
-* [`ark-tweedle`](tweedle): Implements Tweedledum and Tweedledee, an amicable pair of prime-order curves
+* [`ark-tweedledee`](tweedledee): Implements Tweedledee, a prime order curve that forms an amicable pair with Tweedledum.
+* [`ark-tweedledum`](tweedledum): Implements Tweedledum, a prime order curve that forms an amicable pair with Tweedledee.

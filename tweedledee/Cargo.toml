@@ -1,11 +1,11 @@
 [package]
-name = "ark-tweedle"
+name = "ark-tweedledee"
 version = "0.1.0"
-authors = [ "arkworks contributors" ]
-description = "The Tweedledum/Tweedledee curve cycle"
+authors = [ "arkworks contributors", "O(1) Labs" ]
+description = "The Tweedledee prime-order elliptic curve"
 homepage = "https://arkworks.rs"
 repository = "https://github.com/arkworks/curves"
-documentation = "https://github.com/daira/tweedle/"
+documentation = "https://docs.rs/ark-tweedledee/"
 keywords = ["cryptography", "finite fields", "elliptic curves" ]
 categories = ["cryptography"]
 include = ["Cargo.toml", "src"]
@@ -17,6 +17,7 @@ ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = fa
 ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 ark-r1cs-std = {  git = "https://github.com/arkworks-rs/r1cs-std", default-features = false, optional = true }
 ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = false }
+ark-tweedledum = { path = "../tweedledum", default-features = false, features = [ "scalar_field", "base_field" ] }
 
 [dev-dependencies]
 ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
@@ -27,10 +28,6 @@ rand = { version = "0.7", default-features = false }
 rand_xorshift = "0.2"
 
 [features]
-default = [ "curve" ]
+default = []
 std = [ "ark-std/std", "ark-ff/std", "ark-ec/std" ]
-
-curve = [ "scalar_field", "base_field" ]
-scalar_field = []
-base_field = []
-r1cs = [ "base_field", "ark-r1cs-std" ]
+r1cs = [ "ark-r1cs-std" ]
