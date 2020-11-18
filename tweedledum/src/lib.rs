@@ -21,6 +21,8 @@
 //! * Valuation(p - 1, 2) = 33
 //! * Valuation(q - 1, 2) = 34
 
+#[cfg(feature = "r1cs")]
+pub mod constraints;
 #[cfg(feature = "curve")]
 mod curves;
 #[cfg(any(feature = "scalar_field", feature = "base_field"))]
