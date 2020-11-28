@@ -72,6 +72,7 @@ fn test_fq6() {
         let h: Fq6 = rng.gen();
         field_test(g, h);
     }
+
     frobenius_test::<Fq6, _>(Fq::characteristic(), 13);
     let byte_size = Fq6::zero().serialized_size();
     field_serialization_test::<Fq6>(byte_size);

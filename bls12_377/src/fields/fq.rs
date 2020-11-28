@@ -1,4 +1,4 @@
-use ark_ff::{biginteger::BigInteger384 as BigInteger, field_new, fields::*};
+use ark_ff::{biginteger::BigInteger384 as BigInteger, fields::*};
 
 pub type Fq = Fp384<FqParameters>;
 
@@ -113,6 +113,6 @@ impl FpParameters for FqParameters {
 }
 
 #[allow(dead_code)]
-pub const FQ_ONE: Fq = field_new!(Fq, FqParameters::R);
+pub const FQ_ONE: Fq = Fq::new(FqParameters::R);
 #[allow(dead_code)]
-pub const FQ_ZERO: Fq = field_new!(Fq, BigInteger([0, 0, 0, 0, 0, 0]));
+pub const FQ_ZERO: Fq = Fq::new(BigInteger([0, 0, 0, 0, 0, 0]));
