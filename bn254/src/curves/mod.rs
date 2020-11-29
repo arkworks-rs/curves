@@ -3,7 +3,7 @@ use ark_ec::{
     bn,
     bn::{Bn, BnParameters, TwistType},
 };
-use ark_ff::{biginteger::BigInteger256, field_new};
+use ark_ff::field_new;
 pub mod g1;
 pub mod g2;
 
@@ -23,47 +23,16 @@ impl BnParameters for Parameters {
     ];
     /// `ate_loop_count` is positive.
     const ATE_LOOP_COUNT_IS_NEGATIVE: bool = false;
+
     const TWIST_MUL_BY_Q_X: Fq2 = field_new!(
         Fq2,
-        field_new!(
-            Fq,
-            BigInteger256([
-                0xb5773b104563ab30,
-                0x347f91c8a9aa6454,
-                0x7a007127242e0991,
-                0x1956bcd8118214ec,
-            ])
-        ),
-        field_new!(
-            Fq,
-            BigInteger256([
-                0x6e849f1ea0aa4757,
-                0xaa1c7b6d89f89141,
-                0xb6e713cdfae0ca3a,
-                0x26694fbb4e82ebc3,
-            ])
-        ),
+        field_new!(Fq, "21575463638280843010398324269430826099269044274347216827212613867836435027261"),
+        field_new!(Fq, "10307601595873709700152284273816112264069230130616436755625194854815875713954"),
     );
     const TWIST_MUL_BY_Q_Y: Fq2 = field_new!(
         Fq2,
-        field_new!(
-            Fq,
-            BigInteger256([
-                0xe4bbdd0c2936b629,
-                0xbb30f162e133bacb,
-                0x31a9d1b6f9645366,
-                0x253570bea500f8dd,
-            ])
-        ),
-        field_new!(
-            Fq,
-            BigInteger256([
-                0xa1d77ce45ffe77c7,
-                0x07affd117826d1db,
-                0x6d16bd27bb7edc6b,
-                0x2c87200285defecc,
-            ])
-        ),
+        field_new!(Fq, "2821565182194536844548159561693502659359617185244120367078079554186484126554"),
+        field_new!(Fq, "3505843767911556378687030309984248845540243509899259641013678093033130930403"),
     );
     const TWIST_TYPE: TwistType = TwistType::D;
     type Fp = Fq;
