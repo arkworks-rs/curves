@@ -8,8 +8,8 @@ pub type Fq = Fp768<FqParameters>;
 
 pub struct FqParameters;
 
-pub const FQ_ONE: Fq = field_new!(Fq, FqParameters::R);
-pub const FQ_ZERO: Fq = field_new!(Fq, BigInteger([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+pub const FQ_ONE: Fq = field_new!(Fq, "1");
+pub const FQ_ZERO: Fq = field_new!(Fq, "0");
 
 impl Fp768Parameters for FqParameters {}
 impl FftParameters for FqParameters {

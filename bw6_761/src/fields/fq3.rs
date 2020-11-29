@@ -1,10 +1,9 @@
 use ark_ff::{
-    biginteger::BigInteger768 as BigInteger,
     field_new,
     fields::fp3::{Fp3, Fp3Parameters},
 };
 
-use crate::Fq;
+use crate::{Fq, fields::{FQ_ZERO, FQ_ONE}};
 
 pub type Fq3 = Fp3<Fq3Parameters>;
 
@@ -16,20 +15,7 @@ impl Fp3Parameters for Fq3Parameters {
     /// NONRESIDUE = -4
     // Fq3 = Fq[u]/u^3+4
     #[rustfmt::skip]
-    const NONRESIDUE: Fq = field_new!(Fq, BigInteger([
-        0xe12e00000001e9c2,
-        0x63c1e3faa001cd69,
-        0xb1b4384fcbe29cf6,
-        0xc79630bc713d5a1d,
-        0x30127ac071851e2d,
-        0x0979f350dcd36af1,
-        0x6a66defed8b361f2,
-        0x53abac78b24d4e23,
-        0xb7ab89dede485a92,
-        0x5c3a0745675e8452,
-        0x446f17918c5f5700,
-        0xfdf24e3267fa1e,
-    ]));
+    const NONRESIDUE: Fq = field_new!(Fq, "-4");
 
     // (MODULUS^3 - 1) % 2^TWO_ADICITY == 0
     const TWO_ADICITY: u32 = 1;
@@ -78,117 +64,25 @@ impl Fp3Parameters for Fq3Parameters {
     // NONRESIDUE^T % q
     #[rustfmt::skip]
     const QUADRATIC_NONRESIDUE_TO_T: (Fq, Fq, Fq) = (
-        field_new!(Fq, BigInteger([
-            0xf29a000000007ab6,
-            0x8c391832e000739b,
-            0x77738a6b6870f959,
-            0xbe36179047832b03,
-            0x84f3089e56574722,
-            0xc5a3614ac0b1d984,
-            0x5c81153f4906e9fe,
-            0x4d28be3a9f55c815,
-            0xd72c1d6f77d5f5c5,
-            0x73a18e069ac04458,
-            0xf9dfaa846595555f,
-            0xd0f0a60a5be58c,
-        ])),
-        field_new!(Fq, BigInteger([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])),
-        field_new!(Fq, BigInteger([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])),
+        field_new!(Fq, "6891450384315732539396789682275657542479668912536150109513790160209623422243491736087683183289411687640864567753786613451161759120554247759349511699125301598951605099378508850372543631423596795951899700429969112842764913119068298"),
+        FQ_ZERO,
+        FQ_ZERO,
     );
 
     // NQR ^ (MODULUS^i - 1)/3, i=0,1,2 with NQR = u = (0,1,0)
     #[rustfmt::skip]
     const FROBENIUS_COEFF_FP3_C1: &'static [Fq] = &[
-        field_new!(Fq, BigInteger([
-            0x0202ffffffff85d5,
-            0x5a5826358fff8ce7,
-            0x9e996e43827faade,
-            0xda6aff320ee47df4,
-            0xece9cb3e1d94b80b,
-            0xc0e667a25248240b,
-            0xa74da5bfdcad3905,
-            0x2352e7fe462f2103,
-            0x7b56588008b1c87c,
-            0x45848a63e711022f,
-            0xd7a81ebb9f65a9df,
-            0x51f77ef127e87d,
-        ])),
-        field_new!(Fq, BigInteger([
-            0x7f96b51bd840c549,
-            0xd59782096496171f,
-            0x49b046fd9ce14bbc,
-            0x4b6163bba7527a56,
-            0xef6c92fb771d59f1,
-            0x0425bedbac1dfdc7,
-            0xd3ac39de759c0ffd,
-            0x9f43ed0e063a81d0,
-            0x5bd7d20b4f9a3ce2,
-            0x0411f03c36cf5c3c,
-            0x2d658fd49661c472,
-            0x1100249ae760b93,
-        ])),
-        field_new!(Fq, BigInteger([
-            0x67a04ae427bfb5f8,
-            0x9d32d491eb6a5cff,
-            0x43d03c1cb68051d4,
-            0x0b75ca96f69859a5,
-            0x0763497f5325ec60,
-            0x48076b5c278dd94d,
-            0x8ca3965ff91efd06,
-            0x1e6077657ea02f5d,
-            0xcdd6c153a8c37724,
-            0x28b5b634e5c22ea4,
-            0x9e01e3efd42e902c,
-            0xe3d6815769a804,
-
-        ])),
+        FQ_ONE,
+        field_new!(Fq, "4922464560225523242118178942575080391082002530232324381063048548642823052024664478336818169867474395270858391911405337707247735739826664939444490469542109391530482826728203582549674992333383150446779312029624171857054392282775648"),
+        field_new!(Fq, "1968985824090209297278610739700577151397666382303825728450741611566800370218827257750865013421937292370006175842381275743914023380727582819905021229583192207421122272650305267822868639090213645505120388400344940985710520836292650"),
     ];
 
     // NQR ^ (2*MODULUS^i - 2)/3, i=0,1,2 with NQR = u = (0,1,0)
     #[rustfmt::skip]
     const FROBENIUS_COEFF_FP3_C2: &'static [Fq] = &[
-        field_new!(Fq, BigInteger([
-            0x0202ffffffff85d5,
-            0x5a5826358fff8ce7,
-            0x9e996e43827faade,
-            0xda6aff320ee47df4,
-            0xece9cb3e1d94b80b,
-            0xc0e667a25248240b,
-            0xa74da5bfdcad3905,
-            0x2352e7fe462f2103,
-            0x7b56588008b1c87c,
-            0x45848a63e711022f,
-            0xd7a81ebb9f65a9df,
-            0x51f77ef127e87d,
-        ])),
-        field_new!(Fq, BigInteger([
-            0x67a04ae427bfb5f8,
-            0x9d32d491eb6a5cff,
-            0x43d03c1cb68051d4,
-            0x0b75ca96f69859a5,
-            0x0763497f5325ec60,
-            0x48076b5c278dd94d,
-            0x8ca3965ff91efd06,
-            0x1e6077657ea02f5d,
-            0xcdd6c153a8c37724,
-            0x28b5b634e5c22ea4,
-            0x9e01e3efd42e902c,
-            0xe3d6815769a804,
-        ])),
-        field_new!(Fq, BigInteger([
-            0x7f96b51bd840c549,
-            0xd59782096496171f,
-            0x49b046fd9ce14bbc,
-            0x4b6163bba7527a56,
-            0xef6c92fb771d59f1,
-            0x0425bedbac1dfdc7,
-            0xd3ac39de759c0ffd,
-            0x9f43ed0e063a81d0,
-            0x5bd7d20b4f9a3ce2,
-            0x0411f03c36cf5c3c,
-            0x2d658fd49661c472,
-            0x1100249ae760b93,
-        ])),
+        FQ_ONE,
+        field_new!(Fq, "1968985824090209297278610739700577151397666382303825728450741611566800370218827257750865013421937292370006175842381275743914023380727582819905021229583192207421122272650305267822868639090213645505120388400344940985710520836292650"),
+        field_new!(Fq, "4922464560225523242118178942575080391082002530232324381063048548642823052024664478336818169867474395270858391911405337707247735739826664939444490469542109391530482826728203582549674992333383150446779312029624171857054392282775648"),
     ];
 
     #[inline(always)]
