@@ -3,7 +3,7 @@ use ark_ec::{
     models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
     twisted_edwards_extended::{GroupAffine, GroupProjective},
 };
-use ark_ff::{biginteger::BigInteger256, field_new};
+use ark_ff::field_new;
 
 #[cfg(test)]
 mod tests;
@@ -11,20 +11,7 @@ mod tests;
 pub type EdwardsAffine = GroupAffine<EdwardsParameters>;
 pub type EdwardsProjective = GroupProjective<EdwardsParameters>;
 
-#[rustfmt::skip]
-const GENERATOR_X: Fq = field_new!(Fq, BigInteger256([
-    0x3db6612c2863cc99,
-    0x8a9e4521b36347dc,
-    0x310a1a625c16a534,
-    0x23ceae2710df4a14,
-]));
-#[rustfmt::skip]
-const GENERATOR_Y: Fq = field_new!(Fq, BigInteger256([
-    0xb83342d20d0201aa,
-    0x2ffef2f7cdcfeac7,
-    0xbfa79a9425a6e625,
-    0xdfb859dc3a44b70,
-]));
+
 
 /// `Baby-JubJub` is a twisted Edwards curve. These curves have equations of the
 /// form: ax² + y² = 1 + dx²y².
@@ -45,12 +32,7 @@ impl ModelParameters for EdwardsParameters {
 impl TEModelParameters for EdwardsParameters {
     /// COEFF_A = 1
     #[rustfmt::skip]
-    const COEFF_A: Fq = field_new!(Fq, BigInteger256([
-        0xac96341c4ffffffb,
-        0x36fc76959f60cd29,
-        0x666ea36f7879462e,
-        0xe0a77c19a07df2f,
-    ]));
+    const COEFF_A: Fq = field_new!(Fq, "1");
 
     #[inline(always)]
     fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {
@@ -60,12 +42,7 @@ impl TEModelParameters for EdwardsParameters {
     /// COEFF_D = 168696/168700 mod q
     ///         = 9706598848417545097372247223557719406784115219466060233080913168975159366771
     #[rustfmt::skip]
-    const COEFF_D: Fq = field_new!(Fq, BigInteger256([
-        0xe7a66d1d9fb08e74,
-        0xd775bbd5e17629dc,
-        0x70ccd097286ef1e7,
-        0x45809398fdf98,
-    ]));
+    const COEFF_D: Fq = field_new!(Fq, "9706598848417545097372247223557719406784115219466060233080913168975159366771");
 
     /// COFACTOR = 8
     const COFACTOR: &'static [u64] = &[8];
@@ -73,12 +50,7 @@ impl TEModelParameters for EdwardsParameters {
     /// COFACTOR^(-1) mod r =
     /// 2394026564107420727433200628387514462817212225638746351800188703329891451411
     #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, BigInteger256([
-        0xfac308b2e25a3d4b,
-        0xa7c55b66e25b59cb,
-        0xeccdd46def0f28c5,
-        0x1c14ef83340fbe5,
-    ]));
+    const COFACTOR_INV: Fr = field_new!(Fr, "2394026564107420727433200628387514462817212225638746351800188703329891451411");
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);
@@ -89,20 +61,15 @@ impl TEModelParameters for EdwardsParameters {
 impl MontgomeryModelParameters for EdwardsParameters {
     /// COEFF_A = 168698
     #[rustfmt::skip]
-    const COEFF_A: Fq = field_new!(Fq, BigInteger256([
-        9251058552732279275u64,
-        16047179255329565110u64,
-        14708493084570629864u64,
-        2559515811206512830u64,
-    ]));
+    const COEFF_A: Fq = field_new!(Fq, "168698");
     /// COEFF_B = 168700
     #[rustfmt::skip]
-    const COEFF_B: Fq = field_new!(Fq, BigInteger256([
-        10785223227458347488u64,
-        2627865112663806840u64,
-        16189334210225400552u64,
-        1096023023792938739u64,
-    ]));
+    const COEFF_B: Fq = field_new!(Fq, "168700");
 
     type TEModelParameters = EdwardsParameters;
 }
+
+#[rustfmt::skip]
+const GENERATOR_X: Fq = field_new!(Fq, "19698561148652590122159747500897617769866003486955115824547446575314762165298");
+#[rustfmt::skip]
+const GENERATOR_Y: Fq = field_new!(Fq, "19298250018296453272277890825869354524455968081175474282777126169995084727839");
