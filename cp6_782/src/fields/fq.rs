@@ -7,6 +7,9 @@ pub type Fq = Fp832<FqParameters>;
 
 pub struct FqParameters;
 
+pub const FQ_ONE: Fq = ark_ff::field_new!(Fq, "1");
+pub const FQ_ZERO: Fq = ark_ff::field_new!(Fq, "0");
+
 impl Fp832Parameters for FqParameters {}
 impl FftParameters for FqParameters {
     type BigInt = BigInteger;

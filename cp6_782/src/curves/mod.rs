@@ -2,11 +2,11 @@ use ark_ec::{models::SWModelParameters, PairingEngine};
 use ark_ff::{
     biginteger::BigInteger832,
     field_new,
-    fields::{BitIteratorBE, Field, FpParameters},
+    fields::{BitIteratorBE, Field},
     One,
 };
 
-use crate::{Fq, Fq3, Fq6, FqParameters, Fr};
+use crate::{Fq, Fq3, Fq6, Fr, FQ_ONE, FQ_ZERO};
 
 pub mod g1;
 pub use self::g1::{G1Affine, G1Projective};
@@ -152,12 +152,6 @@ impl CP6_782 {
         w1_part * &w0_part
     }
 }
-
-/// FQ_ZERO = 0
-pub const FQ_ZERO: Fq = field_new!(Fq, BigInteger832([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-
-/// FQ_ONE = 1
-pub const FQ_ONE: Fq = field_new!(Fq, FqParameters::R);
 
 /// TWIST = (0, 1, 0)
 pub const TWIST: Fq3 = field_new!(Fq3, FQ_ZERO, FQ_ONE, FQ_ZERO);
