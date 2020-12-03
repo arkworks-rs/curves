@@ -24,6 +24,8 @@
 //! * Valuation(q - 1, 2) = 32
 //! * Valuation(r - 1, 2) = 32
 
+#[cfg(feature = "r1cs")]
+pub mod constraints;
 mod curves;
 mod fields;
 
