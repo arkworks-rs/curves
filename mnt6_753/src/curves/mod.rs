@@ -1,11 +1,10 @@
-use ark_ff::{biginteger::BigInteger768, field_new, fields::FpParameters, Fp3};
-
+use ark_ff::{biginteger::BigInteger768, field_new, Fp3};
 use ark_ec::models::{
     mnt6::{MNT6Parameters, MNT6},
     SWModelParameters,
 };
 
-use crate::{Fq, Fq3, Fq3Parameters, Fq6Parameters, FqParameters, Fr, FrParameters};
+use crate::{Fq, Fq3, Fq3Parameters, Fq6Parameters, Fr};
 
 pub mod g1;
 pub mod g2;
@@ -71,7 +70,7 @@ impl MNT6Parameters for Parameters {
     type G2Parameters = self::g2::Parameters;
 }
 
-pub const FQ_ZERO: Fq = field_new!(Fq, BigInteger768([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-pub const FQ_ONE: Fq = field_new!(Fq, FqParameters::R);
-pub const FR_ZERO: Fr = field_new!(Fr, BigInteger768([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-pub const FR_ONE: Fr = field_new!(Fr, FrParameters::R);
+pub const FQ_ZERO: Fq = field_new!(Fq, "0");
+pub const FQ_ONE: Fq = field_new!(Fq, "1");
+pub const FR_ZERO: Fr = field_new!(Fr, "0");
+pub const FR_ONE: Fr = field_new!(Fr, "1");
