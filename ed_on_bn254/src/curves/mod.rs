@@ -11,8 +11,6 @@ mod tests;
 pub type EdwardsAffine = GroupAffine<EdwardsParameters>;
 pub type EdwardsProjective = GroupProjective<EdwardsParameters>;
 
-
-
 /// `Baby-JubJub` is a twisted Edwards curve. These curves have equations of the
 /// form: ax² + y² = 1 + dx²y².
 /// over some base finite field Fq.

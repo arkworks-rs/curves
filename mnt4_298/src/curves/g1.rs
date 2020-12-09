@@ -3,7 +3,7 @@ use ark_ec::{
     mnt4,
     models::{ModelParameters, SWModelParameters},
 };
-use ark_ff::{field_new};
+use ark_ff::field_new;
 
 pub type G1Affine = mnt4::G1Affine<crate::Parameters>;
 pub type G1Projective = mnt4::G1Projective<crate::Parameters>;

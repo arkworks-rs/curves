@@ -3,7 +3,7 @@ use ark_ec::{
     mnt6::MNT6Parameters,
     models::{ModelParameters, SWModelParameters},
 };
-use ark_ff::{field_new};
+use ark_ff::field_new;
 
 use crate::{g1, Fq, Fq3, Fr, FQ_ZERO};
 

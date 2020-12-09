@@ -19,32 +19,32 @@ impl Fp6Parameters for Fq6Parameters {
     #[rustfmt::skip]
     const FROBENIUS_COEFF_FP6_C1: &'static [Fq2] = &[
         // Fp2::NONRESIDUE^(((q^0) - 1) / 3)
-        field_new!(Fq2, 
+        field_new!(Fq2,
             field_new!(Fq, "1"),
             field_new!(Fq, "0"),
         ),
         // Fp2::NONRESIDUE^(((q^1) - 1) / 3)
-        field_new!(Fq2, 
+        field_new!(Fq2,
             field_new!(Fq, "0"),
             field_new!(Fq, "4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436"),
         ),
         // Fp2::NONRESIDUE^(((q^2) - 1) / 3)
-        field_new!(Fq2, 
+        field_new!(Fq2,
             field_new!(Fq, "793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350"),
             field_new!(Fq, "0"),
         ),
         // Fp2::NONRESIDUE^(((q^3) - 1) / 3)
-        field_new!(Fq2, 
+        field_new!(Fq2,
             field_new!(Fq, "0"),
             field_new!(Fq, "1"),
         ),
         // Fp2::NONRESIDUE^(((q^4) - 1) / 3)
-        field_new!(Fq2, 
+        field_new!(Fq2,
             field_new!(Fq, "4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436"),
             field_new!(Fq, "0"),
         ),
         // Fp2::NONRESIDUE^(((q^5) - 1) / 3)
-        field_new!(Fq2, 
+        field_new!(Fq2,
             field_new!(Fq, "0"),
             field_new!(Fq, "793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350"),
         ),

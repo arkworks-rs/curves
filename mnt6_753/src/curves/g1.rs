@@ -2,7 +2,7 @@ use ark_ec::{
     mnt6,
     models::{ModelParameters, SWModelParameters},
 };
-use ark_ff::{field_new};
+use ark_ff::field_new;
 
 use crate::{Fq, Fr, FR_ONE};
 

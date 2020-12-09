@@ -2,7 +2,7 @@ use ark_ec::{
     models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
     twisted_edwards_extended::{GroupAffine, GroupProjective},
 };
-use ark_ff::{field_new};
+use ark_ff::field_new;
 
 use crate::{fq::Fq, fr::Fr};
 

@@ -3,7 +3,10 @@ use ark_ff::{
     fields::fp3::{Fp3, Fp3Parameters},
 };
 
-use crate::{Fq, fields::{FQ_ZERO, FQ_ONE}};
+use crate::{
+    fields::{FQ_ONE, FQ_ZERO},
+    Fq,
+};
 
 pub type Fq3 = Fp3<Fq3Parameters>;
 
