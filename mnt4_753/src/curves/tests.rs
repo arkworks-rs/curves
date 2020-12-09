@@ -57,8 +57,8 @@ fn test_bilinearity() {
     let b: G2Projective = rng.gen();
     let s: Fr = rng.gen();
 
-    let sa = a.mul(s);
-    let sb = b.mul(s);
+    let sa = a.mul(s.into_repr());
+    let sb = b.mul(s.into_repr());
 
     let ans1 = MNT4_753::pairing(sa, b);
     let ans2 = MNT4_753::pairing(a, sb);
