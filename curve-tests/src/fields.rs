@@ -370,7 +370,7 @@ pub fn frobenius_test<F: Field, C: AsRef<[u64]>>(characteristic: C, maxpower: us
         for power in 1..maxpower {
             let mut a_qi = a;
             a_qi.frobenius_map(power);
-            assert_eq!(a_qi, a_q);
+            assert_eq!(a_qi, a_q, "failed on power {}", power);
 
             a_q = a_q.pow(&characteristic);
         }

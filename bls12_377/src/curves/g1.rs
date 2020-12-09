@@ -1,9 +1,10 @@
 use ark_ec::models::{ModelParameters, SWModelParameters};
-use ark_ff::{
-    field_new, Zero,
-};
+use ark_ff::{field_new, Zero};
 
-use crate::{Fq, Fr, fields::{FQ_ZERO, FQ_ONE}};
+use crate::{
+    fields::{FQ_ONE, FQ_ZERO},
+    Fq, Fr,
+};
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
