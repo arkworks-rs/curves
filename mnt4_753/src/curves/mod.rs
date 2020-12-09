@@ -1,7 +1,7 @@
 use ark_ec::models::mnt4::{MNT4Parameters, MNT4};
-use ark_ff::{biginteger::BigInteger768, field_new, fields::FpParameters, Fp2};
+use ark_ff::{biginteger::BigInteger768, field_new, Fp2};
 
-use crate::{Fq, Fq2, Fq2Parameters, Fq4Parameters, FqParameters, Fr, FrParameters};
+use crate::{Fq, Fq2, Fq2Parameters, Fq4Parameters, Fr};
 
 pub mod g1;
 pub mod g2;
@@ -67,24 +67,9 @@ impl MNT4Parameters for Parameters {
 }
 
 // 26
-pub const G1_COEFF_A_NON_RESIDUE: Fq = field_new!(
-    Fq,
-    BigInteger768([
-        16948538951764659373,
-        10775354577659735631,
-        12766795894854242596,
-        8684022258823474090,
-        973489465296612807,
-        3883945490221946200,
-        16178634811223492029,
-        16155746945640075033,
-        17642042187059426365,
-        10295720303844380352,
-        13265853240981244259,
-        39422991244875,
-    ])
-);
-pub const FQ_ZERO: Fq = field_new!(Fq, BigInteger768([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-pub const FQ_ONE: Fq = field_new!(Fq, FqParameters::R);
-pub const FR_ZERO: Fr = field_new!(Fr, BigInteger768([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-pub const FR_ONE: Fr = field_new!(Fr, FrParameters::R);
+pub const G1_COEFF_A_NON_RESIDUE: Fq = field_new!(Fq, "26");
+
+pub const FQ_ZERO: Fq = field_new!(Fq, "0");
+pub const FQ_ONE: Fq = field_new!(Fq, "1");
+pub const FR_ZERO: Fr = field_new!(Fr, "0");
+pub const FR_ONE: Fr = field_new!(Fr, "1");
