@@ -2,7 +2,7 @@ use ark_ec::{
     mnt6,
     models::{ModelParameters, SWModelParameters},
 };
-use ark_ff::{biginteger::BigInteger320, field_new};
+use ark_ff::{field_new};
 
 use crate::{Fq, Fr};
 
@@ -19,25 +19,13 @@ impl ModelParameters for Parameters {
 }
 
 impl SWModelParameters for Parameters {
-    /// COEFF_A =
+    /// COEFF_A = 11
     #[rustfmt::skip]
-    const COEFF_A: Fq = field_new!(Fq, BigInteger320([
-        0xb9b2411bfd0eafef,
-        0xc61a10fadd9fecbd,
-        0x89f128e59811f3fb,
-        0x980c0f780adadabb,
-        0x9ba1f11320,
-    ]));
+    const COEFF_A: Fq = field_new!(Fq, "11");
 
-    /// COEFF_B =
+    /// COEFF_B = 106700080510851735677967319632585352256454251201367587890185989362936000262606668469523074
     #[rustfmt::skip]
-    const COEFF_B: Fq = field_new!(Fq, BigInteger320([
-        0xa94cb16ed8e733b,
-        0xe1ed15e8119bae6,
-        0xae927592157c8121,
-        0x990dbcbc6661cf95,
-        0xecff0892ef,
-    ]));
+    const COEFF_B: Fq = field_new!(Fq, "106700080510851735677967319632585352256454251201367587890185989362936000262606668469523074");
 
     /// COFACTOR = 1
     const COFACTOR: &'static [u64] = &[1];
@@ -45,13 +33,7 @@ impl SWModelParameters for Parameters {
     /// COFACTOR^(-1) mod r =
     /// 1
     #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, BigInteger320([
-        1784298994435064924,
-        16852041090100268533,
-        14258261760832875328,
-        2961187778261111191,
-        1929014752195,
-    ]));
+    const COFACTOR_INV: Fr = field_new!(Fr, "1");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
@@ -60,20 +42,8 @@ impl SWModelParameters for Parameters {
 
 /// G1_GENERATOR_X =
 #[rustfmt::skip]
-pub const G1_GENERATOR_X: Fq = field_new!(Fq, BigInteger320([
-    0x1a663562f74e1d24,
-    0xc1d1d583fccd1b79,
-    0xda077538a9763df2,
-    0x70c4a4ea36aa01d9,
-    0x86537578a8,
-]));
+pub const G1_GENERATOR_X: Fq = field_new!(Fq, "336685752883082228109289846353937104185698209371404178342968838739115829740084426881123453");
 
 /// G1_GENERATOR_Y =
 #[rustfmt::skip]
-pub const G1_GENERATOR_Y: Fq = field_new!(Fq, BigInteger320([
-    0x7ad5bfd16dcfffb2,
-    0x88dd739252215070,
-    0x43f137a8b517b339,
-    0x9a7fac709a8c463c,
-    0x3140fbc3593,
-]));
+pub const G1_GENERATOR_Y: Fq = field_new!(Fq, "402596290139780989709332707716568920777622032073762749862342374583908837063963736098549800");

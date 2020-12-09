@@ -1,8 +1,8 @@
-use ark_ff::{biginteger::BigInteger320, field_new, fields::FpParameters, Fp3};
+use ark_ff::{biginteger::BigInteger320, field_new, Fp3};
 
-use ark_ec::models::mnt6::{MNT6Parameters, MNT6};
+use ark_ec::{models::mnt6::{MNT6Parameters, MNT6}, SWModelParameters};
 
-use crate::{Fq, Fq3, Fq3Parameters, Fq6Parameters, FqParameters, Fr};
+use crate::{Fq, Fq3, Fq3Parameters, Fq6Parameters, Fr};
 
 pub mod g1;
 pub mod g2;
@@ -25,13 +25,7 @@ impl MNT6Parameters for Parameters {
     const TWIST_COEFF_A: Fp3<Self::Fp3Params> = field_new!(Fq3,
         FQ_ZERO,
         FQ_ZERO,
-        field_new!(Fq, BigInteger320([
-            0xb9b2411bfd0eafef,
-            0xc61a10fadd9fecbd,
-            0x89f128e59811f3fb,
-            0x980c0f780adadabb,
-            0x9ba1f11320,
-        ])),
+        g1::Parameters::COEFF_A,
     );
     const ATE_LOOP_COUNT: &'static [u64] = &[0xdc9a1b671660000, 0x46609756bec2a33f, 0x1eef55];
     const ATE_IS_LOOP_COUNT_NEG: bool = true;
@@ -47,5 +41,5 @@ impl MNT6Parameters for Parameters {
     type G2Parameters = self::g2::Parameters;
 }
 
-pub const FQ_ZERO: Fq = field_new!(Fq, BigInteger320([0, 0, 0, 0, 0]));
-pub const FQ_ONE: Fq = field_new!(Fq, FqParameters::R);
+pub const FQ_ZERO: Fq = field_new!(Fq, "0");
+pub const FQ_ONE: Fq = field_new!(Fq, "1");
