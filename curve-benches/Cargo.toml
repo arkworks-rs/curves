@@ -47,6 +47,7 @@ rand_xorshift = { version = "0.2" }
 
 [features]
 asm = [ "ark-ff/asm"]
+parallel = [ "ark-ff/parallel",  "ark-ec/parallel", ]
 n_fold = []
 
 [build-dependencies]
