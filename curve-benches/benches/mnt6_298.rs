@@ -1,11 +1,9 @@
+use ark_curve_benches::*;
 use rand::SeedableRng;
 use rand_xorshift::XorShiftRng;
 use std::ops::{AddAssign, MulAssign, SubAssign};
-use ark_curve_benches::*;
 
-use ark_ec::{
-    PairingEngine, ProjectiveCurve,
-};
+use ark_ec::{PairingEngine, ProjectiveCurve};
 use ark_ff::{
     biginteger::BigInteger320 as FqRepr, BigInteger, Field, PrimeField, SquareRootField,
     UniformRand,

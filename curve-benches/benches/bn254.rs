@@ -1,15 +1,13 @@
+use ark_curve_benches::*;
 use rand::SeedableRng;
 use rand_xorshift::XorShiftRng;
 use std::ops::{AddAssign, MulAssign, SubAssign};
-use ark_curve_benches::*;
 
 use ark_bn254::{
     fq::Fq, fq2::Fq2, fr::Fr, Bn254, Fq12, G1Affine, G1Projective as G1, G2Affine,
-    G2Projective as G2, 
+    G2Projective as G2,
 };
-use ark_ec::{
-    PairingEngine, ProjectiveCurve,
-};
+use ark_ec::{PairingEngine, ProjectiveCurve};
 use ark_ff::{
     biginteger::{BigInteger256 as FrRepr, BigInteger256 as FqRepr},
     BigInteger, Field, PrimeField, SquareRootField, UniformRand,
