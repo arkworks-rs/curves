@@ -18,4 +18,4 @@ mod g {
 f_bench!(Fq, Fq, FqRepr, FqRepr, fq);
 f_bench!(Fr, Fr, FrRepr, FrRepr, fr);
 
-bencher::benchmark_main!(g::group_ops, fq, fr);
+bencher::benchmark_main!(fq, fr, g::group_ops);

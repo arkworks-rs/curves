@@ -30,4 +30,4 @@ f_bench!(Fq, Fq, FqRepr, FqRepr, fq);
 f_bench!(Fr, Fr, FqRepr, FqRepr, fr);
 pairing_bench!(MNT6_753, Fq6);
 
-bencher::benchmark_main!(g1::group_ops, g2::group_ops, fq, fr, fq3, fq6, pairing);
+bencher::benchmark_main!(fq, fr, fq3, fq6, g1::group_ops, g2::group_ops, pairing);

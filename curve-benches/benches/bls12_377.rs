@@ -31,4 +31,4 @@ f_bench!(target, Fq12, Fq12, fq12);
 
 pairing_bench!(Bls12_377, Fq12);
 
-bencher::benchmark_main!(g1::group_ops, g2::group_ops, fq, fr, fq2, fq12, pairing);
+bencher::benchmark_main!(fq, fr, fq2, fq12, g1::group_ops, g2::group_ops, pairing);
