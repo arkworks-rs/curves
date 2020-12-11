@@ -1,9 +1,9 @@
 use rand::SeedableRng;
 use rand_xorshift::XorShiftRng;
 use std::ops::{AddAssign, MulAssign, SubAssign};
+use ark_curve_benches::*;
 
 use ark_ec::{
-    mnt6::{G1Prepared, G2Prepared},
     PairingEngine, ProjectiveCurve,
 };
 use ark_ff::{
@@ -12,7 +12,7 @@ use ark_ff::{
 };
 use ark_mnt6_298::{
     fq::Fq, fq3::Fq3, fr::Fr, Fq6, G1Affine, G1Projective as G1, G2Affine, G2Projective as G2,
-    Parameters, MNT6_298,
+    MNT6_298,
 };
 
 mod g1 {
@@ -24,7 +24,10 @@ mod g2 {
     ec_bench!(G2, G2Affine);
 }
 
-f_bench!(1, Fq3, Fq3, fq3);
-f_bench!(2, Fq6, Fq6, fq6);
+f_bench!(extension, Fq3, Fq3, fq3);
+f_bench!(target, Fq6, Fq6, fq6);
 f_bench!(Fq, Fq, FqRepr, FqRepr, fq);
-pairing_bench!(MNT6_298, Fq6, prepared_v);
+f_bench!(Fr, Fr, FqRepr, FqRepr, fr);
+pairing_bench!(MNT6_298, Fq6);
+
+criterion::criterion_main!(g1::group_ops, g2::group_ops, fq, fr, fq3, fq6, pairing);

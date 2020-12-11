@@ -1,12 +1,13 @@
-#![cfg_attr(nightly, feature(test))]
 #![allow(unused_macros, unused_imports)]
-
-#[cfg(nightly)]
-extern crate test;
-
-#[cfg(all(nightly, test))]
 #[macro_use]
 pub mod macros;
+pub use macros::*;
 
-#[cfg(all(nightly, test))]
-mod curves;
+#[cfg(feature = "criterion")]
+#[macro_use]
+pub extern crate criterion;
+pub use criterion::*;
+
+#[macro_use]
+pub extern crate paste;
+pub use paste::*;
