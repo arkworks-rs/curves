@@ -2,7 +2,7 @@
 macro_rules! ec_bench {
     ($projective:ty, $affine:ty) => {
         fn bench_curve(c: &mut $crate::criterion::Criterion) {
-            let mut group = c.benchmark_group(core::stringify!($projective));
+            let mut group = c.benchmark_group("Group operation benchmarks for ".to_string() + core::stringify!($projective));
             group.bench_function("Rand", rand);
             group.bench_function("MulAssign", mul_assign);
             group.bench_function("AddAssign", add_assign);
@@ -199,6 +199,13 @@ macro_rules! ec_bench {
             });
         }
 
-        $crate::criterion::criterion_group!(group_ops, bench_curve);
+        $crate::criterion::criterion_group!(
+            name = group_ops;
+            config = $crate::criterion::Criterion::default()
+                .sample_size(10)
+                .warm_up_time(core::time::Duration::from_millis(500))
+                .measurement_time(core::time::Duration::from_secs(1));
+            targets = bench_curve,
+        );
     };
 }

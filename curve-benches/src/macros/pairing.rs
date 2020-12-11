@@ -73,6 +73,13 @@ macro_rules! pairing_bench {
             });
         }
 
-        $crate::criterion::criterion_group!(pairing, bench_pairing);
+        $crate::criterion::criterion_group!(
+            name = pairing;
+            config = $crate::criterion::Criterion::default()
+                .sample_size(10)
+                .warm_up_time(core::time::Duration::from_millis(500))
+                .measurement_time(core::time::Duration::from_secs(1));
+            targets = bench_pairing,
+        );
     }
 }
