@@ -65,7 +65,7 @@ macro_rules! pairing_bench {
             });
         }
 
-        $crate::bencher::benchmark_group!(
+        $crate::benchmark_group!(
             pairing,
             miller_loop,
             final_exponentiation,

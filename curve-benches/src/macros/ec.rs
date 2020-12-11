@@ -186,7 +186,7 @@ macro_rules! ec_bench {
             });
         }
 
-        $crate::bencher::benchmark_group!(
+        $crate::benchmark_group!(
             group_ops,
             rand,
             mul_assign,

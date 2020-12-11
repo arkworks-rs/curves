@@ -8,7 +8,7 @@ macro_rules! f_bench {
                 field_common!($f, $f_type);
                 sqrt!($f, $f_type);
                 prime_field!($f, $f_type, $f_repr, $f_repr_type);
-                $crate::bencher::benchmark_group!(
+                $crate::benchmark_group!(
                     $modname,
                     // common stuff
                     add_assign,
@@ -44,7 +44,7 @@ macro_rules! f_bench {
                 use super::*;
                 field_common!($f, $f_type);
                 sqrt!($f, $f_type);
-                $crate::bencher::benchmark_group!(
+                $crate::benchmark_group!(
                     $modname,
                     // common stuff
                     add_assign,
@@ -71,7 +71,7 @@ macro_rules! f_bench {
             mod [<_ $modname>] {
                 use super::*;
                 field_common!($f, $f_type);
-                $crate::bencher::benchmark_group!(
+                $crate::benchmark_group!(
                     $modname,
                     // common stuff
                     add_assign,
