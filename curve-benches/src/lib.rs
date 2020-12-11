@@ -6,7 +6,3 @@ pub use macros::*;
 #[macro_use]
 pub extern crate bencher;
 pub use bencher::*;
-
-#[macro_use]
-pub extern crate paste;
-pub use paste::*;

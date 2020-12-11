@@ -24,22 +24,23 @@ build = "build.rs"
 ################################# Dependencies ################################
 
 [dependencies]
+bencher = { version = "0.1.5" }
+
+[dev-dependencies]
 ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 
-ark-mnt4-298 = { path = "../mnt4_298", optional = true }
-ark-mnt6-298 = { path = "../mnt6_298", optional = true }
-ark-mnt4-753 = { path = "../mnt4_753", optional = true }
-ark-mnt6-753 = { path = "../mnt6_753", optional = true }
-ark-bn254 = { path = "../bn254", optional = true }
-ark-bls12-377 = { path = "../bls12_377", optional = true }
-ark-bls12-381 = { path = "../bls12_381", optional = true }
-ark-ed-on-bls12-381 = { path = "../ed_on_bls12_381", optional = true }
-ark-bw6-761 = { path = "../bw6_761", optional = true }
-ark-cp6-782 = { path = "../cp6_782", optional = true }
-bencher = { version = "0.1.5" }
-paste = { version = "1.0" }
+ark-mnt4-298 = { path = "../mnt4_298" }
+ark-mnt6-298 = { path = "../mnt6_298" }
+ark-mnt4-753 = { path = "../mnt4_753" }
+ark-mnt6-753 = { path = "../mnt6_753" }
+ark-bn254 = { path = "../bn254" }
+ark-bls12-377 = { path = "../bls12_377" }
+ark-bls12-381 = { path = "../bls12_381" }
+ark-ed-on-bls12-381 = { path = "../ed_on_bls12_381" }
+ark-bw6-761 = { path = "../bw6_761" }
+ark-cp6-782 = { path = "../cp6_782" }
 
 rand = "0.7"
 rand_xorshift = { version = "0.2" }
