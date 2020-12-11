@@ -1,15 +1,7 @@
 #[macro_export]
 macro_rules! pairing_bench {
     ($curve:ident, $pairing_field:ident) => {
-
-        fn bench_pairing(c: &mut $crate::criterion::Criterion) {
-            let mut group = c.benchmark_group("Pairing for ".to_string() + core::stringify!($curve));
-            group.bench_function("Miller Loop", miller_loop);
-            group.bench_function("Final Exponentiation", final_exponentiation);
-            group.bench_function("Full Pairing", full_pairing);
-        }
-        
-        fn miller_loop(b: &mut $crate::criterion::Bencher) {
+        fn miller_loop(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -32,7 +24,7 @@ macro_rules! pairing_bench {
         }
 
         
-        fn final_exponentiation(b: &mut $crate::criterion::Bencher) {
+        fn final_exponentiation(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -56,7 +48,7 @@ macro_rules! pairing_bench {
         }
 
         
-        fn full_pairing(b: &mut $crate::criterion::Bencher) {
+        fn full_pairing(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -73,13 +65,11 @@ macro_rules! pairing_bench {
             });
         }
 
-        $crate::criterion::criterion_group!(
-            name = pairing;
-            config = $crate::criterion::Criterion::default()
-                .sample_size(10)
-                .warm_up_time(core::time::Duration::from_millis(500))
-                .measurement_time(core::time::Duration::from_secs(1));
-            targets = bench_pairing,
+        $crate::bencher::benchmark_group!(
+            pairing,
+            miller_loop,
+            final_exponentiation,
+            full_pairing,
         );
     }
 }
