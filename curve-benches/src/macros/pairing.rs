@@ -14,16 +14,19 @@ macro_rules! pairing_bench {
                 .into_iter()
                 .zip(g2s)
                 .map(|(g1, g2)| (g1.into(), g2.into()))
-                .collect::<Vec<(<$curve as PairingEngine>::G1Prepared, <$curve as PairingEngine>::G2Prepared)>>();
+                .collect::<Vec<(
+                    <$curve as PairingEngine>::G1Prepared,
+                    <$curve as PairingEngine>::G2Prepared,
+                )>>();
             let mut count = 0;
             b.iter(|| {
-                let tmp = $curve::miller_loop(&[(prepared[count].0.clone(), prepared[count].1.clone())]);
+                let tmp =
+                    $curve::miller_loop(&[(prepared[count].0.clone(), prepared[count].1.clone())]);
                 count = (count + 1) % SAMPLES;
                 tmp
             });
         }
 
-        
         fn final_exponentiation(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
@@ -47,7 +50,6 @@ macro_rules! pairing_bench {
             });
         }
 
-        
         fn full_pairing(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
@@ -65,11 +67,6 @@ macro_rules! pairing_bench {
             });
         }
 
-        $crate::benchmark_group!(
-            pairing,
-            miller_loop,
-            final_exponentiation,
-            full_pairing,
-        );
-    }
+        $crate::benchmark_group!(pairing, miller_loop, final_exponentiation, full_pairing,);
+    };
 }
