@@ -1,13 +1,26 @@
+#[macro_export]
 macro_rules! ec_bench {
     ($projective:ty, $affine:ty) => {
-        #[bench]
-        fn bench_rand(b: &mut ::test::Bencher) {
+        fn bench_curve(c: &mut $crate::criterion::Criterion) {
+            let mut group = c.benchmark_group(core::stringify!($projective));
+            group.bench_function("Rand", rand);
+            group.bench_function("MulAssign", mul_assign);
+            group.bench_function("AddAssign", add_assign);
+            group.bench_function("AddAssignMixed", add_assign_mixed);
+            group.bench_function("Serialize w/ compression", ser);
+            group.bench_function("Deserialize w/ compression", deser);
+            group.bench_function("Serialize unchecked", ser_unchecked);
+            group.bench_function("Deserialize unchecked", deser_unchecked);
+        }
+
+        
+        fn rand(b: &mut $crate::criterion::Bencher) {
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
             b.iter(|| <$projective>::rand(&mut rng));
         }
 
-        #[bench]
-        fn bench_mul_assign(b: &mut ::test::Bencher) {
+        
+        fn mul_assign(b: &mut $crate::criterion::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -25,8 +38,8 @@ macro_rules! ec_bench {
             });
         }
 
-        #[bench]
-        fn bench_add_assign(b: &mut ::test::Bencher) {
+        
+        fn add_assign(b: &mut $crate::criterion::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -44,8 +57,8 @@ macro_rules! ec_bench {
             });
         }
 
-        #[bench]
-        fn bench_add_assign_mixed(b: &mut ::test::Bencher) {
+        
+        fn add_assign_mixed(b: &mut $crate::criterion::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -68,8 +81,8 @@ macro_rules! ec_bench {
             });
         }
 
-        #[bench]
-        fn bench_double(b: &mut ::test::Bencher) {
+        
+        fn double(b: &mut $crate::criterion::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -87,8 +100,8 @@ macro_rules! ec_bench {
             });
         }
 
-        #[bench]
-        fn bench_deser(b: &mut ::test::Bencher) {
+        
+        fn deser(b: &mut $crate::criterion::Bencher) {
             use ark_ec::ProjectiveCurve;
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 1000;
@@ -114,8 +127,8 @@ macro_rules! ec_bench {
             });
         }
 
-        #[bench]
-        fn bench_ser(b: &mut ::test::Bencher) {
+        
+        fn ser(b: &mut $crate::criterion::Bencher) {
             use ark_ec::ProjectiveCurve;
             use ark_serialize::CanonicalSerialize;
             const SAMPLES: usize = 1000;
@@ -137,8 +150,8 @@ macro_rules! ec_bench {
             });
         }
 
-        #[bench]
-        fn bench_deser_unchecked(b: &mut ::test::Bencher) {
+        
+        fn deser_unchecked(b: &mut $crate::criterion::Bencher) {
             use ark_ec::ProjectiveCurve;
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 1000;
@@ -164,8 +177,8 @@ macro_rules! ec_bench {
             });
         }
 
-        #[bench]
-        fn bench_ser_unchecked(b: &mut ::test::Bencher) {
+        
+        fn ser_unchecked(b: &mut $crate::criterion::Bencher) {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 1000;
 
@@ -185,5 +198,7 @@ macro_rules! ec_bench {
                 tmp.serialize_unchecked(&mut bytes)
             });
         }
+
+        $crate::criterion::criterion_group!(group_ops, bench_curve);
     };
 }

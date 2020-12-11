@@ -1,6 +1,7 @@
 use rand::SeedableRng;
 use rand_xorshift::XorShiftRng;
 use std::ops::{AddAssign, MulAssign, SubAssign};
+use ark_curve_benches::*;
 
 use ark_ec::ProjectiveCurve;
 use ark_ed_on_bls12_381::{fq::Fq, fr::Fr, EdwardsAffine as GAffine, EdwardsProjective as G};
@@ -16,3 +17,5 @@ mod g {
 
 f_bench!(Fq, Fq, FqRepr, FqRepr, fq);
 f_bench!(Fr, Fr, FrRepr, FrRepr, fr);
+
+criterion::criterion_main!(g::group_ops, fq, fr);

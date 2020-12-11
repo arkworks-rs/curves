@@ -1,14 +1,17 @@
 use rand::SeedableRng;
 use rand_xorshift::XorShiftRng;
 use std::ops::{AddAssign, MulAssign, SubAssign};
+use ark_curve_benches::*;
 
-use ark_cp6_782::{
+use ark_bw6_761::{
     fq::Fq, fq3::Fq3, fr::Fr, Fq6, G1Affine, G1Projective as G1, G2Affine, G2Projective as G2,
-    CP6_782,
+    BW6_761,
 };
-use ark_ec::{PairingEngine, ProjectiveCurve};
+use ark_ec::{
+    PairingEngine, ProjectiveCurve,
+};
 use ark_ff::{
-    biginteger::{BigInteger384 as FrRepr, BigInteger832 as FqRepr},
+    biginteger::{BigInteger384 as FrRepr, BigInteger768 as FqRepr},
     BigInteger, Field, PrimeField, SquareRootField, UniformRand,
 };
 
@@ -21,8 +24,10 @@ mod g2 {
     ec_bench!(G2, G2Affine);
 }
 
-f_bench!(1, Fq3, Fq3, fq3);
-f_bench!(2, Fq6, Fq6, fq6);
+f_bench!(extension, Fq3, Fq3, fq3);
+f_bench!(target, Fq6, Fq6, fq6);
 f_bench!(Fq, Fq, FqRepr, FqRepr, fq);
 f_bench!(Fr, Fr, FrRepr, FrRepr, fr);
-pairing_bench!(CP6_782, Fq6, affine_v);
+pairing_bench!(BW6_761, Fq6);
+
+criterion::criterion_main!(g1::group_ops, g2::group_ops, fq, fr, fq3, fq6, pairing);
