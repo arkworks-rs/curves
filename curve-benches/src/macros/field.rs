@@ -2,93 +2,87 @@
 macro_rules! f_bench {
     // Use this for base fields
     ($f:ident, $f_type:ty, $f_repr:ident, $f_repr_type:ty, $modname:ident) => {
-        $crate::paste!{
-            pub mod [<_ $modname>] {
-                use super::*;
-                field_common!($f, $f_type);
-                sqrt!($f, $f_type);
-                prime_field!($f, $f_type, $f_repr, $f_repr_type);
-                $crate::benchmark_group!(
-                    $modname,
-                    // common stuff
-                    add_assign,
-                    sub_assign,
-                    double,
-                    negate,
-                    mul_assign,
-                    square,
-                    inverse,
-                    ser,
-                    deser,
-                    ser_unchecked,
-                    deser_unchecked,
-                    // sqrt field stuff
-                    sqrt,
-                    // prime field stuff
-                    repr_add_nocarry,
-                    repr_sub_noborrow,
-                    repr_num_bits,
-                    repr_mul2,
-                    repr_div2,
-                    into_repr,
-                    from_repr,
+        pub mod $modname {
+            use super::*;
+            field_common!($f, $f_type);
+            sqrt!($f, $f_type);
+            prime_field!($f, $f_type, $f_repr, $f_repr_type);
+            $crate::benchmark_group!(
+                $modname,
+                // common stuff
+                add_assign,
+                sub_assign,
+                double,
+                negate,
+                mul_assign,
+                square,
+                inverse,
+                ser,
+                deser,
+                ser_unchecked,
+                deser_unchecked,
+                // sqrt field stuff
+                sqrt,
+                // prime field stuff
+                repr_add_nocarry,
+                repr_sub_noborrow,
+                repr_num_bits,
+                repr_mul2,
+                repr_div2,
+                into_repr,
+                from_repr,
                 );
-            }
-            use [<_ $modname>]::$modname;
         }
+        use $modname::$modname;
     };
     // use this for intermediate fields
     (extension, $f:ident, $f_type:ty, $modname:ident) => {
-        $crate::paste!{
-            mod [<_ $modname>] {
-                use super::*;
-                field_common!($f, $f_type);
-                sqrt!($f, $f_type);
-                $crate::benchmark_group!(
-                    $modname,
-                    // common stuff
-                    add_assign,
-                    sub_assign,
-                    double,
-                    negate,
-                    mul_assign,
-                    square,
-                    inverse,
-                    ser,
-                    deser,
-                    ser_unchecked,
-                    deser_unchecked,
-                    // sqrt field stuff
-                    sqrt,
+        mod $modname {
+            use super::*;
+            field_common!($f, $f_type);
+            sqrt!($f, $f_type);
+            $crate::benchmark_group!(
+                $modname,
+                // common stuff
+                add_assign,
+                sub_assign,
+                double,
+                negate,
+                mul_assign,
+                square,
+                inverse,
+                ser,
+                deser,
+                ser_unchecked,
+                deser_unchecked,
+                // sqrt field stuff
+                sqrt,
                 );
-            }
-            use [<_ $modname>]::$modname;
         }
+        use $modname::$modname;
     };
     // Use this for the full extension field Fqk
     (target, $f:ident, $f_type:ty, $modname:ident) => {
-        crate::paste! {
-            mod [<_ $modname>] {
-                use super::*;
-                field_common!($f, $f_type);
-                $crate::benchmark_group!(
-                    $modname,
-                    // common stuff
-                    add_assign,
-                    sub_assign,
-                    double,
-                    negate,
-                    mul_assign,
-                    square,
-                    inverse,
-                    ser,
-                    deser,
-                    ser_unchecked,
-                    deser_unchecked,
+        mod $modname {
+            use super::*;
+            field_common!($f, $f_type);
+            $crate::benchmark_group!(
+                $modname,
+                // common stuff
+                add_assign,
+                sub_assign,
+                double,
+                negate,
+                mul_assign,
+                square,
+                inverse,
+                ser,
+                deser,
+                ser_unchecked,
+                deser_unchecked,
                 );
-            }
-            use [<_ $modname>]::$modname;
         }
+        use $modname::$modname;
     };
 }
 
