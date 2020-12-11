@@ -38,7 +38,7 @@ ark-bls12-381 = { path = "../bls12_381", optional = true }
 ark-ed-on-bls12-381 = { path = "../ed_on_bls12_381", optional = true }
 ark-bw6-761 = { path = "../bw6_761", optional = true }
 ark-cp6-782 = { path = "../cp6_782", optional = true }
-criterion = { version = "0.3", optional = true }
+bencher = { version = "0.1.5" }
 paste = { version = "1.0" }
 
 rand = "0.7"

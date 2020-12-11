@@ -8,8 +8,33 @@ macro_rules! f_bench {
                 field_common!($f, $f_type);
                 sqrt!($f, $f_type);
                 prime_field!($f, $f_type, $f_repr, $f_repr_type);
+                $crate::bencher::benchmark_group!(
+                    $modname,
+                    // common stuff
+                    add_assign,
+                    sub_assign,
+                    double,
+                    negate,
+                    mul_assign,
+                    square,
+                    inverse,
+                    ser,
+                    deser,
+                    ser_unchecked,
+                    deser_unchecked,
+                    // sqrt field stuff
+                    sqrt,
+                    // prime field stuff
+                    repr_add_nocarry,
+                    repr_sub_noborrow,
+                    repr_num_bits,
+                    repr_mul2,
+                    repr_div2,
+                    into_repr,
+                    from_repr,
+                );
             }
-            $crate::criterion::criterion_group!($modname, [<_ $modname>]::bench_common_field_ops, [<_ $modname>]::bench_sqrt, [<_ $modname>]::bench_prime_field_ops);
+            use [<_ $modname>]::$modname;
         }
     };
     // use this for intermediate fields
@@ -19,8 +44,25 @@ macro_rules! f_bench {
                 use super::*;
                 field_common!($f, $f_type);
                 sqrt!($f, $f_type);
+                $crate::bencher::benchmark_group!(
+                    $modname,
+                    // common stuff
+                    add_assign,
+                    sub_assign,
+                    double,
+                    negate,
+                    mul_assign,
+                    square,
+                    inverse,
+                    ser,
+                    deser,
+                    ser_unchecked,
+                    deser_unchecked,
+                    // sqrt field stuff
+                    sqrt,
+                );
             }
-            $crate::criterion::criterion_group!($modname, [<_ $modname>]::bench_common_field_ops, [<_ $modname>]::bench_sqrt);
+            use [<_ $modname>]::$modname;
         }
     };
     // Use this for the full extension field Fqk
@@ -29,8 +71,23 @@ macro_rules! f_bench {
             mod [<_ $modname>] {
                 use super::*;
                 field_common!($f, $f_type);
+                $crate::bencher::benchmark_group!(
+                    $modname,
+                    // common stuff
+                    add_assign,
+                    sub_assign,
+                    double,
+                    negate,
+                    mul_assign,
+                    square,
+                    inverse,
+                    ser,
+                    deser,
+                    ser_unchecked,
+                    deser_unchecked,
+                );
             }
-            $crate::criterion::criterion_group!($modname, [<_ $modname>]::bench_common_field_ops);
+            use [<_ $modname>]::$modname;
         }
     };
 }
@@ -38,22 +95,7 @@ macro_rules! f_bench {
 #[macro_export]
 macro_rules! field_common {
     ($f:ident, $f_type:ty) => {
-        pub fn bench_common_field_ops(c: &mut $crate::criterion::Criterion) {
-            let mut group = c.benchmark_group("Common field operations for ".to_string() + core::stringify!($f));
-            group.bench_function("AddAssign", add_assign);
-            group.bench_function("SubAssign", sub_assign);
-            group.bench_function("Double", double);
-            group.bench_function("Negate", negate);
-            group.bench_function("MulAssign", mul_assign);
-            group.bench_function("Square", square);
-            group.bench_function("Inverse", inverse);
-            group.bench_function("Serialize w/ compression", ser);
-            group.bench_function("Deserialize w/ compression", deser);
-            group.bench_function("Serialize unchecked", ser_unchecked);
-            group.bench_function("Deserialize unchecked", deser_unchecked);
-        }
-
-        fn add_assign(b: &mut $crate::criterion::Bencher) {
+        fn add_assign(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -72,7 +114,7 @@ macro_rules! field_common {
         }
 
 
-        fn sub_assign(b: &mut $crate::criterion::Bencher) {
+        fn sub_assign(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -90,7 +132,7 @@ macro_rules! field_common {
             });
         }
 
-        fn double(b: &mut $crate::criterion::Bencher) {
+        fn double(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -107,7 +149,7 @@ macro_rules! field_common {
         }
 
 
-        fn negate(b: &mut $crate::criterion::Bencher) {
+        fn negate(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -123,7 +165,7 @@ macro_rules! field_common {
             });
         }
 
-        fn mul_assign(b: &mut $crate::criterion::Bencher) {
+        fn mul_assign(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -141,7 +183,7 @@ macro_rules! field_common {
             });
         }
 
-        fn square(b: &mut $crate::criterion::Bencher) {
+        fn square(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -158,7 +200,7 @@ macro_rules! field_common {
         }
 
 
-        fn inverse(b: &mut $crate::criterion::Bencher) {
+        fn inverse(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -174,7 +216,7 @@ macro_rules! field_common {
         }
 
 
-        fn deser(b: &mut $crate::criterion::Bencher) {
+        fn deser(b: &mut $crate::bencher::Bencher) {
             use ark_serialize::{CanonicalSerialize, CanonicalDeserialize};
             const SAMPLES: usize = 1000;
 
@@ -198,7 +240,7 @@ macro_rules! field_common {
         }
 
 
-        fn ser(b: &mut $crate::criterion::Bencher) {
+        fn ser(b: &mut $crate::bencher::Bencher) {
             use ark_serialize::CanonicalSerialize;
             const SAMPLES: usize = 1000;
 
@@ -218,7 +260,7 @@ macro_rules! field_common {
         }
 
 
-        fn deser_unchecked(b: &mut $crate::criterion::Bencher) {
+        fn deser_unchecked(b: &mut $crate::bencher::Bencher) {
             use ark_serialize::{CanonicalSerialize, CanonicalDeserialize};
             const SAMPLES: usize = 1000;
 
@@ -242,7 +284,7 @@ macro_rules! field_common {
         }
 
 
-        fn ser_unchecked(b: &mut $crate::criterion::Bencher) {
+        fn ser_unchecked(b: &mut $crate::bencher::Bencher) {
             use ark_serialize::CanonicalSerialize;
             const SAMPLES: usize = 1000;
 
@@ -266,7 +308,7 @@ macro_rules! field_common {
 #[macro_export]
 macro_rules! sqrt {
     ($f:ident, $f_type:ty) => {
-        pub fn bench_sqrt(b: &mut $crate::criterion::Criterion) {
+        pub fn sqrt(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -280,11 +322,9 @@ macro_rules! sqrt {
             .collect();
 
             let mut count = 0;
-            b.bench_function(
-                core::concat!("Square-roots for ", core::stringify!($f)),
-                |_| {
+            b.iter(|| {
                 count = (count + 1) % SAMPLES;
-                let _ = v[count].sqrt();
+                v[count].sqrt()
             });
         }
     }
@@ -293,18 +333,7 @@ macro_rules! sqrt {
 #[macro_export]
 macro_rules! prime_field {
     ($f:ident, $f_type:ty, $f_repr:ident, $f_repr_type:ty) => {
-        pub fn bench_prime_field_ops(c: &mut $crate::criterion::Criterion) {
-            let mut group = c.benchmark_group("Prime field operations for ".to_string() + core::stringify!($f));
-            group.bench_function("AddNoCarry for BigInteger", repr_add_nocarry);
-            group.bench_function("SubNoBorrow for BigInteger", repr_sub_noborrow);
-            group.bench_function("NumBits for BigInteger", repr_num_bits);
-            group.bench_function("MulBy2 for BigInteger", repr_mul2);
-            group.bench_function("DivBy2 for BigInteger", repr_div2);
-            group.bench_function("Into BigInteger", into_repr);
-            group.bench_function("From BigInteger", from_repr);
-        }
-
-        fn repr_add_nocarry(b: &mut $crate::criterion::Bencher) {
+        fn repr_add_nocarry(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -331,7 +360,7 @@ macro_rules! prime_field {
             });
         }
 
-        fn repr_sub_noborrow(b: &mut $crate::criterion::Bencher) {
+        fn repr_sub_noborrow(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -357,7 +386,7 @@ macro_rules! prime_field {
             });
         }
 
-        fn repr_num_bits(b: &mut $crate::criterion::Bencher) {
+        fn repr_num_bits(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -372,7 +401,7 @@ macro_rules! prime_field {
             });
         }
 
-        fn repr_mul2(b: &mut $crate::criterion::Bencher) {
+        fn repr_mul2(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -388,7 +417,7 @@ macro_rules! prime_field {
             });
         }
 
-        fn repr_div2(b: &mut $crate::criterion::Bencher) {
+        fn repr_div2(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -404,7 +433,7 @@ macro_rules! prime_field {
             });
         }
 
-        fn into_repr(b: &mut $crate::criterion::Bencher) {
+        fn into_repr(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -418,7 +447,7 @@ macro_rules! prime_field {
             });
         }
 
-        fn from_repr(b: &mut $crate::criterion::Bencher) {
+        fn from_repr(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);

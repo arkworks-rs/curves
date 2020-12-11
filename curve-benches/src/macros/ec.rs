@@ -1,26 +1,13 @@
 #[macro_export]
 macro_rules! ec_bench {
     ($projective:ty, $affine:ty) => {
-        fn bench_curve(c: &mut $crate::criterion::Criterion) {
-            let mut group = c.benchmark_group("Group operation benchmarks for ".to_string() + core::stringify!($projective));
-            group.bench_function("Rand", rand);
-            group.bench_function("MulAssign", mul_assign);
-            group.bench_function("AddAssign", add_assign);
-            group.bench_function("AddAssignMixed", add_assign_mixed);
-            group.bench_function("Serialize w/ compression", ser);
-            group.bench_function("Deserialize w/ compression", deser);
-            group.bench_function("Serialize unchecked", ser_unchecked);
-            group.bench_function("Deserialize unchecked", deser_unchecked);
-        }
-
-        
-        fn rand(b: &mut $crate::criterion::Bencher) {
+        fn rand(b: &mut $crate::bencher::Bencher) {
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
             b.iter(|| <$projective>::rand(&mut rng));
         }
 
         
-        fn mul_assign(b: &mut $crate::criterion::Bencher) {
+        fn mul_assign(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -39,7 +26,7 @@ macro_rules! ec_bench {
         }
 
         
-        fn add_assign(b: &mut $crate::criterion::Bencher) {
+        fn add_assign(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -58,7 +45,7 @@ macro_rules! ec_bench {
         }
 
         
-        fn add_assign_mixed(b: &mut $crate::criterion::Bencher) {
+        fn add_assign_mixed(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -82,7 +69,7 @@ macro_rules! ec_bench {
         }
 
         
-        fn double(b: &mut $crate::criterion::Bencher) {
+        fn double(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
@@ -101,7 +88,7 @@ macro_rules! ec_bench {
         }
 
         
-        fn deser(b: &mut $crate::criterion::Bencher) {
+        fn deser(b: &mut $crate::bencher::Bencher) {
             use ark_ec::ProjectiveCurve;
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 1000;
@@ -128,7 +115,7 @@ macro_rules! ec_bench {
         }
 
         
-        fn ser(b: &mut $crate::criterion::Bencher) {
+        fn ser(b: &mut $crate::bencher::Bencher) {
             use ark_ec::ProjectiveCurve;
             use ark_serialize::CanonicalSerialize;
             const SAMPLES: usize = 1000;
@@ -151,7 +138,7 @@ macro_rules! ec_bench {
         }
 
         
-        fn deser_unchecked(b: &mut $crate::criterion::Bencher) {
+        fn deser_unchecked(b: &mut $crate::bencher::Bencher) {
             use ark_ec::ProjectiveCurve;
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 1000;
@@ -178,7 +165,7 @@ macro_rules! ec_bench {
         }
 
         
-        fn ser_unchecked(b: &mut $crate::criterion::Bencher) {
+        fn ser_unchecked(b: &mut $crate::bencher::Bencher) {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 1000;
 
@@ -199,13 +186,16 @@ macro_rules! ec_bench {
             });
         }
 
-        $crate::criterion::criterion_group!(
-            name = group_ops;
-            config = $crate::criterion::Criterion::default()
-                .sample_size(10)
-                .warm_up_time(core::time::Duration::from_millis(500))
-                .measurement_time(core::time::Duration::from_secs(1));
-            targets = bench_curve,
+        $crate::bencher::benchmark_group!(
+            group_ops,
+            rand,
+            mul_assign,
+            add_assign,
+            add_assign_mixed,
+            ser,
+            deser,
+            ser_unchecked,
+            deser_unchecked,
         );
     };
 }

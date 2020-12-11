@@ -3,10 +3,9 @@
 pub mod macros;
 pub use macros::*;
 
-#[cfg(feature = "criterion")]
 #[macro_use]
-pub extern crate criterion;
-pub use criterion::*;
+pub extern crate bencher;
+pub use bencher::*;
 
 #[macro_use]
 pub extern crate paste;
