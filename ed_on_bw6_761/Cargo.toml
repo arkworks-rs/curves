@@ -19,6 +19,7 @@ ark-ed-on-cp6-782 = { path = "../ed_on_cp6_782", default-features = false }
 ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
 ark-r1cs-std = {  git = "https://github.com/arkworks-rs/r1cs-std", default-features = false }
 ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = false }
 
 [features]
 default = []
