@@ -7,9 +7,9 @@ pub mod fields {
     use rand_xorshift::XorShiftRng;
 
     use ark_ff::{BitIteratorLE, Field, UniformRand};
-    use ark_std::test_rng;
     use ark_r1cs_std::prelude::*;
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
+    use ark_std::test_rng;
     use ark_std::vec::Vec;
 
     pub fn field_test<F, ConstraintF, AF>() -> Result<(), SynthesisError>
