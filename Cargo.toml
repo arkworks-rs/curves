@@ -29,11 +29,6 @@ members = [
     "ed_on_mnt4_298",
 ]
 
-[patch.crates-io]
-ark-ff = { path = '../algebra/ff' }
-ark-ec = { path = '../algebra/ec'}
-
-
 [profile.release]
 opt-level = 3
 lto = "thin"
