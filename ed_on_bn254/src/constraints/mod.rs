@@ -11,7 +11,7 @@
 //!
 //! ```
 //! # fn main() -> Result<(), ark_relations::r1cs::SynthesisError> {
-//! use ark_ff::UniformRand;
+//! use ark_std::UniformRand;
 //! use ark_relations::r1cs::*;
 //! use ark_r1cs_std::prelude::*;
 //! use ark_ed_on_bn254::{*, constraints::*};
@@ -60,7 +60,7 @@
 //!
 //! ```
 //! # fn main() -> Result<(), ark_relations::r1cs::SynthesisError> {
-//! # use ark_ff::UniformRand;
+//! # use ark_std::UniformRand;
 //! # use ark_relations::r1cs::*;
 //! # use ark_r1cs_std::prelude::*;
 //! # use ark_ed_on_bn254::{*, constraints::*};
