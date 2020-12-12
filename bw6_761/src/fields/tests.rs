@@ -1,4 +1,5 @@
-use ark_ff::{test_rng, Field, PrimeField};
+use ark_ff::{Field, PrimeField};
+use ark_std::test_rng;
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
 use rand::Rng;
 

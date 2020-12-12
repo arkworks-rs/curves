@@ -6,7 +6,8 @@ pub mod fields {
     use rand::{self, SeedableRng};
     use rand_xorshift::XorShiftRng;
 
-    use ark_ff::{test_rng, BitIteratorLE, Field, UniformRand};
+    use ark_ff::{BitIteratorLE, Field, UniformRand};
+    use ark_std::test_rng;
     use ark_r1cs_std::prelude::*;
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
     use ark_std::vec::Vec;

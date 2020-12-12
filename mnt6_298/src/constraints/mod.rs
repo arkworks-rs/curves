@@ -20,7 +20,7 @@
 //! let cs = ConstraintSystem::<Fq>::new_ref();
 //! // This rng is just for test purposes; do not use it
 //! // in real applications.
-//! let mut rng = ark_ff::test_rng();
+//! let mut rng = ark_std::test_rng();
 //!
 //! // Generate some random `Fq` elements.
 //! let a_native = Fq::rand(&mut rng);
@@ -67,7 +67,7 @@
 //! # use ark_mnt6_298::{*, constraints::*};
 //!
 //! # let cs = ConstraintSystem::<Fq>::new_ref();
-//! # let mut rng = ark_ff::test_rng();
+//! # let mut rng = ark_std::test_rng();
 //!
 //! // Generate some random `G1` elements.
 //! let a_native = G1Projective::rand(&mut rng);
@@ -112,7 +112,7 @@
 //! # use ark_mnt6_298::{*, constraints::*};
 //!
 //! # let cs = ConstraintSystem::<Fq>::new_ref();
-//! # let mut rng = ark_ff::test_rng();
+//! # let mut rng = ark_std::test_rng();
 //!
 //! // Generate random `G1` and `G2` elements.
 //! let a_native = G1Projective::rand(&mut rng);

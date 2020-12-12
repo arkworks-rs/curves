@@ -2,9 +2,10 @@
 use ark_ec::{models::SWModelParameters, AffineCurve, PairingEngine, ProjectiveCurve};
 use ark_ff::{
     fields::{Field, FpParameters, PrimeField, SquareRootField},
-    test_rng, One, Zero,
+    One, Zero,
 };
 use ark_serialize::CanonicalSerialize;
+use ark_std::test_rng;
 use core::ops::{AddAssign, MulAssign};
 use rand::Rng;
 
