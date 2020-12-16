@@ -12,7 +12,7 @@
 //!
 //! ```
 //! # fn main() -> Result<(), ark_relations::r1cs::SynthesisError> {
-//! use ark_ff::UniformRand;
+//! use ark_std::UniformRand;
 //! use ark_relations::r1cs::*;
 //! use ark_r1cs_std::prelude::*;
 //! use ark_bls12_377::{*, constraints::*};
@@ -20,7 +20,7 @@
 //! let cs = ConstraintSystem::<Fq>::new_ref();
 //! // This rng is just for test purposes; do not use it
 //! // in real applications.
-//! let mut rng = ark_ff::test_rng();
+//! let mut rng = ark_std::test_rng();
 //!
 //! // Generate some random `Fq` elements.
 //! let a_native = Fq::rand(&mut rng);
@@ -61,13 +61,13 @@
 //!
 //! ```
 //! # fn main() -> Result<(), ark_relations::r1cs::SynthesisError> {
-//! # use ark_ff::UniformRand;
+//! # use ark_std::UniformRand;
 //! # use ark_relations::r1cs::*;
 //! # use ark_r1cs_std::prelude::*;
 //! # use ark_bls12_377::{*, constraints::*};
 //!
 //! # let cs = ConstraintSystem::<Fq>::new_ref();
-//! # let mut rng = ark_ff::test_rng();
+//! # let mut rng = ark_std::test_rng();
 //!
 //! // Generate some random `G1` elements.
 //! let a_native = G1Projective::rand(&mut rng);
@@ -105,14 +105,14 @@
 //!
 //! ```
 //! # fn main() -> Result<(), ark_relations::r1cs::SynthesisError> {
-//! # use ark_ff::UniformRand;
+//! # use ark_std::UniformRand;
 //! # use ark_ec::PairingEngine;
 //! # use ark_relations::r1cs::*;
 //! # use ark_r1cs_std::prelude::*;
 //! # use ark_bls12_377::{*, constraints::*};
 //!
 //! # let cs = ConstraintSystem::<Fq>::new_ref();
-//! # let mut rng = ark_ff::test_rng();
+//! # let mut rng = ark_std::test_rng();
 //!
 //! // Generate random `G1` and `G2` elements.
 //! let a_native = G1Projective::rand(&mut rng);

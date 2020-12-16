@@ -6,9 +6,10 @@ pub mod fields {
     use rand::{self, SeedableRng};
     use rand_xorshift::XorShiftRng;
 
-    use ark_ff::{test_rng, BitIteratorLE, Field, UniformRand};
+    use ark_ff::{BitIteratorLE, Field, UniformRand};
     use ark_r1cs_std::prelude::*;
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
+    use ark_std::test_rng;
     use ark_std::vec::Vec;
 
     pub fn field_test<F, ConstraintF, AF>() -> Result<(), SynthesisError>
@@ -220,9 +221,9 @@ pub mod curves {
         short_weierstrass_jacobian::GroupProjective as SWProjective,
         twisted_edwards_extended::GroupProjective as TEProjective, AffineCurve, ProjectiveCurve,
     };
-    use ark_ff::{test_rng, Field, PrimeField};
+    use ark_ff::{Field, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
-    use ark_std::vec::Vec;
+    use ark_std::{test_rng, vec::Vec};
 
     use ark_r1cs_std::prelude::*;
 
@@ -305,8 +306,9 @@ pub mod curves {
         for<'a> &'a GG: GroupOpsBounds<'a, SWProjective<P>, GG>,
     {
         use ark_ec::group::Group;
-        use ark_ff::{BitIteratorLE, UniformRand};
+        use ark_ff::BitIteratorLE;
         use ark_r1cs_std::prelude::*;
+        use ark_std::UniformRand;
 
         group_test::<SWProjective<P>, _, GG>()?;
 
@@ -382,7 +384,8 @@ pub mod curves {
         for<'a> &'a GG: GroupOpsBounds<'a, TEProjective<P>, GG>,
     {
         use ark_ec::group::Group;
-        use ark_ff::{BitIteratorLE, UniformRand};
+        use ark_ff::BitIteratorLE;
+        use ark_std::UniformRand;
 
         group_test::<TEProjective<P>, _, GG>()?;
 
@@ -455,10 +458,10 @@ pub mod curves {
 
 pub mod pairing {
     use ark_ec::{PairingEngine, ProjectiveCurve};
-    use ark_ff::{test_rng, BitIteratorLE, Field, PrimeField, UniformRand};
+    use ark_ff::{BitIteratorLE, Field, PrimeField};
     use ark_r1cs_std::prelude::*;
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
-    use ark_std::vec::Vec;
+    use ark_std::{test_rng, vec::Vec, UniformRand};
 
     #[allow(dead_code)]
     pub fn bilinearity_test<E: PairingEngine, P: PairingVar<E>>() -> Result<(), SynthesisError>

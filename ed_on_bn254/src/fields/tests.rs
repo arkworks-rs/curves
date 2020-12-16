@@ -3,8 +3,9 @@ use ark_ff::{
     biginteger::BigInteger256 as BigInteger,
     bytes::{FromBytes, ToBytes},
     fields::{Field, LegendreSymbol::*, SquareRootField},
-    test_rng, One, Zero,
+    One, Zero,
 };
+use ark_std::test_rng;
 
 use ark_curve_tests::fields::*;
 
