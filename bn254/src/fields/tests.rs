@@ -4,9 +4,10 @@ use ark_ff::{
         fp6_3over2::Fp6Parameters, FftField, FftParameters, Field, FpParameters, PrimeField,
         SquareRootField,
     },
-    test_rng, One, UniformRand, Zero,
+    One, UniformRand, Zero,
 };
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
+use ark_std::test_rng;
 use core::{
     cmp::Ordering,
     ops::{AddAssign, MulAssign, SubAssign},
