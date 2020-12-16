@@ -178,6 +178,22 @@ macro_rules! ec_bench {
             });
         }
 
+        fn msm_131072(b: &mut $crate::bencher::Bencher) {
+            use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
+            const SAMPLES: usize = 131072;
+
+            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+
+            let g = <$projective>::rand(&mut rng).into_affine();
+            let v: Vec<_> = (0..SAMPLES).map(|_| g).collect();
+            let scalars: Vec<_> = (0..SAMPLES)
+                .map(|_| Fr::rand(&mut rng).into_repr())
+                .collect();
+            b.bench_n(1, |b| {
+                b.iter(|| ark_ec::msm::VariableBaseMSM::multi_scalar_mul(&v, &scalars));
+            })
+        }
+
         $crate::benchmark_group!(
             group_ops,
             rand,
@@ -188,6 +204,7 @@ macro_rules! ec_bench {
             deser,
             ser_unchecked,
             deser_unchecked,
+            msm_131072,
         );
     };
 }
