@@ -227,7 +227,7 @@ pub fn from_str_test<F: PrimeField>() {
             let a = F::from_str(&ark_std::format!("{}", n))
                 .map_err(|_| ())
                 .unwrap();
-            let b = F::from_repr(n.into()).unwrap();
+            let b = F::from(n);
 
             assert_eq!(a, b);
         }
