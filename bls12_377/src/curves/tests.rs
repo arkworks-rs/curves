@@ -1,9 +1,10 @@
 #![allow(unused_imports)]
 use ark_ff::{
     fields::{Field, FpParameters, PrimeField, SquareRootField},
-    test_rng, One, Zero,
+    One, Zero,
 };
 use ark_serialize::CanonicalSerialize;
+use ark_std::test_rng;
 
 use ark_ec::{models::SWModelParameters, AffineCurve, PairingEngine, ProjectiveCurve};
 use core::ops::{AddAssign, MulAssign};
