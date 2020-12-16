@@ -3,8 +3,8 @@ name = "ark-ed-on-bw6-761"
 version = "0.1.0"
 authors = [ "arkworks contributors" ]
 description = "A Twisted Edwards curve defined over the scalar field of the BW6-761 curve"
-homepage = "https://arworks.rs"
-repository = "https://github.com/arkworks/algebra"
+homepage = "https://arkworks.rs"
+repository = "https://github.com/arkworks-rs/algebra"
 documentation = "https://docs.rs/ark-ed-on-bw6-761/"
 keywords = ["cryptography", "finite fields", "elliptic curves" ]
 categories = ["cryptography"]
@@ -19,6 +19,7 @@ ark-ed-on-cp6-782 = { path = "../ed_on_cp6_782", default-features = false }
 ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
 ark-r1cs-std = {  git = "https://github.com/arkworks-rs/r1cs-std", default-features = false }
 ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = false }
 
 [features]
 default = []

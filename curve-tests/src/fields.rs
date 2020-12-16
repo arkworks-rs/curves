@@ -79,10 +79,10 @@ fn random_inversion_tests<F: Field, R: Rng>(rng: &mut R) {
 
     for _ in 0..ITERATIONS {
         let mut a = F::rand(rng);
-        let b = a.inverse().unwrap(); // probablistically nonzero
-        a *= &b;
-
-        assert_eq!(a, F::one());
+        let b = a.inverse().map(|b| {
+            a *= &b;
+            assert_eq!(a, F::one());
+        });
     }
 }
 
@@ -227,7 +227,7 @@ pub fn from_str_test<F: PrimeField>() {
             let a = F::from_str(&ark_std::format!("{}", n))
                 .map_err(|_| ())
                 .unwrap();
-            let b = F::from_repr(n.into()).unwrap();
+            let b = F::from(n);
 
             assert_eq!(a, b);
         }

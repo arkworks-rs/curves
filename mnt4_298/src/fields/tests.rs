@@ -1,4 +1,5 @@
-use ark_ff::{test_rng, Field};
+use ark_ff::Field;
+use ark_std::test_rng;
 use rand::Rng;
 
 use crate::*;
