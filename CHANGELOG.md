@@ -1,7 +1,7 @@
 ## Pending
 
 ### Breaking changes
-- None!
+- Requires all crates from `arkworks-rs/algebra` to have version `v0.2.0` or greater.
 
 ### Features
 - #3 Add constraints for 
