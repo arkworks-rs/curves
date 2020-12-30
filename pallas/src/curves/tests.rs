@@ -20,8 +20,7 @@ use ark_curve_tests::{
 #[test]
 fn test_projective_curve() {
     curve_tests::<Projective>();
-
-    // sw_tests::<PallasParameters>();
+    sw_tests::<PallasParameters>();
 }
 
 #[test]
