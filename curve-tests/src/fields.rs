@@ -417,20 +417,14 @@ pub fn field_serialization_test<F: Field>(buf_size: usize) {
         #[derive(Default, Clone, Copy, Debug)]
         struct DummyFlags;
         impl Flags for DummyFlags {
+            const BIT_SIZE: usize = 200;
+
             fn u8_bitmask(&self) -> u8 {
                 0
             }
 
-            fn from_u8(_value: u8) -> Self {
-                DummyFlags
-            }
-
-            fn from_u8_remove_flags(_value: &mut u8) -> Self {
-                DummyFlags
-            }
-
-            fn len() -> usize {
-                200
+            fn from_u8(_value: u8) -> Option<Self> {
+                Some(DummyFlags)
             }
         }
 
