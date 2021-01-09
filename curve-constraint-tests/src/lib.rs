@@ -1,4 +1,3 @@
-// #![no_std]
 #![macro_use]
 extern crate ark_relations;
 
@@ -343,7 +342,7 @@ pub mod curves {
         ];
         for &mode in &modes {
             use ark_ec::group::Group;
-            use ark_ff::BitIteratorLE;
+            use ark_ff::{BitIteratorLE, Zero};
             use ark_r1cs_std::prelude::*;
             use ark_std::UniformRand;
 
@@ -361,6 +360,7 @@ pub mod curves {
             let ns = ark_relations::ns!(cs, "allocating variables");
             let mut gadget_a = GG::new_variable(cs.clone(), || Ok(a), mode)?;
             let gadget_b = GG::new_variable(cs.clone(), || Ok(b), mode)?;
+            let zero = GG::zero();
             drop(ns);
             assert_eq!(gadget_a.value()?.into_affine().x, a_affine.x);
             assert_eq!(gadget_a.value()?.into_affine().y, a_affine.y);
@@ -378,6 +378,9 @@ pub mod curves {
             let ab_val = gadget_ab.value()?.into_affine();
             assert_eq!(ab_val, ab_affine, "Result of addition is unequal");
             assert!(cs.is_satisfied().unwrap());
+
+            let gadget_a_zero = &gadget_a + &zero;
+            gadget_a_zero.enforce_equal(&gadget_a)?;
 
             // Check doubling
             let aa = Group::double(&a);
@@ -403,6 +406,15 @@ pub mod curves {
             assert_eq!(
                 result_val, native_result,
                 "gadget & native values are diff. after scalar mul"
+            );
+            assert!(cs.is_satisfied().unwrap());
+
+            let result = zero.scalar_mul_le(input.iter())?;
+            let result_val = result.value()?.into_affine();
+            result.enforce_equal(&zero)?;
+            assert_eq!(
+                result_val, SWProjective::zero(),
+                "gadget & native values are diff. after scalar mul of zero"
             );
             assert!(cs.is_satisfied().unwrap());
 
