@@ -413,7 +413,8 @@ pub mod curves {
             let result_val = result.value()?.into_affine();
             result.enforce_equal(&zero)?;
             assert_eq!(
-                result_val, SWProjective::zero(),
+                result_val,
+                SWProjective::zero(),
                 "gadget & native values are diff. after scalar mul of zero"
             );
             assert!(cs.is_satisfied().unwrap());
