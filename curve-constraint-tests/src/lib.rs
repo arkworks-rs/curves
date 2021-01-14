@@ -409,6 +409,23 @@ pub mod curves {
             );
             assert!(cs.is_satisfied().unwrap());
 
+            // Check scalar mul with a small scalar.
+            let scalar_u64 = u64::rand(&mut rng);
+            let scalar: P::ScalarField = scalar_u64.into();
+            let native_result = aa.into_affine().mul(scalar);
+            let native_result = native_result.into_affine();
+
+            let scalar: Vec<bool> = BitIteratorLE::new(&[scalar_u64]).collect();
+            let input: Vec<Boolean<_>> =
+                Vec::new_witness(ark_relations::ns!(cs, "bits"), || Ok(scalar)).unwrap();
+            let result = gadget_a.scalar_mul_le(input.iter()).expect(&format!("Mode: {:?}", mode));
+            let result_val = result.value()?.into_affine();
+            assert_eq!(
+                result_val, native_result,
+                "gadget & native values are diff. after scalar mul"
+            );
+            assert!(cs.is_satisfied().unwrap());
+
             let result = zero.scalar_mul_le(input.iter())?;
             let result_val = result.value()?.into_affine();
             result.enforce_equal(&zero)?;
