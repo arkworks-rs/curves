@@ -236,11 +236,11 @@ pub mod fields {
 pub mod curves {
     use ark_ec::{
         short_weierstrass_jacobian::GroupProjective as SWProjective,
-        twisted_edwards_extended::GroupProjective as TEProjective, AffineCurve, ProjectiveCurve,
+        twisted_edwards_extended::GroupProjective as TEProjective, ProjectiveCurve,
     };
-    use ark_ff::{Field, PrimeField};
+    use ark_ff::{BitIteratorLE, Field, FpParameters, One, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
-    use ark_std::{test_rng, vec::Vec};
+    use ark_std::{test_rng, vec::Vec, UniformRand};
 
     use ark_r1cs_std::prelude::*;
 
@@ -325,6 +325,60 @@ pub mod curves {
                 );
             }
             assert!(cs.is_satisfied().unwrap());
+
+            let modulus = <C::ScalarField as PrimeField>::Params::MODULUS
+                .as_ref()
+                .to_vec();
+            let mut max = modulus.clone();
+            for limb in &mut max {
+                *limb = u64::MAX;
+            }
+
+            let modulus_last_limb_bits = <C::ScalarField as PrimeField>::Params::MODULUS_BITS % 64;
+            *max.last_mut().unwrap() >>= 64 - modulus_last_limb_bits;
+            let scalars = [
+                C::ScalarField::rand(&mut rng).into_repr().as_ref().to_vec(),
+                vec![u64::rand(&mut rng)],
+                (-C::ScalarField::one()).into_repr().as_ref().to_vec(),
+                <C::ScalarField as PrimeField>::Params::MODULUS
+                    .as_ref()
+                    .to_vec(),
+                max,
+                vec![0; 50],
+                vec![1000012341233u64; 36],
+            ];
+
+            let mut input = vec![];
+
+            // Check scalar mul with edge cases
+            for scalar in scalars.iter() {
+                let native_result = a_native.mul(scalar);
+                let native_result = native_result.into_affine();
+
+                let scalar_bits: Vec<bool> = BitIteratorLE::new(&scalar).collect();
+                input =
+                    Vec::new_witness(ark_relations::ns!(cs, "bits"), || Ok(scalar_bits)).unwrap();
+                let result = a
+                    .scalar_mul_le(input.iter())
+                    .expect(&format!("Mode: {:?}", mode));
+                let result_val = result.value()?.into_affine();
+                assert_eq!(
+                    result_val, native_result,
+                    "gadget & native values are diff. after scalar mul {:?}",
+                    scalar,
+                );
+                assert!(cs.is_satisfied().unwrap());
+            }
+
+            let result = zero.scalar_mul_le(input.iter())?;
+            let result_val = result.value()?.into_affine();
+            result.enforce_equal(&zero)?;
+            assert_eq!(
+                result_val,
+                C::zero().into_affine(),
+                "gadget & native values are diff. after scalar mul of zero"
+            );
+            assert!(cs.is_satisfied().unwrap());
         }
         Ok(())
     }
@@ -335,6 +389,7 @@ pub mod curves {
         GG: CurveVar<SWProjective<P>, <P::BaseField as Field>::BasePrimeField>,
         for<'a> &'a GG: GroupOpsBounds<'a, SWProjective<P>, GG>,
     {
+        group_test::<SWProjective<P>, _, GG>()?;
         let modes = [
             AllocationMode::Input,
             AllocationMode::Witness,
@@ -342,11 +397,6 @@ pub mod curves {
         ];
         for &mode in &modes {
             use ark_ec::group::Group;
-            use ark_ff::{BitIteratorLE, Zero};
-            use ark_r1cs_std::prelude::*;
-            use ark_std::UniformRand;
-
-            group_test::<SWProjective<P>, _, GG>()?;
 
             let mut rng = test_rng();
 
@@ -393,32 +443,6 @@ pub mod curves {
             );
             assert!(cs.is_satisfied().unwrap());
 
-            // Check mul_bits
-            let scalar = P::ScalarField::rand(&mut rng);
-            let native_result = aa.into_affine().mul(scalar);
-            let native_result = native_result.into_affine();
-
-            let scalar: Vec<bool> = BitIteratorLE::new(scalar.into_repr()).collect();
-            let input: Vec<Boolean<_>> =
-                Vec::new_witness(ark_relations::ns!(cs, "bits"), || Ok(scalar)).unwrap();
-            let result = gadget_a.scalar_mul_le(input.iter())?;
-            let result_val = result.value()?.into_affine();
-            assert_eq!(
-                result_val, native_result,
-                "gadget & native values are diff. after scalar mul"
-            );
-            assert!(cs.is_satisfied().unwrap());
-
-            let result = zero.scalar_mul_le(input.iter())?;
-            let result_val = result.value()?.into_affine();
-            result.enforce_equal(&zero)?;
-            assert_eq!(
-                result_val,
-                SWProjective::zero(),
-                "gadget & native values are diff. after scalar mul of zero"
-            );
-            assert!(cs.is_satisfied().unwrap());
-
             if !cs.is_satisfied().unwrap() {
                 panic!(
                     "Unsatisfied in mode {:?}.\n{:?}",
@@ -438,6 +462,7 @@ pub mod curves {
         GG: CurveVar<TEProjective<P>, <P::BaseField as Field>::BasePrimeField>,
         for<'a> &'a GG: GroupOpsBounds<'a, TEProjective<P>, GG>,
     {
+        group_test::<TEProjective<P>, _, GG>()?;
         let modes = [
             AllocationMode::Input,
             AllocationMode::Witness,
@@ -445,10 +470,6 @@ pub mod curves {
         ];
         for &mode in &modes {
             use ark_ec::group::Group;
-            use ark_ff::BitIteratorLE;
-            use ark_std::UniformRand;
-
-            group_test::<TEProjective<P>, _, GG>()?;
 
             let mut rng = test_rng();
 
@@ -489,22 +510,6 @@ pub mod curves {
             assert_eq!(
                 aa_val, aa_affine,
                 "Gadget and native values are unequal after double."
-            );
-            assert!(cs.is_satisfied().unwrap());
-
-            // Check mul_bits
-            let scalar = P::ScalarField::rand(&mut rng);
-            let native_result = AffineCurve::mul(&aa.into_affine(), scalar);
-            let native_result = native_result.into_affine();
-
-            let scalar: Vec<bool> = BitIteratorLE::new(scalar.into_repr()).collect();
-            let input: Vec<Boolean<_>> =
-                Vec::new_witness(ark_relations::ns!(cs, "bits"), || Ok(scalar)).unwrap();
-            let result = gadget_a.scalar_mul_le(input.iter())?;
-            let result_val = result.value()?.into_affine();
-            assert_eq!(
-                result_val, native_result,
-                "gadget & native values are diff. after scalar mul"
             );
             assert!(cs.is_satisfied().unwrap());
 
