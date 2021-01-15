@@ -238,7 +238,7 @@ pub mod curves {
         short_weierstrass_jacobian::GroupProjective as SWProjective,
         twisted_edwards_extended::GroupProjective as TEProjective, AffineCurve, ProjectiveCurve,
     };
-    use ark_ff::{Field, PrimeField};
+    use ark_ff::{Field, FpParameters, One, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
     use ark_std::{test_rng, vec::Vec};
 
@@ -393,38 +393,49 @@ pub mod curves {
             );
             assert!(cs.is_satisfied().unwrap());
 
-            // Check mul_bits
-            let scalar = P::ScalarField::rand(&mut rng);
-            let native_result = aa.into_affine().mul(scalar);
-            let native_result = native_result.into_affine();
+            let modulus = <P::ScalarField as PrimeField>::Params::MODULUS
+                .as_ref()
+                .to_vec();
+            let mut max = modulus.clone();
+            for limb in &mut max {
+                *limb = u64::MAX;
+            }
 
-            let scalar: Vec<bool> = BitIteratorLE::new(scalar.into_repr()).collect();
-            let input: Vec<Boolean<_>> =
-                Vec::new_witness(ark_relations::ns!(cs, "bits"), || Ok(scalar)).unwrap();
-            let result = gadget_a.scalar_mul_le(input.iter())?;
-            let result_val = result.value()?.into_affine();
-            assert_eq!(
-                result_val, native_result,
-                "gadget & native values are diff. after scalar mul"
-            );
-            assert!(cs.is_satisfied().unwrap());
+            let modulus_last_limb_bits = <P::ScalarField as PrimeField>::Params::MODULUS_BITS % 64;
+            *max.last_mut().unwrap() >>= 64 - modulus_last_limb_bits;
+            let scalars = [
+                P::ScalarField::rand(&mut rng).into_repr().as_ref().to_vec(),
+                vec![u64::rand(&mut rng)],
+                (-P::ScalarField::one()).into_repr().as_ref().to_vec(),
+                <P::ScalarField as PrimeField>::Params::MODULUS
+                    .as_ref()
+                    .to_vec(),
+                max,
+                vec![0; 50],
+                vec![1000012341233u64; 36],
+            ];
 
-            // Check scalar mul with a small scalar.
-            let scalar_u64 = u64::rand(&mut rng);
-            let scalar: P::ScalarField = scalar_u64.into();
-            let native_result = aa.into_affine().mul(scalar);
-            let native_result = native_result.into_affine();
+            let mut input = vec![];
 
-            let scalar: Vec<bool> = BitIteratorLE::new(&[scalar_u64]).collect();
-            let input: Vec<Boolean<_>> =
-                Vec::new_witness(ark_relations::ns!(cs, "bits"), || Ok(scalar)).unwrap();
-            let result = gadget_a.scalar_mul_le(input.iter()).expect(&format!("Mode: {:?}", mode));
-            let result_val = result.value()?.into_affine();
-            assert_eq!(
-                result_val, native_result,
-                "gadget & native values are diff. after scalar mul"
-            );
-            assert!(cs.is_satisfied().unwrap());
+            // Check scalar mul with edge cases
+            for scalar in scalars.iter() {
+                let native_result = aa.mul(scalar);
+                let native_result = native_result.into_affine();
+
+                let scalar_bits: Vec<bool> = BitIteratorLE::new(&scalar).collect();
+                input =
+                    Vec::new_witness(ark_relations::ns!(cs, "bits"), || Ok(scalar_bits)).unwrap();
+                let result = gadget_a
+                    .scalar_mul_le(input.iter())
+                    .expect(&format!("Mode: {:?}", mode));
+                let result_val = result.value()?.into_affine();
+                assert_eq!(
+                    result_val, native_result,
+                    "gadget & native values are diff. after scalar mul {:?}",
+                    scalar,
+                );
+                assert!(cs.is_satisfied().unwrap());
+            }
 
             let result = zero.scalar_mul_le(input.iter())?;
             let result_val = result.value()?.into_affine();
