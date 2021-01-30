@@ -11,11 +11,11 @@ use rand::Rng;
 
 use crate::{g1, g2, Bn254, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
 
-use ark_curve_tests::{curves::*, groups::*};
+use ark_test_templates::{curves::*, groups::*};
 
 #[test]
 fn test_g1_projective_curve() {
-    curve_tests::<G1Projective>();
+    test_templates::<G1Projective>();
 
     sw_tests::<g1::Parameters>();
 }
@@ -37,7 +37,7 @@ fn test_g1_generator() {
 
 #[test]
 fn test_g2_projective_curve() {
-    curve_tests::<G2Projective>();
+    test_templates::<G2Projective>();
 
     sw_tests::<g2::Parameters>();
 }

@@ -12,14 +12,14 @@ use rand::Rng;
 
 use crate::{Affine, PallasParameters, Projective};
 
-use ark_curve_tests::{
-    curves::{curve_tests, sw_tests},
+use ark_test_templates::{
+    curves::{test_templates, sw_tests},
     groups::group_test,
 };
 
 #[test]
 fn test_projective_curve() {
-    curve_tests::<Projective>();
+    test_templates::<Projective>();
     sw_tests::<PallasParameters>();
 }
 

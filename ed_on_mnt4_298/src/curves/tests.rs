@@ -4,11 +4,11 @@ use rand::Rng;
 
 use crate::*;
 
-use ark_curve_tests::{curves::*, groups::*};
+use ark_test_templates::{curves::*, groups::*};
 
 #[test]
 fn test_projective_curve() {
-    curve_tests::<EdwardsProjective>();
+    test_templates::<EdwardsProjective>();
 
     edwards_tests::<EdwardsParameters>();
 }

@@ -19,7 +19,7 @@ ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = fal
 
 [dev-dependencies]
 ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-curve-tests = { path = "../curve-tests", default-features = false }
+ark-test-templates = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 rand = { version = "0.7", default-features = false }
 rand_xorshift = "0.2"
 

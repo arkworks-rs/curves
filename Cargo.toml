@@ -2,7 +2,6 @@
 
 members = [
     "curve-benches",
-    "curve-tests",
     "curve-constraint-tests",
 
     "bls12_377",
@@ -56,3 +55,8 @@ lto = "thin"
 incremental = true
 debug-assertions = true
 debug = true
+
+[patch."https://github.com/arkworks-rs/algebra/"]
+ark-ff = { path = "../algebra/ff" }
+ark-ec = { path = "../algebra/ec" }
+ark-serialize = { path = "../algebra/serialize" }

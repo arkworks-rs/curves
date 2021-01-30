@@ -7,7 +7,7 @@ use ark_ff::{
 };
 use ark_std::test_rng;
 
-use ark_curve_tests::fields::*;
+use ark_test_templates::fields::*;
 
 use core::str::FromStr;
 use rand::Rng;

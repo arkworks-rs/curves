@@ -17,7 +17,7 @@ use rand_xorshift::XorShiftRng;
 
 use crate::{Fq, Fq12, Fq2, Fq2Parameters, Fq6, Fq6Parameters, FqParameters, Fr};
 
-use ark_curve_tests::fields::*;
+use ark_test_templates::fields::*;
 
 pub(crate) const ITERATIONS: usize = 5;
 
