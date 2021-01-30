@@ -9,7 +9,7 @@ use ark_test_templates::{curves::*, groups::*};
 
 #[test]
 fn test_g1_projective_curve() {
-    test_templates::<G1Projective>();
+    curve_tests::<G1Projective>();
 
     sw_tests::<g1::Parameters>();
 }
@@ -31,7 +31,7 @@ fn test_g1_generator() {
 
 #[test]
 fn test_g2_projective_curve() {
-    test_templates::<G2Projective>();
+    curve_tests::<G2Projective>();
 
     sw_tests::<g2::Parameters>();
 }

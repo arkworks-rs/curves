@@ -10,7 +10,7 @@ use ark_test_templates::{curves::*, groups::*};
 
 #[test]
 fn test_projective_curve() {
-    test_templates::<EdwardsProjective>();
+    curve_tests::<EdwardsProjective>();
 
     edwards_tests::<EdwardsParameters>();
 }
