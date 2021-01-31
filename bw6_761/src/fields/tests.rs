@@ -5,7 +5,7 @@ use rand::Rng;
 
 use crate::*;
 
-use ark_test_templates::fields::*;
+use ark_algebra_test_templates::fields::*;
 
 #[test]
 fn test_fr() {

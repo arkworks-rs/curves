@@ -2,7 +2,7 @@ use ark_std::test_rng;
 use rand::Rng;
 
 use crate::{Fq, Fr};
-use ark_test_templates::fields::*;
+use ark_algebra_test_templates::fields::*;
 
 #[test]
 fn test_fr() {

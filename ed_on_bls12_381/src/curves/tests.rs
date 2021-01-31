@@ -6,7 +6,7 @@ use rand::Rng;
 
 use crate::*;
 
-use ark_test_templates::{curves::*, groups::*};
+use ark_algebra_test_templates::{curves::*, groups::*};
 
 #[test]
 fn test_projective_curve() {

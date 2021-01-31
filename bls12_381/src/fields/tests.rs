@@ -14,7 +14,7 @@ use rand::SeedableRng;
 use rand_xorshift::XorShiftRng;
 
 use crate::{Fq, Fq12, Fq12Parameters, Fq2, Fq2Parameters, Fq6, Fq6Parameters, FqParameters, Fr};
-use ark_test_templates::fields::*;
+use ark_algebra_test_templates::fields::*;
 
 pub(crate) const ITERATIONS: usize = 5;
 
