@@ -42,6 +42,24 @@ macro_rules! ec_bench {
             });
         }
 
+        fn double(b: &mut $crate::bencher::Bencher) {
+            const SAMPLES: usize = 1000;
+
+            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+
+            let v: Vec<$projective> = (0..SAMPLES)
+                .map(|_| <$projective>::rand(&mut rng))
+                .collect();
+
+            let mut count = 0;
+            b.iter(|| {
+                let mut tmp = v[count];
+                n_fold!(tmp, double_in_place);
+                count = (count + 1) % SAMPLES;
+                tmp
+            });
+        }
+
         fn add_assign_mixed(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
@@ -60,24 +78,6 @@ macro_rules! ec_bench {
             b.iter(|| {
                 let mut tmp = v[count].0;
                 n_fold!(tmp, v, add_assign_mixed, count);
-                count = (count + 1) % SAMPLES;
-                tmp
-            });
-        }
-
-        fn double(b: &mut $crate::bencher::Bencher) {
-            const SAMPLES: usize = 1000;
-
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
-
-            let v: Vec<($projective, $projective)> = (0..SAMPLES)
-                .map(|_| (<$projective>::rand(&mut rng), <$projective>::rand(&mut rng)))
-                .collect();
-
-            let mut count = 0;
-            b.iter(|| {
-                let mut tmp = v[count].0;
-                n_fold!(tmp, double_in_place);
                 count = (count + 1) % SAMPLES;
                 tmp
             });
@@ -200,6 +200,7 @@ macro_rules! ec_bench {
             mul_assign,
             add_assign,
             add_assign_mixed,
+            double,
             ser,
             deser,
             ser_unchecked,

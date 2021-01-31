@@ -3,7 +3,7 @@ use rand::Rng;
 
 use crate::*;
 
-use ark_curve_tests::fields::*;
+use ark_algebra_test_templates::fields::*;
 
 #[test]
 fn test_fr() {
