@@ -2,9 +2,6 @@
 extern crate ark_relations;
 
 pub mod fields {
-    use rand::{self, SeedableRng};
-    use rand_xorshift::XorShiftRng;
-
     use ark_ff::{BitIteratorLE, Field, UniformRand};
     use ark_r1cs_std::prelude::*;
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
@@ -217,7 +214,7 @@ pub mod fields {
         ];
         for &mode in &modes {
             let cs = ConstraintSystem::<ConstraintF>::new_ref();
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = test_rng();
             for i in 0..=maxpower {
                 let mut a = F::rand(&mut rng);
                 let mut a_gadget = AF::new_variable(ark_relations::ns!(cs, "a"), || Ok(a), mode)?;

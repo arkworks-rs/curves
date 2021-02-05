@@ -92,7 +92,7 @@ macro_rules! field_common {
         fn add_assign(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<_> = (0..SAMPLES)
                 .map(|_| ($f::rand(&mut rng), $f::rand(&mut rng)))
@@ -110,7 +110,7 @@ macro_rules! field_common {
         fn sub_assign(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<_> = (0..SAMPLES)
                 .map(|_| ($f::rand(&mut rng), $f::rand(&mut rng)))
@@ -128,7 +128,7 @@ macro_rules! field_common {
         fn double(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_type> = (0..SAMPLES).map(|_| $f::rand(&mut rng)).collect();
 
@@ -144,7 +144,7 @@ macro_rules! field_common {
         fn negate(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_type> = (0..SAMPLES).map(|_| $f::rand(&mut rng)).collect();
 
@@ -160,7 +160,7 @@ macro_rules! field_common {
         fn mul_assign(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<_> = (0..SAMPLES)
                 .map(|_| ($f::rand(&mut rng), $f::rand(&mut rng)))
@@ -178,7 +178,7 @@ macro_rules! field_common {
         fn square(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_type> = (0..SAMPLES).map(|_| $f::rand(&mut rng)).collect();
 
@@ -194,7 +194,7 @@ macro_rules! field_common {
         fn inverse(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_type> = (0..SAMPLES).map(|_| $f::rand(&mut rng)).collect();
 
@@ -210,7 +210,7 @@ macro_rules! field_common {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let mut num_bytes = 0;
             let v: Vec<_> = (0..SAMPLES)
@@ -235,7 +235,7 @@ macro_rules! field_common {
             use ark_serialize::CanonicalSerialize;
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_type> = (0..SAMPLES).map(|_| $f::rand(&mut rng)).collect();
             let mut bytes = Vec::with_capacity(1000);
@@ -253,7 +253,7 @@ macro_rules! field_common {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let mut num_bytes = 0;
             let v: Vec<_> = (0..SAMPLES)
@@ -278,7 +278,7 @@ macro_rules! field_common {
             use ark_serialize::CanonicalSerialize;
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_type> = (0..SAMPLES).map(|_| $f::rand(&mut rng)).collect();
             let mut bytes = Vec::with_capacity(1000);
@@ -300,7 +300,7 @@ macro_rules! sqrt {
         pub fn sqrt(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_type> = (0..SAMPLES)
                 .map(|_| {
@@ -325,7 +325,7 @@ macro_rules! prime_field {
         fn repr_add_nocarry(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<_> = (0..SAMPLES)
                 .map(|_| {
@@ -352,7 +352,7 @@ macro_rules! prime_field {
         fn repr_sub_noborrow(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<_> = (0..SAMPLES)
                 .map(|_| {
@@ -378,7 +378,7 @@ macro_rules! prime_field {
         fn repr_num_bits(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_repr_type> = (0..SAMPLES).map(|_| $f_repr::rand(&mut rng)).collect();
 
@@ -393,7 +393,7 @@ macro_rules! prime_field {
         fn repr_mul2(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_repr_type> = (0..SAMPLES).map(|_| $f_repr::rand(&mut rng)).collect();
 
@@ -409,7 +409,7 @@ macro_rules! prime_field {
         fn repr_div2(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_repr_type> = (0..SAMPLES).map(|_| $f_repr::rand(&mut rng)).collect();
 
@@ -425,7 +425,7 @@ macro_rules! prime_field {
         fn into_repr(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_type> = (0..SAMPLES).map(|_| $f::rand(&mut rng)).collect();
 
@@ -439,7 +439,7 @@ macro_rules! prime_field {
         fn from_repr(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_repr_type> = (0..SAMPLES)
                 .map(|_| $f::rand(&mut rng).into_repr())

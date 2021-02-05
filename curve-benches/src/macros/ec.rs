@@ -2,14 +2,14 @@
 macro_rules! ec_bench {
     ($projective:ty, $affine:ty) => {
         fn rand(b: &mut $crate::bencher::Bencher) {
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
             b.iter(|| <$projective>::rand(&mut rng));
         }
 
         fn mul_assign(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<($projective, Fr)> = (0..SAMPLES)
                 .map(|_| (<$projective>::rand(&mut rng), Fr::rand(&mut rng)))
@@ -27,7 +27,7 @@ macro_rules! ec_bench {
         fn add_assign(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<($projective, $projective)> = (0..SAMPLES)
                 .map(|_| (<$projective>::rand(&mut rng), <$projective>::rand(&mut rng)))
@@ -45,7 +45,7 @@ macro_rules! ec_bench {
         fn sub_assign(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<($projective, $projective)> = (0..SAMPLES)
                 .map(|_| (<$projective>::rand(&mut rng), <$projective>::rand(&mut rng)))
@@ -63,7 +63,7 @@ macro_rules! ec_bench {
         fn double(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<$projective> = (0..SAMPLES)
                 .map(|_| <$projective>::rand(&mut rng))
@@ -81,7 +81,7 @@ macro_rules! ec_bench {
         fn add_assign_mixed(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<($projective, $affine)> = (0..SAMPLES)
                 .map(|_| {
@@ -106,7 +106,7 @@ macro_rules! ec_bench {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let mut num_bytes = 0;
             let tmp = <$projective>::rand(&mut rng).into_affine();
@@ -132,7 +132,7 @@ macro_rules! ec_bench {
             use ark_serialize::CanonicalSerialize;
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let mut v: Vec<_> = (0..SAMPLES)
                 .map(|_| <$projective>::rand(&mut rng))
@@ -154,7 +154,7 @@ macro_rules! ec_bench {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let mut num_bytes = 0;
             let tmp = <$projective>::rand(&mut rng).into_affine();
@@ -179,7 +179,7 @@ macro_rules! ec_bench {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let mut v: Vec<_> = (0..SAMPLES)
                 .map(|_| <$projective>::rand(&mut rng))
@@ -200,7 +200,7 @@ macro_rules! ec_bench {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 131072;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let g = <$projective>::rand(&mut rng).into_affine();
             let v: Vec<_> = (0..SAMPLES).map(|_| g).collect();
