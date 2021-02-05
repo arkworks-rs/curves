@@ -8,7 +8,7 @@ use ark_std::test_rng;
 
 use ark_ec::{models::SWModelParameters, AffineCurve, PairingEngine, ProjectiveCurve};
 use core::ops::{AddAssign, MulAssign};
-use rand::Rng;
+use ark_std::rand::Rng;
 
 use crate::{g1, g2, Bls12_377, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
 

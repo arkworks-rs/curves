@@ -1,8 +1,8 @@
 use ark_ec::{AffineCurve, ProjectiveCurve};
 use ark_ff::{bytes::FromBytes, Zero};
 use ark_std::test_rng;
-use core::str::FromStr;
-use rand::Rng;
+use ark_std::str::FromStr;
+use ark_std::rand::Rng;
 
 use crate::*;
 

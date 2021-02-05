@@ -42,9 +42,6 @@ ark-ed-on-bls12-381 = { path = "../ed_on_bls12_381" }
 ark-bw6-761 = { path = "../bw6_761" }
 ark-cp6-782 = { path = "../cp6_782" }
 
-rand = "0.7"
-rand_xorshift = { version = "0.2" }
-
 [features]
 asm = [ "ark-ff/asm"]
 parallel = [ "ark-ff/parallel",  "ark-ec/parallel", ]

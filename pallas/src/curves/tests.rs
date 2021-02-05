@@ -7,8 +7,8 @@ use ark_serialize::CanonicalSerialize;
 use ark_std::test_rng;
 
 use ark_ec::{models::SWModelParameters, AffineCurve, PairingEngine, ProjectiveCurve};
-use core::ops::{AddAssign, MulAssign};
-use rand::Rng;
+use ark_std::ops::{AddAssign, MulAssign};
+use ark_std::rand::Rng;
 
 use crate::{Affine, PallasParameters, Projective};
 
