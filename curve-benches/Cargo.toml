@@ -27,6 +27,7 @@ build = "build.rs"
 bencher = { version = "0.1.5" }
 
 [dev-dependencies]
+ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = false }
 ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
