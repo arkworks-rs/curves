@@ -7,12 +7,12 @@ use ark_ff::{
     One, UniformRand, Zero,
 };
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
+use ark_std::rand::Rng;
 use ark_std::test_rng;
 use core::{
     cmp::Ordering,
     ops::{AddAssign, MulAssign, SubAssign},
 };
-use ark_std::rand::Rng;
 
 use crate::{Fq, Fq12, Fq2, Fq2Parameters, Fq6, Fq6Parameters, FqParameters, Fr};
 

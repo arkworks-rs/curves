@@ -5,9 +5,9 @@ use ark_ff::{
     One, Zero,
 };
 use ark_serialize::CanonicalSerialize;
+use ark_std::rand::Rng;
 use ark_std::test_rng;
 use core::ops::{AddAssign, MulAssign};
-use ark_std::rand::Rng;
 
 use crate::{g1, g2, Bn254, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
 
