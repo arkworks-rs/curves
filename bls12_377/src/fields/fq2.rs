@@ -25,12 +25,33 @@ impl Fp2Parameters for Fq2Parameters {
         field_new!(Fq, "-1"),
     ];
 
+    // Mul by -5
     #[inline(always)]
     fn mul_fp_by_nonresidue(fe: &Self::Fp) -> Self::Fp {
         let original = fe;
         let mut fe = -fe.double();
         fe.double_in_place();
         fe - original
+    }
+
+    // x + -5 * y, computed as x - 5*y
+    #[inline(always)]
+    fn add_and_mul_fp_by_nonresidue(x: &Self::Fp, y: &Self::Fp) -> Self::Fp {
+        // c becomes 5 * y
+        let mut c = y.double();
+        c.double_in_place();
+        c += y;
+        *x - c
+    }
+
+    // x - (-5 * y), computed as x + 5*y
+    #[inline(always)]
+    fn sub_and_mul_fp_by_nonresidue(x: &Self::Fp, y: &Self::Fp) -> Self::Fp {
+        // c becomes 5 * y
+        let mut c = y.double();
+        c.double_in_place();
+        c += y;
+        *x + c
     }
 }
 
