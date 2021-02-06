@@ -44,6 +44,15 @@ impl Fp2Parameters for Fq2Parameters {
         *x - c
     }
 
+    // x + y + (-5 * y), computed as x - 4*y
+    #[inline(always)]
+    fn add_and_mul_fp_by_nonresidue_plus_one(x: &Self::Fp, y: &Self::Fp) -> Self::Fp {
+        // c becomes 4 * y
+        let mut c = y.double();
+        c.double_in_place();
+        *x - c
+    }
+
     // x - (-5 * y), computed as x + 5*y
     #[inline(always)]
     fn sub_and_mul_fp_by_nonresidue(x: &Self::Fp, y: &Self::Fp) -> Self::Fp {
