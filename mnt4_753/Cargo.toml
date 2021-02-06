@@ -23,8 +23,6 @@ ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features
 ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 ark-algebra-test-templates = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 ark-curve-constraint-tests = { path = "../curve-constraint-tests", default-features = false }
-rand = { version = "0.7", default-features = false }
-rand_xorshift = "0.2"
 
 [features]
 default = [ "curve" ]

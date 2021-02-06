@@ -19,8 +19,6 @@ ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = fa
 ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
 ark-r1cs-std = {  git = "https://github.com/arkworks-rs/r1cs-std", default-features = false }
 ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-rand = { version = "0.7", default-features = false}
-rand_xorshift = { version = "0.2", default-features = false}
 
 [features]
 default = []

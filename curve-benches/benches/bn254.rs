@@ -1,7 +1,5 @@
 use ark_curve_benches::*;
-use rand::SeedableRng;
-use rand_xorshift::XorShiftRng;
-use std::ops::{AddAssign, MulAssign, SubAssign};
+use ark_std::ops::{AddAssign, MulAssign, SubAssign};
 
 use ark_bn254::{
     fq::Fq, fq2::Fq2, fr::Fr, Bn254, Fq12, G1Affine, G1Projective as G1, G2Affine,

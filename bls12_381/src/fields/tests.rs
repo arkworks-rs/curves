@@ -10,8 +10,6 @@ use core::{
     cmp::Ordering,
     ops::{AddAssign, MulAssign, SubAssign},
 };
-use rand::SeedableRng;
-use rand_xorshift::XorShiftRng;
 
 use crate::{Fq, Fq12, Fq12Parameters, Fq2, Fq2Parameters, Fq6, Fq6Parameters, FqParameters, Fr};
 use ark_algebra_test_templates::fields::*;
@@ -20,7 +18,7 @@ pub(crate) const ITERATIONS: usize = 5;
 
 #[test]
 fn test_fr() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
     for _ in 0..ITERATIONS {
         let a: Fr = UniformRand::rand(&mut rng);
         let b: Fr = UniformRand::rand(&mut rng);
@@ -32,7 +30,7 @@ fn test_fr() {
 
 #[test]
 fn test_fq() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
     for _ in 0..ITERATIONS {
         let a: Fq = UniformRand::rand(&mut rng);
         let b: Fq = UniformRand::rand(&mut rng);
@@ -44,7 +42,7 @@ fn test_fq() {
 
 #[test]
 fn test_fq2() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
     for _ in 0..ITERATIONS {
         let a: Fq2 = UniformRand::rand(&mut rng);
         let b: Fq2 = UniformRand::rand(&mut rng);
@@ -56,7 +54,7 @@ fn test_fq2() {
 
 #[test]
 fn test_fq6() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
     for _ in 0..ITERATIONS {
         let g: Fq6 = UniformRand::rand(&mut rng);
         let h: Fq6 = UniformRand::rand(&mut rng);
@@ -67,7 +65,7 @@ fn test_fq6() {
 
 #[test]
 fn test_fq12() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
     for _ in 0..ITERATIONS {
         let g: Fq12 = UniformRand::rand(&mut rng);
         let h: Fq12 = UniformRand::rand(&mut rng);
@@ -1007,7 +1005,7 @@ fn test_fq_repr_num_bits() {
 
 #[test]
 fn test_fq_repr_sub_noborrow() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     let mut t = BigInteger384([
         0x827a4a08041ebd9,
@@ -1094,7 +1092,7 @@ fn test_fq_repr_sub_noborrow() {
 
 #[test]
 fn test_fq_repr_add_nocarry() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     let mut t = BigInteger384([
         0x827a4a08041ebd9,
@@ -1282,7 +1280,7 @@ fn test_fq_add_assign() {
 
     // Test associativity
 
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     for _ in 0..1000 {
         // Generate a, b, c and ensure (a + b) + c == a + (b + c).
@@ -1390,7 +1388,7 @@ fn test_fq_sub_assign() {
         );
     }
 
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     for _ in 0..1000 {
         // Ensure that (a - b) + (b - a) = 0.
@@ -1437,7 +1435,7 @@ fn test_fq_mul_assign() {
         ]))
     );
 
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     for _ in 0..1000000 {
         // Ensure that (a * b) * c = a * (b * c)
@@ -1503,7 +1501,7 @@ fn test_fq_squaring() {
         ]))
     );
 
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     for _ in 0..1000000 {
         // Ensure that (a * a) = a^2
@@ -1523,7 +1521,7 @@ fn test_fq_squaring() {
 fn test_fq_inverse() {
     assert!(Fq::zero().inverse().is_none());
 
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     let one = Fq::one();
 
@@ -1538,7 +1536,7 @@ fn test_fq_inverse() {
 
 #[test]
 fn test_fq_double_in_place() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     for _ in 0..1000 {
         // Ensure doubling a is equivalent to adding a to itself.
@@ -1558,7 +1556,7 @@ fn test_fq_negate() {
         assert!(a.is_zero());
     }
 
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     for _ in 0..1000 {
         // Ensure (a - (-a)) = 0.
@@ -1572,7 +1570,7 @@ fn test_fq_negate() {
 
 #[test]
 fn test_fq_pow() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     for i in 0..1000 {
         // Exponentiate by various small numbers and ensure it consists with repeated
@@ -1596,7 +1594,7 @@ fn test_fq_pow() {
 
 #[test]
 fn test_fq_sqrt() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     assert_eq!(Fq::zero().sqrt().unwrap(), Fq::zero());
 
@@ -2237,7 +2235,7 @@ fn test_fq2_legendre() {
 
 #[test]
 fn test_fq2_mul_nonresidue() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     let nqr = Fq2::new(Fq::one(), Fq::one());
 
@@ -2253,7 +2251,7 @@ fn test_fq2_mul_nonresidue() {
 
 #[test]
 fn test_fq6_mul_nonresidue() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     let nqr = Fq6::new(Fq2::zero(), Fq2::one(), Fq2::zero());
 
@@ -2269,7 +2267,7 @@ fn test_fq6_mul_nonresidue() {
 
 #[test]
 fn test_fq6_mul_by_1() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     for _ in 0..1000 {
         let c1 = Fq2::rand(&mut rng);
@@ -2285,7 +2283,7 @@ fn test_fq6_mul_by_1() {
 
 #[test]
 fn test_fq6_mul_by_01() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     for _ in 0..1000 {
         let c0 = Fq2::rand(&mut rng);
@@ -2302,7 +2300,7 @@ fn test_fq6_mul_by_01() {
 
 #[test]
 fn test_fq12_mul_by_014() {
-    let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+    let mut rng = ark_std::test_rng();
 
     for _ in 0..1000 {
         let c0 = Fq2::rand(&mut rng);
