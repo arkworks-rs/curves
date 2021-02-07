@@ -28,8 +28,9 @@ bencher = { version = "0.1.5" }
 lazy_static = "1.4.0"
 
 [dev-dependencies]
-ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = false }
 ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 
 ark-mnt4-298 = { path = "../mnt4_298" }
@@ -42,9 +43,6 @@ ark-bls12-381 = { path = "../bls12_381" }
 ark-ed-on-bls12-381 = { path = "../ed_on_bls12_381" }
 ark-bw6-761 = { path = "../bw6_761" }
 ark-cp6-782 = { path = "../cp6_782" }
-
-rand = "0.7"
-rand_xorshift = { version = "0.2" }
 
 [features]
 asm = [ "ark-ff/asm"]

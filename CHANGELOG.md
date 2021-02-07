@@ -4,7 +4,7 @@
 - Requires all crates from `arkworks-rs/algebra` to have version `v0.2.0` or greater.
 
 ### Features
-- #3 Add constraints for 
+- #3 Add constraints for
         `ark-bls12-377`,
         `ark-ed-on-bls12-377`,
         `ark-ed-on-bls12-381`,
@@ -16,9 +16,12 @@
         `ark-mnt4-298`,
         `ark-mnt6-298`,
         `ark-mnt4-753`,
-        `ark-mnt6-753`
-- #7 Add benchmarks for Edwards curves
+        `ark-mnt6-753`.
+- #7 Add benchmarks for Edwards curves.
 - #19 Change field constants to be provided as normal strings, instead of in montgomery form.
+
+### Improvements
+- #42 Remove the dependency of `rand_xorshift`.
 
 ### Bug fixes
 - #28 fix broken documentation links

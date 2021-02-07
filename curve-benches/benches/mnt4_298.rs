@@ -1,7 +1,5 @@
 use ark_curve_benches::*;
-use rand::SeedableRng;
-use rand_xorshift::XorShiftRng;
-use std::ops::{AddAssign, MulAssign, SubAssign};
+use ark_std::ops::{AddAssign, MulAssign, SubAssign};
 
 use ark_ec::{PairingEngine, ProjectiveCurve};
 use ark_ff::{

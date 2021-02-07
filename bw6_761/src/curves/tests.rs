@@ -1,7 +1,7 @@
 use ark_ec::{AffineCurve, PairingEngine, ProjectiveCurve};
 use ark_ff::{Field, One, PrimeField};
+use ark_std::rand::Rng;
 use ark_std::test_rng;
-use rand::Rng;
 
 use crate::*;
 
