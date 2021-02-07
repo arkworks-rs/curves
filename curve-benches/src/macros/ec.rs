@@ -63,6 +63,17 @@ macro_rules! ec_bench {
             });
         }
 
+        fn sub_assign(b: &mut $crate::bencher::Bencher) {
+            let v = PROJECTIVE_PAIRS.clone();
+            let mut count = 0;
+            b.iter(|| {
+                let mut tmp = v[count].0;
+                n_fold!(tmp, v, sub_assign, count);
+                count = (count + 1) % SAMPLES;
+                tmp
+            });
+        }
+
         fn double(b: &mut $crate::bencher::Bencher) {
             let v = PROJECTIVE_PAIRS.clone();
             let mut count = 0;
@@ -76,52 +87,6 @@ macro_rules! ec_bench {
 
         fn add_assign_mixed(b: &mut $crate::bencher::Bencher) {
             let v = PROJ_AFFINE.clone();
-            let mut count = 0;
-            b.iter(|| {
-                let mut tmp = v[count].0;
-                n_fold!(tmp, v, sub_assign, count);
-                count = (count + 1) % SAMPLES;
-                tmp
-            });
-        }
-
-        fn add_assign_mixed(b: &mut $crate::bencher::Bencher) {
-            const SAMPLES: usize = 1000;
-
-            let mut rng = ark_std::test_rng();
-
-            let v: Vec<($projective, $affine)> = (0..SAMPLES)
-                .map(|_| {
-                    (
-                        <$projective>::rand(&mut rng),
-                        <$projective>::rand(&mut rng).into(),
-                    )
-                })
-                .collect();
-
-            let mut count = 0;
-            b.iter(|| {
-                let mut tmp = v[count].0;
-                n_fold!(tmp, v, add_assign_mixed, count);
-                count = (count + 1) % SAMPLES;
-                tmp
-            });
-        }
-
-        fn add_assign_mixed(b: &mut $crate::bencher::Bencher) {
-            const SAMPLES: usize = 1000;
-
-            let mut rng = ark_std::test_rng();
-
-            let v: Vec<($projective, $affine)> = (0..SAMPLES)
-                .map(|_| {
-                    (
-                        <$projective>::rand(&mut rng),
-                        <$projective>::rand(&mut rng).into(),
-                    )
-                })
-                .collect();
-
             let mut count = 0;
             b.iter(|| {
                 let mut tmp = v[count].0;

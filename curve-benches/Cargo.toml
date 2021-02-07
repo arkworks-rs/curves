@@ -71,33 +71,33 @@ harness = false
 name = "bw6_761"
 path = "benches/bw6_761.rs"
 harness = false
-#
-# [[bench]]
-# name = "cp6_782"
-# path = "benches/cp6_782.rs"
-# harness = false
-#
-# [[bench]]
-# name = "ed_on_bls12_381"
-# path = "benches/ed_on_bls12_381.rs"
-# harness = false
-#
+
+[[bench]]
+name = "cp6_782"
+path = "benches/cp6_782.rs"
+harness = false
+
+[[bench]]
+name = "ed_on_bls12_381"
+path = "benches/ed_on_bls12_381.rs"
+harness = false
+
 [[bench]]
 name = "mnt4_298"
 path = "benches/mnt4_298.rs"
 harness = false
-#
-# [[bench]]
-# name = "mnt6_298"
-# path = "benches/mnt6_298.rs"
-# harness = false
-#
+
+[[bench]]
+name = "mnt6_298"
+path = "benches/mnt6_298.rs"
+harness = false
+
 [[bench]]
 name = "mnt4_753"
 path = "benches/mnt4_753.rs"
 harness = false
-#
-# [[bench]]
-# name = "mnt6_753"
-# path = "benches/mnt6_753.rs"
-# harness = false
+
+[[bench]]
+name = "mnt6_753"
+path = "benches/mnt6_753.rs"
+harness = false
