@@ -24,7 +24,7 @@
 - #42 Remove the dependency of `rand_xorshift`.
 
 ### Bug fixes
-- #28 fix broken documentation links
+- #28 Fix broken documentation links.
 - #38 Compile with `panic='abort'` in release mode, for safety of the library across FFI boundaries.
 
 ## v0.1.0

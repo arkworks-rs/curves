@@ -4,7 +4,7 @@ macro_rules! pairing_bench {
         fn miller_loop(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let g1s = (0..SAMPLES).map(|_| G1::rand(&mut rng)).collect::<Vec<_>>();
             let g2s = (0..SAMPLES).map(|_| G2::rand(&mut rng)).collect::<Vec<_>>();
@@ -30,7 +30,7 @@ macro_rules! pairing_bench {
         fn final_exponentiation(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<_> = (0..SAMPLES)
                 .map(|_| {
@@ -53,7 +53,7 @@ macro_rules! pairing_bench {
         fn full_pairing(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
-            let mut rng = XorShiftRng::seed_from_u64(1231275789u64);
+            let mut rng = ark_std::test_rng();
 
             let v: Vec<(G1, G2)> = (0..SAMPLES)
                 .map(|_| (G1::rand(&mut rng), G2::rand(&mut rng)))
