@@ -12,7 +12,7 @@ use rand::Rng;
 
 use crate::{g1, g2, Bls12_377, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
 
-use ark_curve_tests::{
+use ark_algebra_test_templates::{
     curves::{curve_tests, sw_tests},
     groups::group_test,
 };

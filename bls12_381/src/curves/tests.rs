@@ -10,7 +10,7 @@ use core::ops::{AddAssign, MulAssign};
 use rand::Rng;
 
 use crate::{g1, g2, Bls12_381, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
-use ark_curve_tests::{curves::*, groups::*};
+use ark_algebra_test_templates::{curves::*, groups::*};
 
 #[test]
 fn test_g1_projective_curve() {

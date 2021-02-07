@@ -21,7 +21,7 @@ ark-r1cs-std = {  git = "https://github.com/arkworks-rs/r1cs-std", default-featu
 [dev-dependencies]
 ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
 ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-curve-tests = { path = "../curve-tests", default-features = false }
+ark-algebra-test-templates = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
 ark-curve-constraint-tests = { path = "../curve-constraint-tests", default-features = false }
 rand = { version = "0.7", default-features = false }
 rand_xorshift = "0.2"

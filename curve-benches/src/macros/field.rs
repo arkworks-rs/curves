@@ -366,11 +366,11 @@ macro_rules! prime_field {
                 })
                 .collect();
 
-            let mut count = 0;
             b.iter(|| {
-                let mut tmp = v[count].0;
-                n_fold!(tmp, v, sub_noborrow, count);
-                count = (count + 1) % SAMPLES;
+                let mut tmp = v.clone();
+                for (mut v1, mut v2) in tmp.iter_mut() {
+                    v1.sub_noborrow(&v2);
+                }
                 tmp;
             });
         }
@@ -399,9 +399,10 @@ macro_rules! prime_field {
 
             let mut count = 0;
             b.iter(|| {
-                let mut tmp = v[count];
-                n_fold!(tmp, mul2);
-                count = (count + 1) % SAMPLES;
+                let mut tmp = v.clone();
+                for mut v in tmp.iter_mut() {
+                    v.mul2();
+                }
                 tmp;
             });
         }

@@ -1,11 +1,26 @@
 #[macro_export]
 macro_rules! n_fold {
     ($tmp:ident, $v:ident, $func:ident, $count:ident) => {
-        $tmp.$func(&$v[$count].1);
+        const ITERS: usize = 1000;
+        let other = &$v[$count].1;
+
+        #[cfg(not(feature = "n_fold"))]
+        $tmp.$func(other);
+        #[cfg(feature = "n_fold")]
+        for _ in 0..ITERS {
+            $tmp.$func(other);
+        }
     };
 
     ($tmp:ident, $func:ident) => {
+        const ITERS: usize = 1000;
+
+        #[cfg(not(feature = "n_fold"))]
         $tmp.$func();
+        #[cfg(feature = "n_fold")]
+        for _ in 0..ITERS {
+            $tmp.$func();
+        }
     };
 }
 

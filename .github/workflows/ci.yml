@@ -112,10 +112,10 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
             command: check
-            args: --examples --workspace --exclude ark-curve-tests --exclude ark-curve-constraint-tests --exclude ark-curve-benches --target aarch64-unknown-none
+            args: --examples --workspace --exclude ark-curve-constraint-tests --exclude ark-curve-benches --target aarch64-unknown-none
 
       - name: build
         uses: actions-rs/cargo@v1
         with:
             command: build
-            args: --workspace --exclude ark-curve-tests --exclude ark-curve-constraint-tests --exclude ark-curve-benches --target aarch64-unknown-none
+            args: --workspace --exclude ark-curve-constraint-tests --exclude ark-curve-benches --target aarch64-unknown-none

@@ -16,6 +16,8 @@ impl Fp2Parameters for Fq2Parameters {
     #[rustfmt::skip]
     const NONRESIDUE: Fq = field_new!(Fq, "17");
 
+    // const NONRESIDUE_I64: Option<i64> = Some(17);
+
     /// The quadratic non-residue in F<sub>p</sub><sup>2</sup> that is used
     /// in the computation of square roots is (8, 1), the same as that in
     /// [`libff`](https://github.com/scipr-lab/libff/blob/c927821ebe02e0a24b5e0f9170cec5e211a35f08/libff/algebra/curves/mnt/mnt4/mnt4_init.cpp#L103)

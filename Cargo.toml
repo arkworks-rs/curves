@@ -2,7 +2,6 @@
 
 members = [
     "curve-benches",
-    "curve-tests",
     "curve-constraint-tests",
 
     "bls12_377",
@@ -36,6 +35,7 @@ members = [
 opt-level = 3
 lto = "thin"
 incremental = true
+panic = 'abort'
 
 [profile.bench]
 opt-level = 3
@@ -47,6 +47,7 @@ debug-assertions = false
 
 [profile.dev]
 opt-level = 0
+panic = 'abort'
 
 [profile.test]
 opt-level = 3
@@ -54,3 +55,8 @@ lto = "thin"
 incremental = true
 debug-assertions = true
 debug = true
+
+# [patch."https://github.com/arkworks-rs/algebra"]
+# ark-ff = { path = "../algebra/ff", default-features = false }
+# ark-ec = { path = "../algebra/ec", default-features = false }
+# ark-serialize = { path = "../algebra/serialize", default-features = false }

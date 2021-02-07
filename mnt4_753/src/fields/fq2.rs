@@ -15,6 +15,8 @@ impl Fp2Parameters for Fq2Parameters {
     #[rustfmt::skip]
     const NONRESIDUE: Fq = field_new!(Fq, "13");
 
+    // const NONRESIDUE_I64: Option<i64> = Some(13);
+
     // qnr = (8, 1)
     const QUADRATIC_NONRESIDUE: (Self::Fp, Self::Fp) = (field_new!(Fq, "8"), FQ_ONE);
 
