@@ -26,6 +26,7 @@
 ### Bug fixes
 - #28 Fix broken documentation links.
 - #38 Compile with `panic='abort'` in release mode, for safety of the library across FFI boundaries.
+- #45 Fix `ark-ed-on-mnt4-753`.
 
 ## v0.1.0
 

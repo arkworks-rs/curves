@@ -1,5 +1,5 @@
-use ark_std::test_rng;
 use ark_std::rand::Rng;
+use ark_std::test_rng;
 
 use crate::{Fq, Fr};
 use ark_algebra_test_templates::fields::*;

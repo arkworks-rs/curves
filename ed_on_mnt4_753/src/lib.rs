@@ -21,10 +21,10 @@
 //!    * a = -1
 //!    * d = 317690 mod q
 
-mod curves;
-mod fields;
 #[cfg(feature = "r1cs")]
 pub mod constraints;
+mod curves;
+mod fields;
 
 pub use curves::*;
 pub use fields::*;

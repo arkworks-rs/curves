@@ -1,5 +1,5 @@
-use ark_r1cs_std::groups::curves::twisted_edwards::AffineVar;
 use crate::*;
+use ark_r1cs_std::groups::curves::twisted_edwards::AffineVar;
 
 use crate::constraints::fields::FqVar;
 
