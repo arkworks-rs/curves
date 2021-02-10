@@ -4,7 +4,7 @@
 - Requires all crates from `arkworks-rs/algebra` to have version `v0.2.0` or greater.
 
 ### Features
-- #3 Add constraints for 
+- #3 Add constraints for
         `ark-bls12-377`,
         `ark-ed-on-bls12-377`,
         `ark-ed-on-bls12-381`,

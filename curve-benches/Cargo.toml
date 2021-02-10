@@ -25,6 +25,7 @@ build = "build.rs"
 
 [dependencies]
 bencher = { version = "0.1.5" }
+lazy_static = "1.4.0"
 
 [dev-dependencies]
 ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = false }
