@@ -16,7 +16,7 @@ impl Fp3Parameters for Fq3Parameters {
     type Fp = Fq;
 
     /// NONRESIDUE = -4
-    // Fq3 = Fq[u]/u^3+4
+    // Fq3 = Fq\[u\]/u^3+4
     #[rustfmt::skip]
     const NONRESIDUE: Fq = field_new!(Fq, "-4");
 

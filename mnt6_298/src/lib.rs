@@ -9,7 +9,7 @@
 #![forbid(unsafe_code)]
 
 //! This library implements the MNT6_298 curve generated in
-//! [[BCTV14]](https://eprint.iacr.org/2014/595).  The name denotes that it is a
+//! [\[BCTV14\]](https://eprint.iacr.org/2014/595).  The name denotes that it is a
 //! Miyaji--Nakabayashi--Takano curve of embedding degree 6, defined over a 298-bit (prime) field.
 //! The main feature of this curve is that its scalar field and base field respectively equal the
 //! base field and scalar field of MNT4_298.
