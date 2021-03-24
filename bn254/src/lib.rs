@@ -8,7 +8,7 @@
 )]
 #![forbid(unsafe_code)]
 
-//! This library implements the BN254 curve that was sampled as part of the [[BCTV14]][https://eprint.iacr.org/2013/879.pdf] paper .
+//! This library implements the BN254 curve that was sampled as part of the [\[BCTV14\]][https://eprint.iacr.org/2013/879.pdf] paper .
 //! The name denotes that it is a Barreto--Naehrig curve of embedding degree 12,
 //! defined over a 254-bit (prime) field. The scalar field is highly 2-adic.
 //!
@@ -26,7 +26,7 @@
 //! * valuation(r - 1, 2) = 28
 //! * G1 curve equation: y^2 = x^3 + 3
 //! * G2 curve equation: y^2 = x^3 + B, where
-//!    * B = 3/(u+9) where Fq2[u]=Fq/u+1
+//!    * B = 3/(u+9) where Fq2\[u\]=Fq/u+1
 //!        = Fq2(19485874751759354771024239261021720505790618469301721065564631296452457478373, 266929791119991161246907387137283842545076965332900288569378510910307636690)
 
 #[cfg(feature = "curve")]
