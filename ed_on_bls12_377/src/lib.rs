@@ -11,7 +11,7 @@
 //! This library implements a twisted Edwards curve whose base field is the scalar field of the
 //! curve BLS12-377.  This allows defining cryptographic primitives that use elliptic curves over
 //! the scalar field of the latter curve. This curve was generated as part of the paper
-//! [[BCGMMW20, “Zexe”]](https://eprint.iacr.org/2018/962).
+//! [\[BCGMMW20, “Zexe”\]](https://eprint.iacr.org/2018/962).
 //!
 //! Curve information:
 //! * Base field: q = 8444461749428370424248824938781546531375899335154063827935233455917409239041

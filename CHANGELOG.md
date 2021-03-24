@@ -18,13 +18,13 @@
         `ark-mnt4-753`,
         `ark-mnt6-753`.
 - [\#7](https://github.com/arkworks-rs/curves/pull/7) Add benchmarks for Edwards curves.
-- [\#19](https://github.com/arkworks-rs/curves/pull/19) Change field constants to be provided as normal strings, instead of in montgomery form.
+- [\#19](https://github.com/arkworks-rs/curves/pull/19) Change field constants to be provided as normal strings, instead of in Montgomery form.
 
 ### Improvements
 - [\#42](https://github.com/arkworks-rs/curves/pull/42) Remove the dependency of `rand_xorshift`.
 
 ### Bug fixes
-- [\#28](https://github.com/arkworks-rs/curves/pull/28) Fix broken documentation links.
+- [\#28](https://github.com/arkworks-rs/curves/pull/28), [\#49](https://github.com/arkworks-rs/curves/pull/49) Fix broken documentation links.
 - [\#38](https://github.com/arkworks-rs/curves/pull/38) Compile with `panic='abort'` in release mode, for safety of the library across FFI boundaries.
 - [\#45](https://github.com/arkworks-rs/curves/pull/45) Fix `ark-ed-on-mnt4-753`.
 
