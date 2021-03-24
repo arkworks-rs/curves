@@ -1,4 +1,4 @@
-## Pending
+## v0.2.0
 
 ### Breaking changes
 - Requires all crates from `arkworks-rs/algebra` to have version `v0.2.0` or greater.
