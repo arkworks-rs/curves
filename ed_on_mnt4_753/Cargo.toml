@@ -1,6 +1,6 @@
 [package]
 name = "ark-ed-on-mnt4-753"
-version = "0.2.1-alpha.0"
+version = "0.2.0"
 authors = [ "arkworks contributors" ]
 description = "A Twisted Edwards curve defined over the scalar field of the MNT4-753 curve"
 homepage = "https://arkworks.rs"
