@@ -1,6 +1,6 @@
 [package]
 name = "ark-vesta"
-version = "0.2.0"
+version = "0.2.1-alpha.0"
 authors = [ "Ying Tong Lai", "Daira Hopwood", "O(1) Labs", "arkworks contributors" ]
 description = "The Vesta prime-order elliptic curve"
 homepage = "https://arkworks.rs"
