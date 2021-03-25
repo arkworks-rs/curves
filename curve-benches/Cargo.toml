@@ -1,6 +1,6 @@
 [package]
 name = "ark-curve-benches"
-version = "0.1.1-alpha.0"
+version = "0.2.0"
 authors = [
     "Sean Bowe",
     "Alessandro Chiesa",
@@ -27,10 +27,10 @@ build = "build.rs"
 bencher = { version = "0.1.5" }
 
 [dev-dependencies]
-ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = false }
-ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-std = { version = "^0.2.0", default-features = false }
+ark-ec = { version = "^0.2.0", default-features = false }
+ark-ff = { version = "^0.2.0", default-features = false }
+ark-serialize = { version = "^0.2.0", default-features = false }
 
 ark-mnt4-298 = { path = "../mnt4_298" }
 ark-mnt6-298 = { path = "../mnt6_298" }

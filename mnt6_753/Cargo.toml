@@ -13,16 +13,16 @@ license = "MIT/Apache-2.0"
 edition = "2018"
 
 [dependencies]
-ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = false }
-ark-r1cs-std = {  git = "https://github.com/arkworks-rs/r1cs-std", default-features = false, optional = true }
-ark-mnt4-753 = { path = "../mnt4_753", default-features = false, features = [ "scalar_field", "base_field" ] }
+ark-ff = { version = "^0.2.0", default-features = false }
+ark-ec = { version = "^0.2.0", default-features = false }
+ark-std = { version = "^0.2.0", default-features = false }
+ark-r1cs-std = {  version = "^0.2.0", default-features = false, optional = true }
+ark-mnt4-753 = { version = "^0.2.0", path = "../mnt4_753", default-features = false, features = [ "scalar_field", "base_field" ] }
 
 [dev-dependencies]
-ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
-ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-algebra-test-templates = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-relations = { version = "^0.2.0", default-features = false }
+ark-serialize = { version = "^0.2.0", default-features = false }
+ark-algebra-test-templates = { version = "^0.2.0", default-features = false }
 ark-curve-constraint-tests = { path = "../curve-constraint-tests", default-features = false }
 
 [features]
