@@ -100,7 +100,7 @@ jobs:
         # rust:
         #   - stable
         #   - nightly
-    if: matrix.dir != 'scripts' || matrix.dir != 'curve-constraint-tests' || matrix.dir != 'curve-benches'
+    if: ${{matrix.dir}} != 'scripts' || ${{matrix.dir}} != 'curve-constraint-tests' || ${{matrix.dir}} != 'curve-benches'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
