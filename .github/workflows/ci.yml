@@ -29,7 +29,7 @@ jobs:
         command: fmt
         args: --all -- --check
 
-  test:
+  check:
     name: Check
     runs-on: ubuntu-latest
     env:
@@ -83,39 +83,39 @@ jobs:
       - id: set-dirs # Give it an id to handle to get step outputs in the outputs key above
         run: echo "::set-output name=dir::$(ls -d */ | jq -R -s -c 'split("\n")[:-1]')"
         # Define step output named dir base on ls command transformed to JSON thanks to jq
-  loop:
+  test:
     name: Test
     runs-on: ubuntu-latest
     needs: [directories] # Depends on previous job
     strategy:
       matrix:
         dir: ${{fromJson(needs.directories.outputs.dir)}} # List matrix strategy from directories dynamically
-        rust:
-          - stable
-          - nightly
+        # rust:
+        #   - stable
+        #   - nightly
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install Rust (${{ matrix.rust }})
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: ${{ matrix.rust }}
-          override: true
 
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - run: cd ${{matrix.dir}}
-      - name: Test
-        uses: actions-rs/cargo@v1
-        with:
-            command: test
-            args: "--all-features"
+      # - name: Install Rust (${{ matrix.rust }})
+      #   uses: actions-rs/toolchain@v1
+      #   with:
+      #     profile: minimal
+      #     toolchain: ${{ matrix.rust }}
+      #     override: true
+
+      # - uses: actions/cache@v2
+      #   with:
+      #     path: |
+      #       ~/.cargo/registry
+      #       ~/.cargo/git
+      #       target
+      #     key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - run: |
+          ls
+          cd ${{matrix.dir}}
+          pwd
+          cargo test --all-features
 
   docs:
     name: Check Documentation
