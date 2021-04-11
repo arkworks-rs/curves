@@ -104,10 +104,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: |
-          ls
+      - name: Run tests
+        run: |
           cd ${{matrix.dir}}
-          pwd
           cargo test --all-features
 
   docs:
