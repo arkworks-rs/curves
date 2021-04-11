@@ -71,6 +71,13 @@ jobs:
             args: --examples --all-features --all
         if: matrix.rust == 'stable'
 
+      - name: Check benchmarks on nightly
+        uses: actions-rs/cargo@v1
+        with:
+            command: check
+            args: --all-features --examples --workspace --benches
+        if: matrix.rust == 'nightly'
+
       
 
   directories: # Job that list subdirectories
@@ -93,24 +100,10 @@ jobs:
         # rust:
         #   - stable
         #   - nightly
+    if: matrix.dir != 'scripts' || matrix.dir != 'curve-constraint-tests' || matrix.dir != 'curve-benches'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      # - name: Install Rust (${{ matrix.rust }})
-      #   uses: actions-rs/toolchain@v1
-      #   with:
-      #     profile: minimal
-      #     toolchain: ${{ matrix.rust }}
-      #     override: true
-
-      # - uses: actions/cache@v2
-      #   with:
-      #     path: |
-      #       ~/.cargo/registry
-      #       ~/.cargo/git
-      #       target
-      #     key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - run: |
           ls
           cd ${{matrix.dir}}
