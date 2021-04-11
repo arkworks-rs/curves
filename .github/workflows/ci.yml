@@ -101,7 +101,9 @@ jobs:
         #   - stable
         #   - nightly
         exclude:
-          - dir: [ "scripts/", "curve-constraint-tests/", "curve-benches/" ]
+          - dir: scripts/
+          - dir: curve-constraint-tests/
+          - dir: curve-benches/
     steps:
       - name: Checkout
         uses: actions/checkout@v2
