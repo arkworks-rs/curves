@@ -19,6 +19,7 @@
         `ark-mnt6-753`.
 - [\#7](https://github.com/arkworks-rs/curves/pull/7) Add benchmarks for Edwards curves.
 - [\#19](https://github.com/arkworks-rs/curves/pull/19) Change field constants to be provided as normal strings, instead of in Montgomery form.
+- [\#53](https://github.com/arkworks-rs/curves/pull/53) Add benchmarks for Pallas and Vesta curves.
 
 ### Improvements
 - [\#42](https://github.com/arkworks-rs/curves/pull/42) Remove the dependency of `rand_xorshift`.

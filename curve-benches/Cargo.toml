@@ -7,7 +7,8 @@ authors = [
     "Matthew Green",
     "Ian Miers",
     "Pratyush Mishra",
-    "Howard Wu"
+    "Howard Wu",
+    "Daira Hopwood"
 ]
 description = "A benchmark library for finite fields and elliptic curves"
 homepage = "https://arkworks.rs"
@@ -42,6 +43,8 @@ ark-bls12-381 = { path = "../bls12_381" }
 ark-ed-on-bls12-381 = { path = "../ed_on_bls12_381" }
 ark-bw6-761 = { path = "../bw6_761" }
 ark-cp6-782 = { path = "../cp6_782" }
+ark-pallas = { path = "../pallas" }
+ark-vesta = { path = "../vesta" }
 
 [features]
 asm = [ "ark-ff/asm"]
@@ -99,4 +102,14 @@ harness = false
 [[bench]]
 name = "mnt6_753"
 path = "benches/mnt6_753.rs"
+harness = false
+
+[[bench]]
+name = "pallas"
+path = "benches/pallas.rs"
+harness = false
+
+[[bench]]
+name = "vesta"
+path = "benches/vesta.rs"
 harness = false
