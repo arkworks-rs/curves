@@ -20,6 +20,7 @@
 - [\#7](https://github.com/arkworks-rs/curves/pull/7) Add benchmarks for Edwards curves.
 - [\#19](https://github.com/arkworks-rs/curves/pull/19) Change field constants to be provided as normal strings, instead of in Montgomery form.
 - [\#53](https://github.com/arkworks-rs/curves/pull/53) Add benchmarks for Pallas and Vesta curves.
+- [\#54](https://github.com/arkworks-rs/curves/pull/54) Add support for the Pluto-Eris half-pairing cycle.
 
 ### Improvements
 - [\#42](https://github.com/arkworks-rs/curves/pull/42) Remove the dependency of `rand_xorshift`.

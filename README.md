@@ -31,5 +31,9 @@ This repository contains implementations of some popular elliptic curves. The cu
 * [`ark-ed-on-mnt4-753`](ed_on_mnt4_753): Implements a Twisted Edwards curve atop the scalar field of MNT4-753
 
 ### [Pasta](https://electriccoin.co/blog/the-pasta-curves-for-halo-2-and-beyond/) cycle of curves
-* [`ark-pallas`](pallas): Implements Pallas, a prime-order curve that forms an amicable pair with Vesta
-* [`ark-vesta`](vesta): Implements Vesta, a prime-order curve that forms an amicable pair with Pallas
+* [`ark-pallas`](pallas): Implements Pallas, a 255-bit prime-order curve that forms an amicable pair with Vesta
+* [`ark-vesta`](vesta): Implements Vesta, a 255-bit prime-order curve that forms an amicable pair with Pallas
+
+### [Pluto-Eris](https://github.com/daira/pluto-eris/) half-pairing cycle of curves
+* [`ark-pluto`](pluto): Implements Pluto, a 446-bit prime-order pairing-friendly curve that forms an amicable pair with Eris
+* [`ark-eris`](eris): Implements Eris, a 446-bit prime-order curve that forms an amicable pair with Pluto

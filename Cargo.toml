@@ -29,6 +29,9 @@ members = [
 
     "pallas",
     "vesta",
+
+    "pluto",
+    "eris",
 ]
 
 [profile.release]

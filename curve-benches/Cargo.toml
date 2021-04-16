@@ -45,6 +45,8 @@ ark-bw6-761 = { path = "../bw6_761" }
 ark-cp6-782 = { path = "../cp6_782" }
 ark-pallas = { path = "../pallas" }
 ark-vesta = { path = "../vesta" }
+ark-pluto = { path = "../pluto" }
+ark-eris = { path = "../eris" }
 
 [features]
 asm = [ "ark-ff/asm"]
@@ -112,4 +114,14 @@ harness = false
 [[bench]]
 name = "vesta"
 path = "benches/vesta.rs"
+harness = false
+
+[[bench]]
+name = "pluto"
+path = "benches/pluto.rs"
+harness = false
+
+[[bench]]
+name = "eris"
+path = "benches/eris.rs"
 harness = false
