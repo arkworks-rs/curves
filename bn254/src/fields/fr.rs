@@ -34,6 +34,8 @@ impl FpParameters for FrParameters {
 
     const REPR_SHAVE_BITS: u32 = 2;
 
+    /// R = pow(2, 320) % MODULUS
+    ///   = 6350874878119819312338956282401532410528162663560392320966563075034087161851
     #[rustfmt::skip]
     const R: BigInteger = BigInteger([
         12436184717236109307u64,
@@ -42,6 +44,8 @@ impl FpParameters for FrParameters {
         1011752739694698287u64,
     ]);
 
+    /// R2 = R * R % MODULUS
+    ///    = 944936681149208446651664254269745548490766851729442924617792859073125903783
     #[rustfmt::skip]
     const R2: BigInteger = BigInteger([
         1997599621687373223u64,
@@ -50,9 +54,10 @@ impl FpParameters for FrParameters {
         150537098327114917u64,
     ]);
 
+    /// INV = (-MODULUS) ^ {-1} % pow(2, 64) = 14042775128853446655
     const INV: u64 = 14042775128853446655u64;
 
-    // GENERATOR = 5
+    /// GENERATOR = 5
     #[rustfmt::skip]
     const GENERATOR: BigInteger = BigInteger([
         1949230679015292902u64,
@@ -61,7 +66,7 @@ impl FpParameters for FrParameters {
         1571765431670520771u64,
     ]);
 
-    /// (r - 1)/2 =
+    /// (MODULUS - 1)/2 =
     /// 10944121435919637611123202872628637544274182200208017171849102093287904247808
     #[rustfmt::skip]
     const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
@@ -73,7 +78,7 @@ impl FpParameters for FrParameters {
 
     // T and T_MINUS_ONE_DIV_TWO, where r - 1 = 2^s * t
 
-    /// t = (r - 1) / 2^s =
+    /// T = (MODULUS - 1) / 2^s =
     /// 81540058820840996586704275553141814055101440848469862132140264610111
     #[rustfmt::skip]
     const T: BigInteger = BigInteger([
@@ -83,7 +88,7 @@ impl FpParameters for FrParameters {
         0x30644e72e,
     ]);
 
-    /// (t - 1) / 2 =
+    /// (T - 1) / 2 =
     /// 40770029410420498293352137776570907027550720424234931066070132305055
     #[rustfmt::skip]
     const T_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
