@@ -1,3 +1,14 @@
+## Pending 
+
+### Breaking changes
+- [\#60](https://github.com/arkworks-rs/curves/pull/60) Change the scalar group generator of `Fr` of `bls12_377` Fr from `11` to `22`.
+
+### Features
+
+### Improvements
+
+### Bug fixes
+
 ## v0.2.0
 
 ### Breaking changes
