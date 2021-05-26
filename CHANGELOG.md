@@ -4,7 +4,12 @@
 
 ### Breaking changes
 
+- [\#60](https://github.com/arkworks-rs/curves/pull/60) Change the scalar group generator of `Fr` of `bls12_377` Fr from `11` to `22`.
 - [\#61](https://github.com/arkworks-rs/curves/pull/61) Remove `ATE_LOOP_COUNT_IS_NEGATIVE` from BN254 curve parameter.
+
+### Features
+
+### Improvements
 
 ## v0.2.0
 
