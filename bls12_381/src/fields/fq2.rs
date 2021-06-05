@@ -29,6 +29,18 @@ impl Fp2Parameters for Fq2Parameters {
     fn mul_fp_by_nonresidue(fp: &Self::Fp) -> Self::Fp {
         -(*fp)
     }
+
+    // x + -1 * y, computed as x - y
+    #[inline(always)]
+    fn add_and_mul_fp_by_nonresidue(x: &Self::Fp, y: &Self::Fp) -> Self::Fp {
+        *x - y
+    }
+
+    // x - (-1 * y), computed as x + y
+    #[inline(always)]
+    fn sub_and_mul_fp_by_nonresidue(x: &Self::Fp, y: &Self::Fp) -> Self::Fp {
+        *x + y
+    }
 }
 
 pub const FQ2_ZERO: Fq2 = field_new!(Fq2, FQ_ZERO, FQ_ZERO);
