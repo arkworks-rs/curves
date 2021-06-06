@@ -1,7 +1,19 @@
-## Pending 
+# CHANGELOG
 
 ### Breaking changes
+
+### Features
+
+### Improvements
+
+### Bug fixes
+
+## v0.3.0 
+
+### Breaking changes
+
 - [\#60](https://github.com/arkworks-rs/curves/pull/60) Change the scalar group generator of `Fr` of `bls12_377` Fr from `11` to `22`.
+- [\#61](https://github.com/arkworks-rs/curves/pull/61) Remove `ATE_LOOP_COUNT_IS_NEGATIVE` from BN254 curve parameter.
 
 ### Features
 
@@ -12,9 +24,11 @@
 ## v0.2.0
 
 ### Breaking changes
+
 - Requires all crates from `arkworks-rs/algebra` to have version `v0.2.0` or greater.
 
 ### Features
+
 - [\#3](https://github.com/arkworks-rs/curves/pull/3) Add constraints for
         `ark-bls12-377`,
         `ark-ed-on-bls12-377`,
@@ -33,9 +47,11 @@
 - [\#53](https://github.com/arkworks-rs/curves/pull/53) Add benchmarks for Pallas and Vesta curves.
 
 ### Improvements
+
 - [\#42](https://github.com/arkworks-rs/curves/pull/42) Remove the dependency of `rand_xorshift`.
 
 ### Bug fixes
+
 - [\#28](https://github.com/arkworks-rs/curves/pull/28), [\#49](https://github.com/arkworks-rs/curves/pull/49) Fix broken documentation links.
 - [\#38](https://github.com/arkworks-rs/curves/pull/38) Compile with `panic='abort'` in release mode, for safety of the library across FFI boundaries.
 - [\#45](https://github.com/arkworks-rs/curves/pull/45) Fix `ark-ed-on-mnt4-753`.

@@ -21,8 +21,6 @@ impl BnParameters for Parameters {
         0, 1, 1, 1, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 1, 0, 0, -1, 0, 0, 0, 1, 1, 0,
         -1, 0, 0, 1, 0, 1, 1,
     ];
-    /// `ate_loop_count` is positive.
-    const ATE_LOOP_COUNT_IS_NEGATIVE: bool = false;
 
     const TWIST_MUL_BY_Q_X: Fq2 = field_new!(
         Fq2,
