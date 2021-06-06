@@ -1,6 +1,6 @@
 [package]
 name = "ark-curve-benches"
-version = "0.2.0"
+version = "0.3.0"
 authors = [
     "Sean Bowe",
     "Alessandro Chiesa",
@@ -28,10 +28,10 @@ build = "build.rs"
 bencher = { version = "0.1.5" }
 
 [dev-dependencies]
-ark-std = { version = "^0.2.0", default-features = false }
-ark-ec = { version = "^0.2.0", default-features = false }
-ark-ff = { version = "^0.2.0", default-features = false }
-ark-serialize = { version = "^0.2.0", default-features = false }
+ark-std = { version = "^0.3.0", default-features = false }
+ark-ec = { version = "^0.3.0", default-features = false }
+ark-ff = { version = "^0.3.0", default-features = false }
+ark-serialize = { version = "^0.3.0", default-features = false }
 
 ark-mnt4-298 = { path = "../mnt4_298" }
 ark-mnt6-298 = { path = "../mnt6_298" }
