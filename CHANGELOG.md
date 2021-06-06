@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## Pending
+
 ### Breaking changes
 
 ### Features
