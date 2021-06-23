@@ -12,7 +12,7 @@ authors = [
 ]
 description = "A benchmark library for finite fields and elliptic curves"
 homepage = "https://arkworks.rs"
-repository = "https://github.com/arkworks-rs/algebra"
+repository = "https://github.com/arkworks-rs/curves"
 documentation = "https://docs.rs/algebra/"
 keywords = ["cryptography", "finite-fields", "elliptic-curves", "pairing"]
 categories = ["cryptography"]
