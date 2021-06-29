@@ -3,9 +3,7 @@ use ark_ec::{
     models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
     twisted_edwards_extended::{GroupAffine, GroupProjective},
 };
-use ark_ff::field_new;
-// use std::ops::Mul;
-use ark_ff::Field;
+use ark_ff::{field_new, Field};
 #[cfg(test)]
 mod tests;
 
@@ -21,7 +19,8 @@ pub type EdwardsProjective = GroupProjective<EdwardsParameters>;
 /// q = 52435875175126190479447740508185965837690552500527637822603658699938581184513.
 ///
 /// a = 52435875175126190479447740508185965837690552500527637822603658699938581184508.
-/// d = (138827208126141220649022263972958607803/171449701953573178309673572579671231137) mod q
+/// d = (138827208126141220649022263972958607803/
+/// 171449701953573178309673572579671231137) mod q
 ///   = 45022363124591815672509500913686876175488063829319466900776701791074614335719.
 ///
 /// Sage script to calculate these:
@@ -32,7 +31,7 @@ pub type EdwardsProjective = GroupProjective<EdwardsParameters>;
 /// d = (Fq(138827208126141220649022263972958607803)/Fq(171449701953573178309673572579671231137))
 /// ```
 /// These parameters and the sage script obtained from:
-/// <https://github.com/zcash/zcash/issues/2230#issuecomment-317182190>
+/// <https://github.com/asanso/Bandersnatch/>
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct EdwardsParameters;
 
@@ -46,7 +45,8 @@ impl TEModelParameters for EdwardsParameters {
     #[rustfmt::skip]
     const COEFF_A: Fq = field_new!(Fq, "-5");
 
-    /// COEFF_D = (138827208126141220649022263972958607803/171449701953573178309673572579671231137) mod q
+    /// COEFF_D = (138827208126141220649022263972958607803/
+    /// 171449701953573178309673572579671231137) mod q
     #[rustfmt::skip]
     const COEFF_D: Fq = field_new!(Fq, "45022363124591815672509500913686876175488063829319466900776701791074614335719");
 
@@ -66,8 +66,8 @@ impl TEModelParameters for EdwardsParameters {
     /// Multiplication by `a` is multiply by `-5`.
     #[inline(always)]
     fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {
-        let t =(*elem).double().double();
-        -(t+*elem)
+        let t = (*elem).double().double();
+        -(t + *elem)
     }
 }
 

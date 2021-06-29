@@ -6,9 +6,7 @@ use ark_ff::{
     fields::{Field, LegendreSymbol::*, SquareRootField},
     One, Zero,
 };
-use ark_std::rand::Rng;
-use ark_std::str::FromStr;
-use ark_std::test_rng;
+use ark_std::{rand::Rng, str::FromStr, test_rng};
 
 #[test]
 fn test_fr() {
