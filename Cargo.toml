@@ -15,6 +15,7 @@ members = [
 
     "bls12_381",
     "ed_on_bls12_381",
+    "bandersnatch",
 
     "bn254",
     "ed_on_bn254",
