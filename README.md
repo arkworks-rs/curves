@@ -5,6 +5,7 @@ This repository contains implementations of some popular elliptic curves. The cu
 ### BLS12-381 and embedded curves
 * [`ark-bls12-381`](bls12_381): Implements the BLS12-381 pairing-friendly curve
 * [`ark-ed-on-bls12-381`](ed_on_bls12_381): Implements a Twisted Edwards curve atop the scalar field of BLS12-381
+* [`ark-ed-on-bls12-381-bandersnatch`](ed_on_bls12_381_bandersnatch): Implements Bandersnatch, another Twisted Edwards curve atop the scalar field of BLS12-381
 
 ### BLS12-377 and related curves
 * [`ark-bls12-377`](bls12_377): Implements the BLS12-377 pairing-friendly curve

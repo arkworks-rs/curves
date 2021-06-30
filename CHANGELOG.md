@@ -19,6 +19,8 @@
 
 ### Features
 
+- [\#64](https://github.com/arkworks-rs/curves/pull/64) Implement the Bandersnatch curve, another twisted Edwards curve for BLS12-381.
+
 ### Improvements
 
 ### Bug fixes
