@@ -14,7 +14,7 @@
 //! use ark_std::UniformRand;
 //! use ark_relations::r1cs::*;
 //! use ark_r1cs_std::prelude::*;
-//! use ark_bandersnatch::{*, constraints::*};
+//! use ark_ed_on_bls12_381_bandersnatch::{*, constraints::*};
 //!
 //! let cs = ConstraintSystem::<Fq>::new_ref();
 //! // This rng is just for test purposes; do not use it
@@ -63,7 +63,7 @@
 //! # use ark_std::UniformRand;
 //! # use ark_relations::r1cs::*;
 //! # use ark_r1cs_std::prelude::*;
-//! # use ark_bandersnatch::{*, constraints::*};
+//! # use ark_ed_on_bls12_381_bandersnatch::{*, constraints::*};
 //!
 //! # let cs = ConstraintSystem::<Fq>::new_ref();
 //! # let mut rng = ark_std::test_rng();
