@@ -19,6 +19,8 @@
 
 ### Features
 
+- [\#64](https://github.com/arkworks-rs/curves/pull/64) Implement the `bandersnatch` curve, a twisted Edwards curve for BLS12-381.
+
 ### Improvements
 
 ### Bug fixes
@@ -47,7 +49,6 @@
 - [\#7](https://github.com/arkworks-rs/curves/pull/7) Add benchmarks for Edwards curves.
 - [\#19](https://github.com/arkworks-rs/curves/pull/19) Change field constants to be provided as normal strings, instead of in Montgomery form.
 - [\#53](https://github.com/arkworks-rs/curves/pull/53) Add benchmarks for Pallas and Vesta curves.
-- [\#64](https://github.com/arkworks-rs/curves/pull/64) Implements `ark-bandersnatch` curve.
 
 ### Improvements
 
