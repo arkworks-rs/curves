@@ -41,7 +41,7 @@ impl ModelParameters for EdwardsParameters {
 }
 
 impl TEModelParameters for EdwardsParameters {
-    /// COEFF_A = -1
+    /// COEFF_A = -5
     #[rustfmt::skip]
     const COEFF_A: Fq = field_new!(Fq, "-5");
 
