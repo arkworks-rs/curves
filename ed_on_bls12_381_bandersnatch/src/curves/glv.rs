@@ -123,7 +123,7 @@ impl GLVParameters for EdwardsParameters {
     }
 }
 
-fn multi_scalar_mul(
+pub(crate) fn multi_scalar_mul(
     base: &crate::EdwardsAffine,
     scalar_1: &Fr,
     endor_base: &crate::EdwardsAffine,

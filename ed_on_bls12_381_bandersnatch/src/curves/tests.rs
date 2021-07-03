@@ -1,6 +1,8 @@
 use crate::*;
 use ark_algebra_test_templates::{curves::*, groups::*};
+use ark_ec::glv::GLVParameters;
 use ark_ec::{AffineCurve, ProjectiveCurve};
+use ark_ff::field_new;
 use ark_ff::{bytes::FromBytes, Zero};
 use ark_std::{rand::Rng, str::FromStr, test_rng};
 
@@ -122,4 +124,91 @@ fn test_bytes() {
 #[test]
 fn test_montgomery_conversion() {
     montgomery_conversion_test::<BandersnatchParameters>();
+}
+
+#[test]
+fn test_psi() {
+    let base_point = EdwardsAffine::prime_subgroup_generator();
+    let psi_point = EdwardsAffine::from_str(
+        "(3995099504672814451457646880854530097687530507181962222512229786736061793535, \
+         33370049900732270411777328808452912493896532385897059012214433666611661340894)",
+    )
+    .unwrap();
+
+    let t = EdwardsParameters::endomorphism(&base_point);
+    assert_eq!(t, psi_point);
+}
+
+#[test]
+fn test_decomp() {
+    let scalar: Fr = field_new!(
+        Fr,
+        "4257185345094557079734489188109952172285839137338142340240392707284963971010"
+    );
+    let k1: Fr = field_new!(Fr, "30417741863887432744214758610616508258");
+    let k2: Fr = field_new!(Fr, "-6406990765953933188067911864924578940");
+    assert_eq!(EdwardsParameters::scalar_decomposition(&scalar), (k1, k2))
+}
+
+#[test]
+fn test_msm() {
+    let base_point = EdwardsAffine::prime_subgroup_generator();
+    let psi_point = EdwardsAffine::from_str(
+        "(3995099504672814451457646880854530097687530507181962222512229786736061793535, \
+         33370049900732270411777328808452912493896532385897059012214433666611661340894)",
+    )
+    .unwrap();
+    let t = EdwardsParameters::endomorphism(&base_point);
+    assert_eq!(t, psi_point);
+
+    let scalar: Fr = field_new!(
+        Fr,
+        "4257185345094557079734489188109952172285839137338142340240392707284963971010"
+    );
+    let k1: Fr = field_new!(Fr, "30417741863887432744214758610616508258");
+    let k2: Fr = field_new!(Fr, "-6406990765953933188067911864924578940");
+    assert_eq!(EdwardsParameters::scalar_decomposition(&scalar), (k1, k2));
+
+    let res = EdwardsAffine::from_str(
+        "(6018810645516749504657411940673266094850700554607419759628157493373766067122, \
+         13929928331741974885869757126422340790588975043986274897468601817898742989376)",
+    )
+    .unwrap();
+
+    let tmp = base_point.mul(scalar);
+    let res2 = super::glv::multi_scalar_mul(&base_point, &k1, &psi_point, &k2).into_affine();
+
+    assert_eq!(tmp.into_affine(), res);
+    assert_eq!(res, res2);
+}
+
+#[test]
+fn test_gen_mul() {
+    let a = EdwardsAffine::prime_subgroup_generator();
+    let r: Fr = field_new!(
+        Fr,
+        "4257185345094557079734489188109952172285839137338142340240392707284963971010"
+    );
+
+    let b = a.mul(r);
+    let c = EdwardsParameters::glv_mul(&a, &r);
+
+    assert_eq!(b.into_affine(), c.into_affine())
+}
+
+#[test]
+fn test_rnd_mul() {
+    use ark_std::rand::Rng;
+    use ark_std::test_rng;
+
+    let mut rng = test_rng();
+    for _ in 0..100 {
+        let a: EdwardsAffine = rng.gen();
+        let r: Fr = rng.gen();
+
+        let b = a.mul(r);
+        let c = EdwardsParameters::glv_mul(&a, &r);
+
+        assert_eq!(b.into_affine(), c.into_affine())
+    }
 }
