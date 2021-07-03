@@ -1,7 +1,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 #![deny(
     warnings,
-    unused,
+    // unused,
     future_incompatible,
     nonstandard_style,
     rust_2018_idioms
@@ -28,8 +28,8 @@
 //!    * a = -5
 //!    * d = 45022363124591815672509500913686876175488063829319466900776701791074614335719
 
-#[cfg(feature = "r1cs")]
-pub mod constraints;
+// #[cfg(feature = "r1cs")]
+// pub mod constraints;
 mod curves;
 mod fields;
 

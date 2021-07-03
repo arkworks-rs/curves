@@ -14,11 +14,14 @@ edition = "2018"
 
 [dependencies]
 ark-std = { version = "^0.3.0", default-features = false }
-ark-serialize = { version = "^0.3.0", default-features = false }
-ark-ff = { version = "^0.3.0", default-features = false }
+# ark-serialize = { version = "^0.3.0", default-features = false }
+ark-serialize = { path = "../../algebra/serialize", default-features = false }
+# ark-ff = { version = "^0.3.0", default-features = false }
+ark-ff = { path = "../../algebra/ff", default-features = false }
 ark-relations = { version = "^0.3.0", default-features = false }
 ark-r1cs-std = { version = "^0.3.0", default-features = false }
-ark-ec = { version = "^0.3.0", default-features = false }
+# ark-ec = { version = "^0.3.0", default-features = false }
+ark-ec = { path = "../../algebra/ec", default-features = false }
 
 [features]
 default = []

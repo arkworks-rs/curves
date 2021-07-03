@@ -9,6 +9,8 @@ use ark_ec::{
 };
 use ark_ff::{field_new, Field};
 
+mod glv;
+
 #[cfg(test)]
 mod tests;
 
