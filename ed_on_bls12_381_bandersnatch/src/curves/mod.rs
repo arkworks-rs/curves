@@ -4,6 +4,9 @@ use ark_ec::{
     twisted_edwards_extended::{GroupAffine, GroupProjective},
 };
 use ark_ff::{field_new, Field};
+
+mod glv;
+
 #[cfg(test)]
 mod tests;
 
