@@ -1,9 +1,7 @@
 use crate::*;
 use ark_algebra_test_templates::{curves::*, groups::*};
-use ark_ec::glv::GLVParameters;
-use ark_ec::{AffineCurve, ProjectiveCurve};
-use ark_ff::field_new;
-use ark_ff::{bytes::FromBytes, Zero};
+use ark_ec::{glv::GLVParameters, AffineCurve, ProjectiveCurve};
+use ark_ff::{bytes::FromBytes, field_new, Zero};
 use ark_std::{rand::Rng, str::FromStr, test_rng};
 
 #[test]
@@ -198,8 +196,7 @@ fn test_gen_mul() {
 
 #[test]
 fn test_rnd_mul() {
-    use ark_std::rand::Rng;
-    use ark_std::test_rng;
+    use ark_std::{rand::Rng, test_rng};
 
     let mut rng = test_rng();
     for _ in 0..100 {

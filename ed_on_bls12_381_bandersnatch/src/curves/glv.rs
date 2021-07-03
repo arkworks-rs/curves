@@ -66,7 +66,7 @@ impl GLVParameters for EdwardsParameters {
 
     const COEFF_N22: Self::ScalarField = field_new!(Fr, "-113482231691339203864511368254957623327");
 
-    /// mapping a point G to phi(G):= lambda G where psi is the endomorphism
+    /// Mapping a point G to phi(G):= lambda G where phi is the endomorphism
     fn endomorphism(base: &Self::CurveAffine) -> Self::CurveAffine {
         let mut x = base.x;
         let mut y = base.y;
@@ -84,7 +84,8 @@ impl GLVParameters for EdwardsParameters {
         Self::CurveProjective::new(x, y, Fq::one(), z).into_affine()
     }
 
-    /// decompose a scalar s into k1, k2, s.t. s = k1 + lambda k2
+    /// Decompose a scalar s into k1, k2, s.t. s = k1 + lambda k2
+    /// via a Babai's nearest plane algorithm.
     fn scalar_decomposition(scalar: &Self::ScalarField) -> (Self::ScalarField, Self::ScalarField) {
         let tmp: BigInteger256 = (*scalar).into();
         let scalar_z: BigUint = tmp.into();
@@ -123,6 +124,9 @@ impl GLVParameters for EdwardsParameters {
     }
 }
 
+// Here we need to implement a customized MSM algorithm, since we know that
+// the high bits of Fr are restricted to be small, i.e. ~ 128 bits.
+// This MSM will save us some 128 doublings.
 pub(crate) fn multi_scalar_mul(
     base: &crate::EdwardsAffine,
     scalar_1: &Fr,
@@ -134,11 +138,13 @@ pub(crate) fn multi_scalar_mul(
     let mut b2 = (*endor_base).into_projective();
     let mut s2 = *scalar_2;
 
-    if s1 > <FrParameters as FpParameters>::MODULUS_MINUS_ONE_DIV_TWO.into() {
+    let r_over_2: Fr = <FrParameters as FpParameters>::MODULUS_MINUS_ONE_DIV_TWO.into();
+
+    if s1 > r_over_2 {
         b1 = -b1;
         s1 = -s1;
     }
-    if s2 > <FrParameters as FpParameters>::MODULUS_MINUS_ONE_DIV_TWO.into() {
+    if s2 > r_over_2 {
         b2 = -b2;
         s2 = -s2;
     }
@@ -169,6 +175,7 @@ pub(crate) fn multi_scalar_mul(
     res
 }
 
+/// return the highest non-zero bits of a bit string.
 fn get_bits(a: &[bool]) -> u16 {
     let mut res = 256;
     for e in a.iter().rev() {
