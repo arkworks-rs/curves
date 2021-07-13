@@ -3,12 +3,18 @@ use ark_algebra_test_templates::{curves::*, groups::*};
 use ark_ec::{AffineCurve, ProjectiveCurve};
 use ark_ff::{bytes::FromBytes, Zero};
 use ark_std::{rand::Rng, str::FromStr, test_rng};
+// use ark_r1cs_std::groups::curves::short_weierstrass::ProjectiveVar;
 
 #[test]
 fn test_projective_curve() {
     curve_tests::<EdwardsProjective>();
 
     edwards_tests::<EdwardsParameters>();
+    montgomery_conversion_test::<EdwardsParameters>();
+    sw_tests::<EdwardsParameters>();
+
+    // ark_curve_constraint_tests::curves::sw_test::<EdwardsParameters,
+    // FqVar>();
 }
 
 #[test]
