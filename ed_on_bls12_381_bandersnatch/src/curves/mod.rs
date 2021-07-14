@@ -1,6 +1,9 @@
 use crate::{Fq, Fr};
 use ark_ec::{
     models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
+    short_weierstrass_jacobian::{
+        GroupAffine as SWGroupAffine, GroupProjective as SWGroupProjective,
+    },
     twisted_edwards_extended::{GroupAffine, GroupProjective},
     SWModelParameters,
 };
@@ -11,6 +14,9 @@ mod tests;
 
 pub type EdwardsAffine = GroupAffine<BandersnatchParameters>;
 pub type EdwardsProjective = GroupProjective<BandersnatchParameters>;
+
+pub type SWAffine = SWGroupAffine<BandersnatchParameters>;
+pub type SWProjective = SWGroupProjective<BandersnatchParameters>;
 
 /// `banersnatch` is a twisted Edwards curve. These curves have equations of the
 /// form: ax² + y² = 1 - dx²y².
