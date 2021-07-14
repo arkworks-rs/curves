@@ -8,9 +8,9 @@ use ark_std::{rand::Rng, str::FromStr, test_rng};
 fn test_projective_curve() {
     curve_tests::<EdwardsProjective>();
 
-    edwards_tests::<EdwardsParameters>();
-    montgomery_conversion_test::<EdwardsParameters>();
-    sw_tests::<EdwardsParameters>();
+    edwards_tests::<BandersnatchParameters>();
+    montgomery_conversion_test::<BandersnatchParameters>();
+    sw_tests::<BandersnatchParameters>();
 }
 
 #[test]
@@ -101,5 +101,5 @@ fn test_bytes() {
 
 #[test]
 fn test_montgomery_conversion() {
-    montgomery_conversion_test::<EdwardsParameters>();
+    montgomery_conversion_test::<BandersnatchParameters>();
 }
