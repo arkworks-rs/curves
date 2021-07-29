@@ -99,32 +99,30 @@ impl MontgomeryModelParameters for BandersnatchParameters {
     type TEModelParameters = BandersnatchParameters;
 }
 
-// using the generator from bench.py (in affine form, on TE curve)
-// P = BandersnatchPoint(
-//      13738737789055671334382939318077718462576533426798874551591468520593954805549,
-//      11575885077368931610486103676191793534029821920164915325066801506752632626968,
-//      14458123306641001284399433086015669988340559992755622870694102351476334505845,
-//      C)
+// generators are generated following Zcash's fashion:
+//  "The generators of G1 and G2 are computed by finding the lexicographically smallest
+//   valid x-coordinate, and its lexicographically smallest y-coordinate and scaling it
+//   by the cofactor such that the result is not the point at infinity."
 
 /// x coordinate for TE curve generator
 const TE_GENERATOR_X: Fq = field_new!(
     Fq,
-    "29627151942733444043031429156003786749302466371339015363120350521834195802525"
+    "18886178867200960497001835917649091219057080094937609519140440539760939937304"
 );
 /// y coordinate for TE curve generator
 const TE_GENERATOR_Y: Fq = field_new!(
     Fq,
-    "27488387519748396681411951718153463804682561779047093991696427532072116857978"
+    "19188667384257783945677642223292697773471335439753913231509108946878080696678"
 );
 /// x coordinate for SW curve generator
 const SW_GENERATOR_X: Fq = field_new!(
     Fq,
-    "36825263486403546626300966120264772870284111435429821597925698003262359905220"
+    "30900340493481298850216505686589334086208278925799850409469406976849338430199"
 );
 /// y coordinate for SW curve generator
 const SW_GENERATOR_Y: Fq = field_new!(
     Fq,
-    "3865016222540273726364778390358771198398896682531094491691896377074200900624"
+    "12663882780877899054958035777720958383845500985908634476792678820121468453298"
 );
 
 impl SWModelParameters for BandersnatchParameters {
