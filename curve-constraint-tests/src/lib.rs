@@ -525,7 +525,7 @@ pub mod curves {
 }
 
 pub mod pairing {
-    use ark_ec::{PairingEngine, ProjectiveCurve};
+    use ark_ec::{PairingEngine, ProjectiveCurve, AffineCurve};
     use ark_ff::{BitIteratorLE, Field, PrimeField};
     use ark_r1cs_std::prelude::*;
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
@@ -618,6 +618,40 @@ pub mod pairing {
                 );
             }
 
+            assert!(cs.is_satisfied().unwrap(), "cs is not satisfied");
+        }
+        Ok(())
+    }
+
+    #[allow(dead_code)]
+    pub fn g2_prepare_consistency_test<E: PairingEngine, P: PairingVar<E>>() -> Result<(), SynthesisError>
+    {
+        let test_g2_elem = E::G2Affine::prime_subgroup_generator();
+        let test_g2_prepared = E::G2Prepared::from(test_g2_elem.clone());
+
+        let modes = [
+            AllocationMode::Input,
+            AllocationMode::Witness,
+            AllocationMode::Constant,
+        ];
+        for &mode in &modes {
+            let cs = ConstraintSystem::new_ref();
+
+            let test_g2_gadget =
+                P::G2Var::new_witness(cs.clone(), || Ok(test_g2_elem.clone())).unwrap();
+
+            let prepared_test_g2_gadget =
+                P::prepare_g2(&test_g2_gadget).unwrap();
+            let allocated_test_g2_gadget =
+                P::G2PreparedVar::new_variable(cs.clone(), || {
+                    Ok(test_g2_prepared.clone())
+                }, mode).unwrap();
+
+            // TODO: Will change to direct equality test once the `PairingVar` trait requires
+            //       `G2PreparedVar` to implement `EqGadget`.
+            let prepared_test_g2_gadget_bytes = prepared_test_g2_gadget.to_bytes()?;
+            let allocated_test_g2_gadget_bytes = allocated_test_g2_gadget.to_bytes()?;
+            prepared_test_g2_gadget_bytes.enforce_equal(&allocated_test_g2_gadget_bytes)?;
             assert!(cs.is_satisfied().unwrap(), "cs is not satisfied");
         }
         Ok(())
