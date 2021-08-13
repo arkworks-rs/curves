@@ -46,7 +46,6 @@ impl SWModelParameters for Parameters {
     fn is_in_correct_subgroup_assuming_on_curve_fast(
 	p : &GroupAffine<Self>
     ) -> Option<bool> {
-	println!("fast subgroup check on G1");
 	let beta =
 	    field_new!(Fq,"4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436");
 	let mut sigma_p = *p;

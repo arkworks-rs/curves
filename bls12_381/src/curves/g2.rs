@@ -57,7 +57,6 @@ impl SWModelParameters for Parameters {
     fn is_in_correct_subgroup_assuming_on_curve_fast(
 	p : &GroupAffine<Self>
     ) -> Option<bool> {
-	println!("fast subgroup check on G2");
     	// psi(x,y) = (x^p * coeff_x, y^p * coeff_y)
     	//
 	// psi²(x,y) = (x*coeff_x2, -y)
