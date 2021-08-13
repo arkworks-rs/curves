@@ -1,7 +1,9 @@
 use crate::*;
 use ark_ec::{
+    AffineCurve,
     bls12,
     models::{ModelParameters, SWModelParameters},
+    short_weierstrass_jacobian::GroupAffine,
 };
 use ark_ff::{field_new, Zero};
 
@@ -39,6 +41,23 @@ impl SWModelParameters for Parameters {
     #[inline(always)]
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
+    }
+
+    fn is_in_correct_subgroup_assuming_on_curve_fast(
+	p : &GroupAffine<Self>
+    ) -> Option<bool> {
+	println!("fast subgroup check on G1");
+	let beta =
+	    field_new!(Fq,"4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436");
+	let mut sigma_p = *p;
+	sigma_p.x *= beta;
+	let mut sigma2_p = sigma_p;
+	sigma2_p.x *= beta;
+	let r = sigma_p+sigma_p + (-*p) + (-sigma2_p);
+	let multiplier_g1 = field_new!(Fr,
+				       "76329603384216526021617858986798044501");
+	let mul_r:GroupAffine<_> = r.mul(multiplier_g1).into();
+	Some((mul_r+(-sigma2_p)).is_zero())
     }
 }
 

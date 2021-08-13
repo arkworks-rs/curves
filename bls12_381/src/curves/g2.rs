@@ -1,9 +1,11 @@
 use crate::*;
 use ark_ec::{
+    AffineCurve,
     bls12,
     models::{ModelParameters, SWModelParameters},
+    short_weierstrass_jacobian::GroupAffine,
 };
-use ark_ff::{field_new, Zero};
+use ark_ff::{field_new, Zero, Field};
 
 pub type G2Affine = bls12::G2Affine<crate::Parameters>;
 pub type G2Projective = bls12::G2Projective<crate::Parameters>;
@@ -51,6 +53,56 @@ impl SWModelParameters for Parameters {
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
     }
+
+    fn is_in_correct_subgroup_assuming_on_curve_fast(
+	p : &GroupAffine<Self>
+    ) -> Option<bool> {
+	println!("fast subgroup check on G2");
+    	// psi(x,y) = (x^p * coeff_x, y^p * coeff_y)
+    	//
+	// psi²(x,y) = (x*coeff_x2, -y)
+    	// with: coeff_x2 = coeff_x**(p+1)
+    	//       coeff_y**(p+1) = -1
+    	//
+	// psi³(x,y) = (x^p*(-u), y^p * (-coeff_y))
+    	// with: coeff_x2**p * coeff_x == -u
+    	//       (-1)**p == -1
+	let minus_coeff_y =
+	    field_new!(
+		Fq2,
+		field_new!(
+		    Fq,
+		    "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257"),
+		field_new!(
+		    Fq,
+		    "2973677408986561043442465346520108879172042883009249989176415018091420807192182638567116318576472649347015917690530")
+	    );
+	
+    	let coeff_x2 =
+	    field_new!(
+		Fq2,
+		field_new!(
+		    Fq,
+		    "-793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620351"),
+		field_new!(Fq, "0")
+	    );
+    	// psi²(P)
+	let mut psi2_p = -*p;
+	psi2_p.x *= coeff_x2;
+	// psi³(P)
+	let mut psi3_p = p.clone();
+	psi3_p.x.frobenius_map(1);
+	psi3_p.y.frobenius_map(1);
+	psi3_p.x *= field_new!(Fq2,
+			       field_new!(Fq,"0"),
+			       field_new!(Fq,"-1"));
+	psi3_p.y *= minus_coeff_y;
+    	// Equation check
+        let multiplier_g2 = field_new!(Fr, "15132376222941642752");
+	let mul_psi3_p: GroupAffine<_> = (-psi3_p).mul(multiplier_g2).into();
+	Some((mul_psi3_p + (-psi2_p) + *p).is_zero())
+    }
+
 }
 
 pub const G2_GENERATOR_X: Fq2 = field_new!(Fq2, G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
