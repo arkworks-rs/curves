@@ -214,17 +214,17 @@ macro_rules! ec_bench {
 
         $crate::benchmark_group!(
             group_ops,
-            rand,
-            mul_assign,
-            add_assign,
-            sub_assign,
-            add_assign_mixed,
-            double,
-            ser,
+            // rand,
+            // mul_assign,
+            // add_assign,
+            // sub_assign,
+            // add_assign_mixed,
+            // double,
+            // ser,
             deser,
-            ser_unchecked,
+            // ser_unchecked,
             deser_unchecked,
-            msm_131072,
+            // msm_131072,
         );
     };
 }
