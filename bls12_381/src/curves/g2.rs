@@ -57,6 +57,19 @@ impl SWModelParameters for Parameters {
     fn is_in_correct_subgroup_assuming_on_curve_fast(
 	p : &GroupAffine<Self>
     ) -> Option<bool> {
+
+	// let beta =
+	//     field_new!(Fq,"4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436");
+	
+	// let mut sigma_p = *p;
+	// sigma_p.x.mul_assign_by_basefield(&beta);
+	// let multiplier_g2 = field_new!(Fr,
+	// 			       "228988810152649578064853576960394133503");
+	// let mul_sigma_p:GroupAffine<_> =
+	//     sigma_p.mul(multiplier_g2).into();
+	// Some((mul_sigma_p+(-*p)).is_zero())
+	
+	    
     	// psi(x,y) = (x^p * coeff_x, y^p * coeff_y)
     	//
 	// psi²(x,y) = (x*coeff_x2, -y)
