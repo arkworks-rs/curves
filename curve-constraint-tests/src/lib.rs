@@ -231,22 +231,20 @@ pub mod fields {
 }
 
 pub mod curves {
-    use ark_ec::{
-        short_weierstrass_jacobian::GroupProjective as SWProjective,
-        twisted_edwards_extended::GroupProjective as TEProjective, ProjectiveCurve,
-    };
+    use ark_ec::{ModelParameters, ProjectiveCurve, short_weierstrass_jacobian::GroupProjective as SWProjective, twisted_edwards_extended::GroupProjective as TEProjective};
     use ark_ff::{BitIteratorLE, Field, FpParameters, One, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
     use ark_std::{test_rng, vec::Vec, UniformRand};
 
     use ark_r1cs_std::prelude::*;
 
-    pub fn group_test<C, ConstraintF, GG>() -> Result<(), SynthesisError>
+    type ConstraintF<P> = <<P as ModelParameters>::BaseField as Field>::BasePrimeField;
+
+    pub fn group_test<C, ConstraintF>() -> Result<(), SynthesisError>
     where
-        C: ProjectiveCurve,
+        C: CurveWithVar<ConstraintF>,
         ConstraintF: Field,
-        GG: CurveVar<C, ConstraintF>,
-        for<'a> &'a GG: GroupOpsBounds<'a, C, GG>,
+        for<'a> &'a C::Var: GroupOpsBounds<'a, C, C::Var>,
     {
         let modes = [
             AllocationMode::Input,
@@ -259,12 +257,12 @@ pub mod curves {
             let mut rng = test_rng();
             let a_native = C::rand(&mut rng);
             let b_native = C::rand(&mut rng);
-            let a = GG::new_variable(ark_relations::ns!(cs, "generate_a"), || Ok(a_native), mode)
+            let a = C::Var::new_variable(ark_relations::ns!(cs, "generate_a"), || Ok(a_native), mode)
                 .unwrap();
-            let b = GG::new_variable(ark_relations::ns!(cs, "generate_b"), || Ok(b_native), mode)
+            let b = C::Var::new_variable(ark_relations::ns!(cs, "generate_b"), || Ok(b_native), mode)
                 .unwrap();
 
-            let zero = GG::zero();
+            let zero = C::Var::zero();
             assert_eq!(zero.value()?, zero.value()?);
 
             // a == a
@@ -380,13 +378,15 @@ pub mod curves {
         Ok(())
     }
 
-    pub fn sw_test<P, GG>() -> Result<(), SynthesisError>
+    type SWVar<P> = <SWProjective<P> as CurveWithVar<ConstraintF<P>>>::Var;
+
+    pub fn sw_test<P>() -> Result<(), SynthesisError>
     where
         P: ark_ec::SWModelParameters,
-        GG: CurveVar<SWProjective<P>, <P::BaseField as Field>::BasePrimeField>,
-        for<'a> &'a GG: GroupOpsBounds<'a, SWProjective<P>, GG>,
+        SWProjective<P>: CurveWithVar<ConstraintF<P>> + ProjectiveCurve,
+        for<'a> &'a SWVar<P>: GroupOpsBounds<'a, SWProjective<P>, SWVar<P>>,
     {
-        group_test::<SWProjective<P>, _, GG>()?;
+        group_test::<SWProjective<P>, _>()?;
         let modes = [
             AllocationMode::Input,
             AllocationMode::Witness,
@@ -405,14 +405,12 @@ pub mod curves {
             let b_affine = b.into_affine();
 
             let ns = ark_relations::ns!(cs, "allocating variables");
-            let mut gadget_a = GG::new_variable(cs.clone(), || Ok(a), mode)?;
-            let gadget_b = GG::new_variable(cs.clone(), || Ok(b), mode)?;
-            let zero = GG::zero();
+            let mut gadget_a = SWVar::<P>::new_variable(cs.clone(), || Ok(a), mode)?;
+            let gadget_b = SWVar::<P>::new_variable(cs.clone(), || Ok(b), mode)?;
+            let zero = SWVar::<P>::zero();
             drop(ns);
-            assert_eq!(gadget_a.value()?.into_affine().x, a_affine.x);
-            assert_eq!(gadget_a.value()?.into_affine().y, a_affine.y);
-            assert_eq!(gadget_b.value()?.into_affine().x, b_affine.x);
-            assert_eq!(gadget_b.value()?.into_affine().y, b_affine.y);
+            assert_eq!(gadget_a.value()?.into_affine(), a_affine);
+            assert_eq!(gadget_b.value()?.into_affine(), b_affine);
             assert_eq!(cs.which_is_unsatisfied().unwrap(), None);
 
             // Check addition
@@ -453,13 +451,15 @@ pub mod curves {
         Ok(())
     }
 
-    pub fn te_test<P, GG>() -> Result<(), SynthesisError>
+    type TEVar<P> = <TEProjective<P> as CurveWithVar<ConstraintF<P>>>::Var;
+
+    pub fn te_test<P>() -> Result<(), SynthesisError>
     where
         P: ark_ec::TEModelParameters,
-        GG: CurveVar<TEProjective<P>, <P::BaseField as Field>::BasePrimeField>,
-        for<'a> &'a GG: GroupOpsBounds<'a, TEProjective<P>, GG>,
+        TEProjective<P>: CurveWithVar<ConstraintF<P>> + ProjectiveCurve,
+        for<'a> &'a TEVar<P>: GroupOpsBounds<'a, TEProjective<P>, TEVar<P>>,
     {
-        group_test::<TEProjective<P>, _, GG>()?;
+        group_test::<TEProjective<P>, _>()?;
         let modes = [
             AllocationMode::Input,
             AllocationMode::Witness,
@@ -478,14 +478,12 @@ pub mod curves {
             let b_affine = b.into_affine();
 
             let ns = ark_relations::ns!(cs, "allocating variables");
-            let mut gadget_a = GG::new_variable(cs.clone(), || Ok(a), mode)?;
-            let gadget_b = GG::new_variable(cs.clone(), || Ok(b), mode)?;
+            let mut gadget_a = TEVar::<P>::new_variable(cs.clone(), || Ok(a), mode)?;
+            let gadget_b = TEVar::<P>::new_variable(cs.clone(), || Ok(b), mode)?;
             drop(ns);
 
-            assert_eq!(gadget_a.value()?.into_affine().x, a_affine.x);
-            assert_eq!(gadget_a.value()?.into_affine().y, a_affine.y);
-            assert_eq!(gadget_b.value()?.into_affine().x, b_affine.x);
-            assert_eq!(gadget_b.value()?.into_affine().y, b_affine.y);
+            assert_eq!(gadget_a.value()?.into_affine(), a_affine);
+            assert_eq!(gadget_b.value()?.into_affine(), b_affine);
             assert_eq!(cs.which_is_unsatisfied()?, None);
 
             // Check addition
@@ -527,16 +525,21 @@ pub mod curves {
 pub mod pairing {
     use ark_ec::{PairingEngine, ProjectiveCurve};
     use ark_ff::{BitIteratorLE, Field, PrimeField};
-    use ark_r1cs_std::prelude::*;
+    use ark_r1cs_std::{fields::fp::FpVar, prelude::*};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
     use ark_std::{test_rng, vec::Vec, UniformRand};
 
     #[allow(dead_code)]
-    pub fn bilinearity_test<E: PairingEngine, P: PairingVar<E>>() -> Result<(), SynthesisError>
+    pub fn bilinearity_test<P: PairingGadget>() -> Result<(), SynthesisError>
     where
-        for<'a> &'a P::G1Var: GroupOpsBounds<'a, E::G1Projective, P::G1Var>,
-        for<'a> &'a P::G2Var: GroupOpsBounds<'a, E::G2Projective, P::G2Var>,
-        for<'a> &'a P::GTVar: FieldOpsBounds<'a, E::Fqk, P::GTVar>,
+        for<'a> &'a P::G1Var: GroupOpsBounds<'a, P::G1Projective, P::G1Var>,
+        for<'a> &'a P::G2Var: GroupOpsBounds<'a, P::G2Projective, P::G2Var>,
+        for<'a> &'a P::GTVar: FieldOpsBounds<'a, P::Fqk, P::GTVar>,
+        P::Fq: FieldWithVar<Var = FpVar<P::Fq>>,
+        P::Fqe: FieldWithVar,
+        P::Fqk: FieldWithVar<Var = P::GTVar>,
+        P::G1Projective: CurveWithVar<P::Fq, Var = P::G1Var>,
+        P::G2Projective: CurveWithVar<P::Fq, Var = P::G2Var>,
     {
         let modes = [
             AllocationMode::Input,
@@ -544,12 +547,12 @@ pub mod pairing {
             AllocationMode::Constant,
         ];
         for &mode in &modes {
-            let cs = ConstraintSystem::<E::Fq>::new_ref();
+            let cs = ConstraintSystem::<P::Fq>::new_ref();
 
             let mut rng = test_rng();
-            let a = E::G1Projective::rand(&mut rng);
-            let b = E::G2Projective::rand(&mut rng);
-            let s = E::Fr::rand(&mut rng);
+            let a = P::G1Projective::rand(&mut rng);
+            let b = P::G2Projective::rand(&mut rng);
+            let s = P::Fr::rand(&mut rng);
 
             let mut sa = a;
             sa *= s;
@@ -571,16 +574,16 @@ pub mod pairing {
 
             let (ans1_g, ans1_n) = {
                 let _ml_constraints = cs.num_constraints();
-                let ml_g = P::miller_loop(&[sa_prep_g], &[b_prep_g.clone()])?;
+                let ml_g = <P as PairingGadget>::miller_loop(&[sa_prep_g], &[b_prep_g.clone()])?;
                 let _fe_constraints = cs.num_constraints();
-                let ans_g = P::final_exponentiation(&ml_g)?;
-                let ans_n = E::pairing(sa, b);
+                let ans_g = <P as PairingGadget>::final_exponentiation(&ml_g)?;
+                let ans_n = <P as PairingEngine>::pairing(sa, b);
                 (ans_g, ans_n)
             };
 
             let (ans2_g, ans2_n) = {
-                let ans_g = P::pairing(a_prep_g.clone(), sb_prep_g)?;
-                let ans_n = E::pairing(a, sb);
+                let ans_g = <P as PairingGadget>::pairing(a_prep_g.clone(), sb_prep_g)?;
+                let ans_n = <P as PairingEngine>::pairing(a, sb);
                 (ans_g, ans_n)
             };
 
@@ -589,8 +592,8 @@ pub mod pairing {
                     .map(Boolean::constant)
                     .collect::<Vec<_>>();
 
-                let mut ans_g = P::pairing(a_prep_g, b_prep_g)?;
-                let mut ans_n = E::pairing(a, b);
+                let mut ans_g = <P as PairingGadget>::pairing(a_prep_g, b_prep_g)?;
+                let mut ans_n = <P as PairingEngine>::pairing(a, b);
                 ans_n = ans_n.pow(s.into_repr());
                 ans_g = ans_g.pow_le(&s_iter)?;
 

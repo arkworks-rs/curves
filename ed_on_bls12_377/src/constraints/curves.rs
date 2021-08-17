@@ -1,12 +1,10 @@
 use crate::*;
 use ark_r1cs_std::groups::curves::twisted_edwards::AffineVar;
 
-use crate::constraints::FqVar;
-
 /// A variable that is the R1CS equivalent of `crate::EdwardsAffine`.
-pub type EdwardsVar = AffineVar<EdwardsParameters, FqVar>;
+pub type EdwardsVar = AffineVar<EdwardsParameters>;
 
 #[test]
 fn test() {
-    ark_curve_constraint_tests::curves::te_test::<EdwardsParameters, EdwardsVar>().unwrap();
+    ark_curve_constraint_tests::curves::te_test::<EdwardsParameters>().unwrap();
 }

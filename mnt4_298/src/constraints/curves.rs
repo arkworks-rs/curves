@@ -18,12 +18,10 @@ fn test() {
     use ark_ec::models::mnt4::MNT4Parameters;
     ark_curve_constraint_tests::curves::sw_test::<
         <Parameters as MNT4Parameters>::G1Parameters,
-        G1Var,
     >()
     .unwrap();
     ark_curve_constraint_tests::curves::sw_test::<
         <Parameters as MNT4Parameters>::G2Parameters,
-        G2Var,
     >()
     .unwrap();
 }
