@@ -130,17 +130,17 @@
 //! let pairing_result_native = MNT4_753::pairing(a_native, b_native);
 //!
 //! // Prepare `a` and `b` for pairing.
-//! let a_prep = constraints::PairingVar::prepare_g1(&a)?;
-//! let b_prep = constraints::PairingVar::prepare_g2(&b)?;
-//! let pairing_result = constraints::PairingVar::pairing(a_prep, b_prep)?;
+//! let a_prep = MNT4_753::prepare_g1(&a)?;
+//! let b_prep = MNT4_753::prepare_g2(&b)?;
+//! let pairing_result = MNT4_753::pairing_gadget(a_prep, b_prep)?;
 //!
 //! // Check that the value of &a + &b is correct.
 //! assert_eq!(pairing_result.value()?, pairing_result_native);
 //!
 //! // Check that operations on variables and constants are equivalent.
-//! let a_prep_const = constraints::PairingVar::prepare_g1(&a_const)?;
-//! let b_prep_const = constraints::PairingVar::prepare_g2(&b_const)?;
-//! let pairing_result_const = constraints::PairingVar::pairing(a_prep_const, b_prep_const)?;
+//! let a_prep_const = MNT4_753::prepare_g1(&a_const)?;
+//! let b_prep_const = MNT4_753::prepare_g2(&b_const)?;
+//! let pairing_result_const = MNT4_753::pairing_gadget(a_prep_const, b_prep_const)?;
 //! println!("Done here 3");
 //!
 //! pairing_result.enforce_equal(&pairing_result_const)?;

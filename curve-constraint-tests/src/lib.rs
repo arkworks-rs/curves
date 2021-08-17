@@ -277,14 +277,14 @@ pub mod curves {
             assert_eq!((&a + &zero).value()?, a.value()?);
             // a - 0 = a
             assert_eq!((&a - &zero).value()?, a.value()?);
-            // a - a = 0
-            assert_eq!((&a - &a).value()?, zero.value()?);
             // a + b = b + a
             let a_b = &a + &b;
             let b_a = &b + &a;
             assert_eq!(a_b.value()?, b_a.value()?);
             a_b.enforce_equal(&b_a)?;
             assert!(cs.is_satisfied().unwrap());
+            // a - a = 0
+            assert_eq!((&a - &a).value()?, zero.value()?);
 
             // (a + b) + a = a + (b + a)
             let ab_a = &a_b + &a;
@@ -580,15 +580,15 @@ pub mod pairing {
 
             let (ans1_g, ans1_n) = {
                 let _ml_constraints = cs.num_constraints();
-                let ml_g = <P as PairingGadget>::miller_loop(&[sa_prep_g], &[b_prep_g.clone()])?;
+                let ml_g = P::miller_loop_gadget(&[sa_prep_g], &[b_prep_g.clone()])?;
                 let _fe_constraints = cs.num_constraints();
-                let ans_g = <P as PairingGadget>::final_exponentiation(&ml_g)?;
+                let ans_g = P::final_exponentiation_gadget(&ml_g)?;
                 let ans_n = <P as PairingEngine>::pairing(sa, b);
                 (ans_g, ans_n)
             };
 
             let (ans2_g, ans2_n) = {
-                let ans_g = <P as PairingGadget>::pairing(a_prep_g.clone(), sb_prep_g)?;
+                let ans_g = P::pairing_gadget(a_prep_g.clone(), sb_prep_g)?;
                 let ans_n = <P as PairingEngine>::pairing(a, sb);
                 (ans_g, ans_n)
             };
@@ -598,7 +598,7 @@ pub mod pairing {
                     .map(Boolean::constant)
                     .collect::<Vec<_>>();
 
-                let mut ans_g = <P as PairingGadget>::pairing(a_prep_g, b_prep_g)?;
+                let mut ans_g = P::pairing_gadget(a_prep_g, b_prep_g)?;
                 let mut ans_n = <P as PairingEngine>::pairing(a, b);
                 ans_n = ans_n.pow(s.into_repr());
                 ans_g = ans_g.pow_le(&s_iter)?;
