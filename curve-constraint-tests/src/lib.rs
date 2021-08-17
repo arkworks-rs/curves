@@ -231,7 +231,11 @@ pub mod fields {
 }
 
 pub mod curves {
-    use ark_ec::{ModelParameters, ProjectiveCurve, short_weierstrass_jacobian::GroupProjective as SWProjective, twisted_edwards_extended::GroupProjective as TEProjective};
+    use ark_ec::{
+        short_weierstrass_jacobian::GroupProjective as SWProjective,
+        twisted_edwards_extended::GroupProjective as TEProjective, ModelParameters,
+        ProjectiveCurve,
+    };
     use ark_ff::{BitIteratorLE, Field, FpParameters, One, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
     use ark_std::{test_rng, vec::Vec, UniformRand};
@@ -257,10 +261,12 @@ pub mod curves {
             let mut rng = test_rng();
             let a_native = C::rand(&mut rng);
             let b_native = C::rand(&mut rng);
-            let a = C::Var::new_variable(ark_relations::ns!(cs, "generate_a"), || Ok(a_native), mode)
-                .unwrap();
-            let b = C::Var::new_variable(ark_relations::ns!(cs, "generate_b"), || Ok(b_native), mode)
-                .unwrap();
+            let a =
+                C::Var::new_variable(ark_relations::ns!(cs, "generate_a"), || Ok(a_native), mode)
+                    .unwrap();
+            let b =
+                C::Var::new_variable(ark_relations::ns!(cs, "generate_b"), || Ok(b_native), mode)
+                    .unwrap();
 
             let zero = C::Var::zero();
             assert_eq!(zero.value()?, zero.value()?);

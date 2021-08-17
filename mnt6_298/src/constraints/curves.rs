@@ -16,12 +16,8 @@ pub type G2PreparedVar = mnt6::G2PreparedVar<Parameters>;
 #[test]
 fn test() {
     use ark_ec::models::mnt6::MNT6Parameters;
-    ark_curve_constraint_tests::curves::sw_test::<
-        <Parameters as MNT6Parameters>::G1Parameters,
-    >()
-    .unwrap();
-    ark_curve_constraint_tests::curves::sw_test::<
-        <Parameters as MNT6Parameters>::G2Parameters,
-    >()
-    .unwrap();
+    ark_curve_constraint_tests::curves::sw_test::<<Parameters as MNT6Parameters>::G1Parameters>()
+        .unwrap();
+    ark_curve_constraint_tests::curves::sw_test::<<Parameters as MNT6Parameters>::G2Parameters>()
+        .unwrap();
 }

@@ -16,12 +16,8 @@ pub type G2PreparedVar = bls12::G2PreparedVar<Parameters>;
 #[test]
 fn test() {
     use ark_ec::models::bls12::Bls12Parameters;
-    ark_curve_constraint_tests::curves::sw_test::<
-        <Parameters as Bls12Parameters>::G1Parameters,
-    >()
-    .unwrap();
-    ark_curve_constraint_tests::curves::sw_test::<
-        <Parameters as Bls12Parameters>::G2Parameters,
-    >()
-    .unwrap();
+    ark_curve_constraint_tests::curves::sw_test::<<Parameters as Bls12Parameters>::G1Parameters>()
+        .unwrap();
+    ark_curve_constraint_tests::curves::sw_test::<<Parameters as Bls12Parameters>::G2Parameters>()
+        .unwrap();
 }
