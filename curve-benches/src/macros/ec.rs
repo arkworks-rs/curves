@@ -196,6 +196,32 @@ macro_rules! ec_bench {
             });
         }
 
+        fn deser_uncompressed(b: &mut $crate::bencher::Bencher) {
+            use ark_ec::ProjectiveCurve;
+            use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
+            const SAMPLES: usize = 1000;
+
+            let mut rng = ark_std::test_rng();
+
+            let mut num_bytes = 0;
+            let tmp = <$projective>::rand(&mut rng).into_affine();
+            let v: Vec<_> = (0..SAMPLES)
+                .flat_map(|_| {
+                    let mut bytes = Vec::with_capacity(1000);
+                    tmp.serialize_uncompressed(&mut bytes).unwrap();
+                    num_bytes = bytes.len();
+                    bytes
+                })
+                .collect();
+
+            let mut count = 0;
+            b.iter(|| {
+                count = (count + 1) % SAMPLES;
+                let index = count * num_bytes;
+                <$affine>::deserialize_uncompressed(&v[index..(index + num_bytes)]).unwrap()
+            });
+        }
+	
         fn msm_131072(b: &mut $crate::bencher::Bencher) {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 131072;
@@ -224,6 +250,7 @@ macro_rules! ec_bench {
             deser,
             // ser_unchecked,
             deser_unchecked,
+	    deser_uncompressed,
             // msm_131072,
         );
     };
