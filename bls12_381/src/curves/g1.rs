@@ -47,11 +47,11 @@ impl SWModelParameters for Parameters {
 	p : &GroupAffine<Self>
     ) -> Option<bool> {
 	// r = (u⁴ - u² + 1) = u² * (u²-1) + 1 = u² * lambda + 1
-	// [r]P = 0 iff [u²] sigma(P) + P = 0
-	let sigma_p = sigma(p);
-	let mul_sigma_p:GroupAffine<_> =
-	    sigma_p.mul(MULTIPLIER_G1).into();
-	Some((mul_sigma_p+*p).is_zero())
+        // [r]P = 0 iff [u²] sigma(P) + P = 0
+        let sigma_p = sigma(p);
+        let mul_sigma_p:GroupAffine<_> =
+            sigma_p.mul(MULTIPLIER_G1).into();
+        Some((mul_sigma_p+*p).is_zero())
     }
 }
 
