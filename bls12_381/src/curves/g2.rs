@@ -5,10 +5,11 @@ use ark_ec::{
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::GroupAffine,
 };
+use ark_ec::bls12::Bls12Parameters;
 use ark_ff::{field_new, Zero, Field};
 
-pub type G2Affine = bls12::G2Affine<crate::Parameters>;
-pub type G2Projective = bls12::G2Projective<crate::Parameters>;
+pub type G2Affine = bls12::G2Affine<crate::Parameters0>;
+pub type G2Projective = bls12::G2Projective<crate::Parameters0>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
@@ -59,7 +60,11 @@ impl SWModelParameters for Parameters {
     ) -> Option<bool> {
 	let psi2_p = psi2(p);
 	let psi3_p = psi3(p);
-        let mul_psi3_p: GroupAffine<_> = (-psi3_p).mul(MULTIPLIER_G2).into();
+	let mut mul_psi3_p: GroupAffine<_> =
+	    psi3_p.mul(Parameters0::X[0]).into();
+	if Parameters0::X_IS_NEGATIVE {
+	    mul_psi3_p = -mul_psi3_p;
+	}
 	Some((mul_psi3_p + (-psi2_p) + *p).is_zero())
     }
 
@@ -146,6 +151,4 @@ pub fn psi3(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
     psi3_p.y *= PSI_Y;
     -psi3_p
 }
-
-pub const MULTIPLIER_G2:Fr = field_new!(Fr, "15132376222941642752");
 	
