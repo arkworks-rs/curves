@@ -1,6 +1,8 @@
 #![allow(unused_imports)]
-use ark_ec::{models::SWModelParameters, AffineCurve, PairingEngine,
-	     ProjectiveCurve, short_weierstrass_jacobian::{GroupAffine,GroupProjective},
+use ark_ec::{
+    models::SWModelParameters,
+    short_weierstrass_jacobian::{GroupAffine, GroupProjective},
+    AffineCurve, PairingEngine, ProjectiveCurve,
 };
 use ark_ff::{
     fields::{Field, FpParameters, PrimeField, SquareRootField},
@@ -124,17 +126,17 @@ fn test_g1_generator_raw() {
 //     let mut psi_p = g2::psi(&p);
 //     psi_p = g2::psi(&psi_p);
 //     let psi2_p = g2::psi2(&p);
-//     assert_eq!(psi_p, psi2_p);    
+//     assert_eq!(psi_p, psi2_p);
 //     psi_p = g2::psi(&psi_p);
 //     let psi3_p = g2::psi3(&p);
 //     assert_eq!(psi3_p, psi_p);
 // }
 
-// #[test]
-// fn test_sigma() {
-//     let p = G1Affine::prime_subgroup_generator();
-//     let mut sigma_p = g1::sigma(&p);
-//     sigma_p = g1::sigma(&sigma_p);
-//     sigma_p = g1::sigma(&sigma_p);
-//     assert_eq!(sigma_p, p);
-// }
+#[test]
+fn test_sigma() {
+    let p = G1Affine::prime_subgroup_generator();
+    let mut sigma_p = g1::sigma(&p);
+    sigma_p = g1::sigma(&sigma_p);
+    sigma_p = g1::sigma(&sigma_p);
+    assert_eq!(sigma_p, p);
+}
