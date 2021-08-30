@@ -54,62 +54,62 @@ n_fold = []
 [build-dependencies]
 rustc_version = "0.2"
 
-[[bench]]
-name = "bls12_377"
-path = "benches/bls12_377.rs"
-harness = false
+# [[bench]]
+# name = "bls12_377"
+# path = "benches/bls12_377.rs"
+# harness = false
 
 [[bench]]
 name = "bls12_381"
 path = "benches/bls12_381.rs"
 harness = false
 
-[[bench]]
-name = "bn254"
-path = "benches/bn254.rs"
-harness = false
+# [[bench]]
+# name = "bn254"
+# path = "benches/bn254.rs"
+# harness = false
 
-[[bench]]
-name = "bw6_761"
-path = "benches/bw6_761.rs"
-harness = false
+# [[bench]]
+# name = "bw6_761"
+# path = "benches/bw6_761.rs"
+# harness = false
 
-[[bench]]
-name = "cp6_782"
-path = "benches/cp6_782.rs"
-harness = false
+# [[bench]]
+# name = "cp6_782"
+# path = "benches/cp6_782.rs"
+# harness = false
 
-[[bench]]
-name = "ed_on_bls12_381"
-path = "benches/ed_on_bls12_381.rs"
-harness = false
+# [[bench]]
+# name = "ed_on_bls12_381"
+# path = "benches/ed_on_bls12_381.rs"
+# harness = false
 
-[[bench]]
-name = "mnt4_298"
-path = "benches/mnt4_298.rs"
-harness = false
+# [[bench]]
+# name = "mnt4_298"
+# path = "benches/mnt4_298.rs"
+# harness = false
 
-[[bench]]
-name = "mnt6_298"
-path = "benches/mnt6_298.rs"
-harness = false
+# [[bench]]
+# name = "mnt6_298"
+# path = "benches/mnt6_298.rs"
+# harness = false
 
-[[bench]]
-name = "mnt4_753"
-path = "benches/mnt4_753.rs"
-harness = false
+# [[bench]]
+# name = "mnt4_753"
+# path = "benches/mnt4_753.rs"
+# harness = false
 
-[[bench]]
-name = "mnt6_753"
-path = "benches/mnt6_753.rs"
-harness = false
+# [[bench]]
+# name = "mnt6_753"
+# path = "benches/mnt6_753.rs"
+# harness = false
 
-[[bench]]
-name = "pallas"
-path = "benches/pallas.rs"
-harness = false
+# [[bench]]
+# name = "pallas"
+# path = "benches/pallas.rs"
+# harness = false
 
-[[bench]]
-name = "vesta"
-path = "benches/vesta.rs"
-harness = false
+# [[bench]]
+# name = "vesta"
+# path = "benches/vesta.rs"
+# harness = false
