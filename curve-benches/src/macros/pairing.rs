@@ -67,14 +67,14 @@ macro_rules! pairing_bench {
             });
         }
 
-	fn nothing(b: &mut $crate::bencher::Bencher) {
+        fn nothing(b: &mut $crate::bencher::Bencher) {
             b.iter(|| {
                 let tmp = 0;
-               tmp
+                tmp
             });
         }
-	
+
         // $crate::benchmark_group!(pairing, miller_loop, final_exponentiation, full_pairing,);
-        $crate::benchmark_group!(pairing, nothing);	
+        $crate::benchmark_group!(pairing, nothing);
     };
 }

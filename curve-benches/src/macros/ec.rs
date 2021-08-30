@@ -221,7 +221,7 @@ macro_rules! ec_bench {
                 <$affine>::deserialize_uncompressed(&v[index..(index + num_bytes)]).unwrap()
             });
         }
-	
+
         fn msm_131072(b: &mut $crate::bencher::Bencher) {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
             const SAMPLES: usize = 131072;
@@ -250,7 +250,7 @@ macro_rules! ec_bench {
             deser,
             // ser_unchecked,
             deser_unchecked,
-	    deser_uncompressed,
+            deser_uncompressed,
             // msm_131072,
         );
     };
