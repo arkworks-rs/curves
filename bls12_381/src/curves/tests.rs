@@ -120,17 +120,17 @@ fn test_g1_generator_raw() {
     }
 }
 
-// #[test]
-// fn test_psi() {
-//     let p = G2Affine::prime_subgroup_generator();
-//     let mut psi_p = g2::psi(&p);
-//     psi_p = g2::psi(&psi_p);
-//     let psi2_p = g2::psi2(&p);
-//     assert_eq!(psi_p, psi2_p);
-//     psi_p = g2::psi(&psi_p);
-//     let psi3_p = g2::psi3(&p);
-//     assert_eq!(psi3_p, psi_p);
-// }
+#[test]
+fn test_psi() {
+    let p = G2Affine::prime_subgroup_generator();
+    let mut psi_p = g2::psi(&p);
+    psi_p = g2::psi(&psi_p);
+    let psi2_p = g2::psi2(&p);
+    assert_eq!(psi_p, psi2_p);
+    psi_p = g2::psi(&psi_p);
+    let psi3_p = g2::psi3(&p);
+    assert_eq!(psi3_p, psi_p);
+}
 
 #[test]
 fn test_sigma() {
