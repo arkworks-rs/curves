@@ -32,14 +32,6 @@ members = [
     "vesta",
 ]
 
-[patch.crates-io]
-# ark-ec = { path = "../algebra/ec" }
-# ark-ff = { path = "../algebra/ff" }
-# ark-serialize = { path = "../algebra/serialize" }
-ark-ec = { git="https://github.com/heliaxdev/algebra.git", path="ec/",branch="simon/fast-subgroup-checks" }
-ark-ff = { git="https://github.com/heliaxdev/algebra.git", path="ff/",branch="simon/fast-subgroup-checks" }
-ark-serialize = { git="https://github.com/heliaxdev/algebra.git", path="serialize/",branch="simon/fast-subgroup-checks" }
-
 [profile.release]
 opt-level = 3
 lto = "thin"
