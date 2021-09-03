@@ -1,4 +1,3 @@
-
 use ark_curve_benches::*;
 use ark_std::ops::{AddAssign, MulAssign, SubAssign};
 
