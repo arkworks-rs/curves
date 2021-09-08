@@ -45,15 +45,23 @@ impl SWModelParameters for Parameters {
     }
 
     fn is_in_correct_subgroup_assuming_on_curve(p: &GroupAffine<Parameters>) -> bool {
-        // r = (u⁴ - u² + 1) = u² * (u²-1) + 1 = u² * lambda + 1
-        // [r]P = 0 iff [u²] sigma(P) + P = 0
-        let sigma_p = sigma(p);
-        let mut mul_sigma_p: GroupAffine<_> =
-            sigma_p.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
-        mul_sigma_p = mul_sigma_p
-            .mul(BigInteger([Parameters0::X[0], 0, 0, 0]))
-            .into();
-        (mul_sigma_p + *p).is_zero()
+        // Check that sigma(P) == -[X²]P
+        // if [X]P = P during the computation, return False
+        if p.is_zero() {
+            true
+        }
+        else {
+            let sigma_p = sigma(p);
+            let x_times_p: GroupAffine<_> =
+                p.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
+            if (x_times_p + (-*p)).is_zero() {
+                false
+            }
+            else {
+                let x2_times_p: GroupAffine<_> = x_times_p.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
+                (x2_times_p + sigma_p).is_zero()
+            }
+        }
     }
 }
 
@@ -67,7 +75,7 @@ pub const G1_GENERATOR_X: Fq = field_new!(Fq, "368541675371338701678108831518307
 #[rustfmt::skip]
 pub const G1_GENERATOR_Y: Fq = field_new!(Fq, "1339506544944476473020471379941921221584933875938349620426543736416511423956333506472724655353366534992391756441569");
 
-pub const BETA: Fq = field_new!(Fq,"4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436");
+pub const BETA: Fq = field_new!(Fq,"793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350");
 
 pub fn sigma(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
     let mut sigma_p = *p;
