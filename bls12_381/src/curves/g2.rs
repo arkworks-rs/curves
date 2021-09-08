@@ -57,9 +57,10 @@ impl SWModelParameters for Parameters {
 
     fn is_in_correct_subgroup_assuming_on_curve(point: &GroupAffine<Parameters>) -> bool {
         // check that [p]P = [X]P
-        let mut x_times_point: GroupAffine<_> = point.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
+        let mut x_times_point: GroupAffine<_> =
+            point.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
         if Parameters0::X_IS_NEGATIVE {
-            x_times_point = - x_times_point;
+            x_times_point = -x_times_point;
         }
         let p_times_point = psi(point);
         (-x_times_point + p_times_point).is_zero()
@@ -109,7 +110,7 @@ pub const PSI_Y: Fq2 = field_new!(
        "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
 );
 pub fn psi(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
-    // frobenius endomorphism on the G1 curve, conjugated with the sextic twist  
+    // frobenius endomorphism on the G1 curve, conjugated with the sextic twist
     let mut psi_p = *p;
     psi_p.x.frobenius_map(1);
     psi_p.y.frobenius_map(1);

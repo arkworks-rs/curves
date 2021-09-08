@@ -49,24 +49,22 @@ impl SWModelParameters for Parameters {
         // if [X]P = P during the computation, return False
         if p.is_zero() {
             true
-        }
-        else {
+        } else {
             let sigma_p = sigma(p);
             let mut x_times_p: GroupAffine<_> =
-                p.mul(BigInteger([Parameters0::X[0], 0, 0,
-				  0])).into();
-	    if Parameters0::X_IS_NEGATIVE {
-		x_times_p = - x_times_p;
-	    }
-	    if (-*p + x_times_p).is_zero() {
-                    false
+                p.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
+            if Parameters0::X_IS_NEGATIVE {
+                x_times_p = -x_times_p;
             }
-            else {
-                let mut x2_times_p: GroupAffine<_> =
-		    x_times_p.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
-		if Parameters0::X_IS_NEGATIVE {
-		    x2_times_p = -x2_times_p;
-		}
+            if (-*p + x_times_p).is_zero() {
+                false
+            } else {
+                let mut x2_times_p: GroupAffine<_> = x_times_p
+                    .mul(BigInteger([Parameters0::X[0], 0, 0, 0]))
+                    .into();
+                if Parameters0::X_IS_NEGATIVE {
+                    x2_times_p = -x2_times_p;
+                }
                 (x2_times_p + sigma_p).is_zero()
             }
         }
