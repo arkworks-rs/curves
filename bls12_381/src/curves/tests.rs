@@ -121,18 +121,6 @@ fn test_g1_generator_raw() {
 }
 
 #[test]
-fn test_psi() {
-    let generator = G2Affine::prime_subgroup_generator();
-    let mut psi_generator = g2::psi(&generator);
-    psi_generator = g2::psi(&psi_generator);
-    let psi2_generator = g2::psi2(&generator);
-    assert_eq!(psi_generator, psi2_generator);
-    psi_generator = g2::psi(&psi_generator);
-    let psi3_generator = g2::psi3(&generator);
-    assert_eq!(psi3_generator, psi_generator);
-}
-
-#[test]
 fn test_sigma() {
     let generator = G1Affine::prime_subgroup_generator();
     let mut sigma_generator = g1::sigma(&generator);
