@@ -55,15 +55,14 @@ impl SWModelParameters for Parameters {
         Self::BaseField::zero()
     }
 
-    fn is_in_correct_subgroup_assuming_on_curve(p: &GroupAffine<Parameters>) -> bool {
-        let psi2_p = psi2(p);
-        let psi3_p = psi3(p);
-        let mut mul_psi3_p: GroupAffine<_> =
-            psi3_p.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
+    fn is_in_correct_subgroup_assuming_on_curve(point: &GroupAffine<Parameters>) -> bool {
+        // check that [p]P = [X]P
+        let mut x_times_point: GroupAffine<_> = point.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
         if Parameters0::X_IS_NEGATIVE {
-            mul_psi3_p = -mul_psi3_p;
+            x_times_point = - x_times_point;
         }
-        (mul_psi3_p + (-psi2_p) + *p).is_zero()
+        let p_times_point = psi(point);
+        (-x_times_point + p_times_point).is_zero()
     }
 }
 
@@ -96,20 +95,21 @@ pub const PSI_X:Fq2 = field_new!(
     Fq2,
     FQ_ZERO,
     field_new!(
-	Fq,
-	"4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939437"
+       Fq,
+       "4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939437"
     )
 );
 pub const PSI_Y: Fq2 = field_new!(
     Fq2,
     field_new!(
-	Fq,
-	"2973677408986561043442465346520108879172042883009249989176415018091420807192182638567116318576472649347015917690530"),
+       Fq,
+       "2973677408986561043442465346520108879172042883009249989176415018091420807192182638567116318576472649347015917690530"),
     field_new!(
-	Fq,
-	"1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
+       Fq,
+       "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
 );
 pub fn psi(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
+    // frobenius endomorphism on the G1 curve, conjugated with the sextic twist  
     let mut psi_p = *p;
     psi_p.x.frobenius_map(1);
     psi_p.y.frobenius_map(1);
@@ -119,31 +119,4 @@ pub fn psi(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
     psi_p.x.c1 = tmp.c0 * PSI_X.c1;
     psi_p.y *= PSI_Y;
     psi_p
-}
-
-// psi2(x,y) = psi²(x,y) = (x*PSI2_X, -y) where PSI2_X = PSI_X^{p+1}
-// is in Fq and PSI_Y^{p+1} = -1.
-pub const PSI2_X:Fq =
-    field_new!(
-	Fq,
-	"4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436"
-    );
-pub fn psi2(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
-    let mut psi2_p = -*p;
-    psi2_p.x.mul_assign_by_basefield(&PSI2_X);
-    psi2_p
-}
-
-// psi3(x,y) = psi³(x,y) = (x^p*(-u), -y^p * PSI_Y)
-// (PSI2_X^p * PSI_X = -u and (-1)^p = -1)
-pub fn psi3(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
-    let mut psi3_p = p.clone();
-    psi3_p.x.frobenius_map(1);
-    psi3_p.y.frobenius_map(1);
-    // psi3_p.x *= (-u)
-    let tmp = psi3_p.x;
-    psi3_p.x.c1 = -tmp.c0;
-    psi3_p.x.c0 = tmp.c1; // * (-u²) but u² = -1
-    psi3_p.y *= PSI_Y;
-    -psi3_p
 }

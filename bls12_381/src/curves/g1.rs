@@ -52,13 +52,21 @@ impl SWModelParameters for Parameters {
         }
         else {
             let sigma_p = sigma(p);
-            let x_times_p: GroupAffine<_> =
-                p.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
-            if (x_times_p + (-*p)).is_zero() {
-                false
+            let mut x_times_p: GroupAffine<_> =
+                p.mul(BigInteger([Parameters0::X[0], 0, 0,
+				  0])).into();
+	    if Parameters0::X_IS_NEGATIVE {
+		x_times_p = - x_times_p;
+	    }
+	    if (-*p + x_times_p).is_zero() {
+                    false
             }
             else {
-                let x2_times_p: GroupAffine<_> = x_times_p.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
+                let mut x2_times_p: GroupAffine<_> =
+		    x_times_p.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
+		if Parameters0::X_IS_NEGATIVE {
+		    x2_times_p = -x2_times_p;
+		}
                 (x2_times_p + sigma_p).is_zero()
             }
         }
