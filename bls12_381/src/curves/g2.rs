@@ -57,11 +57,10 @@ impl SWModelParameters for Parameters {
 
     fn is_in_correct_subgroup_assuming_on_curve(point: &GroupAffine<Parameters>) -> bool {
         // check that [p]P = [X]P
-	// TODO
-        let mut x_times_point =
-	    point.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
+        // TODO
+        let mut x_times_point = point.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
 
-	// The check is `p_times_point - x_times_point == 0`?
+        // The check is `p_times_point - x_times_point == 0`?
         // If `x` is negative, then the LHS becomes `p_times_point + x_times_point`.
         // If `x` is positive, then it remains `p_times_point - x_times_point`.
         // So, we negate if `x` is positive, and add the result.
