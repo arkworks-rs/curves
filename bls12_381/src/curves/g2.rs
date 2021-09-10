@@ -8,8 +8,8 @@ use ark_ec::{
 };
 use ark_ff::{biginteger::BigInteger256 as BigInteger, field_new, Field, Zero};
 
-pub type G2Affine = bls12::G2Affine<crate::Parameters0>;
-pub type G2Projective = bls12::G2Projective<crate::Parameters0>;
+pub type G2Affine = bls12::G2Affine<crate::Parameters>;
+pub type G2Projective = bls12::G2Projective<crate::Parameters>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
@@ -58,8 +58,8 @@ impl SWModelParameters for Parameters {
     fn is_in_correct_subgroup_assuming_on_curve(point: &GroupAffine<Parameters>) -> bool {
         // check that [p]P = [X]P
         let mut x_times_point: GroupAffine<_> =
-            point.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
-        if Parameters0::X_IS_NEGATIVE {
+            point.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0])).into();
+        if crate::Parameters::X_IS_NEGATIVE {
             x_times_point = -x_times_point;
         }
         let p_times_point = psi(point);

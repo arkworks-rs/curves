@@ -13,11 +13,11 @@ pub use self::{
     g2::{G2Affine, G2Projective},
 };
 
-pub type Bls12_381 = Bls12<Parameters0>;
+pub type Bls12_381 = Bls12<Parameters>;
 
-pub struct Parameters0;
+pub struct Parameters;
 
-impl Bls12Parameters for Parameters0 {
+impl Bls12Parameters for Parameters {
     const X: &'static [u64] = &[0xd201000000010000];
     const X_IS_NEGATIVE: bool = true;
     const TWIST_TYPE: TwistType = TwistType::M;

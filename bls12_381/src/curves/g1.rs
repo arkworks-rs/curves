@@ -8,8 +8,8 @@ use ark_ec::{
 };
 use ark_ff::{biginteger::BigInteger256 as BigInteger, field_new, Zero};
 
-pub type G1Affine = bls12::G1Affine<crate::Parameters0>;
-pub type G1Projective = bls12::G1Projective<crate::Parameters0>;
+pub type G1Affine = bls12::G1Affine<crate::Parameters>;
+pub type G1Projective = bls12::G1Projective<crate::Parameters>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
@@ -52,17 +52,17 @@ impl SWModelParameters for Parameters {
         } else {
             let sigma_p = sigma(p);
             let mut x_times_p: GroupAffine<_> =
-                p.mul(BigInteger([Parameters0::X[0], 0, 0, 0])).into();
-            if Parameters0::X_IS_NEGATIVE {
+                p.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0])).into();
+            if crate::Parameters::X_IS_NEGATIVE {
                 x_times_p = -x_times_p;
             }
             if (-*p + x_times_p).is_zero() {
                 false
             } else {
                 let mut x2_times_p: GroupAffine<_> = x_times_p
-                    .mul(BigInteger([Parameters0::X[0], 0, 0, 0]))
+                    .mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]))
                     .into();
-                if Parameters0::X_IS_NEGATIVE {
+                if crate::Parameters::X_IS_NEGATIVE {
                     x2_times_p = -x2_times_p;
                 }
                 (x2_times_p + sigma_p).is_zero()
@@ -81,9 +81,13 @@ pub const G1_GENERATOR_X: Fq = field_new!(Fq, "368541675371338701678108831518307
 #[rustfmt::skip]
 pub const G1_GENERATOR_Y: Fq = field_new!(Fq, "1339506544944476473020471379941921221584933875938349620426543736416511423956333506472724655353366534992391756441569");
 
+// BETA is a third root of unity, meaning that BETA²+BETA+1 = 0
 pub const BETA: Fq = field_new!(Fq,"793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350");
 
 pub fn sigma(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
+    // Endomorphism of the curve
+    // sigma(x,y) = (BETA*x, y) where BETA is a third root of unity of
+    // Fq
     let mut sigma_p = *p;
     sigma_p.x *= BETA;
     sigma_p
