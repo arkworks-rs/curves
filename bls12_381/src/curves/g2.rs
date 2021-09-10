@@ -56,7 +56,9 @@ impl SWModelParameters for Parameters {
     }
 
     fn is_in_correct_subgroup_assuming_on_curve(point: &GroupAffine<Parameters>) -> bool {
-        // check that [p]P = [X]P
+        // Algorithm from https://eprint.iacr.org/2021/1130,
+        // see Section 4.
+	// Checks that [p]P = [X]P
         // TODO
         let mut x_times_point = point.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
 

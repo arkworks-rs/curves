@@ -44,7 +44,9 @@ impl SWModelParameters for Parameters {
     }
 
     fn is_in_correct_subgroup_assuming_on_curve(p: &GroupAffine<Parameters>) -> bool {
-        // Check that sigma(P) == -[X²]P
+        // Algorithm from https://eprint.iacr.org/2021/1130,
+        // see Section 6.
+	// Check that sigma(P) == -[X²]P
         // if [X]P = P during the computation, return False
         if p.is_zero() {
             true
