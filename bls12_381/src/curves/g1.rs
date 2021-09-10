@@ -4,10 +4,9 @@ use ark_ec::{
     bls12,
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::GroupAffine,
-    AffineCurve,
+    AffineCurve, ProjectiveCurve,
 };
 use ark_ff::{biginteger::BigInteger256 as BigInteger, field_new, Zero};
-
 pub type G1Affine = bls12::G1Affine<crate::Parameters>;
 pub type G1Projective = bls12::G1Projective<crate::Parameters>;
 
@@ -51,21 +50,21 @@ impl SWModelParameters for Parameters {
             true
         } else {
             let sigma_p = sigma(p);
-            let mut x_times_p: GroupAffine<_> =
-                p.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0])).into();
+	    // TODO
+            let mut x_times_p =
+                p.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
             if crate::Parameters::X_IS_NEGATIVE {
                 x_times_p = -x_times_p;
             }
-            if (-*p + x_times_p).is_zero() {
+            if x_times_p.add_mixed(p).is_zero() {
                 false
             } else {
-                let mut x2_times_p: GroupAffine<_> = x_times_p
-                    .mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]))
-                    .into();
+		// TODO
+                let mut x2_times_p = x_times_p.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
                 if crate::Parameters::X_IS_NEGATIVE {
                     x2_times_p = -x2_times_p;
                 }
-                (x2_times_p + sigma_p).is_zero()
+                x2_times_p.add_mixed(&sigma_p).is_zero()
             }
         }
     }
