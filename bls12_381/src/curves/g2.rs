@@ -4,8 +4,7 @@ use ark_ec::{
     bls12,
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::GroupAffine,
-    short_weierstrass_jacobian::GroupProjective,
-    AffineCurve,
+    AffineCurve, ProjectiveCurve,
 };
 use ark_ff::{biginteger::BigInteger256 as BigInteger, field_new, Field, Zero};
 
@@ -59,12 +58,18 @@ impl SWModelParameters for Parameters {
     fn is_in_correct_subgroup_assuming_on_curve(point: &GroupAffine<Parameters>) -> bool {
         // check that [p]P = [X]P
 	// TODO
-        let mut x_times_point = point.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
-        if crate::Parameters::X_IS_NEGATIVE {
+        let mut x_times_point =
+	    point.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
+
+	// The check is `p_times_point - x_times_point == 0`?
+        // If `x` is negative, then the LHS becomes `p_times_point + x_times_point`.
+        // If `x` is positive, then it remains `p_times_point - x_times_point`.
+        // So, we negate if `x` is positive, and add the result.
+        if !crate::Parameters::X_IS_NEGATIVE {
             x_times_point = -x_times_point;
         }
-        let p_times_point:GroupProjective<Parameters> = psi(point).into();
-        (-x_times_point + p_times_point).is_zero()
+        let p_times_point = psi(point);
+        x_times_point.add_mixed(&p_times_point).is_zero()
     }
 }
 
