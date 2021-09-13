@@ -97,7 +97,7 @@ pub const G2_GENERATOR_Y_C0: Fq = field_new!(Fq, "198515060228729193556805452117
 #[rustfmt::skip]
 pub const G2_GENERATOR_Y_C1: Fq = field_new!(Fq, "927553665492332455747201965776037880757740193453592970025027978793976877002675564980949289727957565575433344219582");
 
-// psi(x,y) = (x^p * PSI_X, y^p * PSI_Y) is the Frobenius composed
+// psi(x,y) = (x**p * PSI_X, y**p * PSI_Y) is the Frobenius composed
 // with the quadratic twist and its inverse
 
 // PSI_X = 1/(u+1)**((p-1)//3) where u is the generator of Fp² with u²=-1
@@ -124,7 +124,7 @@ pub const PSI_Y: Fq2 = field_new!(
 pub fn psi(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
     // Psi is an endomorphism of the curve defined with the sextic
     // twists and the frobenius endomorphism on the G1 curve
-    // (x,y) -> (x^p / (u+1)**((p-1)//3), y^p / (u+1)**((p-1)//2))
+    // (x,y) -> (x**p / (u+1)**((p-1)//3), y**p / (u+1)**((p-1)//2))
     // where u is the generator of Fp² with u²=-1
     let mut psi_p = *p;
     psi_p.x.frobenius_map(1);
