@@ -51,7 +51,6 @@ impl SWModelParameters for Parameters {
         if p.is_zero() {
             true
         } else {
-            let sigma_p = sigma(p);
             // TODO
             let mut x_times_p = p.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
             if crate::Parameters::X_IS_NEGATIVE {
@@ -60,7 +59,8 @@ impl SWModelParameters for Parameters {
             if x_times_p.add_mixed(p).is_zero() {
                 false
             } else {
-                // TODO
+		let sigma_p = sigma(p);
+		// TODO
                 let mut x2_times_p = x_times_p.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
                 if crate::Parameters::X_IS_NEGATIVE {
                     x2_times_p = -x2_times_p;
