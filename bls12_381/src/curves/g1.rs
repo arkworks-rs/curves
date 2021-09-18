@@ -4,9 +4,11 @@ use ark_ec::{
     bls12,
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::GroupAffine,
-    AffineCurve, ProjectiveCurve,
+    AffineCurve,
 };
-use ark_ff::{biginteger::BigInteger256 as BigInteger, field_new, Zero};
+use ark_ff::{biginteger::BigInteger256, field_new, Zero};
+use ark_std::ops::Neg;
+
 pub type G1Affine = bls12::G1Affine<crate::Parameters>;
 pub type G1Projective = bls12::G1Projective<crate::Parameters>;
 
@@ -44,30 +46,17 @@ impl SWModelParameters for Parameters {
     }
 
     fn is_in_correct_subgroup_assuming_on_curve(p: &GroupAffine<Parameters>) -> bool {
-        // Algorithm from https://eprint.iacr.org/2021/1130,
-        // see Section 6.
-        // Check that sigma(P) == -[X²]P
-        // if [X]P = P during the computation, return False
-        if p.is_zero() {
-            true
-        } else {
-            // TODO
-            let mut x_times_p = p.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
-            if crate::Parameters::X_IS_NEGATIVE {
-                x_times_p = -x_times_p;
-            }
-            if x_times_p.add_mixed(p).is_zero() {
-                false
-            } else {
-                let sigma_p = sigma(p);
-                // TODO
-                let mut x2_times_p = x_times_p.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
-                if crate::Parameters::X_IS_NEGATIVE {
-                    x2_times_p = -x2_times_p;
-                }
-                x2_times_p.add_mixed(&sigma_p).is_zero()
-            }
-        }
+        // Algorithm from Section 6 of https://eprint.iacr.org/2021/1130.
+        //
+        // Check that endomorphism_p(P) == -[X^2]P
+
+        let x = Self::ScalarField::from(BigInteger256::new([crate::Parameters::X[0], 0, 0, 0]));
+        let x_squared = x * &x;
+
+        let x_times_p = p.mul(x_squared).neg();
+        let endomorphism_p = endomorphism(p);
+
+        x_times_p.eq(&endomorphism_p)
     }
 }
 
@@ -81,14 +70,13 @@ pub const G1_GENERATOR_X: Fq = field_new!(Fq, "368541675371338701678108831518307
 #[rustfmt::skip]
 pub const G1_GENERATOR_Y: Fq = field_new!(Fq, "1339506544944476473020471379941921221584933875938349620426543736416511423956333506472724655353366534992391756441569");
 
-// BETA is a third root of unity, meaning that BETA²+BETA+1 = 0
-pub const BETA: Fq = field_new!(Fq,"793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350");
+/// BETA is a non-trivial cubic root of unity in Fq.
+pub const BETA: Fq = field_new!(Fq, "793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350");
 
-pub fn sigma(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
-    // Endomorphism of the curve
-    // sigma(x,y) = (BETA*x, y) where BETA is a third root of unity of
-    // Fq
-    let mut sigma_p = *p;
-    sigma_p.x *= BETA;
-    sigma_p
+pub fn endomorphism(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
+    // Endomorphism of the points on the curve.
+    // endomorphism_p(x,y) = (BETA * x, y) where BETA is a non-trivial cubic root of unity in Fq.
+    let mut res = (*p).clone();
+    res.x *= BETA;
+    res
 }

@@ -4,10 +4,7 @@ use ark_ec::{
     short_weierstrass_jacobian::{GroupAffine, GroupProjective},
     AffineCurve, PairingEngine, ProjectiveCurve,
 };
-use ark_ff::{
-    fields::{Field, FpParameters, PrimeField, SquareRootField},
-    One, Zero,
-};
+use ark_ff::{fields::{Field, FpParameters, PrimeField, SquareRootField}, One, Zero, UniformRand, BitIteratorBE};
 use ark_serialize::CanonicalSerialize;
 use ark_std::rand::Rng;
 use ark_std::test_rng;
@@ -15,6 +12,7 @@ use core::ops::{AddAssign, MulAssign};
 
 use crate::{g1, g2, Bls12_381, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
 use ark_algebra_test_templates::{curves::*, groups::*};
+use ark_ec::group::Group;
 
 #[test]
 fn test_g1_projective_curve() {
@@ -121,10 +119,24 @@ fn test_g1_generator_raw() {
 }
 
 #[test]
-fn test_sigma() {
-    let generator = G1Affine::prime_subgroup_generator();
-    let mut sigma_generator = g1::sigma(&generator);
-    sigma_generator = g1::sigma(&sigma_generator);
-    sigma_generator = g1::sigma(&sigma_generator);
-    assert_eq!(sigma_generator, generator);
+fn test_g1_subgroup_membership_via_endomorphism() {
+    let mut rng = test_rng();
+    let generator = G1Projective::rand(&mut rng).into_affine();
+    assert!(generator.is_in_correct_subgroup_assuming_on_curve());
+}
+
+#[test]
+fn test_g1_subgroup_non_membership_via_endomorphism() {
+    let mut rng = test_rng();
+    loop {
+        let x = Fq::rand(&mut rng);
+        let greatest = rng.gen();
+
+        if let Some(p) = G1Affine::get_point_from_x(x, greatest) {
+            if !p.into_projective().mul(Fr::characteristic()).is_zero() {
+                assert!(!p.is_in_correct_subgroup_assuming_on_curve());
+                return;
+            }
+        }
+    }
 }
