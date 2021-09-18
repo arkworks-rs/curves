@@ -4,7 +4,10 @@ use ark_ec::{
     short_weierstrass_jacobian::{GroupAffine, GroupProjective},
     AffineCurve, PairingEngine, ProjectiveCurve,
 };
-use ark_ff::{fields::{Field, FpParameters, PrimeField, SquareRootField}, One, Zero, UniformRand, BitIteratorBE};
+use ark_ff::{
+    fields::{Field, FpParameters, PrimeField, SquareRootField},
+    BitIteratorBE, One, UniformRand, Zero,
+};
 use ark_serialize::CanonicalSerialize;
 use ark_std::rand::Rng;
 use ark_std::test_rng;
