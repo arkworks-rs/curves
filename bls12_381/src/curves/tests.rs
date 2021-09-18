@@ -119,6 +119,11 @@ fn test_g1_generator_raw() {
 }
 
 #[test]
+fn test_g1_endomorphism_beta() {
+    assert!(g1::BETA.pow(&[3u64]).is_one());
+}
+
+#[test]
 fn test_g1_subgroup_membership_via_endomorphism() {
     let mut rng = test_rng();
     let generator = G1Projective::rand(&mut rng).into_affine();
