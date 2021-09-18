@@ -58,6 +58,6 @@ debug-assertions = true
 debug = true
 
 [patch.crates-io]
-ark-ec = { git="https://github.com/arkworks-rs/algebra" }
-ark-ff = { git="https://github.com/arkworks-rs/algebra" }
-ark-serialize = { git="https://github.com/arkworks-rs/algebra" }
+ark-ec = { git = "https://github.com/arkworks-rs/algebra" }
+ark-ff = { git = "https://github.com/arkworks-rs/algebra" }
+ark-serialize = { git = "https://github.com/arkworks-rs/algebra" }
