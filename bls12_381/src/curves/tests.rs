@@ -148,3 +148,26 @@ fn test_g1_subgroup_non_membership_via_endomorphism() {
         }
     }
 }
+
+#[test]
+fn test_g2_subgroup_membership_via_endomorphism() {
+    let mut rng = test_rng();
+    let generator = G2Projective::rand(&mut rng).into_affine();
+    assert!(generator.is_in_correct_subgroup_assuming_on_curve());
+}
+
+#[test]
+fn test_g2_subgroup_non_membership_via_endomorphism() {
+    let mut rng = test_rng();
+    loop {
+        let x = Fq2::rand(&mut rng);
+        let greatest = rng.gen();
+
+        if let Some(p) = G2Affine::get_point_from_x(x, greatest) {
+            if !p.into_projective().mul(Fr::characteristic()).is_zero() {
+                assert!(!p.is_in_correct_subgroup_assuming_on_curve());
+                return;
+            }
+        }
+    }
+}

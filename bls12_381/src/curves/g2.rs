@@ -4,9 +4,9 @@ use ark_ec::{
     bls12,
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::GroupAffine,
-    AffineCurve, ProjectiveCurve,
+    AffineCurve,
 };
-use ark_ff::{biginteger::BigInteger256 as BigInteger, field_new, Field, Zero};
+use ark_ff::{biginteger::BigInteger256, field_new, Field, Zero};
 
 pub type G2Affine = bls12::G2Affine<crate::Parameters>;
 pub type G2Projective = bls12::G2Projective<crate::Parameters>;
@@ -56,21 +56,18 @@ impl SWModelParameters for Parameters {
     }
 
     fn is_in_correct_subgroup_assuming_on_curve(point: &GroupAffine<Parameters>) -> bool {
-        // Algorithm from https://eprint.iacr.org/2021/1130,
-        // see Section 4.
+        // Algorithm from Section 4 of https://eprint.iacr.org/2021/1130.
+        //
         // Checks that [p]P = [X]P
-        // TODO
-        let mut x_times_point = point.mul(BigInteger([crate::Parameters::X[0], 0, 0, 0]));
 
-        // The check is `p_times_point - x_times_point == 0`?
-        // If `x` is negative, then the LHS becomes `p_times_point + x_times_point`.
-        // If `x` is positive, then it remains `p_times_point - x_times_point`.
-        // So, we negate if `x` is positive, and add the result.
-        if !crate::Parameters::X_IS_NEGATIVE {
+        let mut x_times_point = point.mul(BigInteger256([crate::Parameters::X[0], 0, 0, 0]));
+        if crate::Parameters::X_IS_NEGATIVE {
             x_times_point = -x_times_point;
         }
-        let p_times_point = psi(point);
-        x_times_point.add_mixed(&p_times_point).is_zero()
+
+        let p_times_point = p_power_endomorphism(point);
+
+        x_times_point.eq(&p_times_point)
     }
 }
 
@@ -100,8 +97,8 @@ pub const G2_GENERATOR_Y_C1: Fq = field_new!(Fq, "927553665492332455747201965776
 // psi(x,y) = (x**p * PSI_X, y**p * PSI_Y) is the Frobenius composed
 // with the quadratic twist and its inverse
 
-// PSI_X = 1/(u+1)**((p-1)//3) where u is the generator of Fp² with u²=-1
-pub const PSI_X:Fq2 = field_new!(
+// PSI_X = 1/(u+1)^((p-1)/3)
+pub const P_POWER_ENDOMORPHISM_COEFF_0 : Fq2 = field_new!(
     Fq2,
     FQ_ZERO,
     field_new!(
@@ -110,8 +107,8 @@ pub const PSI_X:Fq2 = field_new!(
     )
 );
 
-// PSI_Y = 1/(u+1)**((p-1)//2) where u is the generator of Fp² with u²=-1
-pub const PSI_Y: Fq2 = field_new!(
+// PSI_Y = 1/(u+1)^((p-1)/2)
+pub const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = field_new!(
     Fq2,
     field_new!(
        Fq,
@@ -121,18 +118,27 @@ pub const PSI_Y: Fq2 = field_new!(
        "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
 );
 
-pub fn psi(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
-    // Psi is an endomorphism of the curve defined with the sextic
-    // twists and the frobenius endomorphism on the G1 curve
-    // (x,y) -> (x**p / (u+1)**((p-1)//3), y**p / (u+1)**((p-1)//2))
-    // where u is the generator of Fp² with u²=-1
-    let mut psi_p = *p;
-    psi_p.x.frobenius_map(1);
-    psi_p.y.frobenius_map(1);
-    // psi_p.x *= PSI_X but PSI_X.c0 = 0
-    let tmp = psi_p.x;
-    psi_p.x.c0 = -tmp.c1 * PSI_X.c1;
-    psi_p.x.c1 = tmp.c0 * PSI_X.c1;
-    psi_p.y *= PSI_Y;
-    psi_p
+pub fn p_power_endomorphism(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
+    // The p-power endomorphism for G2 is defined as follows:
+    // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1). To map a point (x, y) in E' to (u, v) in E,
+    //    one set u = x / ((u+1) ^ (1/3)), v = y / ((u+1) ^ (1/2)), because E: y^2 = x^3 + 4.
+    // 2. Apply the Frobenius endomorphism (u, v) => (u', v'), another point on curve E,
+    //    where u' = u^p, v' = v^p.
+    // 3. Map the point from E back to E'; that is,
+    //    one set x' = u' * ((u+1) ^ (1/3)), y' = v' * ((u+1) ^ (1/2)).
+    //
+    // To sum up, it maps
+    // (x,y) -> (x^p / ((u+1)^((p-1)/3)), y^p / ((u+1)**((p-1)/2)))
+    // as implemented in the code as follows.
+
+    let mut res = *p;
+    res.x.frobenius_map(1);
+    res.y.frobenius_map(1);
+
+    let tmp_x = res.x.clone();
+    res.x.c0 = -P_POWER_ENDOMORPHISM_COEFF_0.c1 * &tmp_x.c1;
+    res.x.c1 = P_POWER_ENDOMORPHISM_COEFF_0.c1 * &tmp_x.c0;
+    res.y *= P_POWER_ENDOMORPHISM_COEFF_1;
+
+    res
 }
