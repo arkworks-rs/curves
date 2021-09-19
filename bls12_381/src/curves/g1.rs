@@ -1,7 +1,7 @@
 use crate::*;
-use ark_ec::bls12::Bls12Parameters;
 use ark_ec::{
     bls12,
+    bls12::Bls12Parameters,
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::GroupAffine,
     AffineCurve,

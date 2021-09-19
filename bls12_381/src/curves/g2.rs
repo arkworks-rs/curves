@@ -128,7 +128,7 @@ pub fn p_power_endomorphism(p: &GroupAffine<Parameters>) -> GroupAffine<Paramete
     //    one set x' = u' * ((u+1) ^ (1/3)), y' = v' * ((u+1) ^ (1/2)).
     //
     // To sum up, it maps
-    // (x,y) -> (x^p / ((u+1)^((p-1)/3)), y^p / ((u+1)**((p-1)/2)))
+    // (x,y) -> (x^p / ((u+1)^((p-1)/3)), y^p / ((u+1)^((p-1)/2)))
     // as implemented in the code as follows.
 
     let mut res = *p;
