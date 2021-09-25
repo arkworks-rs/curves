@@ -4,7 +4,7 @@ use ark_ec::{
     bls12::Bls12Parameters,
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::GroupAffine,
-    AffineCurve,
+    AffineCurve, ProjectiveCurve,
 };
 use ark_ff::{biginteger::BigInteger256, field_new, Zero};
 use ark_std::ops::Neg;
@@ -50,13 +50,18 @@ impl SWModelParameters for Parameters {
         //
         // Check that endomorphism_p(P) == -[X^2]P
 
-        let x = Self::ScalarField::from(BigInteger256::new([crate::Parameters::X[0], 0, 0, 0]));
-        let x_squared = x * &x;
+        let x = BigInteger256::new([crate::Parameters::X[0], 0, 0, 0]);
 
-        let x_times_p = p.mul(x_squared).neg();
+        // An early-out optimization described in Section 6.
+        // If uP == P but P != point of infinity, then the point is not in the right subgroup.
+        let x_times_p = p.mul(x);
+        if x_times_p.eq(p) && !p.infinity {
+            return false;
+        }
+
+        let minus_x_squared_times_p = x_times_p.mul(x).neg();
         let endomorphism_p = endomorphism(p);
-
-        x_times_p.eq(&endomorphism_p)
+        minus_x_squared_times_p.eq(&endomorphism_p)
     }
 }
 
