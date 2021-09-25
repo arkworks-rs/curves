@@ -1,9 +1,12 @@
 use crate::*;
+use ark_ec::bls12::Bls12Parameters;
 use ark_ec::{
     bls12,
     models::{ModelParameters, SWModelParameters},
+    short_weierstrass_jacobian::GroupAffine,
+    AffineCurve,
 };
-use ark_ff::{field_new, Zero};
+use ark_ff::{biginteger::BigInteger256, field_new, Field, Zero};
 
 pub type G2Affine = bls12::G2Affine<crate::Parameters>;
 pub type G2Projective = bls12::G2Projective<crate::Parameters>;
@@ -51,6 +54,21 @@ impl SWModelParameters for Parameters {
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
     }
+
+    fn is_in_correct_subgroup_assuming_on_curve(point: &GroupAffine<Parameters>) -> bool {
+        // Algorithm from Section 4 of https://eprint.iacr.org/2021/1130.
+        //
+        // Checks that [p]P = [X]P
+
+        let mut x_times_point = point.mul(BigInteger256([crate::Parameters::X[0], 0, 0, 0]));
+        if crate::Parameters::X_IS_NEGATIVE {
+            x_times_point = -x_times_point;
+        }
+
+        let p_times_point = p_power_endomorphism(point);
+
+        x_times_point.eq(&p_times_point)
+    }
 }
 
 pub const G2_GENERATOR_X: Fq2 = field_new!(Fq2, G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
@@ -75,3 +93,52 @@ pub const G2_GENERATOR_Y_C0: Fq = field_new!(Fq, "198515060228729193556805452117
 /// 927553665492332455747201965776037880757740193453592970025027978793976877002675564980949289727957565575433344219582
 #[rustfmt::skip]
 pub const G2_GENERATOR_Y_C1: Fq = field_new!(Fq, "927553665492332455747201965776037880757740193453592970025027978793976877002675564980949289727957565575433344219582");
+
+// psi(x,y) = (x**p * PSI_X, y**p * PSI_Y) is the Frobenius composed
+// with the quadratic twist and its inverse
+
+// PSI_X = 1/(u+1)^((p-1)/3)
+pub const P_POWER_ENDOMORPHISM_COEFF_0 : Fq2 = field_new!(
+    Fq2,
+    FQ_ZERO,
+    field_new!(
+       Fq,
+       "4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939437"
+    )
+);
+
+// PSI_Y = 1/(u+1)^((p-1)/2)
+pub const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = field_new!(
+    Fq2,
+    field_new!(
+       Fq,
+       "2973677408986561043442465346520108879172042883009249989176415018091420807192182638567116318576472649347015917690530"),
+    field_new!(
+       Fq,
+       "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
+);
+
+pub fn p_power_endomorphism(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
+    // The p-power endomorphism for G2 is defined as follows:
+    // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1). To map a point (x, y) in E' to (s, t) in E,
+    //    one set s = x / ((u+1) ^ (1/3)), t = y / ((u+1) ^ (1/2)), because E: y^2 = x^3 + 4.
+    // 2. Apply the Frobenius endomorphism (s, t) => (s', t'), another point on curve E,
+    //    where s' = s^p, t' = t^p.
+    // 3. Map the point from E back to E'; that is,
+    //    one set x' = s' * ((u+1) ^ (1/3)), y' = t' * ((u+1) ^ (1/2)).
+    //
+    // To sum up, it maps
+    // (x,y) -> (x^p / ((u+1)^((p-1)/3)), y^p / ((u+1)^((p-1)/2)))
+    // as implemented in the code as follows.
+
+    let mut res = *p;
+    res.x.frobenius_map(1);
+    res.y.frobenius_map(1);
+
+    let tmp_x = res.x.clone();
+    res.x.c0 = -P_POWER_ENDOMORPHISM_COEFF_0.c1 * &tmp_x.c1;
+    res.x.c1 = P_POWER_ENDOMORPHISM_COEFF_0.c1 * &tmp_x.c0;
+    res.y *= P_POWER_ENDOMORPHISM_COEFF_1;
+
+    res
+}
