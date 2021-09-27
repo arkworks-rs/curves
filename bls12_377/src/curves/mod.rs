@@ -31,3 +31,5 @@ pub type G1Affine = bls12::G1Affine<Parameters>;
 pub type G1Projective = bls12::G1Projective<Parameters>;
 pub type G2Affine = bls12::G2Affine<Parameters>;
 pub type G2Projective = bls12::G2Projective<Parameters>;
+
+pub use g1::{G1TEAffine, G1TEProjective};

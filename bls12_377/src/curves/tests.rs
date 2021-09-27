@@ -1,19 +1,22 @@
 #![allow(unused_imports)]
+use crate::{
+    g1, g2, Bls12_377, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G1TEProjective, G2Affine,
+    G2Projective,
+};
+use ark_ec::{
+    models::SWModelParameters, short_weierstrass_jacobian, AffineCurve, PairingEngine,
+    ProjectiveCurve,
+};
 use ark_ff::{
     fields::{Field, FpParameters, PrimeField, SquareRootField},
     One, Zero,
 };
 use ark_serialize::CanonicalSerialize;
-use ark_std::test_rng;
-
-use ark_ec::{models::SWModelParameters, AffineCurve, PairingEngine, ProjectiveCurve};
-use ark_std::rand::Rng;
+use ark_std::{rand::Rng, test_rng};
 use core::ops::{AddAssign, MulAssign};
 
-use crate::{g1, g2, Bls12_377, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
-
 use ark_algebra_test_templates::{
-    curves::{curve_tests, sw_tests},
+    curves::{curve_tests, edwards_tests, sw_tests},
     groups::group_test,
 };
 
@@ -22,6 +25,7 @@ fn test_g1_projective_curve() {
     curve_tests::<G1Projective>();
 
     sw_tests::<g1::Parameters>();
+    edwards_tests::<g1::Parameters>();
 }
 
 #[test]
@@ -30,6 +34,10 @@ fn test_g1_projective_group() {
     let a: G1Projective = rng.gen();
     let b: G1Projective = rng.gen();
     group_test(a, b);
+
+    let c = rng.gen();
+    let d = rng.gen();
+    group_test::<G1TEProjective>(c, d);
 }
 
 #[test]
