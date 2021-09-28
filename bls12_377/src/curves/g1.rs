@@ -70,7 +70,7 @@ impl TEModelParameters for Parameters {
 
     type MontgomeryModelParameters = Parameters;
 
-    /// Multiplication by `a` is multiply by `-5`.
+    /// Multiplication by `a` is multiply by `-1`.
     #[inline(always)]
     fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {
         elem.neg()
