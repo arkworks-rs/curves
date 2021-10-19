@@ -54,6 +54,9 @@ pub type SWProjective = SWGroupProjective<BandersnatchParameters>;
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct BandersnatchParameters;
 
+pub type EdwardsParameters = BandersnatchParameters;
+pub type SWParameters = BandersnatchParameters;
+
 impl ModelParameters for BandersnatchParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
