@@ -1,4 +1,4 @@
-///! Bls12-377 scalar field.
+//! Bls12-377 scalar field.
 ///
 /// Roots of unity computed from modulus and R using this sage code:
 ///
@@ -76,7 +76,8 @@ impl FpParameters for FrParameters {
 
     /// GENERATOR = 22
     /// Encoded in Montgomery form, so the value is
-    /// (22 * R) % q = 5642976643016801619665363617888466827793962762719196659561577942948671127251
+    /// (22 * R) % q =
+    /// 5642976643016801619665363617888466827793962762719196659561577942948671127251
     #[rustfmt::skip]
     const GENERATOR: BigInteger = BigInteger([
         2984901390528151251u64,
