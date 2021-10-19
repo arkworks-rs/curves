@@ -47,9 +47,9 @@ pub type SWProjective = SWGroupProjective<JubjubParameters>;
 /// A = 52296097456646850916096512823759002727550416093741407922227928430486925478210
 /// B = 48351165704696163914533707656614864561753505123260775585269522553028192119009
 ///
-/// Script to transfer between different curves are available
-/// <https://github.com/zhenfeizhang/bandersnatch/blob/main/bandersnatch/script/jubjub.sage>
-///
+/// We can use the script available 
+/// [here](https://github.com/zhenfeizhang/bandersnatch/blob/main/bandersnatch/script/jubjub.sage) 
+/// to convert between the different representations.
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct JubjubParameters;
 
