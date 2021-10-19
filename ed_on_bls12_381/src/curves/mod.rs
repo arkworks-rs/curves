@@ -52,6 +52,8 @@ pub type SWProjective = SWGroupProjective<JubjubParameters>;
 /// to convert between the different representations.
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct JubjubParameters;
+pub type EdwardsParameters = JubjubParameters;
+pub type SWParameters = JubjubParameters;
 
 impl ModelParameters for JubjubParameters {
     type BaseField = Fq;
