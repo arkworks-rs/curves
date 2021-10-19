@@ -51,7 +51,7 @@ pub type G1TEProjective = TEGroupProjective<Parameters>;
 
 /// Bls12_377::G1 also has a twisted Edwards form.
 /// It can be obtained via the following script, implementing
-/// 1. SW -> Montgomery -> TE1 transformation: https://en.wikipedia.org/wiki/Montgomery_curve
+/// 1. SW -> Montgomery -> TE1 transformation: <https://en.wikipedia.org/wiki/Montgomery_curve>
 /// 2. TE1 -> TE2 normalization (enforcing `a = -1`)
 /// ``` sage
 ///
@@ -130,7 +130,7 @@ impl TEModelParameters for Parameters {
 // BLS12-377::G1 also has a Montgomery form.
 // BLS12-377::G1 also has a twisted Edwards form.
 // It can be obtained via the following script, implementing
-// SW -> Montgomery transformation: https://en.wikipedia.org/wiki/Montgomery_curve
+// SW -> Montgomery transformation: <https://en.wikipedia.org/wiki/Montgomery_curve>
 // ``` sage
 //
 // # modulus
