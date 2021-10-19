@@ -448,7 +448,7 @@ macro_rules! prime_field {
             let mut count = 0;
             b.iter(|| {
                 count = (count + 1) % SAMPLES;
-                $f::from(v[count]);
+                let _ = $f::from(v[count]);
             });
         }
     };
