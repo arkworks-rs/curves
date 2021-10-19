@@ -1,10 +1,10 @@
-use crate::{EdwardsParameters, Fq, Fr, FrParameters};
+use crate::{BandersnatchParameters, Fq, Fr, FrParameters};
 use ark_ec::{glv::GLVParameters, AffineCurve, ProjectiveCurve};
 use ark_ff::{field_new, BigInteger, BigInteger256, FpParameters, One};
 use ark_std::{cmp::max, Zero};
 use num_bigint::BigUint;
 
-impl GLVParameters for EdwardsParameters {
+impl GLVParameters for BandersnatchParameters {
     type CurveAffine = crate::EdwardsAffine;
     type CurveProjective = crate::EdwardsProjective;
 

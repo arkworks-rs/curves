@@ -13,10 +13,8 @@ license = "MIT/Apache-2.0"
 edition = "2018"
 
 [dependencies]
-# ark-ff = { version = "^0.3.0", default-features = false }
-# ark-ec = { version = "^0.3.0", default-features = false }
-ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-ff = { version = "^0.3.0", default-features = false }
+ark-ec = { version = "^0.3.0", default-features = false }
 ark-std = { version="^0.3.0", default-features = false }
 
 [dev-dependencies]
@@ -29,3 +27,8 @@ std = [ "ark-std/std", "ark-ff/std", "ark-ec/std" ]
 
 curve = [ "scalar_field" ]
 scalar_field = []
+
+# To be removed in the new release.
+[patch.crates-io]
+ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }

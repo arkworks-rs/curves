@@ -126,14 +126,18 @@ fn test_montgomery_conversion() {
 
 #[test]
 fn test_psi() {
-    let base_point = EdwardsAffine::prime_subgroup_generator();
+    let base_point = EdwardsAffine::from_str(
+        "(29627151942733444043031429156003786749302466371339015363120350521834195802525, \
+        27488387519748396681411951718153463804682561779047093991696427532072116857978)",
+    )
+    .unwrap();
     let psi_point = EdwardsAffine::from_str(
         "(3995099504672814451457646880854530097687530507181962222512229786736061793535, \
          33370049900732270411777328808452912493896532385897059012214433666611661340894)",
     )
     .unwrap();
 
-    let t = EdwardsParameters::endomorphism(&base_point);
+    let t = BandersnatchParameters::endomorphism(&base_point);
     assert_eq!(t, psi_point);
 }
 
@@ -145,18 +149,25 @@ fn test_decomp() {
     );
     let k1: Fr = field_new!(Fr, "30417741863887432744214758610616508258");
     let k2: Fr = field_new!(Fr, "-6406990765953933188067911864924578940");
-    assert_eq!(EdwardsParameters::scalar_decomposition(&scalar), (k1, k2))
+    assert_eq!(
+        BandersnatchParameters::scalar_decomposition(&scalar),
+        (k1, k2)
+    )
 }
 
 #[test]
 fn test_msm() {
-    let base_point = EdwardsAffine::prime_subgroup_generator();
+    let base_point = EdwardsAffine::from_str(
+        "(29627151942733444043031429156003786749302466371339015363120350521834195802525, \
+        27488387519748396681411951718153463804682561779047093991696427532072116857978)",
+    )
+    .unwrap();
     let psi_point = EdwardsAffine::from_str(
         "(3995099504672814451457646880854530097687530507181962222512229786736061793535, \
          33370049900732270411777328808452912493896532385897059012214433666611661340894)",
     )
     .unwrap();
-    let t = EdwardsParameters::endomorphism(&base_point);
+    let t = BandersnatchParameters::endomorphism(&base_point);
     assert_eq!(t, psi_point);
 
     let scalar: Fr = field_new!(
@@ -165,7 +176,10 @@ fn test_msm() {
     );
     let k1: Fr = field_new!(Fr, "30417741863887432744214758610616508258");
     let k2: Fr = field_new!(Fr, "-6406990765953933188067911864924578940");
-    assert_eq!(EdwardsParameters::scalar_decomposition(&scalar), (k1, k2));
+    assert_eq!(
+        BandersnatchParameters::scalar_decomposition(&scalar),
+        (k1, k2)
+    );
 
     let res = EdwardsAffine::from_str(
         "(6018810645516749504657411940673266094850700554607419759628157493373766067122, \
@@ -189,7 +203,7 @@ fn test_gen_mul() {
     );
 
     let b = a.mul(r);
-    let c = EdwardsParameters::glv_mul(&a, &r);
+    let c = BandersnatchParameters::glv_mul(&a, &r);
 
     assert_eq!(b.into_affine(), c.into_affine())
 }
@@ -204,7 +218,7 @@ fn test_rnd_mul() {
         let r: Fr = rng.gen();
 
         let b = a.mul(r);
-        let c = EdwardsParameters::glv_mul(&a, &r);
+        let c = BandersnatchParameters::glv_mul(&a, &r);
 
         assert_eq!(b.into_affine(), c.into_affine())
     }
