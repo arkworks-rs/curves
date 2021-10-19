@@ -2,6 +2,8 @@
 
 ## Pending
 
+- [\#76](https://github.com/arkworks-rs/curves/pull/76) twisted Edwards parameters for bls12-377
+
 ### Breaking changes
 
 ### Features
