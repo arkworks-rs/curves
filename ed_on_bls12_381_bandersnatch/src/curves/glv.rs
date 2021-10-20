@@ -118,9 +118,9 @@ impl GLVParameters for BandersnatchParameters {
 
     /// perform GLV multiplication
     fn glv_mul(base: &Self::CurveAffine, scalar: &Self::ScalarField) -> Self::CurveProjective {
-        let psi_base = Self::endomorphism(&base);
+        let psi_base = Self::endomorphism(base);
         let (k1, k2) = Self::scalar_decomposition(scalar);
-        multi_scalar_mul(&base, &k1, &psi_base, &k2)
+        multi_scalar_mul(base, &k1, &psi_base, &k2)
     }
 }
 

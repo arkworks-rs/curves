@@ -9,7 +9,6 @@ use ark_ec::{
 };
 use ark_ff::{field_new, Field};
 
-
 mod glv;
 #[cfg(test)]
 mod tests;
@@ -110,7 +109,6 @@ impl MontgomeryModelParameters for BandersnatchParameters {
         Fq,
         "25465760566081946422412445027709227188579564747101592991722834452325077642517"
     );
-
 
     type TEModelParameters = BandersnatchParameters;
 }

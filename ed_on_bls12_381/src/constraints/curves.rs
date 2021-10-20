@@ -6,7 +6,6 @@ use crate::constraints::FqVar;
 /// A variable that is the R1CS equivalent of `crate::EdwardsAffine`.
 pub type EdwardsVar = AffineVar<JubjubParameters, FqVar>;
 
-
 /// A variable that is the R1CS equivalent of `crate::SWProjective`
 pub type SWVar = ProjectiveVar<JubjubParameters, FqVar>;
 
