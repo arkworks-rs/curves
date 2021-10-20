@@ -9,8 +9,8 @@ use ark_ec::{
 };
 use ark_ff::{field_new, Field};
 
-mod glv;
 
+mod glv;
 #[cfg(test)]
 mod tests;
 
@@ -28,7 +28,7 @@ pub type SWProjective = SWGroupProjective<BandersnatchParameters>;
 ///
 /// q = 52435875175126190479447740508185965837690552500527637822603658699938581184513.
 ///
-/// a = 52435875175126190479447740508185965837690552500527637822603658699938581184508.
+/// a = -5.
 /// d = (138827208126141220649022263972958607803/
 ///     171449701953573178309673572579671231137) mod q
 ///   = 45022363124591815672509500913686876175488063829319466900776701791074614335719.
@@ -55,6 +55,9 @@ pub type SWProjective = SWGroupProjective<BandersnatchParameters>;
 ///
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct BandersnatchParameters;
+
+pub type EdwardsParameters = BandersnatchParameters;
+pub type SWParameters = BandersnatchParameters;
 
 impl ModelParameters for BandersnatchParameters {
     type BaseField = Fq;
@@ -103,11 +106,11 @@ impl MontgomeryModelParameters for BandersnatchParameters {
     const COEFF_A: Fq = field_new!(Fq, "29978822694968839326280996386011761570173833766074948509196803838190355340952");
 
     /// COEFF_B = 25465760566081946422412445027709227188579564747101592991722834452325077642517
-
     const COEFF_B: Fq = field_new!(
         Fq,
         "25465760566081946422412445027709227188579564747101592991722834452325077642517"
     );
+
 
     type TEModelParameters = BandersnatchParameters;
 }

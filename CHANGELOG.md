@@ -2,7 +2,9 @@
 
 ## Pending
 
+
 - [\#66](https://github.com/arkworks-rs/curves/pull/66) Enabling GLV multiplication for bandersnatch curve.
+
 
 ### Breaking changes
 
