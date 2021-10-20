@@ -4,7 +4,6 @@ use ark_ec::hashing::curve_maps::swu::{SWUParams};
 use ark_ff::{field_new, Zero};
 
 use crate::{
-    fields::{FQ_ONE, FQ_ZERO},
     Fq, Fr,
 };
 
@@ -65,8 +64,8 @@ pub const G1_GENERATOR_Y: Fq = field_new!(Fq, "183898640136580512316530045470998
 
 impl SWUParams for Parameters {
 
-    const XI : Fq = field_new!(F127, "5"); //a nonsquare in Fq
-    const ZETA: Fq = field_new!(F127, "15"); //arbitatry primitive root of unity (element)
-    const XI_ON_ZETA_SQRT: Fq = field_new!(F127, "10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931"); ////square root of THETA=Xi/Zeta
+    const XI : Fq = field_new!(Fq, "5"); //a nonsquare in Fq
+    const ZETA: Fq = field_new!(Fq, "15"); //arbitatry primitive root of unity (element)
+    const XI_ON_ZETA_SQRT: Fq = field_new!(Fq, "10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931"); ////square root of THETA=Xi/Zeta
 
 }
