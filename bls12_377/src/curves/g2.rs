@@ -3,6 +3,8 @@ use ark_ff::{field_new, Zero};
 
 use crate::{fields::FQ_ZERO, g1, Fq, Fq2, Fr};
 
+use super::g2_swu_iso::Parameters as SWUIsogenousCurveParameters;
+
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
