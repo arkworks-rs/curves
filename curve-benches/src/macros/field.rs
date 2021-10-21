@@ -24,8 +24,8 @@ macro_rules! f_bench {
                 // sqrt field stuff
                 sqrt,
                 // prime field stuff
-                repr_add_nocarry,
-                repr_sub_noborrow,
+                repr_add_ret_carry,
+                repr_sub_ret_borrow,
                 repr_num_bits,
                 repr_mul2,
                 repr_div2,
@@ -322,7 +322,7 @@ macro_rules! sqrt {
 #[macro_export]
 macro_rules! prime_field {
     ($f:ident, $f_type:ty, $f_repr:ident, $f_repr_type:ty) => {
-        fn repr_add_nocarry(b: &mut $crate::bencher::Bencher) {
+        fn repr_add_ret_carry(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = ark_std::test_rng();
@@ -343,13 +343,13 @@ macro_rules! prime_field {
             let mut count = 0;
             b.iter(|| {
                 let mut tmp = v[count].0;
-                n_fold!(tmp, v, add_nocarry, count);
+                n_fold!(tmp, v, add_ret_carry, count);
                 count = (count + 1) % SAMPLES;
                 tmp
             });
         }
 
-        fn repr_sub_noborrow(b: &mut $crate::bencher::Bencher) {
+        fn repr_sub_ret_borrow(b: &mut $crate::bencher::Bencher) {
             const SAMPLES: usize = 1000;
 
             let mut rng = ark_std::test_rng();
@@ -369,7 +369,7 @@ macro_rules! prime_field {
             let mut count = 0;
             b.iter(|| {
                 let mut tmp = v[count].0;
-                n_fold!(tmp, v, sub_noborrow, count);
+                n_fold!(tmp, v, sub_ret_borrow, count);
                 count = (count + 1) % SAMPLES;
                 tmp;
             });
