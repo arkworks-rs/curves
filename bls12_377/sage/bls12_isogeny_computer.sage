@@ -254,17 +254,13 @@ def convert_g1_coeff_arrays_to_arkworks(coeff_array):
 
     print(arkwork_array)
 
-def convert_g2_coeff_arrays_to_arkworks(coeff_array, max_deg):
+def convert_g2_coeff_arrays_to_arkworks(coeff_array):
     """
     convert an array of coefficients in Fp2 to arkwork format
     """
-    coeff_array_extended = [0 for i in range(len(coeff_array), max_deg+1)]
-    coeff_array_extended.extend(coeff_array)
     arkwork_array = '['
-    for elm in coeff_array_extended:
-        elm = F2(elm)
-        elm_poly = elm.polynomial().coefficients()
-        elm_poly.extend([0 for i in range(0, 1-elm.polynomial().degree())])
+    for elm in coeff_array:
+        elm_poly = elm.polynomial()
         arkwork_array += 'field_new!(Fq2, field_new!(Fq, \"' + str(elm_poly[1]) + '\"), field_new!(Fq, \"' + str(elm_poly[0]) + '\")), '
 
     arkwork_array = arkwork_array[: -2] + ']'
