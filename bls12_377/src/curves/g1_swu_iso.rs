@@ -39,11 +39,6 @@ impl SWModelParameters for Parameters {
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
         (G1_GENERATOR_X, G1_GENERATOR_Y);
-
-    #[inline(always)]
-    fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
-        Self::BaseField::zero()
-    }
 }
 
 // sage: G1_gen  = iso_G1.domain().random_point()
