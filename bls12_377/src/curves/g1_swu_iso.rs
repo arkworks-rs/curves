@@ -1,7 +1,7 @@
 use ark_ec::models::{ModelParameters, SWModelParameters};
 use ark_ec::hashing::curve_maps::swu::{SWUParams};
 
-use ark_ff::{field_new, Zero};
+use ark_ff::{field_new};
 
 use crate::{
     Fq, Fr,
