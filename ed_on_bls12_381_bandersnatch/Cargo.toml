@@ -1,6 +1,6 @@
 [package]
 name = "ark-ed-on-bls12-381-bandersnatch"
-version = "0.1.0"
+version = "0.3.0"
 authors = [ "zhenfei zhang", "arkworks contributors" ]
 description = "Bandersnatch: a curve defined over the scalar field of the BLS12-381 curve"
 repository = "https://github.com/zhenfeizhang/bandersnatch-rust"
