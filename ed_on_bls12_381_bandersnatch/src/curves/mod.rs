@@ -18,7 +18,7 @@ pub type EdwardsProjective = GroupProjective<BandersnatchParameters>;
 pub type SWAffine = SWGroupAffine<BandersnatchParameters>;
 pub type SWProjective = SWGroupProjective<BandersnatchParameters>;
 
-/// `bandersnatch` is a twisted Edwards curve. These curves have equations of the
+/// `bandersnatch` is an incomplete twisted Edwards curve. These curves have equations of the
 /// form: ax² + y² = 1 - dx²y².
 /// over some base finite field Fq.
 ///
