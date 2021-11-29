@@ -34,7 +34,7 @@ impl FpParameters for FrParameters {
 
     const REPR_SHAVE_BITS: u32 = 2;
 
-    /// R = pow(2, 320) % MODULUS
+    /// R = pow(2, 256) % MODULUS
     ///   = 6350874878119819312338956282401532410528162663560392320966563075034087161851
     #[rustfmt::skip]
     const R: BigInteger = BigInteger([
