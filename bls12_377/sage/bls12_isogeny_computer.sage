@@ -10,12 +10,11 @@ def find_iso(E):
             print("j-invariant is ", jinv)
             if jinv not in (0, 1728):
                 isos.append(i)
-                break
         
         if len(isos) > 0:
             for cur_isos in isos:
                 print("found isogeny ", cur_isos)
-            print("found isogeny ", isos[0])
+            #print("found isogeny ", isos[0])
             return isos[0].dual()
 
     return None
@@ -105,11 +104,11 @@ def bls12_377_isos():
 
     print("searching for isogeny of Ell2 on F6 up to degree 30")
     iso_G2_F6 = find_iso(Ell2_6)
+    #iso_G2=iso_G2_F6
     # an isogeny from E2’ to E2,
     Ell2_prime = iso_G2.domain()
     # where this is E2’
-    assert iso_G2(Ell2_prime.random_point()).curve() == Ell2_6    
-    
+    assert iso_G2_F6(Ell2_prime.random_point()).curve() == Ell2_6    
     return (iso_G1, iso_G2)
 
 def trace_endo(P, p2):
@@ -263,7 +262,9 @@ def convert_g1_coeff_arrays_to_arkworks(iso_poly):
     """
     arkwork_array = '[\n'
     for cur_deg in range(0, iso_poly.degree() + 1):
-        arkwork_array += 'field_new!(Fq, \"' + str(iso_poly.coefficient([cur_deg])) + '\"), \n'
+        coeff_selector = [cur_deg]
+        coeff_selector.extend([0]*(len(parent(iso_poly).gens())-1))
+        arkwork_array += 'field_new!(Fq, \"' + str(iso_poly.coefficient(coeff_selector)) + '\"), \n'
 
     arkwork_array = arkwork_array[: -2] + '\n];'
     return arkwork_array
@@ -290,8 +291,7 @@ def convert_g2_coeff_arrays_to_arkworks(iso_poly):
         elm_poly = iso_poly.coefficient([cur_deg])
         assert(elm_poly.is_constant())
         elm_poly = elm_poly.constant_coefficient().polynomial()
-        x_gen = parent(elm_poly).gen()
-        p3.monomial_coefficient(p3.variables()[0]^0)
+        x_gen = parent(elm_poly).gen()        
         arkwork_array += 'field_new!(Fq2, \nfield_new!(Fq, \"' + str(elm_poly.monomial_coefficient(x_gen^0)) + '\"), \nfield_new!(Fq, \"' + str(elm_poly.monomial_coefficient(x_gen^1)) + '\")), \n'
 
     arkwork_array = arkwork_array[: -2] + '\n];'
