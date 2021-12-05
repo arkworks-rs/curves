@@ -234,7 +234,7 @@ macro_rules! ec_bench {
                 .map(|_| Fr::rand(&mut rng).into_repr())
                 .collect();
             b.bench_n(1, |b| {
-                b.iter(|| ark_ec::msm::VariableBaseMSM::multi_scalar_mul(&v, &scalars));
+                b.iter(|| ark_ec::msm::VariableBase::msm(&v, &scalars));
             })
         }
 
