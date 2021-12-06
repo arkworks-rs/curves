@@ -63,3 +63,4 @@ ark-ec = { git = "https://github.com/arkworks-rs/algebra" }
 ark-ff = { git = "https://github.com/arkworks-rs/algebra" }
 ark-algebra-test-templates = { git = "https://github.com/arkworks-rs/algebra" }
 ark-serialize = { git = "https://github.com/arkworks-rs/algebra" }
+ark-algebra-test-templates = { git = "https://github.com/arkworks-rs/algebra" }
