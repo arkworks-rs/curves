@@ -9,8 +9,7 @@ use ark_std::test_rng;
 
 use ark_algebra_test_templates::fields::*;
 
-use ark_std::rand::Rng;
-use ark_std::str::FromStr;
+use ark_std::{rand::Rng, str::FromStr};
 
 #[test]
 fn test_fr() {
