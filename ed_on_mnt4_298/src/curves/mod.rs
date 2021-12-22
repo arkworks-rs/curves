@@ -18,6 +18,15 @@ pub struct EdwardsParameters;
 impl ModelParameters for EdwardsParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
+    type Affine = EdwardsAffine;
+
+    /// COFACTOR = 4
+    const COFACTOR: &'static [u64] = &[4];
+
+    /// COFACTOR_INV (mod r) =
+    /// 29745142885578832859584328103315528221570304936126890280067991221921526670592508030983158
+    #[rustfmt::skip]
+    const COFACTOR_INV: Fr = field_new!(Fr, "29745142885578832859584328103315528221570304936126890280067991221921526670592508030983158");
 }
 
 // Many parameters need to be written down in the Montgomery residue form,
@@ -39,14 +48,6 @@ impl TEModelParameters for EdwardsParameters {
     ///     = 389461279836940033614665658623660232171971995346409183754923941118154161474636585314923000
     #[rustfmt::skip]
     const COEFF_D: Fq = field_new!(Fq, "4212");
-
-    /// COFACTOR = 4
-    const COFACTOR: &'static [u64] = &[4];
-
-    /// COFACTOR_INV (mod r) =
-    /// 29745142885578832859584328103315528221570304936126890280067991221921526670592508030983158
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, "29745142885578832859584328103315528221570304936126890280067991221921526670592508030983158");
 
     /// Generated randomly
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);

@@ -18,15 +18,7 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
-}
-
-impl SWModelParameters for Parameters {
-    /// COEFF_A = 0
-    const COEFF_A: Fq = field_new!(Fq, "0");
-
-    /// COEFF_B = 4
-    #[rustfmt::skip]
-    const COEFF_B: Fq = field_new!(Fq, "4");
+    type Affine = ark_ec::short_weierstrass_jacobian::GroupAffine<Self>;
 
     /// COFACTOR = (x - 1)^2 / 3  = 76329603384216526031706109802092473003
     const COFACTOR: &'static [u64] = &[0x8c00aaab0000aaab, 0x396c8c005555e156];
@@ -36,15 +28,7 @@ impl SWModelParameters for Parameters {
     #[rustfmt::skip]
     const COFACTOR_INV: Fr = field_new!(Fr, "52435875175126190458656871551744051925719901746859129887267498875565241663483");
 
-    /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
-        (G1_GENERATOR_X, G1_GENERATOR_Y);
-
-    #[inline(always)]
-    fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
-        Self::BaseField::zero()
-    }
-
+    #[inline]
     fn is_in_correct_subgroup_assuming_on_curve(p: &GroupAffine<Parameters>) -> bool {
         // Algorithm from Section 6 of https://eprint.iacr.org/2021/1130.
         //
@@ -62,6 +46,24 @@ impl SWModelParameters for Parameters {
         let minus_x_squared_times_p = x_times_p.mul(x).neg();
         let endomorphism_p = endomorphism(p);
         minus_x_squared_times_p.eq(&endomorphism_p)
+    }
+}
+
+impl SWModelParameters for Parameters {
+    /// COEFF_A = 0
+    const COEFF_A: Fq = field_new!(Fq, "0");
+
+    /// COEFF_B = 4
+    #[rustfmt::skip]
+    const COEFF_B: Fq = field_new!(Fq, "4");
+
+    /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
+    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
+        (G1_GENERATOR_X, G1_GENERATOR_Y);
+
+    #[inline(always)]
+    fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
+        Self::BaseField::zero()
     }
 }
 

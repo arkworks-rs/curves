@@ -12,6 +12,15 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
+    type Affine = ark_ec::short_weierstrass_jacobian::GroupAffine<Self>;
+
+    /// COFACTOR = (x - 1)^2 / 3  = 30631250834960419227450344600217059328
+    const COFACTOR: &'static [u64] = &[0x0, 0x170b5d4430000000];
+
+    /// COFACTOR_INV = COFACTOR^{-1} mod r
+    /// = 5285428838741532253824584287042945485047145357130994810877
+    #[rustfmt::skip]
+    const COFACTOR_INV: Fr = field_new!(Fr, "5285428838741532253824584287042945485047145357130994810877");
 }
 
 impl SWModelParameters for Parameters {
@@ -21,14 +30,6 @@ impl SWModelParameters for Parameters {
     /// COEFF_B = 1
     #[rustfmt::skip]
     const COEFF_B: Fq = FQ_ONE;
-
-    /// COFACTOR = (x - 1)^2 / 3  = 30631250834960419227450344600217059328
-    const COFACTOR: &'static [u64] = &[0x0, 0x170b5d4430000000];
-
-    /// COFACTOR_INV = COFACTOR^{-1} mod r
-    /// = 5285428838741532253824584287042945485047145357130994810877
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, "5285428838741532253824584287042945485047145357130994810877");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =

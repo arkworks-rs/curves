@@ -9,20 +9,7 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq2;
     type ScalarField = Fr;
-}
-
-impl SWModelParameters for Parameters {
-    /// COEFF_A = [0, 0]
-    #[rustfmt::skip]
-    const COEFF_A: Fq2 = field_new!(Fq2, field_new!(Fq, "0"), field_new!(Fq, "0"));
-
-    /// COEFF_B = 3/(u+9)
-    ///         = (19485874751759354771024239261021720505790618469301721065564631296452457478373, 266929791119991161246907387137283842545076965332900288569378510910307636690)
-    #[rustfmt::skip]
-    const COEFF_B: Fq2 = field_new!(Fq2,
-        field_new!(Fq, "19485874751759354771024239261021720505790618469301721065564631296452457478373"),
-        field_new!(Fq, "266929791119991161246907387137283842545076965332900288569378510910307636690"),
-    );
+    type Affine = crate::G2Affine;
 
     /// COFACTOR = (36 * X^4) + (36 * X^3) + (30 * X^2) + 6*X + 1
     ///          = 21888242871839275222246405745257275088844257914179612981679871602714643921549
@@ -37,6 +24,20 @@ impl SWModelParameters for Parameters {
     /// COFACTOR_INV = COFACTOR^{-1} mod r
     #[rustfmt::skip]
     const COFACTOR_INV: Fr = field_new!(Fr, "10944121435919637613327163357776759465618812564592884533313067514031822496649");
+}
+
+impl SWModelParameters for Parameters {
+    /// COEFF_A = [0, 0]
+    #[rustfmt::skip]
+    const COEFF_A: Fq2 = field_new!(Fq2, field_new!(Fq, "0"), field_new!(Fq, "0"));
+
+    /// COEFF_B = 3/(u+9)
+    ///         = (19485874751759354771024239261021720505790618469301721065564631296452457478373, 266929791119991161246907387137283842545076965332900288569378510910307636690)
+    #[rustfmt::skip]
+    const COEFF_B: Fq2 = field_new!(Fq2,
+        field_new!(Fq, "19485874751759354771024239261021720505790618469301721065564631296452457478373"),
+        field_new!(Fq, "266929791119991161246907387137283842545076965332900288569378510910307636690"),
+    );
 
     /// AFFINE_GENERATOR_COEFFS = (G2_GENERATOR_X, G2_GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =

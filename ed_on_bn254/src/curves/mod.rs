@@ -25,6 +25,15 @@ pub struct EdwardsParameters;
 impl ModelParameters for EdwardsParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
+    type Affine = EdwardsAffine;
+
+    /// COFACTOR = 8
+    const COFACTOR: &'static [u64] = &[8];
+
+    /// COFACTOR^(-1) mod r =
+    /// 2394026564107420727433200628387514462817212225638746351800188703329891451411
+    #[rustfmt::skip]
+    const COFACTOR_INV: Fr = field_new!(Fr, "2394026564107420727433200628387514462817212225638746351800188703329891451411");
 }
 
 impl TEModelParameters for EdwardsParameters {
@@ -41,14 +50,6 @@ impl TEModelParameters for EdwardsParameters {
     ///         = 9706598848417545097372247223557719406784115219466060233080913168975159366771
     #[rustfmt::skip]
     const COEFF_D: Fq = field_new!(Fq, "9706598848417545097372247223557719406784115219466060233080913168975159366771");
-
-    /// COFACTOR = 8
-    const COFACTOR: &'static [u64] = &[8];
-
-    /// COFACTOR^(-1) mod r =
-    /// 2394026564107420727433200628387514462817212225638746351800188703329891451411
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, "2394026564107420727433200628387514462817212225638746351800188703329891451411");
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);
