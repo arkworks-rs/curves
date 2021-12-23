@@ -18,7 +18,6 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
-    type Affine = ark_ec::short_weierstrass_jacobian::GroupAffine<Self>;
 
     /// COFACTOR = (x - 1)^2 / 3  = 30631250834960419227450344600217059328
     const COFACTOR: &'static [u64] = &[0x0, 0x170b5d4430000000];
@@ -106,7 +105,6 @@ impl TEModelParameters for Parameters {
     /// COEFF_D = 122268283598675559488486339158635529096981886914877139579534153582033676785385790730042363341236035746924960903179 mod q
     #[rustfmt::skip]
     const COEFF_D: Fq = field_new!(Fq, "122268283598675559488486339158635529096981886914877139579534153582033676785385790730042363341236035746924960903179");
-
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =

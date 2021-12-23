@@ -14,7 +14,7 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
-    type Affine = G2Affine;
+
     /// COFACTOR =
     /// 26642435879335816683987677701488073867751118270052650655942102502312977592501693353047140953112195348280268661194869
     #[rustfmt::skip]

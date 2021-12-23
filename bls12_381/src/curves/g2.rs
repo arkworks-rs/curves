@@ -17,7 +17,6 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq2;
     type ScalarField = Fr;
-    type Affine = ark_ec::short_weierstrass_jacobian::GroupAffine<Self>;
 
     /// COFACTOR = (x^8 - 4 x^7 + 5 x^6) - (4 x^4 + 6 x^3 - 4 x^2 - 4 x + 13) //
     /// 9
@@ -38,21 +37,6 @@ impl ModelParameters for Parameters {
     /// 26652489039290660355457965112010883481355318854675681319708643586776743290055
     #[rustfmt::skip]
     const COFACTOR_INV: Fr = field_new!(Fr, "26652489039290660355457965112010883481355318854675681319708643586776743290055");
-
-    fn is_in_correct_subgroup_assuming_on_curve(point: &GroupAffine<Parameters>) -> bool {
-        // Algorithm from Section 4 of https://eprint.iacr.org/2021/1130.
-        //
-        // Checks that [p]P = [X]P
-
-        let mut x_times_point = point.mul(BigInteger256([crate::Parameters::X[0], 0, 0, 0]));
-        if crate::Parameters::X_IS_NEGATIVE {
-            x_times_point = -x_times_point;
-        }
-
-        let p_times_point = p_power_endomorphism(point);
-
-        x_times_point.eq(&p_times_point)
-    }
 }
 
 impl SWModelParameters for Parameters {
@@ -69,6 +53,21 @@ impl SWModelParameters for Parameters {
     #[inline(always)]
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
+    }
+
+    fn is_in_correct_subgroup_assuming_on_curve(point: &G2Affine) -> bool {
+        // Algorithm from Section 4 of https://eprint.iacr.org/2021/1130.
+        //
+        // Checks that [p]P = [X]P
+
+        let mut x_times_point = point.mul(BigInteger256([crate::Parameters::X[0], 0, 0, 0]));
+        if crate::Parameters::X_IS_NEGATIVE {
+            x_times_point = -x_times_point;
+        }
+
+        let p_times_point = p_power_endomorphism(point);
+
+        x_times_point.eq(&p_times_point)
     }
 }
 

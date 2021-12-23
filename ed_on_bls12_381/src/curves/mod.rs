@@ -58,7 +58,6 @@ pub type SWParameters = JubjubParameters;
 impl ModelParameters for JubjubParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
-    type Affine = EdwardsAffine;
 
     /// COFACTOR = 8
     const COFACTOR: &'static [u64] = &[8];
@@ -114,14 +113,6 @@ impl SWModelParameters for JubjubParameters {
     /// COEFF_B = 48351165704696163914533707656614864561753505123260775585269522553028192119009
     #[rustfmt::skip]
     const COEFF_B: Self::BaseField = field_new!(Fq, "48351165704696163914533707656614864561753505123260775585269522553028192119009");
-
-    /// COFACTOR = 8
-    const COFACTOR: &'static [u64] = &[8];
-
-    /// COFACTOR^(-1) mod r =
-    /// 819310549611346726241370945440405716213240158234039660170669895299022906775
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, "819310549611346726241370945440405716213240158234039660170669895299022906775");
 
     /// generators
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =

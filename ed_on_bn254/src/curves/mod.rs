@@ -25,7 +25,6 @@ pub struct EdwardsParameters;
 impl ModelParameters for EdwardsParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
-    type Affine = EdwardsAffine;
 
     /// COFACTOR = 8
     const COFACTOR: &'static [u64] = &[8];

@@ -18,7 +18,6 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
-    type Affine = ark_ec::short_weierstrass_jacobian::GroupAffine<Self>;
 
     /// COFACTOR = (x - 1)^2 / 3  = 76329603384216526031706109802092473003
     const COFACTOR: &'static [u64] = &[0x8c00aaab0000aaab, 0x396c8c005555e156];
@@ -27,26 +26,6 @@ impl ModelParameters for Parameters {
     /// = 52435875175126190458656871551744051925719901746859129887267498875565241663483
     #[rustfmt::skip]
     const COFACTOR_INV: Fr = field_new!(Fr, "52435875175126190458656871551744051925719901746859129887267498875565241663483");
-
-    #[inline]
-    fn is_in_correct_subgroup_assuming_on_curve(p: &GroupAffine<Parameters>) -> bool {
-        // Algorithm from Section 6 of https://eprint.iacr.org/2021/1130.
-        //
-        // Check that endomorphism_p(P) == -[X^2]P
-
-        let x = BigInteger256::new([crate::Parameters::X[0], 0, 0, 0]);
-
-        // An early-out optimization described in Section 6.
-        // If uP == P but P != point of infinity, then the point is not in the right subgroup.
-        let x_times_p = p.mul(x);
-        if x_times_p.eq(p) && !p.infinity {
-            return false;
-        }
-
-        let minus_x_squared_times_p = x_times_p.mul(x).neg();
-        let endomorphism_p = endomorphism(p);
-        minus_x_squared_times_p.eq(&endomorphism_p)
-    }
 }
 
 impl SWModelParameters for Parameters {
@@ -64,6 +43,26 @@ impl SWModelParameters for Parameters {
     #[inline(always)]
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
+    }
+
+    #[inline]
+    fn is_in_correct_subgroup_assuming_on_curve(p: &G1Affine) -> bool {
+        // Algorithm from Section 6 of https://eprint.iacr.org/2021/1130.
+        //
+        // Check that endomorphism_p(P) == -[X^2]P
+
+        let x = BigInteger256::new([crate::Parameters::X[0], 0, 0, 0]);
+
+        // An early-out optimization described in Section 6.
+        // If uP == P but P != point of infinity, then the point is not in the right subgroup.
+        let x_times_p = p.mul(x);
+        if x_times_p.eq(p) && !p.infinity {
+            return false;
+        }
+
+        let minus_x_squared_times_p = x_times_p.mul(x).neg();
+        let endomorphism_p = endomorphism(p);
+        minus_x_squared_times_p.eq(&endomorphism_p)
     }
 }
 

@@ -14,7 +14,6 @@ pub struct PallasParameters;
 impl ModelParameters for PallasParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
-    type Affine = Affine;
 
     /// COFACTOR = 1
     const COFACTOR: &'static [u64] = &[0x1];

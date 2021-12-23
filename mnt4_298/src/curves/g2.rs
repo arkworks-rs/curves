@@ -16,7 +16,6 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq2;
     type ScalarField = Fr;
-    type Affine = G2Affine;
 
     /// COFACTOR =
     /// 475922286169261325753349249653048451545124879932565935237842521413255878328503110407553025

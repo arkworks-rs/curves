@@ -9,7 +9,6 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq2;
     type ScalarField = Fr;
-    type Affine = crate::G2Affine;
 
     /// COFACTOR = (36 * X^4) + (36 * X^3) + (30 * X^2) + 6*X + 1
     ///          = 21888242871839275222246405745257275088844257914179612981679871602714643921549
