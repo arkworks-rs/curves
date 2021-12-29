@@ -60,6 +60,14 @@ pub type SWParameters = BandersnatchParameters;
 impl ModelParameters for BandersnatchParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
+
+    /// COFACTOR = 4
+    const COFACTOR: &'static [u64] = &[4];
+
+    /// COFACTOR^(-1) mod r =
+    /// 9831726595336160714896451345284868594481866920080427688839802480047265754601
+    #[rustfmt::skip]
+    const COFACTOR_INV: Fr = field_new!(Fr, "9831726595336160714896451345284868594481866920080427688839802480047265754601");
 }
 
 impl TEModelParameters for BandersnatchParameters {
@@ -70,14 +78,6 @@ impl TEModelParameters for BandersnatchParameters {
     /// 171449701953573178309673572579671231137) mod q
     #[rustfmt::skip]
     const COEFF_D: Fq = field_new!(Fq, "45022363124591815672509500913686876175488063829319466900776701791074614335719");
-
-    /// COFACTOR = 4
-    const COFACTOR: &'static [u64] = &[4];
-
-    /// COFACTOR^(-1) mod r =
-    /// 9831726595336160714896451345284868594481866920080427688839802480047265754601
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, "9831726595336160714896451345284868594481866920080427688839802480047265754601");
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
@@ -133,14 +133,6 @@ impl SWModelParameters for BandersnatchParameters {
     /// COEFF_B = 29569587568322301171008055308580903175558631321415017492731745847794083609535
     #[rustfmt::skip]
     const COEFF_B: Self::BaseField = field_new!(Fq, "29569587568322301171008055308580903175558631321415017492731745847794083609535");
-
-    /// COFACTOR = 4
-    const COFACTOR: &'static [u64] = &[4];
-
-    /// COFACTOR^(-1) mod r =
-    /// 9831726595336160714896451345284868594481866920080427688839802480047265754601
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, "9831726595336160714896451345284868594481866920080427688839802480047265754601");
 
     /// generators
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
