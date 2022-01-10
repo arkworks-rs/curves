@@ -1,5 +1,8 @@
 use ark_ec::models::mnt4::{MNT4Parameters, MNT4};
-use ark_ff::{biginteger::{BigInt, BigInteger768}, field_new, Fp2};
+use ark_ff::{
+    biginteger::{BigInt, BigInteger768},
+    field_new, Fp2,
+};
 
 use crate::{Fq, Fq2, Fq2Parameters, Fq4Parameters, Fr};
 
