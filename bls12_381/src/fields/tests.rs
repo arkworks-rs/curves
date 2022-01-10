@@ -758,7 +758,7 @@ fn test_neg_one() {
 
 #[test]
 fn test_fq_repr_from() {
-    assert_eq!(BigInteger384::from(100u64), BigInt::new([100, 0, 0, 0, 0, 0]));
+    assert_eq!(BigInt::from(100u64), BigInt::new([100, 0, 0, 0, 0, 0]));
 }
 
 #[test]
