@@ -2,7 +2,7 @@ use ark_ec::models::{
     mnt6::{MNT6Parameters, MNT6},
     SWModelParameters,
 };
-use ark_ff::{biginteger::BigInteger768, field_new, Fp3};
+use ark_ff::{biginteger::BigInteger768, field_new, BigInt, Fp3};
 
 use crate::{Fq, Fq3, Fq3Parameters, Fq6Parameters, Fr};
 
@@ -46,9 +46,9 @@ impl MNT6Parameters for Parameters {
     ];
     const ATE_IS_LOOP_COUNT_NEG: bool = false;
     const FINAL_EXPONENT_LAST_CHUNK_1: BigInteger768 =
-        BigInteger768([0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
+        BigInt::new([0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
     const FINAL_EXPONENT_LAST_CHUNK_W0_IS_NEG: bool = false;
-    const FINAL_EXPONENT_LAST_CHUNK_ABS_OF_W0: BigInteger768 = BigInteger768([
+    const FINAL_EXPONENT_LAST_CHUNK_ABS_OF_W0: BigInteger768 = BigInt::new([
         8824542903220142080,
         7711082599397206192,
         8303354903384568230,

@@ -3,7 +3,7 @@ use ark_ec::{
     bw6,
     bw6::{BW6Parameters, TwistType, BW6},
 };
-use ark_ff::biginteger::BigInteger768 as BigInteger;
+use ark_ff::{biginteger::BigInteger768 as BigInteger, BigInt};
 
 pub mod g1;
 pub mod g2;
@@ -15,7 +15,7 @@ mod tests;
 pub struct Parameters;
 
 impl BW6Parameters for Parameters {
-    const X: BigInteger = BigInteger([
+    const X: BigInteger = BigInt::new([
         0x8508c00000000001,
         0x0,
         0x0,

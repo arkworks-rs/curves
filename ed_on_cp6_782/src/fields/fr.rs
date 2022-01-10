@@ -1,5 +1,5 @@
 use ark_ff::{
-    biginteger::BigInteger384 as BigInteger,
+    biginteger::{BigInt, BigInteger384 as BigInteger},
     fields::{FftParameters, Fp384, Fp384Parameters, FpParameters},
 };
 
@@ -14,7 +14,7 @@ impl FftParameters for FrParameters {
     const TWO_ADICITY: u32 = 2u32;
 
     #[rustfmt::skip]
-    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInteger([
+    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInt::new([
         12119792640622387781u64,
         8318439284650634613u64,
         6931324077796168275u64,
@@ -26,7 +26,7 @@ impl FftParameters for FrParameters {
 impl FpParameters for FrParameters {
     /// MODULUS = 32333053251621136751331591711861691692049189094364332567435817881934511297123972799646723302813083835942624121493
     #[rustfmt::skip]
-    const MODULUS: BigInteger = BigInteger([
+    const MODULUS: BigInteger = BigInt::new([
         4684667634276979349u64,
         3748803659444032385u64,
         16273581227874629698u64,
@@ -42,7 +42,7 @@ impl FpParameters for FrParameters {
     const REPR_SHAVE_BITS: u32 = 10;
 
     #[rustfmt::skip]
-    const R: BigInteger = BigInteger([
+    const R: BigInteger = BigInt::new([
         12565484300600153878u64,
         8749673077137355528u64,
         9027943686469014788u64,
@@ -52,7 +52,7 @@ impl FpParameters for FrParameters {
     ]);
 
     #[rustfmt::skip]
-    const R2: BigInteger = BigInteger([
+    const R2: BigInteger = BigInt::new([
         17257035094703902127u64,
         16096159112880350050u64,
         3498553494623421763u64,
@@ -65,7 +65,7 @@ impl FpParameters for FrParameters {
 
     // 2
     #[rustfmt::skip]
-    const GENERATOR: BigInteger = BigInteger([
+    const GENERATOR: BigInteger = BigInt::new([
         1999556893213776791u64,
         13750542494830678672u64,
         1782306145063399878u64,
@@ -75,7 +75,7 @@ impl FpParameters for FrParameters {
     ]);
 
     #[rustfmt::skip]
-    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         11565705853993265482u64,
         1874401829722016192u64,
         17360162650792090657u64,
@@ -85,7 +85,7 @@ impl FpParameters for FrParameters {
     ]);
 
     /// 8083263312905284187832897927965422923012297273591083141858954470483627824280993199911680825703270958985656030373
-    const T: BigInteger = BigInteger([
+    const T: BigInteger = BigInt::new([
         5782852926996632741,
         10160572951715783904,
         8680081325396045328,
@@ -95,7 +95,7 @@ impl FpParameters for FrParameters {
     ]);
 
     /// 4041631656452642093916448963982711461506148636795541570929477235241813912140496599955840412851635479492828015186
-    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         2891426463498316370,
         5080286475857891952,
         4340040662698022664,

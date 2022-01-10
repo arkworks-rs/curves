@@ -1,4 +1,4 @@
-use ark_ff::{biginteger::BigInteger320, field_new, Fp3};
+use ark_ff::{biginteger::BigInteger320, field_new, BigInt, Fp3};
 
 use ark_ec::{
     models::mnt6::{MNT6Parameters, MNT6},
@@ -32,10 +32,10 @@ impl MNT6Parameters for Parameters {
     );
     const ATE_LOOP_COUNT: &'static [u64] = &[0xdc9a1b671660000, 0x46609756bec2a33f, 0x1eef55];
     const ATE_IS_LOOP_COUNT_NEG: bool = true;
-    const FINAL_EXPONENT_LAST_CHUNK_1: BigInteger320 = BigInteger320([0x1, 0x0, 0x0, 0x0, 0x0]);
+    const FINAL_EXPONENT_LAST_CHUNK_1: BigInteger320 = BigInt::new([0x1, 0x0, 0x0, 0x0, 0x0]);
     const FINAL_EXPONENT_LAST_CHUNK_W0_IS_NEG: bool = true;
     const FINAL_EXPONENT_LAST_CHUNK_ABS_OF_W0: BigInteger320 =
-        BigInteger320([0xdc9a1b671660000, 0x46609756bec2a33f, 0x1eef55, 0x0, 0x0]);
+        BigInt::new([0xdc9a1b671660000, 0x46609756bec2a33f, 0x1eef55, 0x0, 0x0]);
     type Fp = Fq;
     type Fr = Fr;
     type Fp3Params = Fq3Parameters;
