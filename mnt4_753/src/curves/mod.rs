@@ -1,5 +1,8 @@
 use ark_ec::models::mnt4::{MNT4Parameters, MNT4};
-use ark_ff::{biginteger::BigInteger768, field_new, Fp2};
+use ark_ff::{
+    biginteger::{BigInt, BigInteger768},
+    field_new, Fp2,
+};
 
 use crate::{Fq, Fq2, Fq2Parameters, Fq4Parameters, Fr};
 
@@ -42,9 +45,9 @@ impl MNT4Parameters for Parameters {
     ];
     const ATE_IS_LOOP_COUNT_NEG: bool = true;
     const FINAL_EXPONENT_LAST_CHUNK_1: BigInteger768 =
-        BigInteger768([0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
+        BigInt::new([0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
     const FINAL_EXPONENT_LAST_CHUNK_W0_IS_NEG: bool = true;
-    const FINAL_EXPONENT_LAST_CHUNK_ABS_OF_W0: BigInteger768 = BigInteger768([
+    const FINAL_EXPONENT_LAST_CHUNK_ABS_OF_W0: BigInteger768 = BigInt::new([
         8824542903220142079,
         7711082599397206192,
         8303354903384568230,

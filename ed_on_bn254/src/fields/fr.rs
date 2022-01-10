@@ -1,5 +1,5 @@
 use ark_ff::{
-    biginteger::BigInteger256 as BigInteger,
+    biginteger::{BigInt, BigInteger256 as BigInteger},
     fields::{FftParameters, Fp256, Fp256Parameters, FpParameters},
 };
 
@@ -14,7 +14,7 @@ impl FftParameters for FrParameters {
     const TWO_ADICITY: u32 = 4;
 
     #[rustfmt::skip]
-    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInteger([
+    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInt::new([
         0x1721ada8d4d27255,
         0xcda0f5264e0e35bb,
         0x961a936922086fe6,
@@ -24,7 +24,7 @@ impl FftParameters for FrParameters {
 impl FpParameters for FrParameters {
     /// MODULUS = 2736030358979909402780800718157159386076813972158567259200215660948447373041
     #[rustfmt::skip]
-    const MODULUS: BigInteger = BigInteger([
+    const MODULUS: BigInteger = BigInt::new([
         0x677297dc392126f1,
         0xab3eedb83920ee0a,
         0x370a08b6d0302b0b,
@@ -38,7 +38,7 @@ impl FpParameters for FrParameters {
     const REPR_SHAVE_BITS: u32 = 5;
 
     #[rustfmt::skip]
-    const R: BigInteger = BigInteger([
+    const R: BigInteger = BigInt::new([
         0x073315dea08f9c76,
         0xe7acffc6a098f24b,
         0xf85a9201d818f015,
@@ -46,7 +46,7 @@ impl FpParameters for FrParameters {
     ]);
 
     #[rustfmt::skip]
-    const R2: BigInteger = BigInteger([
+    const R2: BigInteger = BigInt::new([
         0x35e44abee7ecb21e,
         0x74646cacf5f84ec4,
         0xe472df203faa158f,
@@ -57,28 +57,28 @@ impl FpParameters for FrParameters {
 
     #[rustfmt::skip]
     /// GENERATOR = 31
-    const GENERATOR: BigInteger = BigInteger([
+    const GENERATOR: BigInteger = BigInt::new([
         0x3c284f376f3993d1,
         0x08bc9d93705cf8b8,
         0x239d5fcbd9538f3e,
         0x5ca4836185b994b,
     ]);
 
-    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         0x33b94bee1c909378,
         0xd59f76dc1c907705,
         0x9b85045b68181585,
         0x30644e72e131a02,
     ]);
 
-    const T: BigInteger = BigInteger([
+    const T: BigInteger = BigInt::new([
         0xa677297dc392126f,
         0xbab3eedb83920ee0,
         0x5370a08b6d0302b0,
         0x60c89ce5c26340,
     ]);
 
-    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         0x533b94bee1c90937,
         0x5d59f76dc1c90770,
         0x29b85045b6818158,
