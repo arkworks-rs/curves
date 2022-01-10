@@ -758,7 +758,7 @@ fn test_neg_one() {
 
 #[test]
 fn test_fq_repr_from() {
-    assert_eq!(BigInteger384::from(100), BigInt::new([100, 0, 0, 0, 0, 0]));
+    assert_eq!(BigInteger384::from(100u64), BigInt::new([100, 0, 0, 0, 0, 0]));
 }
 
 #[test]
@@ -775,8 +775,8 @@ fn test_fq_repr_is_odd() {
 
 #[test]
 fn test_fq_repr_is_zero() {
-    assert!(BigInteger384::from(0).is_zero());
-    assert!(!BigInteger384::from(1).is_zero());
+    assert!(BigInteger384::from(0u64).is_zero());
+    assert!(!BigInteger384::from(1u64).is_zero());
     assert!(!BigInt::new([0, 0, 0, 0, 1, 0]).is_zero());
 }
 
