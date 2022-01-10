@@ -18,6 +18,14 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
+
+    /// COFACTOR = (x - 1)^2 / 3  = 76329603384216526031706109802092473003
+    const COFACTOR: &'static [u64] = &[0x8c00aaab0000aaab, 0x396c8c005555e156];
+
+    /// COFACTOR_INV = COFACTOR^{-1} mod r
+    /// = 52435875175126190458656871551744051925719901746859129887267498875565241663483
+    #[rustfmt::skip]
+    const COFACTOR_INV: Fr = field_new!(Fr, "52435875175126190458656871551744051925719901746859129887267498875565241663483");
 }
 
 impl SWModelParameters for Parameters {
@@ -28,14 +36,6 @@ impl SWModelParameters for Parameters {
     #[rustfmt::skip]
     const COEFF_B: Fq = field_new!(Fq, "4");
 
-    /// COFACTOR = (x - 1)^2 / 3  = 76329603384216526031706109802092473003
-    const COFACTOR: &'static [u64] = &[0x8c00aaab0000aaab, 0x396c8c005555e156];
-
-    /// COFACTOR_INV = COFACTOR^{-1} mod r
-    /// = 52435875175126190458656871551744051925719901746859129887267498875565241663483
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, "52435875175126190458656871551744051925719901746859129887267498875565241663483");
-
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
         (G1_GENERATOR_X, G1_GENERATOR_Y);
@@ -45,7 +45,8 @@ impl SWModelParameters for Parameters {
         Self::BaseField::zero()
     }
 
-    fn is_in_correct_subgroup_assuming_on_curve(p: &GroupAffine<Parameters>) -> bool {
+    #[inline]
+    fn is_in_correct_subgroup_assuming_on_curve(p: &G1Affine) -> bool {
         // Algorithm from Section 6 of https://eprint.iacr.org/2021/1130.
         //
         // Check that endomorphism_p(P) == -[X^2]P

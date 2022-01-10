@@ -17,14 +17,6 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq2;
     type ScalarField = Fr;
-}
-
-impl SWModelParameters for Parameters {
-    /// COEFF_A = [0, 0]
-    const COEFF_A: Fq2 = field_new!(Fq2, g1::Parameters::COEFF_A, g1::Parameters::COEFF_A,);
-
-    /// COEFF_B = [4, 4]
-    const COEFF_B: Fq2 = field_new!(Fq2, g1::Parameters::COEFF_B, g1::Parameters::COEFF_B,);
 
     /// COFACTOR = (x^8 - 4 x^7 + 5 x^6) - (4 x^4 + 6 x^3 - 4 x^2 - 4 x + 13) //
     /// 9
@@ -45,6 +37,14 @@ impl SWModelParameters for Parameters {
     /// 26652489039290660355457965112010883481355318854675681319708643586776743290055
     #[rustfmt::skip]
     const COFACTOR_INV: Fr = field_new!(Fr, "26652489039290660355457965112010883481355318854675681319708643586776743290055");
+}
+
+impl SWModelParameters for Parameters {
+    /// COEFF_A = [0, 0]
+    const COEFF_A: Fq2 = field_new!(Fq2, g1::Parameters::COEFF_A, g1::Parameters::COEFF_A,);
+
+    /// COEFF_B = [4, 4]
+    const COEFF_B: Fq2 = field_new!(Fq2, g1::Parameters::COEFF_B, g1::Parameters::COEFF_B,);
 
     /// AFFINE_GENERATOR_COEFFS = (G2_GENERATOR_X, G2_GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
@@ -55,7 +55,7 @@ impl SWModelParameters for Parameters {
         Self::BaseField::zero()
     }
 
-    fn is_in_correct_subgroup_assuming_on_curve(point: &GroupAffine<Parameters>) -> bool {
+    fn is_in_correct_subgroup_assuming_on_curve(point: &G2Affine) -> bool {
         // Algorithm from Section 4 of https://eprint.iacr.org/2021/1130.
         //
         // Checks that [p]P = [X]P
