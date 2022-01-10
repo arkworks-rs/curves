@@ -1,5 +1,5 @@
 use ark_ff::{
-    biginteger::{BigInteger, BigInteger384},
+    biginteger::{BigInt, BigInteger, BigInteger384},
     fields::{
         fp6_3over2::Fp6Parameters, FftField, FftParameters, Field, Fp2Parameters, FpParameters,
         PrimeField, SquareRootField,
@@ -24,10 +24,7 @@ generate_field_serialization_test!(bls12_377; fq2; fq6; fq12;);
 
 #[test]
 fn test_fq_repr_from() {
-    assert_eq!(
-        BigInteger384::from(100),
-        BigInteger384([100, 0, 0, 0, 0, 0])
-    );
+    assert_eq!(BigInteger384::from(100), BigInt::new([100, 0, 0, 0, 0, 0]));
 }
 
 #[test]
@@ -46,7 +43,7 @@ fn test_fq_repr_is_odd() {
 fn test_fq_repr_is_zero() {
     assert!(BigInteger384::from(0).is_zero());
     assert!(!BigInteger384::from(1).is_zero());
-    assert!(!BigInteger384([0, 0, 0, 0, 1, 0]).is_zero());
+    assert!(!BigInt::new([0, 0, 0, 0, 1, 0]).is_zero());
 }
 
 #[test]
