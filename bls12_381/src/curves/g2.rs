@@ -6,7 +6,7 @@ use ark_ec::{
     short_weierstrass_jacobian::GroupAffine,
     AffineCurve,
 };
-use ark_ff::{biginteger::BigInteger256, field_new, Field, Zero};
+use ark_ff::{field_new, BigInt, Field, Zero};
 
 pub type G2Affine = bls12::G2Affine<crate::Parameters>;
 pub type G2Projective = bls12::G2Projective<crate::Parameters>;
@@ -60,7 +60,7 @@ impl SWModelParameters for Parameters {
         //
         // Checks that [p]P = [X]P
 
-        let mut x_times_point = point.mul(BigInteger256([crate::Parameters::X[0], 0, 0, 0]));
+        let mut x_times_point = point.mul(BigInt::new([crate::Parameters::X[0], 0, 0, 0]));
         if crate::Parameters::X_IS_NEGATIVE {
             x_times_point = -x_times_point;
         }

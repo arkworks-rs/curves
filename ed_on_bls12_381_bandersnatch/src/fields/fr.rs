@@ -1,5 +1,5 @@
 use ark_ff::{
-    biginteger::BigInteger256 as BigInteger,
+    biginteger::{BigInt, BigInteger256 as BigInteger},
     fields::{FftParameters, Fp256, Fp256Parameters, FpParameters},
 };
 
@@ -19,7 +19,7 @@ impl FftParameters for FrParameters {
     /// 2^s root of unity computed by GENERATOR^t
     /// 4740934665446857387895054948191089665295030226009829406950782728666658007874
     #[rustfmt::skip]
-    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInteger([
+    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInt::new([
         0xa4dcdba087826b42,
         0x6e4ab162f57f862a,
         0xabc5492749348d6a,
@@ -30,7 +30,7 @@ impl FpParameters for FrParameters {
     /// The modulus of the field.
     /// MODULUS = 13108968793781547619861935127046491459309155893440570251786403306729687672801.
     #[rustfmt::skip]
-    const MODULUS: BigInteger = BigInteger([
+    const MODULUS: BigInteger = BigInt::new([
         0x74fd06b52876e7e1,
         0xff8f870074190471,
         0x0cce760202687600,
@@ -52,7 +52,7 @@ impl FpParameters for FrParameters {
     /// `R = M % Self::MODULUS`.
     /// R = 10920338887063814464675503992315976178796737518116002025166357554075628257528
     #[rustfmt::skip]
-    const R: BigInteger = BigInteger([
+    const R: BigInteger = BigInt::new([
         0x5817ca56bc48c0f8,
         0x0383c7fc5f37dc74,
         0x998c4fefecbc4ff8,
@@ -62,7 +62,7 @@ impl FpParameters for FrParameters {
     /// R2 = R^2 % Self::MODULUS
     /// R2 = 4932290691328759802879919559207542894238895193980447506221046538067943049163
     #[rustfmt::skip]
-    const R2: BigInteger = BigInteger([
+    const R2: BigInteger = BigInt::new([
         0xdbb4f5d658db47cb,
         0x40fa7ca27fecb938,
         0xaa9e6daec0055cea,
@@ -78,7 +78,7 @@ impl FpParameters for FrParameters {
     /// `Self::MODULUS - 1`.
     /// n = 9962557815892774795293348142308860067333132192265356416788884706064406244838
     #[rustfmt::skip]
-    const GENERATOR: BigInteger = BigInteger([
+    const GENERATOR: BigInteger = BigInt::new([
         0x56b6f3ab7b616de6,
         0x114f419d6c9083e5,
         0xbf518d217780c4b9,
@@ -87,7 +87,7 @@ impl FpParameters for FrParameters {
 
     /// (Self::MODULUS - 1) / 2
     /// 6554484396890773809930967563523245729654577946720285125893201653364843836400
-    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         0xba7e835a943b73f0,
         0x7fc7c3803a0c8238,
         0x06673b0101343b00,
@@ -97,7 +97,7 @@ impl FpParameters for FrParameters {
     /// t for 2^s * t = MODULUS - 1, and t coprime to 2.
     /// t = 409655274805673363120685472720202858103411121670017820368325103335302739775
     ///   = (modulus-1)/2^5
-    const T: BigInteger = BigInteger([
+    const T: BigInteger = BigInt::new([
         0x8ba7e835a943b73f,
         0x07fc7c3803a0c823,
         0x906673b0101343b0,
@@ -106,7 +106,7 @@ impl FpParameters for FrParameters {
 
     /// (t - 1) / 2
     ///  = 204827637402836681560342736360101429051705560835008910184162551667651369887
-    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         0xc5d3f41ad4a1db9f,
         0x03fe3e1c01d06411,
         0x483339d80809a1d8,
