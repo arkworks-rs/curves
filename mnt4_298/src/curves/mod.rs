@@ -1,5 +1,5 @@
 use ark_ec::models::mnt4::{MNT4Parameters, MNT4};
-use ark_ff::{biginteger::BigInteger320, field_new, Fp2};
+use ark_ff::{biginteger::BigInteger320, field_new, BigInt, Fp2};
 
 use crate::{Fq, Fq2, Fq2Parameters, Fq4Parameters, Fr};
 
@@ -34,10 +34,10 @@ impl MNT4Parameters for Parameters {
 
     const ATE_LOOP_COUNT: &'static [u64] = &[993502997770534912, 5071219579242586943, 2027349];
     const ATE_IS_LOOP_COUNT_NEG: bool = false;
-    const FINAL_EXPONENT_LAST_CHUNK_1: BigInteger320 = BigInteger320([0x1, 0x0, 0x0, 0x0, 0x0]);
+    const FINAL_EXPONENT_LAST_CHUNK_1: BigInteger320 = BigInt::new([0x1, 0x0, 0x0, 0x0, 0x0]);
     const FINAL_EXPONENT_LAST_CHUNK_W0_IS_NEG: bool = false;
     const FINAL_EXPONENT_LAST_CHUNK_ABS_OF_W0: BigInteger320 =
-        BigInteger320([993502997770534913, 5071219579242586943, 2027349, 0, 0]);
+        BigInt::new([993502997770534913, 5071219579242586943, 2027349, 0, 0]);
     type Fp = Fq;
     type Fr = Fr;
     type Fp2Params = Fq2Parameters;

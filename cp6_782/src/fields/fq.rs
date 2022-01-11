@@ -1,5 +1,5 @@
 use ark_ff::{
-    biginteger::BigInteger832 as BigInteger,
+    biginteger::{BigInt, BigInteger832 as BigInteger},
     fields::{FftParameters, Fp832, Fp832Parameters, FpParameters},
 };
 
@@ -17,7 +17,7 @@ impl FftParameters for FqParameters {
     const TWO_ADICITY: u32 = 3;
 
     #[rustfmt::skip]
-    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInteger([
+    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInt::new([
         18044746167194862600u64,
         63590321303744709u64,
         5009346151370959890u64,
@@ -36,7 +36,7 @@ impl FftParameters for FqParameters {
 impl FpParameters for FqParameters {
     /// MODULUS = 22369874298875696930346742206501054934775599465297184582183496627646774052458024540232479018147881220178054575403841904557897715222633333372134756426301062487682326574958588001132586331462553235407484089304633076250782629492557320825577
     #[rustfmt::skip]
-    const MODULUS: BigInteger = BigInteger([
+    const MODULUS: BigInteger = BigInt::new([
         0xdace79b57b942ae9,
         0x545d85c16dfd424a,
         0xee135c065f4d26b7,
@@ -59,7 +59,7 @@ impl FpParameters for FqParameters {
     const REPR_SHAVE_BITS: u32 = 50;
 
     #[rustfmt::skip]
-    const R: BigInteger = BigInteger([
+    const R: BigInteger = BigInt::new([
         11190988450819017841u64,
         16170411717126802030u64,
         2265463223430229059u64,
@@ -76,7 +76,7 @@ impl FpParameters for FqParameters {
     ]);
 
     #[rustfmt::skip]
-    const R2: BigInteger = BigInteger([
+    const R2: BigInteger = BigInt::new([
         13983406830510863714u64,
         17863856572171232656u64,
         1698388424046564526u64,
@@ -96,7 +96,7 @@ impl FpParameters for FqParameters {
 
     /// GENERATOR = 13
     #[rustfmt::skip]
-    const GENERATOR: BigInteger = BigInteger([
+    const GENERATOR: BigInteger = BigInt::new([
         16669393626057438558u64,
         1640520694378723217u64,
         1598646156981121135u64,
@@ -113,7 +113,7 @@ impl FpParameters for FqParameters {
     ]);
 
     #[rustfmt::skip]
-    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         0x6d673cdabdca1574,
         0xaa2ec2e0b6fea125,
         0xf709ae032fa6935b,
@@ -132,7 +132,7 @@ impl FpParameters for FqParameters {
     // (T - 1)/2 =
     // 1398117143679731058146671387906315933423474966581074036386468539227923378278626533764529938634242576261128410962740119034868607201414583335758422276643816405480145410934911750070786645716409577212967755581539567265673914343284832551598
     #[rustfmt::skip]
-    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         0xadace79b57b942ae,
         0x7545d85c16dfd424,
         0xbee135c065f4d26b,
@@ -151,7 +151,7 @@ impl FpParameters for FqParameters {
     // T =
     // 2796234287359462116293342775812631866846949933162148072772937078455846756557253067529059877268485152522256821925480238069737214402829166671516844553287632810960290821869823500141573291432819154425935511163079134531347828686569665103197
     #[rustfmt::skip]
-    const T: BigInteger = BigInteger([
+    const T: BigInteger = BigInt::new([
         0x5b59cf36af72855d,
         0xea8bb0b82dbfa849,
         0x7dc26b80cbe9a4d6,

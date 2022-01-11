@@ -15,6 +15,14 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
+
+    /// COFACTOR = 1
+    const COFACTOR: &'static [u64] = &[1];
+
+    /// COFACTOR^(-1) mod r =
+    /// 1
+    #[rustfmt::skip]
+    const COFACTOR_INV: Fr = FR_ONE;
 }
 
 impl SWModelParameters for Parameters {
@@ -27,14 +35,6 @@ impl SWModelParameters for Parameters {
     /// Reference: <https://github.com/scipr-lab/libff/blob/c927821ebe02e0a24b5e0f9170cec5e211a35f08/libff/algebra/curves/mnt/mnt4/mnt4_init.cpp#L117>
     #[rustfmt::skip]
     const COEFF_B: Fq = field_new!(Fq, "423894536526684178289416011533888240029318103673896002803341544124054745019340795360841685");
-
-    /// COFACTOR = 1
-    const COFACTOR: &'static [u64] = &[1];
-
-    /// COFACTOR^(-1) mod r =
-    /// 1
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = FR_ONE;
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =

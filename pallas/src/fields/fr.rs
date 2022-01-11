@@ -1,5 +1,5 @@
 use ark_ff::{
-    biginteger::BigInteger256 as BigInteger,
+    biginteger::{BigInt, BigInteger256 as BigInteger},
     fields::{FftParameters, Fp256, Fp256Parameters, FpParameters},
 };
 
@@ -15,7 +15,7 @@ impl FftParameters for FrParameters {
 
     // TWO_ADIC_ROOT_OF_UNITY = GENERATOR^T
     // Encoded in Montgomery form, so the value here is (5^T)R mod q.
-    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInteger([
+    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInt::new([
         0x218077428c9942de,
         0xcc49578921b60494,
         0xac2e5d27b2efbee2,
@@ -25,7 +25,7 @@ impl FftParameters for FrParameters {
 
 impl FpParameters for FrParameters {
     // 28948022309329048855892746252171976963363056481941647379679742748393362948097
-    const MODULUS: BigInteger = BigInteger([
+    const MODULUS: BigInteger = BigInt::new([
         0x8c46eb2100000001,
         0x224698fc0994a8dd,
         0x0000000000000000,
@@ -33,7 +33,7 @@ impl FpParameters for FrParameters {
     ]);
 
     // R = 2^256 mod q
-    const R: BigInteger = BigInteger([
+    const R: BigInteger = BigInt::new([
         0x5b2b3e9cfffffffd,
         0x992c350be3420567,
         0xffffffffffffffff,
@@ -41,14 +41,14 @@ impl FpParameters for FrParameters {
     ]);
 
     // R2 = (2^256)^2 mod q
-    const R2: BigInteger = BigInteger([
+    const R2: BigInteger = BigInt::new([
         0xfc9678ff0000000f,
         0x67bb433d891a16e3,
         0x7fae231004ccf590,
         0x096d41af7ccfdaa9,
     ]);
 
-    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         0xc623759080000000,
         0x11234c7e04ca546e,
         0x0000000000000000,
@@ -57,14 +57,14 @@ impl FpParameters for FrParameters {
 
     // T and T_MINUS_ONE_DIV_TWO, where MODULUS - 1 = 2^S * T
 
-    const T: BigInteger = BigInteger([
+    const T: BigInteger = BigInt::new([
         0x0994a8dd8c46eb21,
         0x00000000224698fc,
         0x0000000000000000,
         0x0000000040000000,
     ]);
 
-    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         0x04ca546ec6237590,
         0x0000000011234c7e,
         0x0000000000000000,
@@ -73,7 +73,7 @@ impl FpParameters for FrParameters {
 
     // GENERATOR = 5
     // Encoded in Montgomery form, so the value here is 5R mod q.
-    const GENERATOR: BigInteger = BigInteger([
+    const GENERATOR: BigInteger = BigInt::new([
         0x96bc8c8cffffffed,
         0x74c2a54b49f7778e,
         0xfffffffffffffffd,

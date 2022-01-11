@@ -14,17 +14,6 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
-}
-
-impl SWModelParameters for Parameters {
-    /// COEFF_A = 0
-    #[rustfmt::skip]
-
-    const COEFF_A: Fq = field_new!(Fq, "0");
-
-    /// COEFF_B = -1
-    #[rustfmt::skip]
-    const COEFF_B: Fq = field_new!(Fq, "-1");
 
     /// COFACTOR =
     /// 26642435879335816683987677701488073867751118270052650655942102502312977592501693353047140953112195348280268661194876
@@ -42,6 +31,17 @@ impl SWModelParameters for Parameters {
     /// 91141326767669940707819291241958318717982251277713150053234367522357946997763584490607453720072232540829942217804
     #[rustfmt::skip]
     const COFACTOR_INV: Fr = field_new!(Fr, "91141326767669940707819291241958318717982251277713150053234367522357946997763584490607453720072232540829942217804");
+}
+
+impl SWModelParameters for Parameters {
+    /// COEFF_A = 0
+    #[rustfmt::skip]
+
+    const COEFF_A: Fq = field_new!(Fq, "0");
+
+    /// COEFF_B = -1
+    #[rustfmt::skip]
+    const COEFF_B: Fq = field_new!(Fq, "-1");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =

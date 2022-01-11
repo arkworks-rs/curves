@@ -1,82 +1,26 @@
 use ark_ff::{
-    biginteger::{BigInteger, BigInteger384},
+    biginteger::{BigInt, BigInteger, BigInteger384},
     fields::{
         FftField, FftParameters, Field, Fp12Parameters, Fp2Parameters, Fp6Parameters, FpParameters,
         SquareRootField,
     },
     One, UniformRand, Zero,
 };
-use core::{
+use ark_std::{
     cmp::Ordering,
     ops::{AddAssign, MulAssign, SubAssign},
+    rand::Rng,
+    test_rng,
 };
 
 use crate::{Fq, Fq12, Fq12Parameters, Fq2, Fq2Parameters, Fq6, Fq6Parameters, FqParameters, Fr};
-use ark_algebra_test_templates::fields::*;
+use ark_algebra_test_templates::{fields::*, generate_field_test};
 
-pub(crate) const ITERATIONS: usize = 5;
-
-#[test]
-fn test_fr() {
-    let mut rng = ark_std::test_rng();
-    for _ in 0..ITERATIONS {
-        let a: Fr = UniformRand::rand(&mut rng);
-        let b: Fr = UniformRand::rand(&mut rng);
-        field_test(a, b);
-        primefield_test::<Fr>();
-        sqrt_field_test(b);
-    }
-}
-
-#[test]
-fn test_fq() {
-    let mut rng = ark_std::test_rng();
-    for _ in 0..ITERATIONS {
-        let a: Fq = UniformRand::rand(&mut rng);
-        let b: Fq = UniformRand::rand(&mut rng);
-        field_test(a, b);
-        primefield_test::<Fq>();
-        sqrt_field_test(a);
-    }
-}
-
-#[test]
-fn test_fq2() {
-    let mut rng = ark_std::test_rng();
-    for _ in 0..ITERATIONS {
-        let a: Fq2 = UniformRand::rand(&mut rng);
-        let b: Fq2 = UniformRand::rand(&mut rng);
-        field_test(a, b);
-        sqrt_field_test(a);
-    }
-    frobenius_test::<Fq2, _>(Fq::characteristic(), 13);
-}
-
-#[test]
-fn test_fq6() {
-    let mut rng = ark_std::test_rng();
-    for _ in 0..ITERATIONS {
-        let g: Fq6 = UniformRand::rand(&mut rng);
-        let h: Fq6 = UniformRand::rand(&mut rng);
-        field_test(g, h);
-    }
-    frobenius_test::<Fq6, _>(Fq::characteristic(), 13);
-}
-
-#[test]
-fn test_fq12() {
-    let mut rng = ark_std::test_rng();
-    for _ in 0..ITERATIONS {
-        let g: Fq12 = UniformRand::rand(&mut rng);
-        let h: Fq12 = UniformRand::rand(&mut rng);
-        field_test(g, h);
-    }
-    frobenius_test::<Fq12, _>(Fq::characteristic(), 13);
-}
+generate_field_test!(bls12_381; fq2; fq6; fq12;);
 
 #[test]
 fn test_negative_one() {
-    let neg_one = Fq::new(BigInteger384([
+    let neg_one = Fq::new(BigInt::new([
         0x43f5fffffffcaaae,
         0x32b7fff2ed47fffd,
         0x7e83a49a2e99d69,
@@ -807,17 +751,14 @@ fn test_neg_one() {
         0x40ab3263eff0206,
     ];
     println!("{:?}", thing);
-    let negative_one = Fq::new(BigInteger384(thing));
+    let negative_one = Fq::new(BigInt::new(thing));
 
     assert_eq!(negative_one, o);
 }
 
 #[test]
 fn test_fq_repr_from() {
-    assert_eq!(
-        BigInteger384::from(100),
-        BigInteger384([100, 0, 0, 0, 0, 0])
-    );
+    assert_eq!(BigInt::from(100u64), BigInt::new([100, 0, 0, 0, 0, 0]));
 }
 
 #[test]
@@ -834,14 +775,14 @@ fn test_fq_repr_is_odd() {
 
 #[test]
 fn test_fq_repr_is_zero() {
-    assert!(BigInteger384::from(0).is_zero());
-    assert!(!BigInteger384::from(1).is_zero());
-    assert!(!BigInteger384([0, 0, 0, 0, 1, 0]).is_zero());
+    assert!(BigInteger384::from(0u64).is_zero());
+    assert!(!BigInteger384::from(1u64).is_zero());
+    assert!(!BigInt::new([0, 0, 0, 0, 1, 0]).is_zero());
 }
 
 #[test]
 fn test_fq_repr_div2() {
-    let mut a = BigInteger384([
+    let mut a = BigInt::new([
         0x8b0ad39f8dd7482a,
         0x147221c9a7178b69,
         0x54764cb08d8a6aa0,
@@ -852,7 +793,7 @@ fn test_fq_repr_div2() {
     a.div2();
     assert_eq!(
         a,
-        BigInteger384([
+        BigInt::new([
             0xc58569cfc6eba415,
             0xa3910e4d38bc5b4,
             0xaa3b265846c53550,
@@ -866,7 +807,7 @@ fn test_fq_repr_div2() {
     }
     assert_eq!(
         a,
-        BigInteger384([
+        BigInt::new([
             0x6d31615a73f1bae9,
             0x54028e443934e2f1,
             0x82a8ec99611b14d,
@@ -880,23 +821,23 @@ fn test_fq_repr_div2() {
     }
     assert_eq!(
         a,
-        BigInteger384([0x7288af1f36ee3608, 0x1e8, 0x0, 0x0, 0x0, 0x0])
+        BigInt::new([0x7288af1f36ee3608, 0x1e8, 0x0, 0x0, 0x0, 0x0])
     );
     for _ in 0..50 {
         a.div2();
     }
-    assert_eq!(a, BigInteger384([0x7a1ca2, 0x0, 0x0, 0x0, 0x0, 0x0]));
+    assert_eq!(a, BigInt::new([0x7a1ca2, 0x0, 0x0, 0x0, 0x0, 0x0]));
     for _ in 0..22 {
         a.div2();
     }
-    assert_eq!(a, BigInteger384([0x1, 0x0, 0x0, 0x0, 0x0, 0x0]));
+    assert_eq!(a, BigInt::new([0x1, 0x0, 0x0, 0x0, 0x0, 0x0]));
     a.div2();
     assert!(a.is_zero());
 }
 
 #[test]
 fn test_fq_repr_divn() {
-    let mut a = BigInteger384([
+    let mut a = BigInt::new([
         0xaa5cdd6172847ffd,
         0x43242c06aed55287,
         0x9ddd5b312f3dd104,
@@ -907,7 +848,7 @@ fn test_fq_repr_divn() {
     a.divn(0);
     assert_eq!(
         a,
-        BigInteger384([
+        BigInt::new([
             0xaa5cdd6172847ffd,
             0x43242c06aed55287,
             0x9ddd5b312f3dd104,
@@ -919,7 +860,7 @@ fn test_fq_repr_divn() {
     a.divn(1);
     assert_eq!(
         a,
-        BigInteger384([
+        BigInt::new([
             0xd52e6eb0b9423ffe,
             0x21921603576aa943,
             0xceeead98979ee882,
@@ -931,7 +872,7 @@ fn test_fq_repr_divn() {
     a.divn(50);
     assert_eq!(
         a,
-        BigInteger384([
+        BigInt::new([
             0x8580d5daaa50f54b,
             0xab6625e7ba208864,
             0x83fa9008d6fcf3bb,
@@ -943,7 +884,7 @@ fn test_fq_repr_divn() {
     a.divn(130);
     assert_eq!(
         a,
-        BigInteger384([
+        BigInt::new([
             0xa0fea40235bf3cee,
             0x4067a038f0582e2a,
             0x2f9480d7528a70b0,
@@ -955,7 +896,7 @@ fn test_fq_repr_divn() {
     a.divn(64);
     assert_eq!(
         a,
-        BigInteger384([0x4067a038f0582e2a, 0x2f9480d7528a70b0, 0x91, 0x0, 0x0, 0x0])
+        BigInt::new([0x4067a038f0582e2a, 0x2f9480d7528a70b0, 0x91, 0x0, 0x0, 0x0])
     );
 }
 
@@ -963,27 +904,27 @@ fn test_fq_repr_divn() {
 fn test_fq_repr_mul2() {
     let mut a = BigInteger384::from(23712937547);
     a.mul2();
-    assert_eq!(a, BigInteger384([0xb0acd6c96, 0x0, 0x0, 0x0, 0x0, 0x0]));
+    assert_eq!(a, BigInt::new([0xb0acd6c96, 0x0, 0x0, 0x0, 0x0, 0x0]));
     for _ in 0..60 {
         a.mul2();
     }
     assert_eq!(
         a,
-        BigInteger384([0x6000000000000000, 0xb0acd6c9, 0x0, 0x0, 0x0, 0x0])
+        BigInt::new([0x6000000000000000, 0xb0acd6c9, 0x0, 0x0, 0x0, 0x0])
     );
     for _ in 0..300 {
         a.mul2();
     }
     assert_eq!(
         a,
-        BigInteger384([0x0, 0x0, 0x0, 0x0, 0x0, 0xcd6c960000000000])
+        BigInt::new([0x0, 0x0, 0x0, 0x0, 0x0, 0xcd6c960000000000])
     );
     for _ in 0..17 {
         a.mul2();
     }
     assert_eq!(
         a,
-        BigInteger384([0x0, 0x0, 0x0, 0x0, 0x0, 0x2c00000000000000])
+        BigInt::new([0x0, 0x0, 0x0, 0x0, 0x0, 0x2c00000000000000])
     );
     for _ in 0..6 {
         a.mul2();
@@ -1007,7 +948,7 @@ fn test_fq_repr_num_bits() {
 fn test_fq_repr_sub_noborrow() {
     let mut rng = ark_std::test_rng();
 
-    let mut t = BigInteger384([
+    let mut t = BigInt::new([
         0x827a4a08041ebd9,
         0x3c239f3dcc8f0d6b,
         0x9ab46a912d555364,
@@ -1015,7 +956,7 @@ fn test_fq_repr_sub_noborrow() {
         0xad0eb3948a5c34fd,
         0xd56f7b5ab8b5ce8,
     ]);
-    t.sub_noborrow(&BigInteger384([
+    t.sub_noborrow(&BigInt::new([
         0xc7867917187ca02b,
         0x5d75679d4911ffef,
         0x8c5b3e48b1a71c15,
@@ -1024,7 +965,7 @@ fn test_fq_repr_sub_noborrow() {
         0x7c0577a26f59d5,
     ]));
     assert!(
-        t == BigInteger384([
+        t == BigInt::new([
             0x40a12b8967c54bae,
             0xdeae37a0837d0d7b,
             0xe592c487bae374e,
@@ -1061,7 +1002,7 @@ fn test_fq_repr_sub_noborrow() {
     }
 
     // Subtracting q+1 from q should produce -1 (mod 2**384)
-    let mut qplusone = BigInteger384([
+    let mut qplusone = BigInt::new([
         0xb9feffffffffaaab,
         0x1eabfffeb153ffff,
         0x6730d2a0f6b0f624,
@@ -1069,7 +1010,7 @@ fn test_fq_repr_sub_noborrow() {
         0x4b1ba7b6434bacd7,
         0x1a0111ea397fe69a,
     ]);
-    qplusone.sub_noborrow(&BigInteger384([
+    qplusone.sub_noborrow(&BigInt::new([
         0xb9feffffffffaaac,
         0x1eabfffeb153ffff,
         0x6730d2a0f6b0f624,
@@ -1079,7 +1020,7 @@ fn test_fq_repr_sub_noborrow() {
     ]));
     assert_eq!(
         qplusone,
-        BigInteger384([
+        BigInt::new([
             0xffffffffffffffff,
             0xffffffffffffffff,
             0xffffffffffffffff,
@@ -1094,7 +1035,7 @@ fn test_fq_repr_sub_noborrow() {
 fn test_fq_repr_add_nocarry() {
     let mut rng = ark_std::test_rng();
 
-    let mut t = BigInteger384([
+    let mut t = BigInt::new([
         0x827a4a08041ebd9,
         0x3c239f3dcc8f0d6b,
         0x9ab46a912d555364,
@@ -1102,7 +1043,7 @@ fn test_fq_repr_add_nocarry() {
         0xad0eb3948a5c34fd,
         0xd56f7b5ab8b5ce8,
     ]);
-    t.add_nocarry(&BigInteger384([
+    t.add_nocarry(&BigInt::new([
         0xc7867917187ca02b,
         0x5d75679d4911ffef,
         0x8c5b3e48b1a71c15,
@@ -1111,7 +1052,7 @@ fn test_fq_repr_add_nocarry() {
         0x7c0577a26f59d5,
     ]));
     assert!(
-        t == BigInteger384([
+        t == BigInt::new([
             0xcfae1db798be8c04,
             0x999906db15a10d5a,
             0x270fa8d9defc6f79,
@@ -1164,7 +1105,7 @@ fn test_fq_repr_add_nocarry() {
     }
 
     // Adding 1 to (2^384 - 1) should produce zero
-    let mut x = BigInteger384([
+    let mut x = BigInt::new([
         0xffffffffffffffff,
         0xffffffffffffffff,
         0xffffffffffffffff,
@@ -1177,449 +1118,16 @@ fn test_fq_repr_add_nocarry() {
 }
 
 #[test]
-fn test_fq_add_assign() {
-    {
-        // Random number
-        let mut tmp = Fq::new(BigInteger384([
-            0x624434821df92b69,
-            0x503260c04fd2e2ea,
-            0xd9df726e0d16e8ce,
-            0xfbcb39adfd5dfaeb,
-            0x86b8a22b0c88b112,
-            0x165a2ed809e4201b,
-        ]));
-        // Test that adding zero has no effect.
-        tmp.add_assign(&Fq::new(BigInteger384::from(0)));
-        assert_eq!(
-            tmp,
-            Fq::new(BigInteger384([
-                0x624434821df92b69,
-                0x503260c04fd2e2ea,
-                0xd9df726e0d16e8ce,
-                0xfbcb39adfd5dfaeb,
-                0x86b8a22b0c88b112,
-                0x165a2ed809e4201b,
-            ]))
-        );
-        // Add one and test for the result.
-        tmp.add_assign(&Fq::new(BigInteger384::from(1)));
-        assert_eq!(
-            tmp,
-            Fq::new(BigInteger384([
-                0x624434821df92b6a,
-                0x503260c04fd2e2ea,
-                0xd9df726e0d16e8ce,
-                0xfbcb39adfd5dfaeb,
-                0x86b8a22b0c88b112,
-                0x165a2ed809e4201b,
-            ]))
-        );
-        // Add another random number that exercises the reduction.
-        tmp.add_assign(&Fq::new(BigInteger384([
-            0x374d8f8ea7a648d8,
-            0xe318bb0ebb8bfa9b,
-            0x613d996f0a95b400,
-            0x9fac233cb7e4fef1,
-            0x67e47552d253c52,
-            0x5c31b227edf25da,
-        ])));
-        assert_eq!(
-            tmp,
-            Fq::new(BigInteger384([
-                0xdf92c410c59fc997,
-                0x149f1bd05a0add85,
-                0xd3ec393c20fba6ab,
-                0x37001165c1bde71d,
-                0x421b41c9f662408e,
-                0x21c38104f435f5b,
-            ]))
-        );
-        // Add one to (q - 1) and test for the result.
-        tmp = Fq::new(BigInteger384([
-            0xb9feffffffffaaaa,
-            0x1eabfffeb153ffff,
-            0x6730d2a0f6b0f624,
-            0x64774b84f38512bf,
-            0x4b1ba7b6434bacd7,
-            0x1a0111ea397fe69a,
-        ]));
-        tmp.add_assign(&Fq::new(BigInteger384::from(1)));
-        assert!(tmp.0.is_zero());
-        // Add a random number to another one such that the result is q - 1
-        tmp = Fq::new(BigInteger384([
-            0x531221a410efc95b,
-            0x72819306027e9717,
-            0x5ecefb937068b746,
-            0x97de59cd6feaefd7,
-            0xdc35c51158644588,
-            0xb2d176c04f2100,
-        ]));
-        tmp.add_assign(&Fq::new(BigInteger384([
-            0x66ecde5bef0fe14f,
-            0xac2a6cf8aed568e8,
-            0x861d70d86483edd,
-            0xcc98f1b7839a22e8,
-            0x6ee5e2a4eae7674e,
-            0x194e40737930c599,
-        ])));
-        assert_eq!(
-            tmp,
-            Fq::new(BigInteger384([
-                0xb9feffffffffaaaa,
-                0x1eabfffeb153ffff,
-                0x6730d2a0f6b0f624,
-                0x64774b84f38512bf,
-                0x4b1ba7b6434bacd7,
-                0x1a0111ea397fe69a,
-            ]))
-        );
-        // Add one to the result and test for it.
-        tmp.add_assign(&Fq::new(BigInteger384::from(1)));
-        assert!(tmp.0.is_zero());
-    }
+fn test_fq2_sqrt() {
+    // 1 has a sqrt in the base field
+    let fq2_sqrt = Fq2::new(Fq::one(), Fq::zero()).sqrt().unwrap();
+    assert_eq!(fq2_sqrt.c0, Fq::one());
+    assert_eq!(fq2_sqrt.c1, Fq::zero());
 
-    // Test associativity
-
-    let mut rng = ark_std::test_rng();
-
-    for _ in 0..1000 {
-        // Generate a, b, c and ensure (a + b) + c == a + (b + c).
-        let a = Fq::rand(&mut rng);
-        let b = Fq::rand(&mut rng);
-        let c = Fq::rand(&mut rng);
-
-        let mut tmp1 = a;
-        tmp1.add_assign(&b);
-        tmp1.add_assign(&c);
-
-        let mut tmp2 = b;
-        tmp2.add_assign(&c);
-        tmp2.add_assign(&a);
-
-        assert_eq!(tmp1, tmp2);
-    }
-}
-
-#[test]
-fn test_fq_sub_assign() {
-    {
-        // Test arbitrary subtraction that tests reduction.
-        let mut tmp = Fq::new(BigInteger384([
-            0x531221a410efc95b,
-            0x72819306027e9717,
-            0x5ecefb937068b746,
-            0x97de59cd6feaefd7,
-            0xdc35c51158644588,
-            0xb2d176c04f2100,
-        ]));
-        tmp.sub_assign(&Fq::new(BigInteger384([
-            0x98910d20877e4ada,
-            0x940c983013f4b8ba,
-            0xf677dc9b8345ba33,
-            0xbef2ce6b7f577eba,
-            0xe1ae288ac3222c44,
-            0x5968bb602790806,
-        ])));
-        assert_eq!(
-            tmp,
-            Fq::new(BigInteger384([
-                0x748014838971292c,
-                0xfd20fad49fddde5c,
-                0xcf87f198e3d3f336,
-                0x3d62d6e6e41883db,
-                0x45a3443cd88dc61b,
-                0x151d57aaf755ff94,
-            ]))
-        );
-
-        // Test the opposite subtraction which doesn't test reduction.
-        tmp = Fq::new(BigInteger384([
-            0x98910d20877e4ada,
-            0x940c983013f4b8ba,
-            0xf677dc9b8345ba33,
-            0xbef2ce6b7f577eba,
-            0xe1ae288ac3222c44,
-            0x5968bb602790806,
-        ]));
-        tmp.sub_assign(&Fq::new(BigInteger384([
-            0x531221a410efc95b,
-            0x72819306027e9717,
-            0x5ecefb937068b746,
-            0x97de59cd6feaefd7,
-            0xdc35c51158644588,
-            0xb2d176c04f2100,
-        ])));
-        assert_eq!(
-            tmp,
-            Fq::new(BigInteger384([
-                0x457eeb7c768e817f,
-                0x218b052a117621a3,
-                0x97a8e10812dd02ed,
-                0x2714749e0f6c8ee3,
-                0x57863796abde6bc,
-                0x4e3ba3f4229e706,
-            ]))
-        );
-
-        // Test for sensible results with zero
-        tmp = Fq::new(BigInteger384::from(0));
-        tmp.sub_assign(&Fq::new(BigInteger384::from(0)));
-        assert!(tmp.is_zero());
-
-        tmp = Fq::new(BigInteger384([
-            0x98910d20877e4ada,
-            0x940c983013f4b8ba,
-            0xf677dc9b8345ba33,
-            0xbef2ce6b7f577eba,
-            0xe1ae288ac3222c44,
-            0x5968bb602790806,
-        ]));
-        tmp.sub_assign(&Fq::new(BigInteger384::from(0)));
-        assert_eq!(
-            tmp,
-            Fq::new(BigInteger384([
-                0x98910d20877e4ada,
-                0x940c983013f4b8ba,
-                0xf677dc9b8345ba33,
-                0xbef2ce6b7f577eba,
-                0xe1ae288ac3222c44,
-                0x5968bb602790806,
-            ]))
-        );
-    }
-
-    let mut rng = ark_std::test_rng();
-
-    for _ in 0..1000 {
-        // Ensure that (a - b) + (b - a) = 0.
-        let a = Fq::rand(&mut rng);
-        let b = Fq::rand(&mut rng);
-
-        let mut tmp1 = a;
-        tmp1.sub_assign(&b);
-
-        let mut tmp2 = b;
-        tmp2.sub_assign(&a);
-
-        tmp1.add_assign(&tmp2);
-        assert!(tmp1.is_zero());
-    }
-}
-
-#[test]
-fn test_fq_mul_assign() {
-    let mut tmp = Fq::new(BigInteger384([
-        0xcc6200000020aa8a,
-        0x422800801dd8001a,
-        0x7f4f5e619041c62c,
-        0x8a55171ac70ed2ba,
-        0x3f69cc3a3d07d58b,
-        0xb972455fd09b8ef,
-    ]));
-    tmp.mul_assign(&Fq::new(BigInteger384([
-        0x329300000030ffcf,
-        0x633c00c02cc40028,
-        0xbef70d925862a942,
-        0x4f7fa2a82a963c17,
-        0xdf1eb2575b8bc051,
-        0x1162b680fb8e9566,
-    ])));
-    assert!(
-        tmp == Fq::new(BigInteger384([
-            0x9dc4000001ebfe14,
-            0x2850078997b00193,
-            0xa8197f1abb4d7bf,
-            0xc0309573f4bfe871,
-            0xf48d0923ffaf7620,
-            0x11d4b58c7a926e66,
-        ]))
-    );
-
-    let mut rng = ark_std::test_rng();
-
-    for _ in 0..1000000 {
-        // Ensure that (a * b) * c = a * (b * c)
-        let a = Fq::rand(&mut rng);
-        let b = Fq::rand(&mut rng);
-        let c = Fq::rand(&mut rng);
-
-        let mut tmp1 = a;
-        tmp1.mul_assign(&b);
-        tmp1.mul_assign(&c);
-
-        let mut tmp2 = b;
-        tmp2.mul_assign(&c);
-        tmp2.mul_assign(&a);
-
-        assert_eq!(tmp1, tmp2);
-    }
-
-    for _ in 0..1000000 {
-        // Ensure that r * (a + b + c) = r*a + r*b + r*c
-
-        let r = Fq::rand(&mut rng);
-        let mut a = Fq::rand(&mut rng);
-        let mut b = Fq::rand(&mut rng);
-        let mut c = Fq::rand(&mut rng);
-
-        let mut tmp1 = a;
-        tmp1.add_assign(&b);
-        tmp1.add_assign(&c);
-        tmp1.mul_assign(&r);
-
-        a.mul_assign(&r);
-        b.mul_assign(&r);
-        c.mul_assign(&r);
-
-        a.add_assign(&b);
-        a.add_assign(&c);
-
-        assert_eq!(tmp1, a);
-    }
-}
-
-#[test]
-fn test_fq_squaring() {
-    let mut a = Fq::new(BigInteger384([
-        0xffffffffffffffff,
-        0xffffffffffffffff,
-        0xffffffffffffffff,
-        0xffffffffffffffff,
-        0xffffffffffffffff,
-        0x19ffffffffffffff,
-    ]));
-    a.square_in_place();
-    assert_eq!(
-        a,
-        Fq::from(BigInteger384([
-            0x1cfb28fe7dfbbb86,
-            0x24cbe1731577a59,
-            0xcce1d4edc120e66e,
-            0xdc05c659b4e15b27,
-            0x79361e5a802c6a23,
-            0x24bcbe5d51b9a6f,
-        ]))
-    );
-
-    let mut rng = ark_std::test_rng();
-
-    for _ in 0..1000000 {
-        // Ensure that (a * a) = a^2
-        let a = Fq::rand(&mut rng);
-
-        let mut tmp = a;
-        tmp.square_in_place();
-
-        let mut tmp2 = a;
-        tmp2.mul_assign(&a);
-
-        assert_eq!(tmp, tmp2);
-    }
-}
-
-#[test]
-fn test_fq_inverse() {
-    assert!(Fq::zero().inverse().is_none());
-
-    let mut rng = ark_std::test_rng();
-
-    let one = Fq::one();
-
-    for _ in 0..1000 {
-        // Ensure that a * a^-1 = 1
-        let mut a = Fq::rand(&mut rng);
-        let ainv = a.inverse().unwrap();
-        a.mul_assign(&ainv);
-        assert_eq!(a, one);
-    }
-}
-
-#[test]
-fn test_fq_double_in_place() {
-    let mut rng = ark_std::test_rng();
-
-    for _ in 0..1000 {
-        // Ensure doubling a is equivalent to adding a to itself.
-        let mut a = Fq::rand(&mut rng);
-        let mut b = a;
-        b.add_assign(&a);
-        a.double_in_place();
-        assert_eq!(a, b);
-    }
-}
-
-#[test]
-fn test_fq_negate() {
-    {
-        let a = -Fq::zero();
-
-        assert!(a.is_zero());
-    }
-
-    let mut rng = ark_std::test_rng();
-
-    for _ in 0..1000 {
-        // Ensure (a - (-a)) = 0.
-        let mut a = Fq::rand(&mut rng);
-        let b = -a;
-        a.add_assign(&b);
-
-        assert!(a.is_zero());
-    }
-}
-
-#[test]
-fn test_fq_pow() {
-    let mut rng = ark_std::test_rng();
-
-    for i in 0..1000 {
-        // Exponentiate by various small numbers and ensure it consists with repeated
-        // multiplication.
-        let a = Fq::rand(&mut rng);
-        let target = a.pow(&[i]);
-        let mut c = Fq::one();
-        for _ in 0..i {
-            c.mul_assign(&a);
-        }
-        assert_eq!(c, target);
-    }
-
-    for _ in 0..1000 {
-        // Exponentiating by the modulus should have no effect in a prime field.
-        let a = Fq::rand(&mut rng);
-
-        assert_eq!(a, a.pow(Fq::characteristic()));
-    }
-}
-
-#[test]
-fn test_fq_sqrt() {
-    let mut rng = ark_std::test_rng();
-
-    assert_eq!(Fq::zero().sqrt().unwrap(), Fq::zero());
-
-    for _ in 0..1000 {
-        // Ensure sqrt(a^2) = a or -a
-        let a = Fq::rand(&mut rng);
-        let nega = -a;
-        let mut b = a;
-        b.square_in_place();
-
-        let b = b.sqrt().unwrap();
-
-        assert!(a == b || nega == b);
-    }
-
-    for _ in 0..1000 {
-        // Ensure sqrt(a)^2 = a for random a
-        let a = Fq::rand(&mut rng);
-
-        if let Some(mut tmp) = a.sqrt() {
-            tmp.square_in_place();
-
-            assert_eq!(a, tmp);
-        }
-    }
+    // -1 has no sqrt in the base field, but should be valid in Fq2
+    let fq2_sqrt = Fq2::new(-Fq::one(), Fq::zero()).sqrt().unwrap();
+    assert_eq!(fq2_sqrt.c0, Fq::zero());
+    assert_eq!(fq2_sqrt.c1, Fq::one());
 }
 
 #[test]
@@ -1691,7 +1199,7 @@ fn test_fq_legendre() {
         Fq::from(BigInteger384::from(4)).legendre()
     );
 
-    let e = BigInteger384([
+    let e = BigInt::new([
         0x52a112f249778642,
         0xd0bedb989b7991f,
         0xdad3b6681aa63c05,
@@ -1700,7 +1208,7 @@ fn test_fq_legendre() {
         0x1022c2fd122889e4,
     ]);
     assert_eq!(QuadraticNonResidue, Fq::from(e).legendre());
-    let e = BigInteger384([
+    let e = BigInt::new([
         0x6dae594e53a96c74,
         0x19b16ca9ba64b37b,
         0x5c764661a59bfc68,
@@ -1753,7 +1261,7 @@ fn test_fq2_squaring() {
     }); // -1
 
     let mut a = Fq2::new(
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x9c2c6309bbf8b598,
             0x4eef5c946536f602,
             0x90e34aab6fb6a6bd,
@@ -1761,7 +1269,7 @@ fn test_fq2_squaring() {
             0x41b76dcc1c3fbe5e,
             0x7080c5fa1d8e042,
         ])),
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x38f473b3c870a4ab,
             0x6ad3291177c8c7e5,
             0xdac5a4c911a4353e,
@@ -1774,7 +1282,7 @@ fn test_fq2_squaring() {
     assert_eq!(
         a,
         Fq2::new(
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0xf262c28c538bcf68,
                 0xb9f2a66eae1073ba,
                 0xdc46ab8fad67ae0,
@@ -1782,7 +1290,7 @@ fn test_fq2_squaring() {
                 0x4cf17b5893c3d327,
                 0x7eac81369c43361,
             ])),
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0xc1579cf58e980cf8,
                 0xa23eb7e12dd54d98,
                 0xe75138bce4cec7aa,
@@ -1797,7 +1305,7 @@ fn test_fq2_squaring() {
 #[test]
 fn test_fq2_mul() {
     let mut a = Fq2::new(
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x85c9f989e1461f03,
             0xa2e33c333449a1d6,
             0x41e461154a7354a3,
@@ -1805,7 +1313,7 @@ fn test_fq2_mul() {
             0x1c202d8ed97afb45,
             0x51d3f9253e2516f,
         ])),
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0xa7348a8b511aedcf,
             0x143c215d8176b319,
             0x4cc48081c09b8903,
@@ -1815,7 +1323,7 @@ fn test_fq2_mul() {
         ])),
     );
     a.mul_assign(&Fq2::new(
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0xe21f9169805f537e,
             0xfc87e62e179c285d,
             0x27ece175be07a531,
@@ -1823,7 +1331,7 @@ fn test_fq2_mul() {
             0x6c9110292bfa409,
             0x2c93a72eb8af83e,
         ])),
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x4b1c3f936d8992d4,
             0x1d2a72916dba4c8a,
             0x8871c508658d1e5f,
@@ -1835,7 +1343,7 @@ fn test_fq2_mul() {
     assert_eq!(
         a,
         Fq2::new(
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x95b5127e6360c7e4,
                 0xde29c31a19a6937e,
                 0xf61a96dacf5a39bc,
@@ -1843,7 +1351,7 @@ fn test_fq2_mul() {
                 0x5310a202d92f9963,
                 0x1751afbe166e5399,
             ])),
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x84af0e1bd630117a,
                 0x6c63cd4da2c2aa7,
                 0x5ba6e5430e883d40,
@@ -1860,7 +1368,7 @@ fn test_fq2_inverse() {
     assert!(Fq2::zero().inverse().is_none());
 
     let a = Fq2::new(
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x85c9f989e1461f03,
             0xa2e33c333449a1d6,
             0x41e461154a7354a3,
@@ -1868,7 +1376,7 @@ fn test_fq2_inverse() {
             0x1c202d8ed97afb45,
             0x51d3f9253e2516f,
         ])),
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0xa7348a8b511aedcf,
             0x143c215d8176b319,
             0x4cc48081c09b8903,
@@ -1881,7 +1389,7 @@ fn test_fq2_inverse() {
     assert_eq!(
         a,
         Fq2::new(
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x70300f9bcb9e594,
                 0xe5ecda5fdafddbb2,
                 0x64bef617d2915a8f,
@@ -1889,7 +1397,7 @@ fn test_fq2_inverse() {
                 0xa6c3d8f9586f2636,
                 0x1351ef01941b70c4,
             ])),
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x8c39fd76a8312cb4,
                 0x15d7b6b95defbff0,
                 0x947143f89faedee9,
@@ -1904,7 +1412,7 @@ fn test_fq2_inverse() {
 #[test]
 fn test_fq2_addition() {
     let mut a = Fq2::new(
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x2d0078036923ffc7,
             0x11e59ea221a3b6d2,
             0x8b1a52e0a90f59ed,
@@ -1912,7 +1420,7 @@ fn test_fq2_addition() {
             0xccc649c4b9532bf3,
             0xf8d295b2ded9dc,
         ])),
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x977df6efcdaee0db,
             0x946ae52d684fa7ed,
             0xbe203411c66fb3a5,
@@ -1922,7 +1430,7 @@ fn test_fq2_addition() {
         ])),
     );
     a.add_assign(&Fq2::new(
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x619a02d78dc70ef2,
             0xb93adfc9119e33e8,
             0x4bf0b99a9f0dca12,
@@ -1930,7 +1438,7 @@ fn test_fq2_addition() {
             0x986a4a62fa82a49d,
             0x13ce433fa26027f5,
         ])),
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x66323bf80b58b9b9,
             0xa1379b6facf6e596,
             0x402aef1fb797e32f,
@@ -1942,7 +1450,7 @@ fn test_fq2_addition() {
     assert_eq!(
         a,
         Fq2::new(
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x8e9a7adaf6eb0eb9,
                 0xcb207e6b3341eaba,
                 0xd70b0c7b481d23ff,
@@ -1950,7 +1458,7 @@ fn test_fq2_addition() {
                 0x65309427b3d5d090,
                 0x14c715d5553f01d2,
             ])),
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0xfdb032e7d9079a94,
                 0x35a2809d15468d83,
                 0xfe4b23317e0796d5,
@@ -1965,7 +1473,7 @@ fn test_fq2_addition() {
 #[test]
 fn test_fq2_subtraction() {
     let mut a = Fq2::new(
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x2d0078036923ffc7,
             0x11e59ea221a3b6d2,
             0x8b1a52e0a90f59ed,
@@ -1973,7 +1481,7 @@ fn test_fq2_subtraction() {
             0xccc649c4b9532bf3,
             0xf8d295b2ded9dc,
         ])),
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x977df6efcdaee0db,
             0x946ae52d684fa7ed,
             0xbe203411c66fb3a5,
@@ -1983,7 +1491,7 @@ fn test_fq2_subtraction() {
         ])),
     );
     a.sub_assign(&Fq2::new(
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x619a02d78dc70ef2,
             0xb93adfc9119e33e8,
             0x4bf0b99a9f0dca12,
@@ -1991,7 +1499,7 @@ fn test_fq2_subtraction() {
             0x986a4a62fa82a49d,
             0x13ce433fa26027f5,
         ])),
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x66323bf80b58b9b9,
             0xa1379b6facf6e596,
             0x402aef1fb797e32f,
@@ -2003,7 +1511,7 @@ fn test_fq2_subtraction() {
     assert_eq!(
         a,
         Fq2::new(
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x8565752bdb5c9b80,
                 0x7756bed7c15982e9,
                 0xa65a6be700b285fe,
@@ -2011,7 +1519,7 @@ fn test_fq2_subtraction() {
                 0x7f77a718021c342d,
                 0x72ba14049fe9881,
             ])),
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0xeb4abaf7c255d1cd,
                 0x11df49bc6cacc256,
                 0xe52617930588c69a,
@@ -2026,7 +1534,7 @@ fn test_fq2_subtraction() {
 #[test]
 fn test_fq2_negation() {
     let mut a = Fq2::new(
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x2d0078036923ffc7,
             0x11e59ea221a3b6d2,
             0x8b1a52e0a90f59ed,
@@ -2034,7 +1542,7 @@ fn test_fq2_negation() {
             0xccc649c4b9532bf3,
             0xf8d295b2ded9dc,
         ])),
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x977df6efcdaee0db,
             0x946ae52d684fa7ed,
             0xbe203411c66fb3a5,
@@ -2047,7 +1555,7 @@ fn test_fq2_negation() {
     assert_eq!(
         a,
         Fq2::new(
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x8cfe87fc96dbaae4,
                 0xcc6615c8fb0492d,
                 0xdc167fc04da19c37,
@@ -2055,7 +1563,7 @@ fn test_fq2_negation() {
                 0x7e555df189f880e3,
                 0x19083f5486a10cbd,
             ])),
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x228109103250c9d0,
                 0x8a411ad149045812,
                 0xa9109e8f3041427e,
@@ -2070,7 +1578,7 @@ fn test_fq2_negation() {
 #[test]
 fn test_fq2_doubling() {
     let mut a = Fq2::new(
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x2d0078036923ffc7,
             0x11e59ea221a3b6d2,
             0x8b1a52e0a90f59ed,
@@ -2078,7 +1586,7 @@ fn test_fq2_doubling() {
             0xccc649c4b9532bf3,
             0xf8d295b2ded9dc,
         ])),
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x977df6efcdaee0db,
             0x946ae52d684fa7ed,
             0xbe203411c66fb3a5,
@@ -2091,7 +1599,7 @@ fn test_fq2_doubling() {
     assert_eq!(
         a,
         Fq2::new(
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x5a00f006d247ff8e,
                 0x23cb3d4443476da4,
                 0x1634a5c1521eb3da,
@@ -2099,7 +1607,7 @@ fn test_fq2_doubling() {
                 0x998c938972a657e7,
                 0x1f1a52b65bdb3b9,
             ])),
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x2efbeddf9b5dc1b6,
                 0x28d5ca5ad09f4fdb,
                 0x7c4068238cdf674b,
@@ -2114,7 +1622,7 @@ fn test_fq2_doubling() {
 #[test]
 fn test_fq2_frobenius_map() {
     let mut a = Fq2::new(
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x2d0078036923ffc7,
             0x11e59ea221a3b6d2,
             0x8b1a52e0a90f59ed,
@@ -2122,7 +1630,7 @@ fn test_fq2_frobenius_map() {
             0xccc649c4b9532bf3,
             0xf8d295b2ded9dc,
         ])),
-        Fq::from(BigInteger384([
+        Fq::from(BigInt::new([
             0x977df6efcdaee0db,
             0x946ae52d684fa7ed,
             0xbe203411c66fb3a5,
@@ -2135,7 +1643,7 @@ fn test_fq2_frobenius_map() {
     assert_eq!(
         a,
         Fq2::new(
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x2d0078036923ffc7,
                 0x11e59ea221a3b6d2,
                 0x8b1a52e0a90f59ed,
@@ -2143,7 +1651,7 @@ fn test_fq2_frobenius_map() {
                 0xccc649c4b9532bf3,
                 0xf8d295b2ded9dc,
             ])),
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x977df6efcdaee0db,
                 0x946ae52d684fa7ed,
                 0xbe203411c66fb3a5,
@@ -2157,7 +1665,7 @@ fn test_fq2_frobenius_map() {
     assert_eq!(
         a,
         Fq2::new(
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x2d0078036923ffc7,
                 0x11e59ea221a3b6d2,
                 0x8b1a52e0a90f59ed,
@@ -2165,7 +1673,7 @@ fn test_fq2_frobenius_map() {
                 0xccc649c4b9532bf3,
                 0xf8d295b2ded9dc,
             ])),
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x228109103250c9d0,
                 0x8a411ad149045812,
                 0xa9109e8f3041427e,
@@ -2179,7 +1687,7 @@ fn test_fq2_frobenius_map() {
     assert_eq!(
         a,
         Fq2::new(
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x2d0078036923ffc7,
                 0x11e59ea221a3b6d2,
                 0x8b1a52e0a90f59ed,
@@ -2187,7 +1695,7 @@ fn test_fq2_frobenius_map() {
                 0xccc649c4b9532bf3,
                 0xf8d295b2ded9dc,
             ])),
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x977df6efcdaee0db,
                 0x946ae52d684fa7ed,
                 0xbe203411c66fb3a5,
@@ -2201,7 +1709,7 @@ fn test_fq2_frobenius_map() {
     assert_eq!(
         a,
         Fq2::new(
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x2d0078036923ffc7,
                 0x11e59ea221a3b6d2,
                 0x8b1a52e0a90f59ed,
@@ -2209,7 +1717,7 @@ fn test_fq2_frobenius_map() {
                 0xccc649c4b9532bf3,
                 0xf8d295b2ded9dc,
             ])),
-            Fq::from(BigInteger384([
+            Fq::from(BigInt::new([
                 0x977df6efcdaee0db,
                 0x946ae52d684fa7ed,
                 0xbe203411c66fb3a5,
