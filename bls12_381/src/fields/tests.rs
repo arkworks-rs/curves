@@ -1118,6 +1118,19 @@ fn test_fq_repr_add_nocarry() {
 }
 
 #[test]
+fn test_fq2_sqrt() {
+    // 1 has a sqrt in the base field
+    let fq2_sqrt = Fq2::new(Fq::one(), Fq::zero()).sqrt().unwrap();
+    assert_eq!(fq2_sqrt.c0, Fq::one());
+    assert_eq!(fq2_sqrt.c1, Fq::zero());
+
+    // -1 has no sqrt in the base field, but should be valid in Fq2
+    let fq2_sqrt = Fq2::new(-Fq::one(), Fq::zero()).sqrt().unwrap();
+    assert_eq!(fq2_sqrt.c0, Fq::zero());
+    assert_eq!(fq2_sqrt.c1, Fq::one());
+}
+
+#[test]
 fn test_fq_num_bits() {
     assert_eq!(FqParameters::MODULUS_BITS, 381);
     assert_eq!(FqParameters::CAPACITY, 380);
