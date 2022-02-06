@@ -47,8 +47,8 @@ impl BW6Parameters for Parameters {
     const ATE_LOOP_COUNT_2_IS_NEGATIVE: bool = false;
     const TWIST_TYPE: TwistType = TwistType::M;
     type Fp = Fq;
-    type Fp3Params = Fq3Parameters;
-    type Fp6Params = Fq6Parameters;
+    type Fp3Params = Fq3Config;
+    type Fp6Params = Fq6Config;
     type G1Parameters = g1::Parameters;
     type G2Parameters = g2::Parameters;
 }

@@ -5,7 +5,7 @@ use ark_ec::{
     SWModelParameters,
 };
 
-use crate::{Fq, Fq3, Fq3Parameters, Fq6Parameters, Fr};
+use crate::{Fq, Fq3, Fq3Config, Fq6Config, Fr};
 
 pub mod g1;
 pub mod g2;
@@ -38,8 +38,8 @@ impl MNT6Parameters for Parameters {
         BigInt::new([0xdc9a1b671660000, 0x46609756bec2a33f, 0x1eef55, 0x0, 0x0]);
     type Fp = Fq;
     type Fr = Fr;
-    type Fp3Params = Fq3Parameters;
-    type Fp6Params = Fq6Parameters;
+    type Fp3Params = Fq3Config;
+    type Fp6Params = Fq6Config;
     type G1Parameters = self::g1::Parameters;
     type G2Parameters = self::g2::Parameters;
 }

@@ -1,11 +1,11 @@
 use super::*;
 use ark_ff::{field_new, fields::*};
 
-pub type Fq2 = Fp2<Fq2Parameters>;
+pub type Fq2 = Fp2<Fq2Config>;
 
-pub struct Fq2Parameters;
+pub struct Fq2Config;
 
-impl Fp2Parameters for Fq2Parameters {
+impl Fp2Parameters for Fq2Config {
     type Fp = Fq;
 
     /// NONRESIDUE = -1

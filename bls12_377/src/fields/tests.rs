@@ -13,7 +13,7 @@ use core::{
     ops::{AddAssign, MulAssign, SubAssign},
 };
 
-use crate::{Fq, Fq12, Fq2, Fq2Parameters, Fq6, Fq6Parameters, FqParameters, Fr};
+use crate::{Fq, Fq12, Fq2, Fq2Config, Fq6, Fq6Config, FqConfig, Fr};
 
 use ark_algebra_test_templates::{
     fields::*, generate_field_serialization_test, generate_field_test,
@@ -60,13 +60,13 @@ fn test_fq_repr_num_bits() {
 
 #[test]
 fn test_fq_num_bits() {
-    assert_eq!(FqParameters::MODULUS_BITS, 377);
-    assert_eq!(FqParameters::CAPACITY, 376);
+    assert_eq!(FqConfig::MODULUS_BITS, 377);
+    assert_eq!(FqConfig::CAPACITY, 376);
 }
 
 #[test]
 fn test_fq_root_of_unity() {
-    assert_eq!(FqParameters::TWO_ADICITY, 46);
+    assert_eq!(FqConfig::TWO_ADICITY, 46);
     assert_eq!(
         Fq::multiplicative_generator().pow([
             0x7510c00000021423,
@@ -79,7 +79,7 @@ fn test_fq_root_of_unity() {
         Fq::two_adic_root_of_unity()
     );
     assert_eq!(
-        Fq::two_adic_root_of_unity().pow([1 << FqParameters::TWO_ADICITY]),
+        Fq::two_adic_root_of_unity().pow([1 << FqConfig::TWO_ADICITY]),
         Fq::one()
     );
     assert!(Fq::multiplicative_generator().sqrt().is_none());
@@ -147,7 +147,7 @@ fn test_fq2_legendre() {
     // i^2 = -1
     let mut m1 = -Fq2::one();
     assert_eq!(QuadraticResidue, m1.legendre());
-    m1 = Fq6Parameters::mul_fp2_by_nonresidue(&m1);
+    m1 = Fq6Config::mul_fp2_by_nonresidue(&m1);
     assert_eq!(QuadraticNonResidue, m1.legendre());
 }
 
@@ -158,8 +158,8 @@ fn test_fq2_mul_nonresidue() {
     let nqr = Fq2::new(Fq::zero(), Fq::one());
 
     let quadratic_non_residue = Fq2::new(
-        Fq2Parameters::QUADRATIC_NONRESIDUE.0,
-        Fq2Parameters::QUADRATIC_NONRESIDUE.1,
+        Fq2Config::QUADRATIC_NONRESIDUE.0,
+        Fq2Config::QUADRATIC_NONRESIDUE.1,
     );
     for _ in 0..1000 {
         let mut a = Fq2::rand(&mut rng);

@@ -1,16 +1,16 @@
 use super::*;
 use ark_ff::{field_new, fields::*};
 
-pub type Fq2 = Fp2<Fq2Parameters>;
+pub type Fq2 = Fp2<Fq2Config>;
 
-pub struct Fq2Parameters;
+pub struct Fq2Config;
 
-impl Fp2Parameters for Fq2Parameters {
+impl Fp2Parameters for Fq2Config {
     type Fp = Fq;
 
     /// NONRESIDUE = -5
     #[rustfmt::skip]
-    const NONRESIDUE: Fq = field_new!(Fq, "-5");
+    const NONRESIDUE: Fq = ark_ff::MontFp!(Fq, "-5");
 
     /// QUADRATIC_NONRESIDUE = U
     #[rustfmt::skip]
@@ -22,7 +22,7 @@ impl Fp2Parameters for Fq2Parameters {
         // NONRESIDUE**(((q^0) - 1) / 2)
         FQ_ONE,
         // NONRESIDUE**(((q^1) - 1) / 2)
-        field_new!(Fq, "-1"),
+        ark_ff::MontFp!(Fq, "-1"),
     ];
 
     #[inline(always)]

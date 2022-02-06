@@ -3,15 +3,15 @@ use ark_ff::{
     fields::{FftParameters, Fp832, Fp832Parameters, FpParameters},
 };
 
-pub type Fq = Fp832<FqParameters>;
+pub type Fq = Fp832<FqConfig>;
 
-pub struct FqParameters;
+pub struct FqConfig;
 
 pub const FQ_ONE: Fq = ark_ff::field_new!(Fq, "1");
 pub const FQ_ZERO: Fq = ark_ff::field_new!(Fq, "0");
 
-impl Fp832Parameters for FqParameters {}
-impl FftParameters for FqParameters {
+impl Fp832Parameters for FqConfig {}
+impl FftParameters for FqConfig {
     type BigInt = BigInteger;
 
     const TWO_ADICITY: u32 = 3;
@@ -33,7 +33,7 @@ impl FftParameters for FqParameters {
         1328u64,
     ]);
 }
-impl FpParameters for FqParameters {
+impl FpParameters for FqConfig {
     /// MODULUS = 22369874298875696930346742206501054934775599465297184582183496627646774052458024540232479018147881220178054575403841904557897715222633333372134756426301062487682326574958588001132586331462553235407484089304633076250782629492557320825577
     #[rustfmt::skip]
     const MODULUS: BigInteger = BigInt::new([

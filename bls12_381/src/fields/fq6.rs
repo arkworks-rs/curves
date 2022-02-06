@@ -1,13 +1,13 @@
 use crate::*;
 use ark_ff::{field_new, fields::*};
 
-pub type Fq6 = Fp6<Fq6Parameters>;
+pub type Fq6 = Fp6<Fq6Config>;
 
 #[derive(Clone, Copy)]
-pub struct Fq6Parameters;
+pub struct Fq6Config;
 
-impl Fp6Parameters for Fq6Parameters {
-    type Fp2Params = Fq2Parameters;
+impl Fp6Parameters for Fq6Config {
+    type Fp2Params = Fq2Config;
 
     /// NONRESIDUE = (U + 1)
     #[rustfmt::skip]

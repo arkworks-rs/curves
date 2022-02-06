@@ -1,13 +1,13 @@
 use super::*;
 use ark_ff::{field_new, fields::*};
 
-pub type Fq6 = Fp6<Fq6Parameters>;
+pub type Fq6 = Fp6<Fq6Config>;
 
 #[derive(Clone, Copy)]
-pub struct Fq6Parameters;
+pub struct Fq6Config;
 
-impl Fp6Parameters for Fq6Parameters {
-    type Fp2Params = Fq2Parameters;
+impl Fp6Parameters for Fq6Config {
+    type Fp2Params = Fq2Config;
 
     /// NONRESIDUE = U
     #[rustfmt::skip]
@@ -71,7 +71,7 @@ impl Fp6Parameters for Fq6Parameters {
     #[inline(always)]
     fn mul_fp2_by_nonresidue(fe: &Fq2) -> Fq2 {
         // Karatsuba multiplication with constant other = u.
-        let c0 = Fq2Parameters::mul_fp_by_nonresidue(&fe.c1);
+        let c0 = Fq2Config::mul_fp_by_nonresidue(&fe.c1);
         let c1 = fe.c0;
         field_new!(Fq2, c0, c1)
     }

@@ -1,15 +1,15 @@
-use crate::{Fq, Fq3, Fq3Parameters, FQ_ONE, FQ_ZERO};
+use crate::{Fq, Fq3, Fq3Config, FQ_ONE, FQ_ZERO};
 use ark_ff::{
     field_new,
     fields::fp6_2over3::{Fp6, Fp6Parameters},
 };
 
-pub type Fq6 = Fp6<Fq6Parameters>;
+pub type Fq6 = Fp6<Fq6Config>;
 
-pub struct Fq6Parameters;
+pub struct Fq6Config;
 
-impl Fp6Parameters for Fq6Parameters {
-    type Fp3Params = Fq3Parameters;
+impl Fp6Parameters for Fq6Config {
+    type Fp3Params = Fq3Config;
 
     /// NONRESIDUE = (0, 1, 0).
     #[rustfmt::skip]

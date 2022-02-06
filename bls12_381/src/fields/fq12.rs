@@ -1,13 +1,13 @@
 use crate::*;
 use ark_ff::{field_new, fields::*};
 
-pub type Fq12 = Fp12<Fq12Parameters>;
+pub type Fq12 = Fp12<Fq12Config>;
 
 #[derive(Clone, Copy)]
-pub struct Fq12Parameters;
+pub struct Fq12Config;
 
-impl Fp12Parameters for Fq12Parameters {
-    type Fp6Params = Fq6Parameters;
+impl Fp12Parameters for Fq12Config {
+    type Fp6Params = Fq6Config;
 
     const NONRESIDUE: Fq6 = field_new!(Fq6, FQ2_ZERO, FQ2_ONE, FQ2_ZERO);
 

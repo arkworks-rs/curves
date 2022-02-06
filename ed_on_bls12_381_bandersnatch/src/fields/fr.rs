@@ -3,12 +3,12 @@ use ark_ff::{
     fields::{FftParameters, Fp256, Fp256Parameters, FpParameters},
 };
 
-pub type Fr = Fp256<FrParameters>;
+pub type Fr = Fp256<FrConfig>;
 
-pub struct FrParameters;
+pub struct FrConfig;
 
-impl Fp256Parameters for FrParameters {}
-impl FftParameters for FrParameters {
+impl Fp256Parameters for FrConfig {}
+impl FftParameters for FrConfig {
     type BigInt = BigInteger;
 
     /// Let `N` be the size of the multiplicative group defined by the field.
@@ -26,7 +26,7 @@ impl FftParameters for FrParameters {
         0xa7b462035f8c169,
     ]);
 }
-impl FpParameters for FrParameters {
+impl FpParameters for FrConfig {
     /// The modulus of the field.
     /// MODULUS = 13108968793781547619861935127046491459309155893440570251786403306729687672801.
     #[rustfmt::skip]

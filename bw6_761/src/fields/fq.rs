@@ -4,15 +4,15 @@ use ark_ff::{
     fields::{FftParameters, Fp768, Fp768Parameters, FpParameters},
 };
 
-pub type Fq = Fp768<FqParameters>;
+pub type Fq = Fp768<FqConfig>;
 
-pub struct FqParameters;
+pub struct FqConfig;
 
 pub const FQ_ONE: Fq = field_new!(Fq, "1");
 pub const FQ_ZERO: Fq = field_new!(Fq, "0");
 
-impl Fp768Parameters for FqParameters {}
-impl FftParameters for FqParameters {
+impl Fp768Parameters for FqConfig {}
+impl FftParameters for FqConfig {
     type BigInt = BigInteger;
 
     // The internal representation of this type is six 64-bit unsigned
@@ -39,7 +39,7 @@ impl FftParameters for FqParameters {
         58811391084848524u64,
     ]);
 }
-impl FpParameters for FqParameters {
+impl FpParameters for FqConfig {
     /// MODULUS = 6891450384315732539396789682275657542479668912536150109513790160209623422243491736087683183289411687640864567753786613451161759120554247759349511699125301598951605099378508850372543631423596795951899700429969112842764913119068299
     #[rustfmt::skip]
     const MODULUS: BigInteger = BigInt::new([

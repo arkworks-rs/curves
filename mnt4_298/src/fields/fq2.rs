@@ -4,11 +4,11 @@ use ark_ff::{
     fields::fp2::{Fp2, Fp2Parameters},
 };
 
-pub type Fq2 = Fp2<Fq2Parameters>;
+pub type Fq2 = Fp2<Fq2Config>;
 
-pub struct Fq2Parameters;
+pub struct Fq2Config;
 
-impl Fp2Parameters for Fq2Parameters {
+impl Fp2Parameters for Fq2Config {
     type Fp = Fq;
 
     /// The quadratic non-residue (17) used to construct the extension is

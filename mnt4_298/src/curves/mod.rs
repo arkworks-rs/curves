@@ -1,7 +1,7 @@
 use ark_ec::models::mnt4::{MNT4Parameters, MNT4};
 use ark_ff::{biginteger::BigInteger320, field_new, BigInt, Fp2};
 
-use crate::{Fq, Fq2, Fq2Parameters, Fq4Parameters, Fr};
+use crate::{Fq, Fq2, Fq2Config, Fq4Config, Fr};
 
 pub mod g1;
 pub mod g2;
@@ -40,8 +40,8 @@ impl MNT4Parameters for Parameters {
         BigInt::new([993502997770534913, 5071219579242586943, 2027349, 0, 0]);
     type Fp = Fq;
     type Fr = Fr;
-    type Fp2Params = Fq2Parameters;
-    type Fp4Params = Fq4Parameters;
+    type Fp2Params = Fq2Config;
+    type Fp4Params = Fq4Config;
     type G1Parameters = self::g1::Parameters;
     type G2Parameters = self::g2::Parameters;
 }

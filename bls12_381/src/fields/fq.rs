@@ -4,12 +4,12 @@ use ark_ff::{
     fields::{FftParameters, Fp384, Fp384Parameters, FpParameters},
 };
 
-pub type Fq = Fp384<FqParameters>;
+pub type Fq = Fp384<FqConfig>;
 
-pub struct FqParameters;
+pub struct FqConfig;
 
-impl Fp384Parameters for FqParameters {}
-impl FftParameters for FqParameters {
+impl Fp384Parameters for FqConfig {}
+impl FftParameters for FqConfig {
     type BigInt = BigInteger;
 
     const TWO_ADICITY: u32 = 1;
@@ -24,7 +24,7 @@ impl FftParameters for FqParameters {
         0x40ab3263eff0206,
     ]);
 }
-impl FpParameters for FqParameters {
+impl FpParameters for FqConfig {
     /// MODULUS = 4002409555221667393417789825735904156556882819939007885332058136124031650490837864442687629129015664037894272559787
     #[rustfmt::skip]
     const MODULUS: BigInteger = BigInt::new([

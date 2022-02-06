@@ -4,7 +4,7 @@ use ark_ff::{
     field_new, Fp2,
 };
 
-use crate::{Fq, Fq2, Fq2Parameters, Fq4Parameters, Fr};
+use crate::{Fq, Fq2, Fq2Config, Fq4Config, Fr};
 
 pub mod g1;
 pub mod g2;
@@ -63,8 +63,8 @@ impl MNT4Parameters for Parameters {
     ]);
     type Fp = Fq;
     type Fr = Fr;
-    type Fp2Params = Fq2Parameters;
-    type Fp4Params = Fq4Parameters;
+    type Fp2Params = Fq2Config;
+    type Fp4Params = Fq4Config;
     type G1Parameters = self::g1::Parameters;
     type G2Parameters = self::g2::Parameters;
 }

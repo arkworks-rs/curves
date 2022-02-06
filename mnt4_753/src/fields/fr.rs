@@ -3,12 +3,12 @@ use ark_ff::{
     fields::{FftParameters, Fp768, Fp768Parameters, FpParameters},
 };
 
-pub type Fr = Fp768<FrParameters>;
+pub type Fr = Fp768<FrConfig>;
 
-pub struct FrParameters;
+pub struct FrConfig;
 
-impl Fp768Parameters for FrParameters {}
-impl FftParameters for FrParameters {
+impl Fp768Parameters for FrConfig {}
+impl FftParameters for FrConfig {
     type BigInt = BigInteger;
 
     const TWO_ADICITY: u32 = 30;
@@ -28,7 +28,7 @@ impl FftParameters for FrParameters {
         0x1b9f32a8bd6ab,
     ]);
 }
-impl FpParameters for FrParameters {
+impl FpParameters for FrConfig {
     /// MODULUS = 41898490967918953402344214791240637128170709919953949071783502921025352812571106773058893763790338921418070971888458477323173057491593855069696241854796396165721416325350064441470418137846398469611935719059908164220784476160001
     const MODULUS: BigInteger = BigInt::new([
         0xd90776e240000001,

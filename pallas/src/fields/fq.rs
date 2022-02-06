@@ -2,12 +2,12 @@ use ark_ff::{
     biginteger::{BigInt, BigInteger256 as BigInteger},
     fields::{FftParameters, Fp256, Fp256Parameters},
 };
-pub type Fq = Fp256<FqParameters>;
+pub type Fq = Fp256<FqConfig>;
 
-pub struct FqParameters;
+pub struct FqConfig;
 
-impl Fp256Parameters for FqParameters {}
-impl FftParameters for FqParameters {
+impl Fp256Parameters for FqConfig {}
+impl FftParameters for FqConfig {
     type BigInt = BigInteger;
 
     const TWO_ADICITY: u32 = 32;
@@ -22,7 +22,7 @@ impl FftParameters for FqParameters {
     ]);
 }
 
-impl ark_ff::fields::FpParameters for FqParameters {
+impl ark_ff::fields::FpParameters for FqConfig {
     // 28948022309329048855892746252171976963363056481941560715954676764349967630337
     const MODULUS: BigInteger = BigInt::new([
         0x992d30ed00000001,

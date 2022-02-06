@@ -4,11 +4,11 @@ use ark_ff::{
     fields::fp3::{Fp3, Fp3Parameters},
 };
 
-pub type Fq3 = Fp3<Fq3Parameters>;
+pub type Fq3 = Fp3<Fq3Config>;
 
-pub struct Fq3Parameters;
+pub struct Fq3Config;
 
-impl Fp3Parameters for Fq3Parameters {
+impl Fp3Parameters for Fq3Config {
     type Fp = Fq;
 
     #[rustfmt::skip]
