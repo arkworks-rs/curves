@@ -7,8 +7,8 @@ pub type Fq = Fp832<FqConfig>;
 
 pub struct FqConfig;
 
-pub const FQ_ONE: Fq = ark_ff::field_new!(Fq, "1");
-pub const FQ_ZERO: Fq = ark_ff::field_new!(Fq, "0");
+pub const FQ_ONE: Fq = ark_ff::MontFp!(Fq, "1");
+pub const FQ_ZERO: Fq = ark_ff::MontFp!(Fq, "0");
 
 impl Fp832Parameters for FqConfig {}
 impl FftParameters for FqConfig {

@@ -1,6 +1,6 @@
 use ark_ff::{
     biginteger::{BigInt, BigInteger256 as BigInteger},
-    field_new,
+    MontFp,
     fields::*,
 };
 
@@ -96,5 +96,5 @@ impl FpParameters for FqConfig {
     ]);
 }
 
-pub const FQ_ONE: Fq = field_new!(Fq, "1");
-pub const FQ_ZERO: Fq = field_new!(Fq, "0");
+pub const FQ_ONE: Fq = MontFp!(Fq, "1");
+pub const FQ_ZERO: Fq = MontFp!(Fq, "0");

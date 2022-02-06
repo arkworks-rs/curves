@@ -3,7 +3,7 @@ use ark_ec::{
     bn,
     bn::{Bn, BnParameters, TwistType},
 };
-use ark_ff::field_new;
+use ark_ff::MontFp;
 pub mod g1;
 pub mod g2;
 
@@ -22,24 +22,24 @@ impl BnParameters for Parameters {
         -1, 0, 0, 1, 0, 1, 1,
     ];
 
-    const TWIST_MUL_BY_Q_X: Fq2 = field_new!(
+    const TWIST_MUL_BY_Q_X: Fq2 = MontFp!(
         Fq2,
-        field_new!(
+        MontFp!(
             Fq,
             "21575463638280843010398324269430826099269044274347216827212613867836435027261"
         ),
-        field_new!(
+        MontFp!(
             Fq,
             "10307601595873709700152284273816112264069230130616436755625194854815875713954"
         ),
     );
-    const TWIST_MUL_BY_Q_Y: Fq2 = field_new!(
+    const TWIST_MUL_BY_Q_Y: Fq2 = MontFp!(
         Fq2,
-        field_new!(
+        MontFp!(
             Fq,
             "2821565182194536844548159561693502659359617185244120367078079554186484126554"
         ),
-        field_new!(
+        MontFp!(
             Fq,
             "3505843767911556378687030309984248845540243509899259641013678093033130930403"
         ),

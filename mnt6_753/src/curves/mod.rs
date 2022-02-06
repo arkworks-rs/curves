@@ -2,7 +2,7 @@ use ark_ec::models::{
     mnt6::{MNT6Parameters, MNT6},
     SWModelParameters,
 };
-use ark_ff::{biginteger::BigInteger768, field_new, BigInt, Fp3};
+use ark_ff::{biginteger::BigInteger768, MontFp, BigInt, Fp3};
 
 use crate::{Fq, Fq3, Fq3Config, Fq6Config, Fr};
 
@@ -22,7 +22,7 @@ pub type MNT6_753 = MNT6<Parameters>;
 pub struct Parameters;
 
 impl MNT6Parameters for Parameters {
-    const TWIST: Fp3<Self::Fp3Params> = field_new!(Fq3, FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const TWIST: Fp3<Self::Fp3Params> = MontFp!(Fq3, FQ_ZERO, FQ_ONE, FQ_ZERO);
     // A coefficient of MNT6-753 G2 =
     // ```
     // mnt6753_twist_coeff_a = mnt6753_Fq3(mnt6753_Fq::zero(), mnt6753_Fq::zero(),
@@ -30,7 +30,7 @@ impl MNT6Parameters for Parameters {
     //  = (ZERO, ZERO, A_COEFF);
     // ```
     #[rustfmt::skip]
-    const TWIST_COEFF_A: Fp3<Self::Fp3Params> = field_new!(Fq3,
+    const TWIST_COEFF_A: Fp3<Self::Fp3Params> = MontFp!(Fq3,
         FQ_ZERO,
         FQ_ZERO,
         g1::Parameters::COEFF_A,
@@ -70,7 +70,7 @@ impl MNT6Parameters for Parameters {
     type G2Parameters = self::g2::Parameters;
 }
 
-pub const FQ_ZERO: Fq = field_new!(Fq, "0");
-pub const FQ_ONE: Fq = field_new!(Fq, "1");
-pub const FR_ZERO: Fr = field_new!(Fr, "0");
-pub const FR_ONE: Fr = field_new!(Fr, "1");
+pub const FQ_ZERO: Fq = MontFp!(Fq, "0");
+pub const FQ_ONE: Fq = MontFp!(Fq, "1");
+pub const FR_ZERO: Fr = MontFp!(Fr, "0");
+pub const FR_ONE: Fr = MontFp!(Fr, "1");

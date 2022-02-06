@@ -1,5 +1,5 @@
 use ark_ec::models::mnt4::{MNT4Parameters, MNT4};
-use ark_ff::{biginteger::BigInteger320, field_new, BigInt, Fp2};
+use ark_ff::{biginteger::BigInteger320, MontFp, BigInt, Fp2};
 
 use crate::{Fq, Fq2, Fq2Config, Fq4Config, Fr};
 
@@ -19,7 +19,7 @@ pub type MNT4_298 = MNT4<Parameters>;
 pub struct Parameters;
 
 impl MNT4Parameters for Parameters {
-    const TWIST: Fp2<Self::Fp2Params> = field_new!(Fq2, FQ_ZERO, FQ_ONE);
+    const TWIST: Fp2<Self::Fp2Params> = MontFp!(Fq2, FQ_ZERO, FQ_ONE);
     // A coefficient of MNT4-298 G2 =
     // ```
     // mnt4298_twist_coeff_a = mnt4298_Fq2(mnt4298_G1::coeff_a * non_residue, mnt6298_Fq::zero());
@@ -27,7 +27,7 @@ impl MNT4Parameters for Parameters {
     //  = (34, ZERO)
     // ```
     #[rustfmt::skip]
-    const TWIST_COEFF_A: Fp2<Self::Fp2Params> = field_new!(Fq2,
+    const TWIST_COEFF_A: Fp2<Self::Fp2Params> = MontFp!(Fq2,
         G1_COEFF_A_NON_RESIDUE,
         FQ_ZERO,
     );
@@ -47,8 +47,8 @@ impl MNT4Parameters for Parameters {
 }
 
 // 34
-pub const G1_COEFF_A_NON_RESIDUE: Fq = field_new!(Fq, "34");
-pub const FQ_ZERO: Fq = field_new!(Fq, "0");
-pub const FQ_ONE: Fq = field_new!(Fq, "1");
-pub const FR_ZERO: Fr = field_new!(Fr, "0");
-pub const FR_ONE: Fr = field_new!(Fr, "1");
+pub const G1_COEFF_A_NON_RESIDUE: Fq = MontFp!(Fq, "34");
+pub const FQ_ZERO: Fq = MontFp!(Fq, "0");
+pub const FQ_ONE: Fq = MontFp!(Fq, "1");
+pub const FR_ZERO: Fr = MontFp!(Fr, "0");
+pub const FR_ONE: Fr = MontFp!(Fr, "1");

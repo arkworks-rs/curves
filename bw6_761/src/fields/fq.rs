@@ -1,6 +1,6 @@
 use ark_ff::{
     biginteger::{BigInt, BigInteger768 as BigInteger},
-    field_new,
+    MontFp,
     fields::{FftParameters, Fp768, Fp768Parameters, FpParameters},
 };
 
@@ -8,8 +8,8 @@ pub type Fq = Fp768<FqConfig>;
 
 pub struct FqConfig;
 
-pub const FQ_ONE: Fq = field_new!(Fq, "1");
-pub const FQ_ZERO: Fq = field_new!(Fq, "0");
+pub const FQ_ONE: Fq = MontFp!(Fq, "1");
+pub const FQ_ZERO: Fq = MontFp!(Fq, "0");
 
 impl Fp768Parameters for FqConfig {}
 impl FftParameters for FqConfig {

@@ -3,7 +3,7 @@ use ark_ec::{
     models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
     twisted_edwards_extended::{GroupAffine, GroupProjective},
 };
-use ark_ff::field_new;
+use ark_ff::MontFp;
 
 #[cfg(test)]
 mod tests;
@@ -32,13 +32,13 @@ impl ModelParameters for EdwardsParameters {
     /// COFACTOR^(-1) mod r =
     /// 2394026564107420727433200628387514462817212225638746351800188703329891451411
     #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, "2394026564107420727433200628387514462817212225638746351800188703329891451411");
+    const COFACTOR_INV: Fr = MontFp!(Fr, "2394026564107420727433200628387514462817212225638746351800188703329891451411");
 }
 
 impl TEModelParameters for EdwardsParameters {
     /// COEFF_A = 1
     #[rustfmt::skip]
-    const COEFF_A: Fq = field_new!(Fq, "1");
+    const COEFF_A: Fq = MontFp!(Fq, "1");
 
     #[inline(always)]
     fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {
@@ -48,7 +48,7 @@ impl TEModelParameters for EdwardsParameters {
     /// COEFF_D = 168696/168700 mod q
     ///         = 9706598848417545097372247223557719406784115219466060233080913168975159366771
     #[rustfmt::skip]
-    const COEFF_D: Fq = field_new!(Fq, "9706598848417545097372247223557719406784115219466060233080913168975159366771");
+    const COEFF_D: Fq = MontFp!(Fq, "9706598848417545097372247223557719406784115219466060233080913168975159366771");
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);
@@ -59,15 +59,15 @@ impl TEModelParameters for EdwardsParameters {
 impl MontgomeryModelParameters for EdwardsParameters {
     /// COEFF_A = 168698
     #[rustfmt::skip]
-    const COEFF_A: Fq = field_new!(Fq, "168698");
+    const COEFF_A: Fq = MontFp!(Fq, "168698");
     /// COEFF_B = 168700
     #[rustfmt::skip]
-    const COEFF_B: Fq = field_new!(Fq, "168700");
+    const COEFF_B: Fq = MontFp!(Fq, "168700");
 
     type TEModelParameters = EdwardsParameters;
 }
 
 #[rustfmt::skip]
-const GENERATOR_X: Fq = field_new!(Fq, "19698561148652590122159747500897617769866003486955115824547446575314762165298");
+const GENERATOR_X: Fq = MontFp!(Fq, "19698561148652590122159747500897617769866003486955115824547446575314762165298");
 #[rustfmt::skip]
-const GENERATOR_Y: Fq = field_new!(Fq, "19298250018296453272277890825869354524455968081175474282777126169995084727839");
+const GENERATOR_Y: Fq = MontFp!(Fq, "19298250018296453272277890825869354524455968081175474282777126169995084727839");

@@ -1,5 +1,5 @@
 use super::*;
-use ark_ff::{field_new, fields::*};
+use ark_ff::{MontFp, fields::*};
 
 pub type Fq2 = Fp2<Fq2Config>;
 
@@ -34,5 +34,5 @@ impl Fp2Parameters for Fq2Config {
     }
 }
 
-pub const FQ2_ZERO: Fq2 = field_new!(Fq2, FQ_ZERO, FQ_ZERO);
-pub const FQ2_ONE: Fq2 = field_new!(Fq2, FQ_ONE, FQ_ZERO);
+pub const FQ2_ZERO: Fq2 = MontFp!(Fq2, FQ_ZERO, FQ_ZERO);
+pub const FQ2_ONE: Fq2 = MontFp!(Fq2, FQ_ONE, FQ_ZERO);

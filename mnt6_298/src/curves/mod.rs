@@ -1,4 +1,4 @@
-use ark_ff::{biginteger::BigInteger320, field_new, BigInt, Fp3};
+use ark_ff::{biginteger::BigInteger320, MontFp, BigInt, Fp3};
 
 use ark_ec::{
     models::mnt6::{MNT6Parameters, MNT6},
@@ -23,9 +23,9 @@ pub type MNT6_298 = MNT6<Parameters>;
 pub struct Parameters;
 
 impl MNT6Parameters for Parameters {
-    const TWIST: Fp3<Self::Fp3Params> = field_new!(Fq3, FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const TWIST: Fp3<Self::Fp3Params> = MontFp!(Fq3, FQ_ZERO, FQ_ONE, FQ_ZERO);
     #[rustfmt::skip]
-    const TWIST_COEFF_A: Fp3<Self::Fp3Params> = field_new!(Fq3,
+    const TWIST_COEFF_A: Fp3<Self::Fp3Params> = MontFp!(Fq3,
         FQ_ZERO,
         FQ_ZERO,
         g1::Parameters::COEFF_A,
@@ -44,5 +44,5 @@ impl MNT6Parameters for Parameters {
     type G2Parameters = self::g2::Parameters;
 }
 
-pub const FQ_ZERO: Fq = field_new!(Fq, "0");
-pub const FQ_ONE: Fq = field_new!(Fq, "1");
+pub const FQ_ZERO: Fq = MontFp!(Fq, "0");
+pub const FQ_ONE: Fq = MontFp!(Fq, "1");
