@@ -13,7 +13,7 @@ impl Fp6Parameters for Fq6Config {
 
     /// NONRESIDUE = (0, 1, 0)
     #[rustfmt::skip]
-    const NONRESIDUE: Fq3 = MontFp!(Fq3, FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const NONRESIDUE: Fq3 = CubicExt!(, FQ_ZERO, FQ_ONE, FQ_ZERO);
 
     #[rustfmt::skip]
     const FROBENIUS_COEFF_FP6_C1: &'static [Fq] = &[

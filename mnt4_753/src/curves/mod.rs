@@ -22,7 +22,7 @@ pub type MNT4_753 = MNT4<Parameters>;
 pub struct Parameters;
 
 impl MNT4Parameters for Parameters {
-    const TWIST: Fp2<Self::Fp2Params> = MontFp!(Fq2, FQ_ZERO, FQ_ONE);
+    const TWIST: Fp2<Self::Fp2Params> = QuadExt!(FQ_ZERO, FQ_ONE);
     // A coefficient of MNT4-753 G2 =
     // ```
     // mnt4753_twist_coeff_a = mnt4753_Fq2(mnt4753_G1::coeff_a * non_residue, mnt6753_Fq::zero());
@@ -30,7 +30,7 @@ impl MNT4Parameters for Parameters {
     //  = (26, ZERO)
     // ```
     #[rustfmt::skip]
-    const TWIST_COEFF_A: Fp2<Self::Fp2Params> = MontFp!(Fq2,
+    const TWIST_COEFF_A: Fp2<Self::Fp2Params> = QuadExt!(
         G1_COEFF_A_NON_RESIDUE,
         FQ_ZERO,
     );

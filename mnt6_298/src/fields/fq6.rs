@@ -11,7 +11,7 @@ pub struct Fq6Config;
 impl Fp6Parameters for Fq6Config {
     type Fp3Params = Fq3Config;
 
-    const NONRESIDUE: Fq3 = MontFp!(Fq3, FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const NONRESIDUE: Fq3 = CubicExt!(, FQ_ZERO, FQ_ONE, FQ_ZERO);
 
     const FROBENIUS_COEFF_FP6_C1: &'static [Fq] = &[
         MontFp!(Fq, "1"),

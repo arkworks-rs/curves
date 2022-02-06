@@ -31,5 +31,5 @@ impl Fp2Parameters for Fq2Config {
     }
 }
 
-pub const FQ2_ZERO: Fq2 = MontFp!(Fq2, FQ_ZERO, FQ_ZERO);
-pub const FQ2_ONE: Fq2 = MontFp!(Fq2, FQ_ONE, FQ_ZERO);
+pub const FQ2_ZERO: Fq2 = QuadExt!(FQ_ZERO, FQ_ZERO);
+pub const FQ2_ONE: Fq2 = QuadExt!(FQ_ONE, FQ_ZERO);

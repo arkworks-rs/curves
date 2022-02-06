@@ -33,7 +33,7 @@ impl ModelParameters for Parameters {
 impl SWModelParameters for Parameters {
     /// COEFF_A = [0, 0]
     #[rustfmt::skip]
-    const COEFF_A: Fq2 = MontFp!(Fq2,
+    const COEFF_A: Fq2 = QuadExt!(
         g1::Parameters::COEFF_A,
         g1::Parameters::COEFF_A,
     );
@@ -45,7 +45,7 @@ impl SWModelParameters for Parameters {
     /// COEFF_B = [0,
     /// 155198655607781456406391640216936120121836107652948796323930557600032281009004493664981332883744016074664192874906]
     #[rustfmt::skip]
-    const COEFF_B: Fq2 = MontFp!(Fq2,
+    const COEFF_B: Fq2 = QuadExt!(
         FQ_ZERO,
         MontFp!(Fq, "155198655607781456406391640216936120121836107652948796323930557600032281009004493664981332883744016074664192874906"),
     );
@@ -61,9 +61,9 @@ impl SWModelParameters for Parameters {
 }
 
 #[rustfmt::skip]
-pub const G2_GENERATOR_X: Fq2 = MontFp!(Fq2, G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
+pub const G2_GENERATOR_X: Fq2 = QuadExt!(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
 #[rustfmt::skip]
-pub const G2_GENERATOR_Y: Fq2 = MontFp!(Fq2, G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
+pub const G2_GENERATOR_Y: Fq2 = QuadExt!(G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
 
 /// G2_GENERATOR_X_C0 =
 /// 233578398248691099356572568220835526895379068987715365179118596935057653620464273615301663571204657964920925606294

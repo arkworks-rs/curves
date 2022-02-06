@@ -105,9 +105,9 @@ impl SWModelParameters for Parameters {
 }
 
 const G2_GENERATOR_X: Fq3 =
-    MontFp!(Fq3, G2_GENERATOR_X_C0, G2_GENERATOR_X_C1, G2_GENERATOR_X_C2);
+    CubicExt!(, G2_GENERATOR_X_C0, G2_GENERATOR_X_C1, G2_GENERATOR_X_C2);
 const G2_GENERATOR_Y: Fq3 =
-    MontFp!(Fq3, G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1, G2_GENERATOR_Y_C2);
+    CubicExt!(, G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1, G2_GENERATOR_Y_C2);
 
 // Generator of G2
 // These are three Fq elements each because X and Y (and Z) are elements of Fq^3

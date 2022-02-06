@@ -54,7 +54,7 @@ impl SWModelParameters for Parameters {
     //  (0, 67372828414711144619833451280373307321534573815811166723479321465776723059456513877937430)
     // ```
     #[rustfmt::skip]
-    const COEFF_B: Fq2 = MontFp!(Fq2,
+    const COEFF_B: Fq2 = QuadExt!(
         FQ_ZERO,
         MontFp!(Fq, "67372828414711144619833451280373307321534573815811166723479321465776723059456513877937430"),
     );
@@ -65,12 +65,12 @@ impl SWModelParameters for Parameters {
 
     #[inline(always)]
     fn mul_by_a(elt: &Fq2) -> Fq2 {
-        MontFp!(Fq2, MUL_BY_A_C0 * &elt.c0, MUL_BY_A_C1 * &elt.c1,)
+        QuadExt!(MUL_BY_A_C0 * &elt.c0, MUL_BY_A_C1 * &elt.c1,)
     }
 }
 
-const G2_GENERATOR_X: Fq2 = MontFp!(Fq2, G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
-const G2_GENERATOR_Y: Fq2 = MontFp!(Fq2, G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
+const G2_GENERATOR_X: Fq2 = QuadExt!(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
+const G2_GENERATOR_Y: Fq2 = QuadExt!(G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
 
 // Generator of G2
 // These are two Fq elements each because X and Y (and Z) are elements of Fq^2

@@ -154,7 +154,7 @@ impl CP6_782 {
 }
 
 /// TWIST = (0, 1, 0)
-pub const TWIST: Fq3 = MontFp!(Fq3, FQ_ZERO, FQ_ONE, FQ_ZERO);
+pub const TWIST: Fq3 = CubicExt!(, FQ_ZERO, FQ_ONE, FQ_ZERO);
 
 /// ATE_IS_LOOP_COUNT_NEG = false
 pub const ATE_IS_LOOP_COUNT_NEG: bool = false;

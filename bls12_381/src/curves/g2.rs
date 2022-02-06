@@ -41,10 +41,10 @@ impl ModelParameters for Parameters {
 
 impl SWModelParameters for Parameters {
     /// COEFF_A = [0, 0]
-    const COEFF_A: Fq2 = MontFp!(Fq2, g1::Parameters::COEFF_A, g1::Parameters::COEFF_A,);
+    const COEFF_A: Fq2 = QuadExt!(g1::Parameters::COEFF_A, g1::Parameters::COEFF_A,);
 
     /// COEFF_B = [4, 4]
-    const COEFF_B: Fq2 = MontFp!(Fq2, g1::Parameters::COEFF_B, g1::Parameters::COEFF_B,);
+    const COEFF_B: Fq2 = QuadExt!(g1::Parameters::COEFF_B, g1::Parameters::COEFF_B,);
 
     /// AFFINE_GENERATOR_COEFFS = (G2_GENERATOR_X, G2_GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
@@ -71,8 +71,8 @@ impl SWModelParameters for Parameters {
     }
 }
 
-pub const G2_GENERATOR_X: Fq2 = MontFp!(Fq2, G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
-pub const G2_GENERATOR_Y: Fq2 = MontFp!(Fq2, G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
+pub const G2_GENERATOR_X: Fq2 = QuadExt!(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
+pub const G2_GENERATOR_Y: Fq2 = QuadExt!(G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
 
 /// G2_GENERATOR_X_C0 =
 /// 352701069587466618187139116011060144890029952792775240219908644239793785735715026873347600343865175952761926303160

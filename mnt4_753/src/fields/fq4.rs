@@ -11,7 +11,7 @@ pub struct Fq4Config;
 impl Fp4Parameters for Fq4Config {
     type Fp2Params = Fq2Config;
 
-    const NONRESIDUE: Fq2 = MontFp!(Fq2, FQ_ZERO, FQ_ONE);
+    const NONRESIDUE: Fq2 = QuadExt!(FQ_ZERO, FQ_ONE);
 
     // Coefficients for the Frobenius automorphism.
     // c1[0] = 1,

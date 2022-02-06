@@ -54,7 +54,7 @@ pub const MUL_BY_A_C2: Fq = g1::Parameters::COEFF_A;
 impl SWModelParameters for Parameters {
     const COEFF_A: Fq3 = crate::Parameters::TWIST_COEFF_A;
     #[rustfmt::skip]
-    const COEFF_B: Fq3 = MontFp!(Fq3,
+    const COEFF_B: Fq3 = CubicExt!(,
         // 5 * G1::COEFF_B
         MontFp!(Fq, "57578116384997352636487348509878309737146377454014423897662211075515354005624851787652233"),
         FQ_ZERO,
@@ -77,9 +77,9 @@ impl SWModelParameters for Parameters {
 }
 
 const G2_GENERATOR_X: Fq3 =
-    MontFp!(Fq3, G2_GENERATOR_X_C0, G2_GENERATOR_X_C1, G2_GENERATOR_X_C2);
+    CubicExt!(, G2_GENERATOR_X_C0, G2_GENERATOR_X_C1, G2_GENERATOR_X_C2);
 const G2_GENERATOR_Y: Fq3 =
-    MontFp!(Fq3, G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1, G2_GENERATOR_Y_C2);
+    CubicExt!(, G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1, G2_GENERATOR_Y_C2);
 
 pub const G2_GENERATOR_X_C0: Fq = MontFp!(
     Fq,

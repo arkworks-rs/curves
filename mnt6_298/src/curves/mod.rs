@@ -23,9 +23,9 @@ pub type MNT6_298 = MNT6<Parameters>;
 pub struct Parameters;
 
 impl MNT6Parameters for Parameters {
-    const TWIST: Fp3<Self::Fp3Params> = MontFp!(Fq3, FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const TWIST: Fp3<Self::Fp3Params> = CubicExt!(, FQ_ZERO, FQ_ONE, FQ_ZERO);
     #[rustfmt::skip]
-    const TWIST_COEFF_A: Fp3<Self::Fp3Params> = MontFp!(Fq3,
+    const TWIST_COEFF_A: Fp3<Self::Fp3Params> = CubicExt!(,
         FQ_ZERO,
         FQ_ZERO,
         g1::Parameters::COEFF_A,

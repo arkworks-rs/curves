@@ -22,7 +22,7 @@ pub type MNT6_753 = MNT6<Parameters>;
 pub struct Parameters;
 
 impl MNT6Parameters for Parameters {
-    const TWIST: Fp3<Self::Fp3Params> = MontFp!(Fq3, FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const TWIST: Fp3<Self::Fp3Params> = CubicExt!(, FQ_ZERO, FQ_ONE, FQ_ZERO);
     // A coefficient of MNT6-753 G2 =
     // ```
     // mnt6753_twist_coeff_a = mnt6753_Fq3(mnt6753_Fq::zero(), mnt6753_Fq::zero(),
@@ -30,7 +30,7 @@ impl MNT6Parameters for Parameters {
     //  = (ZERO, ZERO, A_COEFF);
     // ```
     #[rustfmt::skip]
-    const TWIST_COEFF_A: Fp3<Self::Fp3Params> = MontFp!(Fq3,
+    const TWIST_COEFF_A: Fp3<Self::Fp3Params> = CubicExt!(,
         FQ_ZERO,
         FQ_ZERO,
         g1::Parameters::COEFF_A,
