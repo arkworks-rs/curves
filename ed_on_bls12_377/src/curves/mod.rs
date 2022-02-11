@@ -1,7 +1,11 @@
-use crate::{fq::Fq, fr::Fr};
+use crate::{Fq, Fr};
 use ark_ec::{
     models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
+    short_weierstrass_jacobian::{
+        GroupAffine as SWGroupAffine, GroupProjective as SWGroupProjective,
+    },
     twisted_edwards_extended::{GroupAffine, GroupProjective},
+    SWModelParameters,
 };
 use ark_ff::field_new;
 
