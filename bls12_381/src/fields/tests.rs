@@ -945,7 +945,7 @@ fn test_fq_repr_num_bits() {
 }
 
 #[test]
-fn test_fq_repr_sub_noborrow() {
+fn test_fq_repr_sub_with_borrow() {
     let mut rng = ark_std::test_rng();
 
     let mut t = BigInt::new([
@@ -956,7 +956,7 @@ fn test_fq_repr_sub_noborrow() {
         0xad0eb3948a5c34fd,
         0xd56f7b5ab8b5ce8,
     ]);
-    t.sub_noborrow(&BigInt::new([
+    t.sub_with_borrow(&BigInt::new([
         0xc7867917187ca02b,
         0x5d75679d4911ffef,
         0x8c5b3e48b1a71c15,
@@ -991,12 +991,12 @@ fn test_fq_repr_sub_noborrow() {
         assert!(b < c);
 
         let mut csub_ba = c;
-        csub_ba.sub_noborrow(&b);
-        csub_ba.sub_noborrow(&a);
+        csub_ba.sub_with_borrow(&b);
+        csub_ba.sub_with_borrow(&a);
 
         let mut csub_ab = c;
-        csub_ab.sub_noborrow(&a);
-        csub_ab.sub_noborrow(&b);
+        csub_ab.sub_with_borrow(&a);
+        csub_ab.sub_with_borrow(&b);
 
         assert_eq!(csub_ab, csub_ba);
     }
@@ -1010,7 +1010,7 @@ fn test_fq_repr_sub_noborrow() {
         0x4b1ba7b6434bacd7,
         0x1a0111ea397fe69a,
     ]);
-    qplusone.sub_noborrow(&BigInt::new([
+    qplusone.sub_with_borrow(&BigInt::new([
         0xb9feffffffffaaac,
         0x1eabfffeb153ffff,
         0x6730d2a0f6b0f624,
@@ -1032,7 +1032,7 @@ fn test_fq_repr_sub_noborrow() {
 }
 
 #[test]
-fn test_fq_repr_add_nocarry() {
+fn test_fq_repr_add_with_carry() {
     let mut rng = ark_std::test_rng();
 
     let mut t = BigInt::new([
@@ -1043,7 +1043,7 @@ fn test_fq_repr_add_nocarry() {
         0xad0eb3948a5c34fd,
         0xd56f7b5ab8b5ce8,
     ]);
-    t.add_nocarry(&BigInt::new([
+    t.add_with_carry(&BigInt::new([
         0xc7867917187ca02b,
         0x5d75679d4911ffef,
         0x8c5b3e48b1a71c15,
@@ -1074,28 +1074,28 @@ fn test_fq_repr_add_nocarry() {
         c.0[5] >>= 3;
 
         let mut abc = a;
-        abc.add_nocarry(&b);
-        abc.add_nocarry(&c);
+        abc.add_with_carry(&b);
+        abc.add_with_carry(&c);
 
         let mut acb = a;
-        acb.add_nocarry(&c);
-        acb.add_nocarry(&b);
+        acb.add_with_carry(&c);
+        acb.add_with_carry(&b);
 
         let mut bac = b;
-        bac.add_nocarry(&a);
-        bac.add_nocarry(&c);
+        bac.add_with_carry(&a);
+        bac.add_with_carry(&c);
 
         let mut bca = b;
-        bca.add_nocarry(&c);
-        bca.add_nocarry(&a);
+        bca.add_with_carry(&c);
+        bca.add_with_carry(&a);
 
         let mut cab = c;
-        cab.add_nocarry(&a);
-        cab.add_nocarry(&b);
+        cab.add_with_carry(&a);
+        cab.add_with_carry(&b);
 
         let mut cba = c;
-        cba.add_nocarry(&b);
-        cba.add_nocarry(&a);
+        cba.add_with_carry(&b);
+        cba.add_with_carry(&a);
 
         assert_eq!(abc, acb);
         assert_eq!(abc, bac);
@@ -1113,7 +1113,7 @@ fn test_fq_repr_add_nocarry() {
         0xffffffffffffffff,
         0xffffffffffffffff,
     ]);
-    x.add_nocarry(&BigInteger384::from(1));
+    x.add_with_carry(&BigInteger384::from(1));
     assert!(x.is_zero());
 }
 
