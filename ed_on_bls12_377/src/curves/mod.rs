@@ -14,15 +14,15 @@ mod tests;
 
 pub type EdwardsAffine = GroupAffine<EdwardsParameters>;
 pub type EdwardsProjective = GroupProjective<EdwardsParameters>;
-pub type SWAffine = SWGroupAffine<JubjubParameters>;
-pub type SWProjective = SWGroupProjective<JubjubParameters>;
+pub type SWAffine = SWGroupAffine<Parameters>;
+pub type SWProjective = SWGroupProjective<Parameters>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct JubjubParameters;
-pub type EdwardsParameters = JubjubParameters;
-pub type SWParameters = JubjubParameters;
+pub struct Parameters;
+pub type EdwardsParameters = Parameters;
+pub type SWParameters = Parameters;
 
-impl ModelParameters for JubjubParameters {
+impl ModelParameters for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -35,7 +35,7 @@ impl ModelParameters for JubjubParameters {
     const COFACTOR_INV: Fr = field_new!(Fr, "527778859339273151515551558673846658209717731602102048798421311598680340096");
 }
 
-impl TEModelParameters for JubjubParameters {
+impl TEModelParameters for Parameters {
     /// COEFF_A = -1
     #[rustfmt::skip]
     const COEFF_A: Fq = field_new!(Fq, "-1");
@@ -47,7 +47,7 @@ impl TEModelParameters for JubjubParameters {
     /// Generated randomly
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);
 
-    type MontgomeryModelParameters = JubjubParameters;
+    type MontgomeryModelParameters = Parameters;
 
     /// Multiplication by `a` is just negation.
     #[inline(always)]
@@ -56,7 +56,7 @@ impl TEModelParameters for JubjubParameters {
     }
 }
 
-impl MontgomeryModelParameters for JubjubParameters {
+impl MontgomeryModelParameters for Parameters {
     /// COEFF_A = 0x8D26E3FADA9010A26949031ECE3971B93952AD84D4753DDEDB748DA37E8F552
     ///         = 3990301581132929505568273333084066329187552697088022219156688740916631500114
     #[rustfmt::skip]
@@ -66,7 +66,7 @@ impl MontgomeryModelParameters for JubjubParameters {
     #[rustfmt::skip]
     const COEFF_B: Fq = field_new!(Fq, "4454160168295440918680551605697480202188346638066041608778544715000777738925");
 
-    type TEModelParameters = JubjubParameters;
+    type TEModelParameters = Parameters;
 }
 
 /// GENERATOR_X =
@@ -79,7 +79,7 @@ const GENERATOR_X: Fq = field_new!(Fq, "4497879464030519973909970603271755437257
 #[rustfmt::skip]
 const GENERATOR_Y: Fq = field_new!(Fq, "4357141146396347889246900916607623952598927460421559113092863576544024487809");
 
-impl SWModelParameters for JubjubParameters {
+impl SWModelParameters for Parameters {
     /// COEFF_A = 703705145785697535354068744898462210947991611262838652327936121326450580667
     #[rustfmt::skip]
     const COEFF_A: Self::BaseField = field_new!(Fq, "703705145785697535354068744898462210947991611262838652327936121326450580667");
