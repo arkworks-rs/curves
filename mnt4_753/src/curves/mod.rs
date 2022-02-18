@@ -1,10 +1,10 @@
 use ark_ec::models::mnt4::{MNT4Parameters, MNT4};
 use ark_ff::{
     biginteger::{BigInt, BigInteger768},
-    MontFp, Fp2,
+    Fp2, MontFp, QuadExt,
 };
 
-use crate::{Fq, Fq2, Fq2Config, Fq4Config, Fr};
+use crate::{Fq, Fq2Config, Fq4Config, Fr};
 
 pub mod g1;
 pub mod g2;

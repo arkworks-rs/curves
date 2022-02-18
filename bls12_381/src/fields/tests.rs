@@ -1,9 +1,6 @@
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger384},
-    fields::{
-        FftField, FftParameters, Field, Fp12Parameters, Fp2Parameters, Fp6Parameters, FpParameters,
-        SquareRootField,
-    },
+    fields::{FftField, Field, Fp12Parameters, Fp2Config, Fp6Config, PrimeField, SquareRootField},
     One, UniformRand, Zero,
 };
 use ark_std::{
@@ -13,7 +10,7 @@ use ark_std::{
     test_rng,
 };
 
-use crate::{Fq, Fq12, Fq12Config, Fq2, Fq2Config, Fq6, Fq6Config, FqConfig, Fr};
+use crate::{Fq, Fq12, Fq12Config, Fq2, Fq2Config, Fq6, Fq6Config, Fr};
 use ark_algebra_test_templates::{fields::*, generate_field_test};
 
 generate_field_test!(bls12_381; fq2; fq6; fq12;);
@@ -763,14 +760,14 @@ fn test_fq_repr_from() {
 
 #[test]
 fn test_fq_repr_is_odd() {
-    assert!(!BigInteger384::from(0).is_odd());
-    assert!(BigInteger384::from(0).is_even());
-    assert!(BigInteger384::from(1).is_odd());
-    assert!(!BigInteger384::from(1).is_even());
-    assert!(!BigInteger384::from(324834872).is_odd());
-    assert!(BigInteger384::from(324834872).is_even());
-    assert!(BigInteger384::from(324834873).is_odd());
-    assert!(!BigInteger384::from(324834873).is_even());
+    assert!(!BigInteger384::from(0u64).is_odd());
+    assert!(BigInteger384::from(0u64).is_even());
+    assert!(BigInteger384::from(1u64).is_odd());
+    assert!(!BigInteger384::from(1u64).is_even());
+    assert!(!BigInteger384::from(324834872u64).is_odd());
+    assert!(BigInteger384::from(324834872u64).is_even());
+    assert!(BigInteger384::from(324834873u64).is_odd());
+    assert!(!BigInteger384::from(324834873u64).is_even());
 }
 
 #[test]
@@ -902,7 +899,7 @@ fn test_fq_repr_divn() {
 
 #[test]
 fn test_fq_repr_mul2() {
-    let mut a = BigInteger384::from(23712937547);
+    let mut a = BigInteger384::from(23712937547u64);
     a.mul2();
     assert_eq!(a, BigInt::new([0xb0acd6c96, 0x0, 0x0, 0x0, 0x0, 0x0]));
     for _ in 0..60 {
@@ -934,9 +931,9 @@ fn test_fq_repr_mul2() {
 
 #[test]
 fn test_fq_repr_num_bits() {
-    let mut a = BigInteger384::from(0);
+    let mut a = BigInteger384::from(0u64);
     assert_eq!(0, a.num_bits());
-    a = BigInteger384::from(1);
+    a = BigInteger384::from(1u64);
     for i in 1..385 {
         assert_eq!(i, a.num_bits());
         a.mul2();
@@ -956,7 +953,7 @@ fn test_fq_repr_sub_noborrow() {
         0xad0eb3948a5c34fd,
         0xd56f7b5ab8b5ce8,
     ]);
-    t.sub_noborrow(&BigInt::new([
+    t.sub_with_borrow(&BigInt::new([
         0xc7867917187ca02b,
         0x5d75679d4911ffef,
         0x8c5b3e48b1a71c15,
@@ -991,12 +988,12 @@ fn test_fq_repr_sub_noborrow() {
         assert!(b < c);
 
         let mut csub_ba = c;
-        csub_ba.sub_noborrow(&b);
-        csub_ba.sub_noborrow(&a);
+        csub_ba.sub_with_borrow(&b);
+        csub_ba.sub_with_borrow(&a);
 
         let mut csub_ab = c;
-        csub_ab.sub_noborrow(&a);
-        csub_ab.sub_noborrow(&b);
+        csub_ab.sub_with_borrow(&a);
+        csub_ab.sub_with_borrow(&b);
 
         assert_eq!(csub_ab, csub_ba);
     }
@@ -1010,7 +1007,7 @@ fn test_fq_repr_sub_noborrow() {
         0x4b1ba7b6434bacd7,
         0x1a0111ea397fe69a,
     ]);
-    qplusone.sub_noborrow(&BigInt::new([
+    qplusone.sub_with_borrow(&BigInt::new([
         0xb9feffffffffaaac,
         0x1eabfffeb153ffff,
         0x6730d2a0f6b0f624,
@@ -1043,7 +1040,7 @@ fn test_fq_repr_add_nocarry() {
         0xad0eb3948a5c34fd,
         0xd56f7b5ab8b5ce8,
     ]);
-    t.add_nocarry(&BigInt::new([
+    t.add_with_carry(&BigInt::new([
         0xc7867917187ca02b,
         0x5d75679d4911ffef,
         0x8c5b3e48b1a71c15,
@@ -1074,28 +1071,28 @@ fn test_fq_repr_add_nocarry() {
         c.0[5] >>= 3;
 
         let mut abc = a;
-        abc.add_nocarry(&b);
-        abc.add_nocarry(&c);
+        abc.add_with_carry(&b);
+        abc.add_with_carry(&c);
 
         let mut acb = a;
-        acb.add_nocarry(&c);
-        acb.add_nocarry(&b);
+        acb.add_with_carry(&c);
+        acb.add_with_carry(&b);
 
         let mut bac = b;
-        bac.add_nocarry(&a);
-        bac.add_nocarry(&c);
+        bac.add_with_carry(&a);
+        bac.add_with_carry(&c);
 
         let mut bca = b;
-        bca.add_nocarry(&c);
-        bca.add_nocarry(&a);
+        bca.add_with_carry(&c);
+        bca.add_with_carry(&a);
 
         let mut cab = c;
-        cab.add_nocarry(&a);
-        cab.add_nocarry(&b);
+        cab.add_with_carry(&a);
+        cab.add_with_carry(&b);
 
         let mut cba = c;
-        cba.add_nocarry(&b);
-        cba.add_nocarry(&a);
+        cba.add_with_carry(&b);
+        cba.add_with_carry(&a);
 
         assert_eq!(abc, acb);
         assert_eq!(abc, bac);
@@ -1113,7 +1110,7 @@ fn test_fq_repr_add_nocarry() {
         0xffffffffffffffff,
         0xffffffffffffffff,
     ]);
-    x.add_nocarry(&BigInteger384::from(1));
+    x.add_with_carry(&BigInteger384::from(1u64));
     assert!(x.is_zero());
 }
 
@@ -1132,19 +1129,15 @@ fn test_fq2_sqrt() {
 
 #[test]
 fn test_fq_num_bits() {
-    assert_eq!(FqConfig::MODULUS_BITS, 381);
-    assert_eq!(FqConfig::CAPACITY, 380);
+    assert_eq!(Fq::MODULUS_BIT_SIZE, 381);
 }
 
 #[test]
 fn test_fq_root_of_unity() {
-    assert_eq!(FqConfig::TWO_ADICITY, 1);
+    assert_eq!(Fq::TWO_ADICITY, 1);
+    assert_eq!(Fq::GENERATOR, Fq::from(BigInteger384::from(2u64)));
     assert_eq!(
-        Fq::multiplicative_generator(),
-        Fq::from(BigInteger384::from(2))
-    );
-    assert_eq!(
-        Fq::multiplicative_generator().pow([
+        Fq::GENERATOR.pow([
             0xdcff7fffffffd555,
             0xf55ffff58a9ffff,
             0xb39869507b587b12,
@@ -1152,13 +1145,13 @@ fn test_fq_root_of_unity() {
             0x258dd3db21a5d66b,
             0xd0088f51cbff34d,
         ]),
-        Fq::two_adic_root_of_unity()
+        Fq::TWO_ADIC_ROOT_OF_UNITY
     );
     assert_eq!(
-        Fq::two_adic_root_of_unity().pow([1 << FqConfig::TWO_ADICITY]),
+        Fq::TWO_ADIC_ROOT_OF_UNITY.pow([1 << Fq::TWO_ADICITY]),
         Fq::one()
     );
-    assert!(Fq::multiplicative_generator().sqrt().is_none());
+    assert!(Fq::GENERATOR.sqrt().is_none());
 }
 
 // #[test]
@@ -1173,7 +1166,7 @@ fn test_fq_root_of_unity() {
 fn test_fq_ordering() {
     // BigInteger384's ordering is well-tested, but we still need to make sure the
     // Fq elements aren't being compared in Montgomery form.
-    for i in 0..100 {
+    for i in 0..100u64 {
         assert!(Fq::from(BigInteger384::from(i + 1)) > Fq::from(BigInteger384::from(i)));
     }
 }
@@ -1192,11 +1185,11 @@ fn test_fq_legendre() {
 
     assert_eq!(
         QuadraticNonResidue,
-        Fq::from(BigInteger384::from(2)).legendre()
+        Fq::from(BigInteger384::from(2u64)).legendre()
     );
     assert_eq!(
         QuadraticResidue,
-        Fq::from(BigInteger384::from(4)).legendre()
+        Fq::from(BigInteger384::from(4u64)).legendre()
     );
 
     let e = BigInt::new([
@@ -1252,7 +1245,10 @@ fn test_fq2_basics() {
 #[test]
 fn test_fq2_squaring() {
     let a = Fq2::new(Fq::one(), Fq::one()).square(); // u + 1
-    assert_eq!(a, Fq2::new(Fq::zero(), Fq::from(BigInteger384::from(2)),)); // 2u
+    assert_eq!(
+        a,
+        Fq2::new(Fq::zero(), Fq::from(BigInteger384::from(2u64)),)
+    ); // 2u
 
     let a = Fq2::new(Fq::zero(), Fq::one()).square(); // u
     assert_eq!(a, {

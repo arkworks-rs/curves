@@ -1,11 +1,11 @@
-use ark_ff::{biginteger::BigInteger320, MontFp, BigInt, Fp3};
+use ark_ff::{biginteger::BigInteger320, BigInt, CubicExt, Fp3, MontFp};
 
 use ark_ec::{
     models::mnt6::{MNT6Parameters, MNT6},
     SWModelParameters,
 };
 
-use crate::{Fq, Fq3, Fq3Config, Fq6Config, Fr};
+use crate::{Fq, Fq3Config, Fq6Config, Fr};
 
 pub mod g1;
 pub mod g2;
@@ -23,13 +23,9 @@ pub type MNT6_298 = MNT6<Parameters>;
 pub struct Parameters;
 
 impl MNT6Parameters for Parameters {
-    const TWIST: Fp3<Self::Fp3Params> = CubicExt!(, FQ_ZERO, FQ_ONE, FQ_ZERO);
-    #[rustfmt::skip]
-    const TWIST_COEFF_A: Fp3<Self::Fp3Params> = CubicExt!(,
-        FQ_ZERO,
-        FQ_ZERO,
-        g1::Parameters::COEFF_A,
-    );
+    const TWIST: Fp3<Self::Fp3Params> = CubicExt!(FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const TWIST_COEFF_A: Fp3<Self::Fp3Params> =
+        CubicExt!(FQ_ZERO, FQ_ZERO, g1::Parameters::COEFF_A,);
     const ATE_LOOP_COUNT: &'static [u64] = &[0xdc9a1b671660000, 0x46609756bec2a33f, 0x1eef55];
     const ATE_IS_LOOP_COUNT_NEG: bool = true;
     const FINAL_EXPONENT_LAST_CHUNK_1: BigInteger320 = BigInt::new([0x1, 0x0, 0x0, 0x0, 0x0]);

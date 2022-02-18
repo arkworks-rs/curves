@@ -1,6 +1,6 @@
 #![allow(unused_imports)]
 use ark_ff::{
-    fields::{Field, FpParameters, PrimeField, SquareRootField},
+    fields::{Field, PrimeField, SquareRootField},
     One, Zero,
 };
 use ark_serialize::CanonicalSerialize;

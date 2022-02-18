@@ -21,13 +21,11 @@ impl ModelParameters for Parameters {
     const COFACTOR: &'static [u64] = &[1];
 
     /// COFACTOR^(-1) mod r = 1
-    #[rustfmt::skip]
     const COFACTOR_INV: Fr = FR_ONE;
 }
 
 impl SWModelParameters for Parameters {
     /// COEFF_A = 2
-    #[rustfmt::skip]
     const COEFF_A: Fq = MontFp!(Fq, "2");
 
     /// COEFF_B = 0x01373684A8C9DCAE7A016AC5D7748D3313CD8E39051C596560835DF0C9E50A5B59B882A92C78DC537E51A16703EC9855C77FC3D8BB21C8D68BB8CFB9DB4B8C8FBA773111C36C8B1B4E8F1ECE940EF9EAAD265458E06372009C9A0491678EF4

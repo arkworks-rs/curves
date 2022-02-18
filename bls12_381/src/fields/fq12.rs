@@ -1,5 +1,5 @@
 use crate::*;
-use ark_ff::{MontFp, fields::*};
+use ark_ff::{fields::*, CubicExt, MontFp, QuadExt};
 
 pub type Fq12 = Fp12<Fq12Config>;
 
@@ -9,7 +9,7 @@ pub struct Fq12Config;
 impl Fp12Parameters for Fq12Config {
     type Fp6Params = Fq6Config;
 
-    const NONRESIDUE: Fq6 = MontFp!(Fq6, FQ2_ZERO, FQ2_ONE, FQ2_ZERO);
+    const NONRESIDUE: Fq6 = CubicExt!(FQ2_ZERO, FQ2_ONE, FQ2_ZERO);
 
     const FROBENIUS_COEFF_FP12_C1: &'static [Fq2] = &[
         // Fp2::NONRESIDUE^(((q^0) - 1) / 6)

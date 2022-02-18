@@ -5,7 +5,7 @@ use ark_ec::{
     AffineCurve, PairingEngine, ProjectiveCurve,
 };
 use ark_ff::{
-    fields::{Field, FpParameters, PrimeField, SquareRootField},
+    fields::{Field, PrimeField, SquareRootField},
     BitIteratorBE, One, UniformRand, Zero,
 };
 use ark_serialize::CanonicalSerialize;

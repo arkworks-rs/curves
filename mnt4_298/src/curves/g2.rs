@@ -4,7 +4,7 @@ use ark_ec::{
     mnt4::MNT4Parameters,
     models::{ModelParameters, SWModelParameters},
 };
-use ark_ff::MontFp;
+use ark_ff::{MontFp, QuadExt};
 
 pub type G2Affine = mnt4::G2Affine<crate::Parameters>;
 pub type G2Projective = mnt4::G2Projective<crate::Parameters>;

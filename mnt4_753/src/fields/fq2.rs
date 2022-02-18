@@ -1,22 +1,21 @@
 use crate::{Fq, FQ_ONE};
 use ark_ff::{
-    MontFp,
-    fields::fp2::{Fp2, Fp2Parameters},
+    fields::fp2::{Fp2, Fp2Config},
+    MontFp, QuadExt,
 };
 
 pub type Fq2 = Fp2<Fq2Config>;
 
 pub struct Fq2Config;
 
-impl Fp2Parameters for Fq2Config {
+impl Fp2Config for Fq2Config {
     type Fp = Fq;
 
     // non_residue = 13
-    #[rustfmt::skip]
     const NONRESIDUE: Fq = MontFp!(Fq, "13");
 
     // qnr = (8, 1)
-    const QUADRATIC_NONRESIDUE: (Self::Fp, Self::Fp) = (MontFp!(Fq, "8"), FQ_ONE);
+    const QUADRATIC_NONRESIDUE: Fq2 = QuadExt!(MontFp!(Fq, "8"), FQ_ONE);
 
     // Coefficients:
     // [1, 41898490967918953402344214791240637128170709919953949071783502921025352812571106773058893763790338921418070971888253786114353726529584385201591605722013126468931404347949840543007986327743462853720628051692141265303114721689600]

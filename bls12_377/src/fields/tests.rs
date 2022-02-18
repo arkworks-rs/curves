@@ -1,9 +1,6 @@
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger384},
-    fields::{
-        fp6_3over2::Fp6Parameters, FftField, FftParameters, Field, Fp2Parameters, FpParameters,
-        PrimeField, SquareRootField,
-    },
+    fields::{FftField, Field, Fp2Config, Fp6Config, PrimeField, SquareRootField},
     One, UniformRand, Zero,
 };
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
@@ -13,7 +10,7 @@ use core::{
     ops::{AddAssign, MulAssign, SubAssign},
 };
 
-use crate::{Fq, Fq12, Fq2, Fq2Config, Fq6, Fq6Config, FqConfig, Fr};
+use crate::{Fq, Fq12, Fq2, Fq2Config, Fq6, Fq6Config, Fr};
 
 use ark_algebra_test_templates::{
     fields::*, generate_field_serialization_test, generate_field_test,
@@ -29,14 +26,14 @@ fn test_fq_repr_from() {
 
 #[test]
 fn test_fq_repr_is_odd() {
-    assert!(!BigInteger384::from(0).is_odd());
-    assert!(BigInteger384::from(0).is_even());
-    assert!(BigInteger384::from(1).is_odd());
-    assert!(!BigInteger384::from(1).is_even());
-    assert!(!BigInteger384::from(324834872).is_odd());
-    assert!(BigInteger384::from(324834872).is_even());
-    assert!(BigInteger384::from(324834873).is_odd());
-    assert!(!BigInteger384::from(324834873).is_even());
+    assert!(!BigInteger384::from(0u64).is_odd());
+    assert!(BigInteger384::from(0u64).is_even());
+    assert!(BigInteger384::from(1u64).is_odd());
+    assert!(!BigInteger384::from(1u64).is_even());
+    assert!(!BigInteger384::from(324834872u64).is_odd());
+    assert!(BigInteger384::from(324834872u64).is_even());
+    assert!(BigInteger384::from(324834873u64).is_odd());
+    assert!(!BigInteger384::from(324834873u64).is_even());
 }
 
 #[test]
@@ -48,9 +45,9 @@ fn test_fq_repr_is_zero() {
 
 #[test]
 fn test_fq_repr_num_bits() {
-    let mut a = BigInteger384::from(0);
+    let mut a = BigInteger384::from(0u64);
     assert_eq!(0, a.num_bits());
-    a = BigInteger384::from(1);
+    a = BigInteger384::from(1u64);
     for i in 1..385 {
         assert_eq!(i, a.num_bits());
         a.mul2();
@@ -60,15 +57,14 @@ fn test_fq_repr_num_bits() {
 
 #[test]
 fn test_fq_num_bits() {
-    assert_eq!(FqConfig::MODULUS_BITS, 377);
-    assert_eq!(FqConfig::CAPACITY, 376);
+    assert_eq!(Fq::MODULUS_BIT_SIZE, 377);
 }
 
 #[test]
 fn test_fq_root_of_unity() {
-    assert_eq!(FqConfig::TWO_ADICITY, 46);
+    assert_eq!(Fq::TWO_ADICITY, 46);
     assert_eq!(
-        Fq::multiplicative_generator().pow([
+        Fq::GENERATOR.pow([
             0x7510c00000021423,
             0x88bee82520005c2d,
             0x67cc03d44e3c7bcd,
@@ -76,20 +72,20 @@ fn test_fq_root_of_unity() {
             0xe9185f1443ab18ec,
             0x6b8
         ]),
-        Fq::two_adic_root_of_unity()
+        Fq::TWO_ADIC_ROOT_OF_UNITY
     );
     assert_eq!(
-        Fq::two_adic_root_of_unity().pow([1 << FqConfig::TWO_ADICITY]),
+        Fq::TWO_ADIC_ROOT_OF_UNITY.pow([1 << Fq::TWO_ADICITY]),
         Fq::one()
     );
-    assert!(Fq::multiplicative_generator().sqrt().is_none());
+    assert!(Fq::GENERATOR.sqrt().is_none());
 }
 
 #[test]
 fn test_fq_ordering() {
     // BigInteger384's ordering is well-tested, but we still need to make sure the
     // Fq elements aren't being compared in Montgomery form.
-    for i in 0..100 {
+    for i in 0..100u64 {
         assert!(Fq::from(BigInteger384::from(i + 1)) > Fq::from(BigInteger384::from(i)));
     }
 }
@@ -102,11 +98,11 @@ fn test_fq_legendre() {
     assert_eq!(Zero, Fq::zero().legendre());
     assert_eq!(
         QuadraticResidue,
-        Fq::from(BigInteger384::from(4)).legendre()
+        Fq::from(BigInteger384::from(4u64)).legendre()
     );
     assert_eq!(
         QuadraticNonResidue,
-        Fq::from(BigInteger384::from(5)).legendre()
+        Fq::from(BigInteger384::from(5u64)).legendre()
     );
 }
 
@@ -158,8 +154,8 @@ fn test_fq2_mul_nonresidue() {
     let nqr = Fq2::new(Fq::zero(), Fq::one());
 
     let quadratic_non_residue = Fq2::new(
-        Fq2Config::QUADRATIC_NONRESIDUE.0,
-        Fq2Config::QUADRATIC_NONRESIDUE.1,
+        Fq2Config::QUADRATIC_NONRESIDUE.c0,
+        Fq2Config::QUADRATIC_NONRESIDUE.c1,
     );
     for _ in 0..1000 {
         let mut a = Fq2::rand(&mut rng);

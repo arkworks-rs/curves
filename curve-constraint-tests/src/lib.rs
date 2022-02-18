@@ -235,7 +235,7 @@ pub mod curves {
         short_weierstrass_jacobian::GroupProjective as SWProjective,
         twisted_edwards_extended::GroupProjective as TEProjective, ProjectiveCurve,
     };
-    use ark_ff::{BitIteratorLE, Field, FpParameters, One, PrimeField};
+    use ark_ff::{BitIteratorLE, Field, One, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
     use ark_std::{test_rng, vec::Vec, UniformRand};
 
@@ -323,23 +323,22 @@ pub mod curves {
             }
             assert!(cs.is_satisfied().unwrap());
 
-            let modulus = <C::ScalarField as PrimeField>::Params::MODULUS
-                .as_ref()
-                .to_vec();
+            let modulus = <C::ScalarField as PrimeField>::MODULUS.as_ref().to_vec();
             let mut max = modulus.clone();
             for limb in &mut max {
                 *limb = u64::MAX;
             }
 
-            let modulus_last_limb_bits = <C::ScalarField as PrimeField>::Params::MODULUS_BITS % 64;
+            let modulus_last_limb_bits = <C::ScalarField as PrimeField>::MODULUS_BIT_SIZE % 64;
             *max.last_mut().unwrap() >>= 64 - modulus_last_limb_bits;
             let scalars = [
-                C::ScalarField::rand(&mut rng).into_repr().as_ref().to_vec(),
-                vec![u64::rand(&mut rng)],
-                (-C::ScalarField::one()).into_repr().as_ref().to_vec(),
-                <C::ScalarField as PrimeField>::Params::MODULUS
+                C::ScalarField::rand(&mut rng)
+                    .into_bigint()
                     .as_ref()
                     .to_vec(),
+                vec![u64::rand(&mut rng)],
+                (-C::ScalarField::one()).into_bigint().as_ref().to_vec(),
+                <C::ScalarField as PrimeField>::MODULUS.as_ref().to_vec(),
                 max,
                 vec![0; 50],
                 vec![1000012341233u64; 36],
@@ -585,13 +584,13 @@ pub mod pairing {
             };
 
             let (ans3_g, ans3_n) = {
-                let s_iter = BitIteratorLE::without_trailing_zeros(s.into_repr())
+                let s_iter = BitIteratorLE::without_trailing_zeros(s.into_bigint())
                     .map(Boolean::constant)
                     .collect::<Vec<_>>();
 
                 let mut ans_g = P::pairing(a_prep_g, b_prep_g)?;
                 let mut ans_n = E::pairing(a, b);
-                ans_n = ans_n.pow(s.into_repr());
+                ans_n = ans_n.pow(s.into_bigint());
                 ans_g = ans_g.pow_le(&s_iter)?;
 
                 (ans_g, ans_n)

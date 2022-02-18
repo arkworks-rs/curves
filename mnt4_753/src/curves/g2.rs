@@ -3,7 +3,7 @@ use ark_ec::{
     mnt4::MNT4Parameters,
     models::{ModelParameters, SWModelParameters},
 };
-use ark_ff::MontFp;
+use ark_ff::{MontFp, QuadExt};
 
 use crate::{Fq, Fq2, Fr, FQ_ZERO, G1_COEFF_A_NON_RESIDUE};
 

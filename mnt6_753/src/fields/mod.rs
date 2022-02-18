@@ -10,5 +10,5 @@ pub use self::fq3::*;
 pub mod fq6;
 pub use self::fq6::*;
 
-#[cfg(all(feature = "mnt6_753", test))]
+#[cfg(all(feature = "std", test))]
 mod tests;

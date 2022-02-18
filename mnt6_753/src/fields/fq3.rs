@@ -1,23 +1,22 @@
 use crate::{fq::Fq, FQ_ONE, FQ_ZERO};
 use ark_ff::{
-    MontFp,
-    fields::fp3::{Fp3, Fp3Parameters},
+    fields::fp3::{Fp3, Fp3Config},
+    CubicExt, MontFp,
 };
 
 pub type Fq3 = Fp3<Fq3Config>;
 
 pub struct Fq3Config;
 
-impl Fp3Parameters for Fq3Config {
+impl Fp3Config for Fq3Config {
     type Fp = Fq;
 
-    #[rustfmt::skip]
     const NONRESIDUE: Fq = MontFp!(Fq, "11");
 
     const TWO_ADICITY: u32 = 30;
 
     #[rustfmt::skip]
-    const T_MINUS_ONE_DIV_TWO: &'static [u64] = &[
+    const TRACE_MINUS_ONE_DIV_TWO: &'static [u64] = &[
         15439605736802142541,
         18190868848461853149,
         6220121510046940818,
@@ -57,7 +56,7 @@ impl Fp3Parameters for Fq3Config {
 
     /// (11^T, 0, 0)
     #[rustfmt::skip]
-    const QUADRATIC_NONRESIDUE_TO_T: (Fq, Fq, Fq) = (
+    const QUADRATIC_NONRESIDUE_TO_T: Fq3 = CubicExt!(
         MontFp!(Fq, "22168644070733283197994897338612733221095941481265408161807376791727499343083607817089033595478370212662133368413166734396127674284827734481031659015434501966360165723728649019457855887066657739809176476252080335185730833468062"),
         FQ_ZERO,
         FQ_ZERO,

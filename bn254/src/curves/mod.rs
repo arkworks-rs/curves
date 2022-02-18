@@ -3,7 +3,7 @@ use ark_ec::{
     bn,
     bn::{Bn, BnParameters, TwistType},
 };
-use ark_ff::MontFp;
+use ark_ff::{MontFp, QuadExt};
 pub mod g1;
 pub mod g2;
 
@@ -22,8 +22,7 @@ impl BnParameters for Parameters {
         -1, 0, 0, 1, 0, 1, 1,
     ];
 
-    const TWIST_MUL_BY_Q_X: Fq2 = MontFp!(
-        Fq2,
+    const TWIST_MUL_BY_Q_X: Fq2 = QuadExt!(
         MontFp!(
             Fq,
             "21575463638280843010398324269430826099269044274347216827212613867836435027261"
@@ -33,8 +32,7 @@ impl BnParameters for Parameters {
             "10307601595873709700152284273816112264069230130616436755625194854815875713954"
         ),
     );
-    const TWIST_MUL_BY_Q_Y: Fq2 = MontFp!(
-        Fq2,
+    const TWIST_MUL_BY_Q_Y: Fq2 = QuadExt!(
         MontFp!(
             Fq,
             "2821565182194536844548159561693502659359617185244120367078079554186484126554"

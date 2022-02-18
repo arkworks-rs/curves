@@ -1,16 +1,15 @@
-use super::*;
-use ark_ff::{MontFp, fields::*};
+use crate::*;
+use ark_ff::{fields::*, MontFp, QuadExt};
 
 pub type Fq6 = Fp6<Fq6Config>;
 
 #[derive(Clone, Copy)]
 pub struct Fq6Config;
 
-impl Fp6Parameters for Fq6Config {
+impl Fp6Config for Fq6Config {
     type Fp2Params = Fq2Config;
 
     /// NONRESIDUE = U+9
-    #[rustfmt::skip]
     const NONRESIDUE: Fq2 = QuadExt!(MontFp!(Fq, "9"), MontFp!(Fq, "1"));
 
     #[rustfmt::skip]

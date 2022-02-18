@@ -4,7 +4,7 @@ use ark_ec::{
 };
 use ark_ff::MontFp;
 
-use crate::{fq::Fq, fr::Fr};
+use crate::{Fq, Fr};
 
 #[cfg(test)]
 mod tests;

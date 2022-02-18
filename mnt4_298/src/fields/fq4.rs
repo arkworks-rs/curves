@@ -1,14 +1,14 @@
 use crate::{Fq, Fq2, Fq2Config, FQ_ONE, FQ_ZERO};
 use ark_ff::{
-    MontFp,
-    fields::fp4::{Fp4, Fp4Parameters},
+    fields::fp4::{Fp4, Fp4Config},
+    MontFp, QuadExt,
 };
 
 pub type Fq4 = Fp4<Fq4Config>;
 
 pub struct Fq4Config;
 
-impl Fp4Parameters for Fq4Config {
+impl Fp4Config for Fq4Config {
     type Fp2Params = Fq2Config;
 
     const NONRESIDUE: Fq2 = QuadExt!(FQ_ZERO, FQ_ONE);

@@ -1,20 +1,16 @@
 use crate::*;
-use ark_ff::{MontFp, fields::*};
+use ark_ff::{fields::*, MontFp, QuadExt};
 
 pub type Fq6 = Fp6<Fq6Config>;
 
 #[derive(Clone, Copy)]
 pub struct Fq6Config;
 
-impl Fp6Parameters for Fq6Config {
+impl Fp6Config for Fq6Config {
     type Fp2Params = Fq2Config;
 
     /// NONRESIDUE = (U + 1)
-    #[rustfmt::skip]
-    const NONRESIDUE: Fq2 = QuadExt!(
-        MontFp!(Fq, "1"),
-        MontFp!(Fq, "1"),
-    );
+    const NONRESIDUE: Fq2 = QuadExt!(FQ_ONE, FQ_ONE);
 
     #[rustfmt::skip]
     const FROBENIUS_COEFF_FP6_C1: &'static [Fq2] = &[
