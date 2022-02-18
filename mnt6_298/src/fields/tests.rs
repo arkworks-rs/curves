@@ -1,8 +1,8 @@
 use ark_ff::{
-    fields::{models::fp6_2over3::*, quadratic_extension::QuadExtConfig},
+    fields::{models::fp6_2over3::*, quadratic_extension::QuadExtConfig, SquareRootField},
     Field,
 };
-use ark_std::{rand::Rng, test_rng};
+use ark_std::{rand::Rng, test_rng, One, UniformRand, Zero};
 
 use crate::*;
 use ark_algebra_test_templates::{fields::*, generate_field_test};

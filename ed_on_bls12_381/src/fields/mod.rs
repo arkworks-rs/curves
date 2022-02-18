@@ -4,5 +4,5 @@ pub mod fr;
 pub use fq::*;
 pub use fr::*;
 
-#[cfg(all(feature = "std", test))]
+#[cfg(test)]
 mod tests;
