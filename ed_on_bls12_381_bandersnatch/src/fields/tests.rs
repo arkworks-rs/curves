@@ -292,7 +292,7 @@ fn test_fq_sqrt() {
 
 #[test]
 fn test_fq_from_str() {
-    let f1_from_repr = Fq::new(BigInteger::new([
+    let f1_from_repr = Fq::from(BigInteger::new([
         0xab8a2535947d1a77,
         0x9ba74cbfda0bbcda,
         0xe928b59724d60baf,
@@ -302,7 +302,7 @@ fn test_fq_from_str() {
         "13026376210409056429264774981357153555336288129100724591327877625017068755575",
     )
     .unwrap();
-    let f2_from_repr = Fq::new(BigInteger::new([
+    let f2_from_repr = Fq::from(BigInteger::new([
         0x97e9103775d2f35c,
         0xbe6756b6c587544b,
         0x6ee38c3afd88ef4b,
@@ -327,19 +327,19 @@ fn test_fq_legendre() {
         0x127cb819feceaa3b,
         0x3a6b21fb03867191,
     ]);
-    assert_eq!(QuadraticResidue, Fq::new(e).legendre());
+    assert_eq!(QuadraticResidue, Fq::from(e).legendre());
     let e = BigInteger::new([
         0x96341aefd047c045,
         0x9b5f4254500a4d65,
         0x1ee08223b68ac240,
         0x31d9cd545c0ec7c6,
     ]);
-    assert_eq!(QuadraticNonResidue, Fq::new(e).legendre());
+    assert_eq!(QuadraticNonResidue, Fq::from(e).legendre());
 }
 
 #[test]
 fn test_fq_bytes() {
-    let f1_from_repr = Fq::new(BigInteger::new([
+    let f1_from_repr = Fq::from(BigInteger::new([
         0xab8a2535947d1a77,
         0x9ba74cbfda0bbcda,
         0xe928b59724d60baf,

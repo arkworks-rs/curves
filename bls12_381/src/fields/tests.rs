@@ -747,7 +747,6 @@ fn test_neg_one() {
         0xef148d1ea0f4c069,
         0x40ab3263eff0206,
     ];
-    println!("{:?}", thing);
     let negative_one = Fq::new(BigInt::new(thing));
 
     assert_eq!(negative_one, o);
