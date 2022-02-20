@@ -1,23 +1,16 @@
-#![allow(unused_imports)]
-use ark_ec::{
-    models::SWModelParameters,
-    short_weierstrass_jacobian::{GroupAffine, GroupProjective},
-    AffineCurve, PairingEngine, ProjectiveCurve,
-};
-use ark_ff::{
-    fields::{Field, PrimeField, SquareRootField},
-    BitIteratorBE, One, UniformRand, Zero,
-};
-use ark_serialize::CanonicalSerialize;
-use ark_std::{rand::Rng, test_rng};
-use core::ops::{AddAssign, MulAssign};
-
-use crate::{g1, g2, Bls12_381, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
 use ark_algebra_test_templates::{
     curves::*, generate_bilinearity_test, generate_g1_generator_raw_test, generate_g1_test,
     generate_g2_test, groups::*, msm::*,
 };
-use ark_ec::group::Group;
+use ark_ec::{models::SWModelParameters, AffineCurve, PairingEngine, ProjectiveCurve};
+use ark_ff::{
+    fields::{Field, PrimeField, SquareRootField},
+    One, UniformRand, Zero,
+};
+use ark_std::{rand::Rng, test_rng};
+use core::ops::{AddAssign, MulAssign};
+
+use crate::{g1, g2, Bls12_381, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
 
 generate_g1_test!(bls12_381; curve_tests; sw_tests;);
 generate_g2_test!(bls12_381; curve_tests; sw_tests;);

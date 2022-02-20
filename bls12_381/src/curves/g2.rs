@@ -1,12 +1,13 @@
-use crate::*;
-use ark_ec::bls12::Bls12Parameters;
 use ark_ec::{
     bls12,
+    bls12::Bls12Parameters,
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::GroupAffine,
     AffineCurve,
 };
 use ark_ff::{BigInt, Field, MontFp, QuadExt, Zero};
+
+use crate::*;
 
 pub type G2Affine = bls12::G2Affine<crate::Parameters>;
 pub type G2Projective = bls12::G2Projective<crate::Parameters>;
@@ -116,10 +117,12 @@ pub const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = QuadExt!(
 
 pub fn p_power_endomorphism(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
     // The p-power endomorphism for G2 is defined as follows:
-    // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1). To map a point (x, y) in E' to (s, t) in E,
-    //    one set s = x / ((u+1) ^ (1/3)), t = y / ((u+1) ^ (1/2)), because E: y^2 = x^3 + 4.
-    // 2. Apply the Frobenius endomorphism (s, t) => (s', t'), another point on curve E,
-    //    where s' = s^p, t' = t^p.
+    // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1).
+    //    To map a point (x, y) in E' to (s, t) in E,
+    //    one set s = x / ((u+1) ^ (1/3)), t = y / ((u+1) ^ (1/2)),
+    //    because E: y^2 = x^3 + 4.
+    // 2. Apply the Frobenius endomorphism (s, t) => (s', t'),
+    //    another point on curve E, where s' = s^p, t' = t^p.
     // 3. Map the point from E back to E'; that is,
     //    one set x' = s' * ((u+1) ^ (1/3)), y' = t' * ((u+1) ^ (1/2)).
     //

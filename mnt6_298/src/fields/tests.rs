@@ -1,18 +1,21 @@
+use ark_algebra_test_templates::{
+    fields::*, generate_field_serialization_test, generate_field_test,
+};
 use ark_ff::{
     fields::{models::fp6_2over3::*, quadratic_extension::QuadExtConfig, SquareRootField},
-    Field,
+    Field, PrimeField,
 };
+use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
 use ark_std::{rand::Rng, test_rng, One, UniformRand, Zero};
-
-use crate::*;
-use ark_algebra_test_templates::{fields::*, generate_field_test};
-
 use core::ops::{AddAssign, MulAssign, SubAssign};
 
-generate_field_test!(mnt6_298;);
+use crate::*;
+
+generate_field_test!(mnt6_298; fq3; fq6; mont(5, 5); );
+generate_field_serialization_test!(mnt6_298;);
 
 #[test]
-fn test_fq3() {
+fn test_fq3_more() {
     let mut rng = test_rng();
     let a: Fq3 = rng.gen();
     let b: Fq3 = rng.gen();
@@ -23,13 +26,4 @@ fn test_fq3() {
         a * Fq6Config::NONRESIDUE,
         <Fp6ParamsWrapper<Fq6Config>>::mul_base_field_by_nonresidue(&a)
     );
-}
-
-#[test]
-fn test_fq6() {
-    let mut rng = test_rng();
-    let a: Fq6 = rng.gen();
-    let b: Fq6 = rng.gen();
-    field_test(a, b);
-    frobenius_test::<Fq6, _>(Fq::characteristic(), 13);
 }

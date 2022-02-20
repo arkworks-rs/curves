@@ -1,8 +1,9 @@
-use crate::{Fq, FQ_ONE};
 use ark_ff::{
     fields::fp2::{Fp2, Fp2Config},
     MontFp, QuadExt,
 };
+
+use crate::{Fq, FQ_ONE};
 
 pub type Fq2 = Fp2<Fq2Config>;
 
@@ -13,7 +14,6 @@ impl Fp2Config for Fq2Config {
 
     /// The quadratic non-residue (17) used to construct the extension is
     /// the same as that used in [`libff`](https://github.com/scipr-lab/libff/blob/c927821ebe02e0a24b5e0f9170cec5e211a35f08/libff/algebra/curves/mnt/mnt4/mnt4_init.cpp#L102).
-    #[rustfmt::skip]
     const NONRESIDUE: Fq = MontFp!(Fq, "17");
 
     /// The quadratic non-residue in F<sub>p</sub><sup>2</sup> that is used

@@ -1,34 +1,20 @@
-use crate::{Fq, Fr};
+use ark_algebra_test_templates::{
+    fields::*, generate_field_serialization_test, generate_field_test,
+};
 use ark_ff::{
     biginteger::BigInteger256 as BigInteger,
     bytes::{FromBytes, ToBytes},
-    fields::{Field, LegendreSymbol::*, SquareRootField},
-    One, Zero,
+    fields::{Field, LegendreSymbol::*, PrimeField, SquareRootField},
+    One, UniformRand, Zero,
 };
-use ark_std::test_rng;
+use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
+use ark_std::{rand::Rng, str::FromStr, test_rng};
+use core::ops::{AddAssign, MulAssign, SubAssign};
 
-use ark_algebra_test_templates::fields::*;
+use crate::{Fq, FqConfig, Fr, FrConfig};
 
-use ark_std::rand::Rng;
-use ark_std::str::FromStr;
-
-#[test]
-fn test_fr() {
-    let mut rng = test_rng();
-    let a: Fr = rng.gen();
-    let b: Fr = rng.gen();
-    field_test(a, b);
-    primefield_test::<Fr>();
-}
-
-#[test]
-fn test_fq() {
-    let mut rng = test_rng();
-    let a: Fq = rng.gen();
-    let b: Fq = rng.gen();
-    field_test(a, b);
-    primefield_test::<Fq>();
-}
+generate_field_test!(ed_on_bn254; mont(4, 4); );
+generate_field_serialization_test!(ed_on_bn254;);
 
 #[test]
 fn test_fq_add() {
@@ -150,22 +136,6 @@ fn test_fq_sub() {
 }
 
 #[test]
-fn test_fq_double_in_place() {
-    let mut f1 = Fq::from_str(
-        "29729289787452206300641229002276778748586801323231253291984198106063944136114",
-    )
-    .unwrap();
-    let f3 = Fq::from_str(
-        "15682093831225862156789646514039007320076873845630437896571987838976271280994",
-    )
-    .unwrap();
-    assert!(!f1.is_zero());
-    assert!(!f3.is_zero());
-    f1.double_in_place();
-    assert_eq!(f1, f3);
-}
-
-#[test]
 fn test_fq_double_in_place_thrice() {
     let mut f1 = Fq::from_str(
         "32768907806651393940832831055386272949401004221411141755415956893066040832473",
@@ -274,19 +244,6 @@ fn test_fq_square_in_place() {
     assert!(!f3.is_zero());
     f1.square_in_place();
     assert_eq!(f1, f3);
-}
-
-#[test]
-fn test_fq_sqrt() {
-    let f1 = Fq::from_str(
-        "5830207146824777307592559303161432403393380070279905260050870500920682305217",
-    )
-    .unwrap();
-    let f3 = Fq::from_str(
-        "2108183130040740552565127577293974960058698876185401671087892009247563211475",
-    )
-    .unwrap();
-    assert_eq!(f1.sqrt().unwrap(), f3);
 }
 
 #[test]

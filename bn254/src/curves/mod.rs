@@ -1,9 +1,11 @@
-use crate::*;
 use ark_ec::{
     bn,
     bn::{Bn, BnParameters, TwistType},
 };
 use ark_ff::{MontFp, QuadExt};
+
+use crate::*;
+
 pub mod g1;
 pub mod g2;
 

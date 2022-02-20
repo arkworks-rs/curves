@@ -3,8 +3,8 @@ use ark_std::ops::{AddAssign, MulAssign, SubAssign};
 
 use ark_ec::ProjectiveCurve;
 use ark_ff::{
-    biginteger::{BigInteger256 as FrRepr, BigInteger256 as FqRepr},
-    BigInteger, Field, PrimeField, SquareRootField, UniformRand,
+    biginteger::BigInteger256 as FrRepr, BigInteger, Field, PrimeField, SquareRootField,
+    UniformRand,
 };
 use ark_vesta::{fq::Fq, fr::Fr, Affine as GAffine, Projective as G};
 

@@ -55,7 +55,6 @@ pub type G1TEProjective = TEGroupProjective<Parameters>;
 /// 1. SW -> Montgomery -> TE1 transformation: <https://en.wikipedia.org/wiki/Montgomery_curve>
 /// 2. TE1 -> TE2 normalization (enforcing `a = -1`)
 /// ``` sage
-///
 /// # modulus
 /// p = 0x1ae3a4617c510eac63b05c06ca1493b1a22d9f300f5138f1ef3622fba094800170b5d44300000008508c00000000001
 /// Fp = Zmod(p)
@@ -97,7 +96,6 @@ pub type G1TEProjective = TEGroupProjective<Parameters>;
 /// TE2a = Fp(-1)
 /// # b = -TE1d/TE1a
 /// TE2d = Fp(122268283598675559488486339158635529096981886914877139579534153582033676785385790730042363341236035746924960903179)
-///
 /// ```
 impl TEModelParameters for Parameters {
     /// COEFF_A = -1
@@ -124,7 +122,6 @@ impl TEModelParameters for Parameters {
 // It can be obtained via the following script, implementing
 // SW -> Montgomery transformation: <https://en.wikipedia.org/wiki/Montgomery_curve>
 // ``` sage
-//
 // # modulus
 // p=0x1ae3a4617c510eac63b05c06ca1493b1a22d9f300f5138f1ef3622fba094800170b5d44300000008508c00000000001
 // Fp=Zmod(p)
@@ -167,8 +164,9 @@ pub const G1_GENERATOR_X: Fq = MontFp!(Fq, "819379993731509642399382555734659482
 /// 241266749859715473739788878240585681733927191168601896383759122102112907357779751001206799952863815012735208165030
 pub const G1_GENERATOR_Y: Fq = MontFp!(Fq, "241266749859715473739788878240585681733927191168601896383759122102112907357779751001206799952863815012735208165030");
 
-// The generator for twisted Edward form is the same SW generator converted into the normalized TE form (TE2).
-// ``` sage
+// The generator for twisted Edward form is the same SW generator converted into
+// the normalized TE form (TE2).
+//``` sage
 // # following scripts in previous section
 // #####################################################
 // # Weierstrass curve generator

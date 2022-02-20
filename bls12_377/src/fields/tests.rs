@@ -1,3 +1,6 @@
+use ark_algebra_test_templates::{
+    fields::*, generate_field_serialization_test, generate_field_test,
+};
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger384},
     fields::{FftField, Field, Fp2Config, Fp6Config, PrimeField, SquareRootField},
@@ -10,13 +13,9 @@ use core::{
     ops::{AddAssign, MulAssign, SubAssign},
 };
 
-use crate::{Fq, Fq12, Fq2, Fq2Config, Fq6, Fq6Config, Fr};
+use crate::{Fq, Fq12, Fq2, Fq2Config, Fq6, Fq6Config, FqConfig, Fr, FrConfig};
 
-use ark_algebra_test_templates::{
-    fields::*, generate_field_serialization_test, generate_field_test,
-};
-
-generate_field_test!(bls12_377; fq2; fq6; fq12;);
+generate_field_test!(bls12_377; fq2; fq6; fq12; mont(6, 4); );
 generate_field_serialization_test!(bls12_377; fq2; fq6; fq12;);
 
 #[test]

@@ -1,9 +1,10 @@
-use crate::{Fq, Fr};
 use ark_ec::{
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::{GroupAffine, GroupProjective},
 };
 use ark_ff::MontFp;
+
+use crate::{Fq, Fr};
 
 pub type G1Affine = GroupAffine<Parameters>;
 pub type G1Projective = GroupProjective<Parameters>;

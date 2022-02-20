@@ -1,9 +1,10 @@
-use crate::{Fq, Fr};
 use ark_ec::{
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::{GroupAffine, GroupProjective},
 };
 use ark_ff::MontFp;
+
+use crate::{Fq, Fr};
 
 pub type G2Affine = GroupAffine<Parameters>;
 pub type G2Projective = GroupProjective<Parameters>;
@@ -42,6 +43,7 @@ impl SWModelParameters for Parameters {
     /// AFFINE_GENERATOR_COEFFS = (G2_GENERATOR_X, G2_GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
         (G2_GENERATOR_X, G2_GENERATOR_Y);
+
     #[inline(always)]
     fn mul_by_a(_elem: &Self::BaseField) -> Self::BaseField {
         use ark_ff::Zero;

@@ -1,4 +1,3 @@
-use crate::*;
 use ark_ec::{
     bls12,
     bls12::Bls12Parameters,
@@ -8,6 +7,8 @@ use ark_ec::{
 };
 use ark_ff::{biginteger::BigInteger256, MontFp, Zero};
 use ark_std::ops::Neg;
+
+use crate::*;
 
 pub type G1Affine = bls12::G1Affine<crate::Parameters>;
 pub type G1Projective = bls12::G1Projective<crate::Parameters>;
@@ -55,7 +56,8 @@ impl SWModelParameters for Parameters {
         let x = BigInteger256::new([crate::Parameters::X[0], 0, 0, 0]);
 
         // An early-out optimization described in Section 6.
-        // If uP == P but P != point of infinity, then the point is not in the right subgroup.
+        // If uP == P but P != point of infinity, then the point is not in the right
+        // subgroup.
         let x_times_p = p.mul(x);
         if x_times_p.eq(p) && !p.infinity {
             return false;
@@ -80,7 +82,8 @@ pub const BETA: Fq = MontFp!(Fq, "7934793907292155126213797016334214470608867402
 
 pub fn endomorphism(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
     // Endomorphism of the points on the curve.
-    // endomorphism_p(x,y) = (BETA * x, y) where BETA is a non-trivial cubic root of unity in Fq.
+    // endomorphism_p(x,y) = (BETA * x, y)
+    // where BETA is a non-trivial cubic root of unity in Fq.
     let mut res = (*p).clone();
     res.x *= BETA;
     res

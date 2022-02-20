@@ -1,8 +1,9 @@
-use crate::{Fq, FQ_ONE};
 use ark_ff::{
     fields::fp2::{Fp2, Fp2Config},
     MontFp, QuadExt,
 };
+
+use crate::{Fq, FQ_ONE};
 
 pub type Fq2 = Fp2<Fq2Config>;
 

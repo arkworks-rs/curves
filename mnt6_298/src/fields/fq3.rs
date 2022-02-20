@@ -1,8 +1,9 @@
-use crate::{fq::Fq, FQ_ZERO};
 use ark_ff::{
     fields::fp3::{Fp3, Fp3Config},
     CubicExt, MontFp,
 };
+
+use crate::{fq::Fq, FQ_ZERO};
 
 pub type Fq3 = Fp3<Fq3Config>;
 
@@ -33,21 +34,18 @@ impl Fp3Config for Fq3Config {
         0x6878f58,
     ];
 
-    #[rustfmt::skip]
     const QUADRATIC_NONRESIDUE_TO_T: Fq3 = CubicExt!(
         MontFp!(Fq, "154361449678783505076984156275977937654331103361174469632346230549735979552469642799720052"),
         FQ_ZERO,
         FQ_ZERO,
     );
 
-    #[rustfmt::skip]
     const FROBENIUS_COEFF_FP3_C1: &'static [Fq] = &[
         MontFp!(Fq, "1"),
         MontFp!(Fq, "471738898967521029133040851318449165997304108729558973770077319830005517129946578866686956"),
         MontFp!(Fq, "4183387201740296620308398334599285547820769823264541783190415909159130177461911693276180"),
     ];
 
-    #[rustfmt::skip]
     const FROBENIUS_COEFF_FP3_C2: &'static [Fq] = &[
         Self::FROBENIUS_COEFF_FP3_C1[0],
         Self::FROBENIUS_COEFF_FP3_C1[2],

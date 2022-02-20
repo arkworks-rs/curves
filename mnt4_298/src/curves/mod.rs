@@ -26,11 +26,7 @@ impl MNT4Parameters for Parameters {
     //  = (A_COEFF * NONRESIDUE, ZERO)
     //  = (34, ZERO)
     // ```
-    #[rustfmt::skip]
-    const TWIST_COEFF_A: Fp2<Self::Fp2Params> = QuadExt!(
-        G1_COEFF_A_NON_RESIDUE,
-        FQ_ZERO,
-    );
+    const TWIST_COEFF_A: Fp2<Self::Fp2Params> = QuadExt!(G1_COEFF_A_NON_RESIDUE, FQ_ZERO);
 
     const ATE_LOOP_COUNT: &'static [u64] = &[993502997770534912, 5071219579242586943, 2027349];
     const ATE_IS_LOOP_COUNT_NEG: bool = false;

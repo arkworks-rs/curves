@@ -1,8 +1,9 @@
-use crate::{Fq, Fq2, Fq2Config, FQ_ONE, FQ_ZERO};
 use ark_ff::{
     fields::fp4::{Fp4, Fp4Config},
     MontFp, QuadExt,
 };
+
+use crate::{Fq, Fq2, Fq2Config, FQ_ONE, FQ_ZERO};
 
 pub type Fq4 = Fp4<Fq4Config>;
 
@@ -19,8 +20,8 @@ impl Fp4Config for Fq4Config {
     // c1[2] = 475922286169261325753349249653048451545124879242694725395555128576210262817955800483758080
     // c1[3] = 468238122923807824137727898100575114475823797181717920390930116882062371863914936316755773
     //
-    // These are calculated as `FROBENIUS_COEFF_FP4_C1[i] = Fp2Params::NONRESIDUE^((q^i - 1) / 4)`.
-    #[rustfmt::skip]
+    // These are calculated as
+    // `FROBENIUS_COEFF_FP4_C1[i] = Fp2Params::NONRESIDUE^((q^i - 1) / 4)`.
     const FROBENIUS_COEFF_FP4_C1: &'static [Fq] = &[
         FQ_ONE,
         MontFp!(Fq, "7684163245453501615621351552473337069301082060976805004625011694147890954040864167002308"),

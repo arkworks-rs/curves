@@ -29,11 +29,7 @@ impl MNT4Parameters for Parameters {
     //  = (A_COEFF * NONRESIDUE, ZERO)
     //  = (26, ZERO)
     // ```
-    #[rustfmt::skip]
-    const TWIST_COEFF_A: Fp2<Self::Fp2Params> = QuadExt!(
-        G1_COEFF_A_NON_RESIDUE,
-        FQ_ZERO,
-    );
+    const TWIST_COEFF_A: Fp2<Self::Fp2Params> = QuadExt!(G1_COEFF_A_NON_RESIDUE, FQ_ZERO,);
     // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt4753.ml
     const ATE_LOOP_COUNT: &'static [u64] = &[
         8824542903220142080,

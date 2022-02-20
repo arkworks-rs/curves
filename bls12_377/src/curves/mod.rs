@@ -1,8 +1,9 @@
-use crate::*;
 use ark_ec::{
     bls12,
     bls12::{Bls12, Bls12Parameters, TwistType},
 };
+
+use crate::*;
 
 pub mod g1;
 pub mod g2;

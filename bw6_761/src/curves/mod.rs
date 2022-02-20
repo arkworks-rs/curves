@@ -1,9 +1,10 @@
-use crate::*;
 use ark_ec::{
     bw6,
     bw6::{BW6Parameters, TwistType, BW6},
 };
 use ark_ff::{biginteger::BigInteger768 as BigInteger, BigInt};
+
+use crate::*;
 
 pub mod g1;
 pub mod g2;
