@@ -10,7 +10,7 @@ pub type Fq4 = Fp4<Fq4Config>;
 pub struct Fq4Config;
 
 impl Fp4Config for Fq4Config {
-    type Fp2Params = Fq2Config;
+    type Fp2Config = Fq2Config;
 
     const NONRESIDUE: Fq2 = QuadExt!(FQ_ZERO, FQ_ONE);
 
@@ -21,7 +21,7 @@ impl Fp4Config for Fq4Config {
     // c1[3] = 468238122923807824137727898100575114475823797181717920390930116882062371863914936316755773
     //
     // These are calculated as
-    // `FROBENIUS_COEFF_FP4_C1[i] = Fp2Params::NONRESIDUE^((q^i - 1) / 4)`.
+    // `FROBENIUS_COEFF_FP4_C1[i] = Fp2Config::NONRESIDUE^((q^i - 1) / 4)`.
     const FROBENIUS_COEFF_FP4_C1: &'static [Fq] = &[
         FQ_ONE,
         MontFp!(Fq, "7684163245453501615621351552473337069301082060976805004625011694147890954040864167002308"),

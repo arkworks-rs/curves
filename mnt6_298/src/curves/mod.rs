@@ -22,8 +22,8 @@ pub type MNT6_298 = MNT6<Parameters>;
 pub struct Parameters;
 
 impl MNT6Parameters for Parameters {
-    const TWIST: Fp3<Self::Fp3Params> = CubicExt!(FQ_ZERO, FQ_ONE, FQ_ZERO);
-    const TWIST_COEFF_A: Fp3<Self::Fp3Params> =
+    const TWIST: Fp3<Self::Fp3Config> = CubicExt!(FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const TWIST_COEFF_A: Fp3<Self::Fp3Config> =
         CubicExt!(FQ_ZERO, FQ_ZERO, g1::Parameters::COEFF_A,);
     const ATE_LOOP_COUNT: &'static [u64] = &[0xdc9a1b671660000, 0x46609756bec2a33f, 0x1eef55];
     const ATE_IS_LOOP_COUNT_NEG: bool = true;
@@ -33,8 +33,8 @@ impl MNT6Parameters for Parameters {
         BigInt::new([0xdc9a1b671660000, 0x46609756bec2a33f, 0x1eef55, 0x0, 0x0]);
     type Fp = Fq;
     type Fr = Fr;
-    type Fp3Params = Fq3Config;
-    type Fp6Params = Fq6Config;
+    type Fp3Config = Fq3Config;
+    type Fp6Config = Fq6Config;
     type G1Parameters = self::g1::Parameters;
     type G2Parameters = self::g2::Parameters;
 }

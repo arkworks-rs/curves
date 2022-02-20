@@ -3,7 +3,7 @@ use ark_algebra_test_templates::{
 };
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger384},
-    fields::{FftField, Field, Fp12Parameters, Fp2Config, Fp6Config, PrimeField, SquareRootField},
+    fields::{FftField, Field, Fp12Config, Fp2Config, Fp6Config, PrimeField, SquareRootField},
     One, UniformRand, Zero,
 };
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};

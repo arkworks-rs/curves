@@ -19,14 +19,14 @@ pub type MNT4_298 = MNT4<Parameters>;
 pub struct Parameters;
 
 impl MNT4Parameters for Parameters {
-    const TWIST: Fp2<Self::Fp2Params> = QuadExt!(FQ_ZERO, FQ_ONE);
+    const TWIST: Fp2<Self::Fp2Config> = QuadExt!(FQ_ZERO, FQ_ONE);
     // A coefficient of MNT4-298 G2 =
     // ```
     // mnt4298_twist_coeff_a = mnt4298_Fq2(mnt4298_G1::coeff_a * non_residue, mnt6298_Fq::zero());
     //  = (A_COEFF * NONRESIDUE, ZERO)
     //  = (34, ZERO)
     // ```
-    const TWIST_COEFF_A: Fp2<Self::Fp2Params> = QuadExt!(G1_COEFF_A_NON_RESIDUE, FQ_ZERO);
+    const TWIST_COEFF_A: Fp2<Self::Fp2Config> = QuadExt!(G1_COEFF_A_NON_RESIDUE, FQ_ZERO);
 
     const ATE_LOOP_COUNT: &'static [u64] = &[993502997770534912, 5071219579242586943, 2027349];
     const ATE_IS_LOOP_COUNT_NEG: bool = false;
@@ -36,8 +36,8 @@ impl MNT4Parameters for Parameters {
         BigInt::new([993502997770534913, 5071219579242586943, 2027349, 0, 0]);
     type Fp = Fq;
     type Fr = Fr;
-    type Fp2Params = Fq2Config;
-    type Fp4Params = Fq4Config;
+    type Fp2Config = Fq2Config;
+    type Fp4Config = Fq4Config;
     type G1Parameters = self::g1::Parameters;
     type G2Parameters = self::g2::Parameters;
 }

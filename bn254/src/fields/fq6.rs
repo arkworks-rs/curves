@@ -8,7 +8,7 @@ pub type Fq6 = Fp6<Fq6Config>;
 pub struct Fq6Config;
 
 impl Fp6Config for Fq6Config {
-    type Fp2Params = Fq2Config;
+    type Fp2Config = Fq2Config;
 
     /// NONRESIDUE = U+9
     const NONRESIDUE: Fq2 = QuadExt!(MontFp!(Fq, "9"), MontFp!(Fq, "1"));

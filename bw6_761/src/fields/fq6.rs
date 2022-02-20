@@ -10,7 +10,7 @@ pub type Fq6 = Fp6<Fq6Config>;
 pub struct Fq6Config;
 
 impl Fp6Config for Fq6Config {
-    type Fp3Params = Fq3Config;
+    type Fp3Config = Fq3Config;
 
     /// NONRESIDUE = (0, 1, 0)
     const NONRESIDUE: Fq3 = CubicExt!(FQ_ZERO, FQ_ONE, FQ_ZERO);

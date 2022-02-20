@@ -22,14 +22,14 @@ pub type MNT6_753 = MNT6<Parameters>;
 pub struct Parameters;
 
 impl MNT6Parameters for Parameters {
-    const TWIST: Fp3<Self::Fp3Params> = CubicExt!(FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const TWIST: Fp3<Self::Fp3Config> = CubicExt!(FQ_ZERO, FQ_ONE, FQ_ZERO);
     // A coefficient of MNT6-753 G2 =
     // ```
     // mnt6753_twist_coeff_a = mnt6753_Fq3(mnt6753_Fq::zero(), mnt6753_Fq::zero(),
     //                                  mnt6753_G1::coeff_a);
     //  = (ZERO, ZERO, A_COEFF);
     // ```
-    const TWIST_COEFF_A: Fp3<Self::Fp3Params> =
+    const TWIST_COEFF_A: Fp3<Self::Fp3Config> =
         CubicExt!(FQ_ZERO, FQ_ZERO, g1::Parameters::COEFF_A,);
 
     // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt6753.ml
@@ -61,8 +61,8 @@ impl MNT6Parameters for Parameters {
     ]);
     type Fp = Fq;
     type Fr = Fr;
-    type Fp3Params = Fq3Config;
-    type Fp6Params = Fq6Config;
+    type Fp3Config = Fq3Config;
+    type Fp6Config = Fq6Config;
     type G1Parameters = self::g1::Parameters;
     type G2Parameters = self::g2::Parameters;
 }

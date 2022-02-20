@@ -7,8 +7,8 @@ pub type Fq12 = Fp12<Fq12Config>;
 #[derive(Clone, Copy)]
 pub struct Fq12Config;
 
-impl Fp12Parameters for Fq12Config {
-    type Fp6Params = Fq6Config;
+impl Fp12Config for Fq12Config {
+    type Fp6Config = Fq6Config;
 
     const NONRESIDUE: Fq6 = CubicExt!(FQ2_ZERO, FQ2_ONE, FQ2_ZERO);
 

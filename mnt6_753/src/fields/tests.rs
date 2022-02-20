@@ -24,6 +24,6 @@ fn test_fq3_more() {
     frobenius_test::<Fq3, _>(Fq::characteristic(), 13);
     assert_eq!(
         a * Fq6Config::NONRESIDUE,
-        <Fp6ParamsWrapper<Fq6Config>>::mul_base_field_by_nonresidue(&a)
+        <Fp6ConfigWrapper<Fq6Config>>::mul_base_field_by_nonresidue(&a)
     );
 }
