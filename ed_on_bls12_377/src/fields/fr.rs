@@ -1,30 +1,30 @@
 use ark_ff::{
-    biginteger::BigInteger256 as BigInteger,
+    biginteger::{BigInt, BigInteger256 as BigInteger},
     fields::{FftParameters, Fp256, Fp256Parameters, FpParameters},
 };
 
-pub type Fr = Fp256<FrParameters>;
+pub type Fr = Fp256<FrConfig>;
 
-pub struct FrParameters;
+pub struct FrConfig;
 
-impl Fp256Parameters for FrParameters {}
-impl FftParameters for FrParameters {
+impl Fp256Parameters for FrConfig {}
+impl FftParameters for FrConfig {
     type BigInt = BigInteger;
 
     const TWO_ADICITY: u32 = 1;
 
     #[rustfmt::skip]
-    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInteger([
+    const TWO_ADIC_ROOT_OF_UNITY: BigInteger = BigInt::new([
         15170730761708361161u64,
         13670723686578117817u64,
         12803492266614043665u64,
         50861023252832611u64,
     ]);
 }
-impl FpParameters for FrParameters {
+impl FpParameters for FrConfig {
     /// MODULUS = 2111115437357092606062206234695386632838870926408408195193685246394721360383
     #[rustfmt::skip]
-    const MODULUS: BigInteger = BigInteger([
+    const MODULUS: BigInteger = BigInt::new([
         13356249993388743167u64,
         5950279507993463550u64,
         10965441865914903552u64,
@@ -38,7 +38,7 @@ impl FpParameters for FrParameters {
     const REPR_SHAVE_BITS: u32 = 5;
 
     #[rustfmt::skip]
-    const R: BigInteger = BigInteger([
+    const R: BigInteger = BigInt::new([
         16632263305389933622u64,
         10726299895124897348u64,
         16608693673010411502u64,
@@ -46,7 +46,7 @@ impl FpParameters for FrParameters {
     ]);
 
     #[rustfmt::skip]
-    const R2: BigInteger = BigInteger([
+    const R2: BigInteger = BigInt::new([
         3987543627614508126u64,
         17742427666091596403u64,
         14557327917022607905u64,
@@ -57,7 +57,7 @@ impl FpParameters for FrParameters {
 
     // 70865795004005329077606947863872807680085016823885970091001235374859923341923
     #[rustfmt::skip]
-    const GENERATOR: BigInteger = BigInteger([
+    const GENERATOR: BigInteger = BigInt::new([
         11289572479685143826u64,
         11383637369941080925u64,
         2288212753973340071u64,
@@ -65,7 +65,7 @@ impl FpParameters for FrParameters {
     ]);
 
     #[rustfmt::skip]
-    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const MODULUS_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         6678124996694371583u64,
         2975139753996731775u64,
         14706092969812227584u64,
@@ -74,7 +74,7 @@ impl FpParameters for FrParameters {
 
     const T: BigInteger = Self::MODULUS_MINUS_ONE_DIV_TWO;
 
-    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInteger([
+    const T_MINUS_ONE_DIV_TWO: BigInteger = BigInt::new([
         0xae56bba6b0cff67f,
         0x14a4e8ebf10f22bf,
         0x660b44d1e5c37b00,

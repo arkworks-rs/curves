@@ -1,5 +1,5 @@
 use ark_ff::{
-    biginteger::{BigInteger, BigInteger256},
+    biginteger::{BigInt, BigInteger, BigInteger256},
     fields::{
         fp6_3over2::Fp6Parameters, FftField, FftParameters, Field, FpParameters, PrimeField,
         SquareRootField,
@@ -13,7 +13,7 @@ use core::{
     ops::{AddAssign, MulAssign, SubAssign},
 };
 
-use crate::{Fq, Fq12, Fq2, Fq6, Fq6Parameters, FqParameters, Fr};
+use crate::{Fq, Fq12, Fq2, Fq6, Fq6Config, FqConfig, Fr};
 use ark_algebra_test_templates::{
     fields::*, generate_field_serialization_test, generate_field_test,
 };
@@ -23,7 +23,7 @@ generate_field_serialization_test!(bn254; fq2; fq6; fq12;);
 
 #[test]
 fn test_fq_repr_from() {
-    assert_eq!(BigInteger256::from(100), BigInteger256([100, 0, 0, 0]));
+    assert_eq!(BigInteger256::from(100u64), BigInt::new([100, 0, 0, 0]));
 }
 
 #[test]
@@ -40,9 +40,9 @@ fn test_fq_repr_is_odd() {
 
 #[test]
 fn test_fq_repr_is_zero() {
-    assert!(BigInteger256::from(0).is_zero());
-    assert!(!BigInteger256::from(1).is_zero());
-    assert!(!BigInteger256([0, 0, 1, 0]).is_zero());
+    assert!(BigInteger256::from(0u64).is_zero());
+    assert!(!BigInteger256::from(1u64).is_zero());
+    assert!(!BigInt::new([0, 0, 1, 0]).is_zero());
 }
 
 #[test]
@@ -59,13 +59,13 @@ fn test_fq_repr_num_bits() {
 
 #[test]
 fn test_fq_num_bits() {
-    assert_eq!(FqParameters::MODULUS_BITS, 254);
-    assert_eq!(FqParameters::CAPACITY, 253);
+    assert_eq!(FqConfig::MODULUS_BITS, 254);
+    assert_eq!(FqConfig::CAPACITY, 253);
 }
 
 #[test]
 fn test_fq_root_of_unity() {
-    assert_eq!(FqParameters::TWO_ADICITY, 1);
+    assert_eq!(FqConfig::TWO_ADICITY, 1);
     assert_eq!(
         Fq::multiplicative_generator().pow([
             0x9e10460b6c3e7ea3,
@@ -76,7 +76,7 @@ fn test_fq_root_of_unity() {
         Fq::two_adic_root_of_unity()
     );
     assert_eq!(
-        Fq::two_adic_root_of_unity().pow([1 << FqParameters::TWO_ADICITY]),
+        Fq::two_adic_root_of_unity().pow([1 << FqConfig::TWO_ADICITY]),
         Fq::one()
     );
     assert!(Fq::multiplicative_generator().sqrt().is_none());
@@ -144,7 +144,7 @@ fn test_fq2_legendre() {
     // i^2 = -1
     let mut m1 = -Fq2::one();
     assert_eq!(QuadraticResidue, m1.legendre());
-    m1 = Fq6Parameters::mul_fp2_by_nonresidue(&m1);
+    m1 = Fq6Config::mul_fp2_by_nonresidue(&m1);
     assert_eq!(QuadraticNonResidue, m1.legendre());
 }
 

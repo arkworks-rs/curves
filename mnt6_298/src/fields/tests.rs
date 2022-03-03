@@ -1,5 +1,5 @@
 use ark_ff::{
-    fields::{models::fp6_2over3::*, quadratic_extension::QuadExtParameters},
+    fields::{models::fp6_2over3::*, quadratic_extension::QuadExtConfig},
     Field,
 };
 use ark_std::{rand::Rng, test_rng};
@@ -20,8 +20,8 @@ fn test_fq3() {
     sqrt_field_test(a);
     frobenius_test::<Fq3, _>(Fq::characteristic(), 13);
     assert_eq!(
-        a * Fq6Parameters::NONRESIDUE,
-        <Fp6ParamsWrapper<Fq6Parameters>>::mul_base_field_by_nonresidue(&a)
+        a * Fq6Config::NONRESIDUE,
+        <Fp6ParamsWrapper<Fq6Config>>::mul_base_field_by_nonresidue(&a)
     );
 }
 
