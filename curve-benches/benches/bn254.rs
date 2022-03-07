@@ -7,8 +7,8 @@ use ark_bn254::{
 };
 use ark_ec::{PairingEngine, ProjectiveCurve};
 use ark_ff::{
-    biginteger::{BigInteger256 as FrRepr, BigInteger256 as FqRepr},
-    BigInteger, Field, PrimeField, SquareRootField, UniformRand,
+    biginteger::BigInteger256 as FrRepr, BigInteger, Field, PrimeField, SquareRootField,
+    UniformRand,
 };
 
 mod g1 {

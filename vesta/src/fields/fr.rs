@@ -1,1 +1,1 @@
-pub use ark_pallas::{Fq as Fr, FqParameters as FrParameters};
+pub use ark_pallas::{Fq as Fr, FqConfig as FrConfig};

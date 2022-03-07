@@ -1,16 +1,16 @@
-use crate::{Fq, Fq12Parameters, Fq2Parameters, Fq6Parameters};
-
 use ark_r1cs_std::fields::{fp::FpVar, fp12::Fp12Var, fp2::Fp2Var, fp6_3over2::Fp6Var};
+
+use crate::{Fq, Fq12Config, Fq2Config, Fq6Config};
 
 /// A variable that is the R1CS equivalent of `crate::Fq`.
 pub type FqVar = FpVar<Fq>;
 
 /// A variable that is the R1CS equivalent of `crate::Fq2`.
-pub type Fq2Var = Fp2Var<Fq2Parameters>;
+pub type Fq2Var = Fp2Var<Fq2Config>;
 /// A variable that is the R1CS equivalent of `crate::Fq6`.
-pub type Fq6Var = Fp6Var<Fq6Parameters>;
+pub type Fq6Var = Fp6Var<Fq6Config>;
 /// A variable that is the R1CS equivalent of `crate::Fq12`.
-pub type Fq12Var = Fp12Var<Fq12Parameters>;
+pub type Fq12Var = Fp12Var<Fq12Config>;
 
 #[test]
 fn bls12_377_field_test() {

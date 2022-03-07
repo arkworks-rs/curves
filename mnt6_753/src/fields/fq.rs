@@ -1,1 +1,1 @@
-pub use ark_mnt4_753::{Fr as Fq, FrParameters as FqParameters};
+pub use ark_mnt4_753::{Fr as Fq, FrConfig as FqConfig};

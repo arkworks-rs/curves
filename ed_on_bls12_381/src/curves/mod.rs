@@ -1,4 +1,3 @@
-use crate::{Fq, Fr};
 use ark_ec::{
     models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
     short_weierstrass_jacobian::{
@@ -7,7 +6,9 @@ use ark_ec::{
     twisted_edwards_extended::{GroupAffine, GroupProjective},
     SWModelParameters,
 };
-use ark_ff::field_new;
+use ark_ff::MontFp;
+
+use crate::{Fq, Fr};
 
 #[cfg(test)]
 mod tests;
@@ -64,18 +65,21 @@ impl ModelParameters for JubjubParameters {
 
     /// COFACTOR^(-1) mod r =
     /// 819310549611346726241370945440405716213240158234039660170669895299022906775
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, "819310549611346726241370945440405716213240158234039660170669895299022906775");
+    const COFACTOR_INV: Fr = MontFp!(
+        Fr,
+        "819310549611346726241370945440405716213240158234039660170669895299022906775"
+    );
 }
 
 impl TEModelParameters for JubjubParameters {
     /// COEFF_A = -1
-    #[rustfmt::skip]
-    const COEFF_A: Fq = field_new!(Fq, "-1");
+    const COEFF_A: Fq = MontFp!(Fq, "-1");
 
     /// COEFF_D = (10240/10241) mod q
-    #[rustfmt::skip]
-    const COEFF_D: Fq = field_new!(Fq, "19257038036680949359750312669786877991949435402254120286184196891950884077233");
+    const COEFF_D: Fq = MontFp!(
+        Fq,
+        "19257038036680949359750312669786877991949435402254120286184196891950884077233"
+    );
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);
@@ -91,28 +95,36 @@ impl TEModelParameters for JubjubParameters {
 
 impl MontgomeryModelParameters for JubjubParameters {
     /// COEFF_A = 40962
-    #[rustfmt::skip]
-    const COEFF_A: Fq = field_new!(Fq, "40962");
+    const COEFF_A: Fq = MontFp!(Fq, "40962");
+
     /// COEFF_B = -40964
-    #[rustfmt::skip]
-    const COEFF_B: Fq = field_new!(Fq, "-40964");
+    const COEFF_B: Fq = MontFp!(Fq, "-40964");
 
     type TEModelParameters = JubjubParameters;
 }
 
-#[rustfmt::skip]
-const GENERATOR_X: Fq = field_new!(Fq, "8076246640662884909881801758704306714034609987455869804520522091855516602923");
-#[rustfmt::skip]
-const GENERATOR_Y: Fq = field_new!(Fq, "13262374693698910701929044844600465831413122818447359594527400194675274060458");
+const GENERATOR_X: Fq = MontFp!(
+    Fq,
+    "8076246640662884909881801758704306714034609987455869804520522091855516602923"
+);
+
+const GENERATOR_Y: Fq = MontFp!(
+    Fq,
+    "13262374693698910701929044844600465831413122818447359594527400194675274060458"
+);
 
 impl SWModelParameters for JubjubParameters {
     /// COEFF_A = 52296097456646850916096512823759002727550416093741407922227928430486925478210
-    #[rustfmt::skip]
-    const COEFF_A: Self::BaseField = field_new!(Fq, "52296097456646850916096512823759002727550416093741407922227928430486925478210");
+    const COEFF_A: Self::BaseField = MontFp!(
+        Fq,
+        "52296097456646850916096512823759002727550416093741407922227928430486925478210"
+    );
 
     /// COEFF_B = 48351165704696163914533707656614864561753505123260775585269522553028192119009
-    #[rustfmt::skip]
-    const COEFF_B: Self::BaseField = field_new!(Fq, "48351165704696163914533707656614864561753505123260775585269522553028192119009");
+    const COEFF_B: Self::BaseField = MontFp!(
+        Fq,
+        "48351165704696163914533707656614864561753505123260775585269522553028192119009"
+    );
 
     /// generators
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
@@ -120,8 +132,13 @@ impl SWModelParameters for JubjubParameters {
 }
 
 /// x coordinate for SW curve generator
-#[rustfmt::skip]
-const SW_GENERATOR_X: Fq = field_new!(Fq, "33835869156188682335217394949746694649676633840125476177319971163079011318731");
+const SW_GENERATOR_X: Fq = MontFp!(
+    Fq,
+    "33835869156188682335217394949746694649676633840125476177319971163079011318731"
+);
+
 /// y coordinate for SW curve generator
-#[rustfmt::skip]
-const SW_GENERATOR_Y: Fq = field_new!(Fq, "43777270878440091394432848052353307184915192688165709016756678962558652055320");
+const SW_GENERATOR_Y: Fq = MontFp!(
+    Fq,
+    "43777270878440091394432848052353307184915192688165709016756678962558652055320"
+);

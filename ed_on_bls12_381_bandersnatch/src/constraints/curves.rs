@@ -1,5 +1,6 @@
-use crate::{constraints::FqVar, *};
 use ark_r1cs_std::groups::curves::{short_weierstrass::ProjectiveVar, twisted_edwards::AffineVar};
+
+use crate::{constraints::FqVar, *};
 
 /// A variable that is the R1CS equivalent of `crate::BandersnatchParameters`.
 pub type EdwardsVar = AffineVar<BandersnatchParameters, FqVar>;
