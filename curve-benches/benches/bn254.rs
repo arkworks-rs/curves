@@ -7,8 +7,7 @@ use ark_bn254::{
 };
 use ark_ec::{PairingEngine, ProjectiveCurve};
 use ark_ff::{
-    biginteger::BigInteger256 as FrRepr, BigInteger, Field, PrimeField, SquareRootField,
-    UniformRand,
+    biginteger::BigInteger256 as Repr, BigInteger, Field, PrimeField, SquareRootField, UniformRand,
 };
 
 mod g1 {
@@ -20,8 +19,8 @@ mod g2 {
     ec_bench!(G2, G2Affine);
 }
 
-f_bench!(Fq, Fq, FqRepr, FqRepr, fq);
-f_bench!(Fr, Fr, FrRepr, FrRepr, fr);
+f_bench!(Fq, Fq, Repr, Repr, fq);
+f_bench!(Fr, Fr, Repr, Repr, fr);
 f_bench!(extension, Fq2, Fq2, fq2);
 f_bench!(target, Fq12, Fq12, fq12);
 
