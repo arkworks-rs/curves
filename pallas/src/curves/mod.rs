@@ -1,9 +1,10 @@
-use crate::{fq::Fq, fr::Fr};
 use ark_ec::{
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::{GroupAffine, GroupProjective},
 };
 use ark_ff::{MontFp, Zero};
+
+use crate::{fq::Fq, fr::Fr};
 
 #[cfg(test)]
 mod tests;

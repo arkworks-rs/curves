@@ -1,6 +1,7 @@
 use crate::Parameters;
 
-/// Specifies the constraints for computing a pairing in the BLS12-377 bilinear group.
+/// Specifies the constraints for computing a pairing in the BLS12-377 bilinear
+/// group.
 pub type PairingVar = ark_r1cs_std::pairing::bls12::PairingVar<Parameters>;
 
 #[test]

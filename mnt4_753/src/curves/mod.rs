@@ -1,10 +1,10 @@
 use ark_ec::models::mnt4::{MNT4Parameters, MNT4};
 use ark_ff::{
     biginteger::{BigInt, BigInteger768},
-    MontFp, Fp2,
+    Fp2, MontFp, QuadExt,
 };
 
-use crate::{Fq, Fq2, Fq2Config, Fq4Config, Fr};
+use crate::{Fq, Fq2Config, Fq4Config, Fr};
 
 pub mod g1;
 pub mod g2;
@@ -22,18 +22,14 @@ pub type MNT4_753 = MNT4<Parameters>;
 pub struct Parameters;
 
 impl MNT4Parameters for Parameters {
-    const TWIST: Fp2<Self::Fp2Params> = QuadExt!(FQ_ZERO, FQ_ONE);
+    const TWIST: Fp2<Self::Fp2Config> = QuadExt!(FQ_ZERO, FQ_ONE);
     // A coefficient of MNT4-753 G2 =
     // ```
     // mnt4753_twist_coeff_a = mnt4753_Fq2(mnt4753_G1::coeff_a * non_residue, mnt6753_Fq::zero());
     //  = (A_COEFF * NONRESIDUE, ZERO)
     //  = (26, ZERO)
     // ```
-    #[rustfmt::skip]
-    const TWIST_COEFF_A: Fp2<Self::Fp2Params> = QuadExt!(
-        G1_COEFF_A_NON_RESIDUE,
-        FQ_ZERO,
-    );
+    const TWIST_COEFF_A: Fp2<Self::Fp2Config> = QuadExt!(G1_COEFF_A_NON_RESIDUE, FQ_ZERO,);
     // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt4753.ml
     const ATE_LOOP_COUNT: &'static [u64] = &[
         8824542903220142080,
@@ -63,8 +59,8 @@ impl MNT4Parameters for Parameters {
     ]);
     type Fp = Fq;
     type Fr = Fr;
-    type Fp2Params = Fq2Config;
-    type Fp4Params = Fq4Config;
+    type Fp2Config = Fq2Config;
+    type Fp4Config = Fq4Config;
     type G1Parameters = self::g1::Parameters;
     type G2Parameters = self::g2::Parameters;
 }

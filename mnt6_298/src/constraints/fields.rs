@@ -1,6 +1,6 @@
-use crate::{Fq, Fq3Config, Fq6Config};
-
 use ark_r1cs_std::fields::{fp::FpVar, fp3::Fp3Var, fp6_2over3::Fp6Var};
+
+use crate::{Fq, Fq3Config, Fq6Config};
 
 /// A variable that is the R1CS equivalent of `crate::Fq`.
 pub type FqVar = FpVar<Fq>;

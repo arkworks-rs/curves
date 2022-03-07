@@ -1,8 +1,9 @@
-use crate::*;
 use ark_ec::{
     bls12,
     bls12::{Bls12, Bls12Parameters, TwistType},
 };
+
+use crate::*;
 
 pub mod g1;
 pub mod g2;
@@ -18,9 +19,9 @@ impl Bls12Parameters for Parameters {
     const X_IS_NEGATIVE: bool = false;
     const TWIST_TYPE: TwistType = TwistType::D;
     type Fp = Fq;
-    type Fp2Params = Fq2Config;
-    type Fp6Params = Fq6Config;
-    type Fp12Params = Fq12Config;
+    type Fp2Config = Fq2Config;
+    type Fp6Config = Fq6Config;
+    type Fp12Config = Fq12Config;
     type G1Parameters = g1::Parameters;
     type G2Parameters = g2::Parameters;
 }

@@ -1,9 +1,8 @@
 use ark_ec::{models::SWModelParameters, PairingEngine};
 use ark_ff::{
     biginteger::BigInteger832,
-    MontFp,
     fields::{BitIteratorBE, Field},
-    BigInt, One,
+    BigInt, CubicExt, One,
 };
 
 use crate::{Fq, Fq3, Fq6, Fr, FQ_ONE, FQ_ZERO};
@@ -154,7 +153,7 @@ impl CP6_782 {
 }
 
 /// TWIST = (0, 1, 0)
-pub const TWIST: Fq3 = CubicExt!(, FQ_ZERO, FQ_ONE, FQ_ZERO);
+pub const TWIST: Fq3 = CubicExt!(FQ_ZERO, FQ_ONE, FQ_ZERO);
 
 /// ATE_IS_LOOP_COUNT_NEG = false
 pub const ATE_IS_LOOP_COUNT_NEG: bool = false;

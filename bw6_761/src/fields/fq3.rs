@@ -1,6 +1,6 @@
 use ark_ff::{
-    MontFp,
-    fields::fp3::{Fp3, Fp3Parameters},
+    fields::fp3::{Fp3, Fp3Config},
+    CubicExt, MontFp,
 };
 
 use crate::{
@@ -12,12 +12,11 @@ pub type Fq3 = Fp3<Fq3Config>;
 
 pub struct Fq3Config;
 
-impl Fp3Parameters for Fq3Config {
+impl Fp3Config for Fq3Config {
     type Fp = Fq;
 
     /// NONRESIDUE = -4
     // Fq3 = Fq\[u\]/u^3+4
-    #[rustfmt::skip]
     const NONRESIDUE: Fq = MontFp!(Fq, "-4");
 
     // (MODULUS^3 - 1) % 2^TWO_ADICITY == 0
@@ -25,7 +24,7 @@ impl Fp3Parameters for Fq3Config {
 
     // (T-1)/2 with T = (MODULUS^3-1) / 2^TWO_ADICITY
     #[rustfmt::skip]
-    const T_MINUS_ONE_DIV_TWO: &'static [u64] = &[
+    const TRACE_MINUS_ONE_DIV_TWO: &'static [u64] = &[
         0xb5e7c000000a3eac,
         0xf79b99dbf41cf4ab,
         0xe9372b1919e55ee5,
@@ -65,15 +64,13 @@ impl Fp3Parameters for Fq3Config {
     ];
 
     // NONRESIDUE^T % q
-    #[rustfmt::skip]
-    const QUADRATIC_NONRESIDUE_TO_T: (Fq, Fq, Fq) = (
+    const QUADRATIC_NONRESIDUE_TO_T: Fq3 = CubicExt!(
         MontFp!(Fq, "6891450384315732539396789682275657542479668912536150109513790160209623422243491736087683183289411687640864567753786613451161759120554247759349511699125301598951605099378508850372543631423596795951899700429969112842764913119068298"),
         FQ_ZERO,
         FQ_ZERO,
     );
 
     // NQR ^ (MODULUS^i - 1)/3, i=0,1,2 with NQR = u = (0,1,0)
-    #[rustfmt::skip]
     const FROBENIUS_COEFF_FP3_C1: &'static [Fq] = &[
         FQ_ONE,
         MontFp!(Fq, "4922464560225523242118178942575080391082002530232324381063048548642823052024664478336818169867474395270858391911405337707247735739826664939444490469542109391530482826728203582549674992333383150446779312029624171857054392282775648"),
@@ -81,7 +78,6 @@ impl Fp3Parameters for Fq3Config {
     ];
 
     // NQR ^ (2*MODULUS^i - 2)/3, i=0,1,2 with NQR = u = (0,1,0)
-    #[rustfmt::skip]
     const FROBENIUS_COEFF_FP3_C2: &'static [Fq] = &[
         FQ_ONE,
         MontFp!(Fq, "1968985824090209297278610739700577151397666382303825728450741611566800370218827257750865013421937292370006175842381275743914023380727582819905021229583192207421122272650305267822868639090213645505120388400344940985710520836292650"),

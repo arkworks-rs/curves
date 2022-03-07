@@ -1,21 +1,20 @@
-use crate::{Fq, Fq3, Fq3Config, FQ_ONE, FQ_ZERO};
 use ark_ff::{
-    MontFp,
-    fields::fp6_2over3::{Fp6, Fp6Parameters},
+    fields::fp6_2over3::{Fp6, Fp6Config},
+    CubicExt, MontFp,
 };
+
+use crate::{Fq, Fq3, Fq3Config, FQ_ONE, FQ_ZERO};
 
 pub type Fq6 = Fp6<Fq6Config>;
 
 pub struct Fq6Config;
 
-impl Fp6Parameters for Fq6Config {
-    type Fp3Params = Fq3Config;
+impl Fp6Config for Fq6Config {
+    type Fp3Config = Fq3Config;
 
     /// NONRESIDUE = (0, 1, 0).
-    #[rustfmt::skip]
-    const NONRESIDUE: Fq3 = CubicExt!(, FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const NONRESIDUE: Fq3 = CubicExt!(FQ_ZERO, FQ_ONE, FQ_ZERO);
 
-    #[rustfmt::skip]
     const FROBENIUS_COEFF_FP6_C1: &'static [Fq] = &[
         MontFp!(Fq, "1"),
         MontFp!(Fq, "2416169158604010336818399199316106389588878314690767988978701685873498866746813334102117883272276610365242925950967572554030909749205624998805208910209389668659757274773858916683688639755413288353778854399286396639505385648830027756862"),

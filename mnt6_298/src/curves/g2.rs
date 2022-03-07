@@ -3,7 +3,7 @@ use ark_ec::{
     mnt6::MNT6Parameters,
     models::{ModelParameters, SWModelParameters},
 };
-use ark_ff::MontFp;
+use ark_ff::{CubicExt, MontFp};
 
 use crate::{g1, Fq, Fq3, Fr, FQ_ZERO};
 
@@ -36,16 +36,16 @@ impl ModelParameters for Parameters {
 
     /// COFACTOR^(-1) mod r =
     /// 79320381028210220958891541608841408590854146655427655872973753568875979721417185067925504
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = MontFp!(Fr, "79320381028210220958891541608841408590854146655427655872973753568875979721417185067925504");
+    const COFACTOR_INV: Fr = MontFp!(
+        Fr,
+        "79320381028210220958891541608841408590854146655427655872973753568875979721417185067925504"
+    );
 }
 
 /// MUL_BY_A_C0 = NONRESIDUE * COEFF_A = 5 * 11
-    #[rustfmt::skip]
 pub const MUL_BY_A_C0: Fq = MontFp!(Fq, "55");
 
 /// MUL_BY_A_C1 = NONRESIDUE * COEFF_A
-    #[rustfmt::skip]
 pub const MUL_BY_A_C1: Fq = MontFp!(Fq, "55");
 
 /// MUL_BY_A_C2 = COEFF_A
@@ -53,8 +53,7 @@ pub const MUL_BY_A_C2: Fq = g1::Parameters::COEFF_A;
 
 impl SWModelParameters for Parameters {
     const COEFF_A: Fq3 = crate::Parameters::TWIST_COEFF_A;
-    #[rustfmt::skip]
-    const COEFF_B: Fq3 = CubicExt!(,
+    const COEFF_B: Fq3 = CubicExt!(
         // 5 * G1::COEFF_B
         MontFp!(Fq, "57578116384997352636487348509878309737146377454014423897662211075515354005624851787652233"),
         FQ_ZERO,
@@ -67,8 +66,7 @@ impl SWModelParameters for Parameters {
 
     #[inline(always)]
     fn mul_by_a(elt: &Fq3) -> Fq3 {
-        MontFp!(
-            Fq3,
+        CubicExt!(
             MUL_BY_A_C0 * &elt.c1,
             MUL_BY_A_C1 * &elt.c2,
             MUL_BY_A_C2 * &elt.c0,
@@ -76,10 +74,8 @@ impl SWModelParameters for Parameters {
     }
 }
 
-const G2_GENERATOR_X: Fq3 =
-    CubicExt!(, G2_GENERATOR_X_C0, G2_GENERATOR_X_C1, G2_GENERATOR_X_C2);
-const G2_GENERATOR_Y: Fq3 =
-    CubicExt!(, G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1, G2_GENERATOR_Y_C2);
+const G2_GENERATOR_X: Fq3 = CubicExt!(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1, G2_GENERATOR_X_C2);
+const G2_GENERATOR_Y: Fq3 = CubicExt!(G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1, G2_GENERATOR_Y_C2);
 
 pub const G2_GENERATOR_X_C0: Fq = MontFp!(
     Fq,
