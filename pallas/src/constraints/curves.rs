@@ -1,7 +1,6 @@
-use crate::*;
 use ark_r1cs_std::groups::curves::short_weierstrass::ProjectiveVar;
 
-use crate::constraints::FBaseVar;
+use crate::{constraints::FBaseVar, *};
 
 /// A group element in the Pallas prime-order group.
 pub type GVar = ProjectiveVar<PallasParameters, FBaseVar>;

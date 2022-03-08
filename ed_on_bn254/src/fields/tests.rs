@@ -1,34 +1,20 @@
-use crate::{Fq, Fr};
+use ark_algebra_test_templates::{
+    fields::*, generate_field_serialization_test, generate_field_test,
+};
 use ark_ff::{
     biginteger::BigInteger256 as BigInteger,
     bytes::{FromBytes, ToBytes},
-    fields::{Field, LegendreSymbol::*, SquareRootField},
-    One, Zero,
+    fields::{Field, LegendreSymbol::*, PrimeField, SquareRootField},
+    One, UniformRand, Zero,
 };
-use ark_std::test_rng;
+use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
+use ark_std::{rand::Rng, str::FromStr, test_rng};
+use core::ops::{AddAssign, MulAssign, SubAssign};
 
-use ark_algebra_test_templates::fields::*;
+use crate::{Fq, FqConfig, Fr, FrConfig};
 
-use ark_std::rand::Rng;
-use ark_std::str::FromStr;
-
-#[test]
-fn test_fr() {
-    let mut rng = test_rng();
-    let a: Fr = rng.gen();
-    let b: Fr = rng.gen();
-    field_test(a, b);
-    primefield_test::<Fr>();
-}
-
-#[test]
-fn test_fq() {
-    let mut rng = test_rng();
-    let a: Fq = rng.gen();
-    let b: Fq = rng.gen();
-    field_test(a, b);
-    primefield_test::<Fq>();
-}
+generate_field_test!(ed_on_bn254; mont(4, 4); );
+generate_field_serialization_test!(ed_on_bn254;);
 
 #[test]
 fn test_fq_add() {
@@ -150,22 +136,6 @@ fn test_fq_sub() {
 }
 
 #[test]
-fn test_fq_double_in_place() {
-    let mut f1 = Fq::from_str(
-        "29729289787452206300641229002276778748586801323231253291984198106063944136114",
-    )
-    .unwrap();
-    let f3 = Fq::from_str(
-        "15682093831225862156789646514039007320076873845630437896571987838976271280994",
-    )
-    .unwrap();
-    assert!(!f1.is_zero());
-    assert!(!f3.is_zero());
-    f1.double_in_place();
-    assert_eq!(f1, f3);
-}
-
-#[test]
 fn test_fq_double_in_place_thrice() {
     let mut f1 = Fq::from_str(
         "32768907806651393940832831055386272949401004221411141755415956893066040832473",
@@ -277,21 +247,8 @@ fn test_fq_square_in_place() {
 }
 
 #[test]
-fn test_fq_sqrt() {
-    let f1 = Fq::from_str(
-        "5830207146824777307592559303161432403393380070279905260050870500920682305217",
-    )
-    .unwrap();
-    let f3 = Fq::from_str(
-        "2108183130040740552565127577293974960058698876185401671087892009247563211475",
-    )
-    .unwrap();
-    assert_eq!(f1.sqrt().unwrap(), f3);
-}
-
-#[test]
 fn test_fq_from_str() {
-    let f1_from_repr = Fq::from(BigInteger([
+    let f1_from_repr = Fq::from(BigInteger::new([
         0xab8a2535947d1a77,
         0x9ba74cbfda0bbcda,
         0xe928b59724d60baf,
@@ -301,7 +258,7 @@ fn test_fq_from_str() {
         "13026376210409056429264774981357153555336288129100724591327877625017068755575",
     )
     .unwrap();
-    let f2_from_repr = Fq::from(BigInteger([
+    let f2_from_repr = Fq::from(BigInteger::new([
         0x97e9103775d2f35c,
         0xbe6756b6c587544b,
         0x6ee38c3afd88ef4b,
@@ -320,14 +277,14 @@ fn test_fq_legendre() {
     assert_eq!(QuadraticResidue, Fq::one().legendre());
     assert_eq!(Zero, Fq::zero().legendre());
 
-    let e = BigInteger([
+    let e = BigInteger::new([
         0x2e8de1a676c03be8,
         0x73350d34fe25a560,
         0x7ea085919029688e,
         0x1d0868cb993cf28,
     ]);
     assert_eq!(QuadraticResidue, Fq::from(e).legendre());
-    let e = BigInteger([
+    let e = BigInteger::new([
         0x891d8cc23c8d0706,
         0xe91800e007db2698,
         0xfff380321e9ac7a7,
@@ -338,7 +295,7 @@ fn test_fq_legendre() {
 
 #[test]
 fn test_fq_bytes() {
-    let f1_from_repr = Fq::from(BigInteger([
+    let f1_from_repr = Fq::from(BigInteger::new([
         0xab8a2535947d1a77,
         0x9ba74cbfda0bbcda,
         0xe928b59724d60baf,
@@ -354,19 +311,19 @@ fn test_fq_bytes() {
 
 #[test]
 fn test_fr_add() {
-    let f1 = Fr::from(BigInteger([
+    let f1 = Fr::from(BigInteger::new([
         0xccfc9a195e0f5c46,
         0xaed4874d13fb1285,
         0x27368f86ca2848eb,
         0x4f8adcfeb44fccc,
     ]));
-    let f2 = Fr::from(BigInteger([
+    let f2 = Fr::from(BigInteger::new([
         0x661ff05bf8570851,
         0x1b171f4c59be97ef,
         0x5d2ce7f9b4d701f3,
         0x1e0e794623e0f68,
     ]));
-    let f3 = Fr::from(BigInteger([
+    let f3 = Fr::from(BigInteger::new([
         0xcba9f2991d453da6,
         0x1eacb8e13498bc6a,
         0x4d596ec9aecf1fd3,
@@ -377,19 +334,19 @@ fn test_fr_add() {
 
 #[test]
 fn test_fr_mul() {
-    let f1 = Fr::from(BigInteger([
+    let f1 = Fr::from(BigInteger::new([
         0xc2964d2dd5fb980f,
         0xbab64d599c57e496,
         0x39cae13e7d1d4f78,
         0x1aa995aa4de205c,
     ]));
-    let f2 = Fr::from(BigInteger([
+    let f2 = Fr::from(BigInteger::new([
         0xc256e720cd43533b,
         0x3bfbadf6247e13bb,
         0x94c3d63a53714f63,
         0x10f8a7bf74efd57,
     ]));
-    let f3 = Fr::from(BigInteger([
+    let f3 = Fr::from(BigInteger::new([
         0x5eac88be41e0e1fd,
         0x57aab36675b11e24,
         0x835582d896b4d13f,
@@ -399,7 +356,7 @@ fn test_fr_mul() {
 }
 #[test]
 fn test_fr_bytes() {
-    let f1_from_repr = Fr::from(BigInteger([
+    let f1_from_repr = Fr::from(BigInteger::new([
         0xc81265fb4130fe0c,
         0xb308836c14e22279,
         0x699e887f96bff372,
@@ -415,7 +372,7 @@ fn test_fr_bytes() {
 
 #[test]
 fn test_fr_from_str() {
-    let f100_from_repr = Fr::from(BigInteger([0x64, 0, 0, 0]));
+    let f100_from_repr = Fr::from(BigInteger::new([0x64, 0, 0, 0]));
     let f100 = Fr::from_str("100").unwrap();
     assert_eq!(f100_from_repr, f100);
 }

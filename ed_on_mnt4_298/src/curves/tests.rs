@@ -1,10 +1,8 @@
+use ark_algebra_test_templates::{curves::*, groups::*};
 use ark_ec::{AffineCurve, ProjectiveCurve};
-use ark_std::rand::Rng;
-use ark_std::test_rng;
+use ark_std::{rand::Rng, test_rng};
 
 use crate::*;
-
-use ark_algebra_test_templates::{curves::*, groups::*};
 
 #[test]
 fn test_projective_curve() {

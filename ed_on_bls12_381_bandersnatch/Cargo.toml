@@ -15,7 +15,7 @@ ark-ff = { version = "^0.3.0", default-features = false }
 ark-ec = { version = "^0.3.0", default-features = false }
 ark-std = { version = "^0.3.0", default-features = false }
 ark-r1cs-std = { version = "^0.3.0", default-features = false, optional = true }
-ark-bls12-381 = { version = "^0.3.0", default-features = false, features = [ "scalar_field" ] }
+ark-bls12-381 = { version = "^0.3.0", path = "../bls12_381", default-features = false, features = [ "scalar_field" ] }
 
 [dev-dependencies]
 ark-relations = { version = "^0.3.0", default-features = false }
@@ -25,10 +25,10 @@ ark-curve-constraint-tests = { path = "../curve-constraint-tests", default-featu
 
 [features]
 default = []
-std = [ 
-    "ark-std/std", 
-    "ark-ff/std", 
-    "ark-ec/std", 
-    "ark-bls12-381/std" 
+std = [
+    "ark-std/std",
+    "ark-ff/std",
+    "ark-ec/std",
+    "ark-bls12-381/std"
 ]
 r1cs = ["ark-r1cs-std"]

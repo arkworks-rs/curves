@@ -343,7 +343,7 @@ macro_rules! prime_field {
             let mut count = 0;
             b.iter(|| {
                 let mut tmp = v[count].0;
-                n_fold!(tmp, v, add_nocarry, count);
+                n_fold!(tmp, v, add_with_carry, count);
                 count = (count + 1) % SAMPLES;
                 tmp
             });
@@ -369,7 +369,7 @@ macro_rules! prime_field {
             let mut count = 0;
             b.iter(|| {
                 let mut tmp = v[count].0;
-                n_fold!(tmp, v, sub_noborrow, count);
+                n_fold!(tmp, v, sub_with_borrow, count);
                 count = (count + 1) % SAMPLES;
                 tmp;
             });
@@ -432,7 +432,7 @@ macro_rules! prime_field {
             let mut count = 0;
             b.iter(|| {
                 count = (count + 1) % SAMPLES;
-                v[count].into_repr();
+                v[count].into_bigint();
             });
         }
 
@@ -442,7 +442,7 @@ macro_rules! prime_field {
             let mut rng = ark_std::test_rng();
 
             let v: Vec<$f_repr_type> = (0..SAMPLES)
-                .map(|_| $f::rand(&mut rng).into_repr())
+                .map(|_| $f::rand(&mut rng).into_bigint())
                 .collect();
 
             let mut count = 0;

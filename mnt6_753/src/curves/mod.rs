@@ -2,9 +2,9 @@ use ark_ec::models::{
     mnt6::{MNT6Parameters, MNT6},
     SWModelParameters,
 };
-use ark_ff::{biginteger::BigInteger768, field_new, Fp3};
+use ark_ff::{biginteger::BigInteger768, BigInt, CubicExt, Fp3, MontFp};
 
-use crate::{Fq, Fq3, Fq3Parameters, Fq6Parameters, Fr};
+use crate::{Fq, Fq3Config, Fq6Config, Fr};
 
 pub mod g1;
 pub mod g2;
@@ -22,19 +22,16 @@ pub type MNT6_753 = MNT6<Parameters>;
 pub struct Parameters;
 
 impl MNT6Parameters for Parameters {
-    const TWIST: Fp3<Self::Fp3Params> = field_new!(Fq3, FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const TWIST: Fp3<Self::Fp3Config> = CubicExt!(FQ_ZERO, FQ_ONE, FQ_ZERO);
     // A coefficient of MNT6-753 G2 =
     // ```
     // mnt6753_twist_coeff_a = mnt6753_Fq3(mnt6753_Fq::zero(), mnt6753_Fq::zero(),
     //                                  mnt6753_G1::coeff_a);
     //  = (ZERO, ZERO, A_COEFF);
     // ```
-    #[rustfmt::skip]
-    const TWIST_COEFF_A: Fp3<Self::Fp3Params> = field_new!(Fq3,
-        FQ_ZERO,
-        FQ_ZERO,
-        g1::Parameters::COEFF_A,
-    );
+    const TWIST_COEFF_A: Fp3<Self::Fp3Config> =
+        CubicExt!(FQ_ZERO, FQ_ZERO, g1::Parameters::COEFF_A,);
+
     // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt6753.ml
     const ATE_LOOP_COUNT: &'static [u64] = &[
         8824542903220142080,
@@ -46,9 +43,9 @@ impl MNT6Parameters for Parameters {
     ];
     const ATE_IS_LOOP_COUNT_NEG: bool = false;
     const FINAL_EXPONENT_LAST_CHUNK_1: BigInteger768 =
-        BigInteger768([0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
+        BigInt::new([0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
     const FINAL_EXPONENT_LAST_CHUNK_W0_IS_NEG: bool = false;
-    const FINAL_EXPONENT_LAST_CHUNK_ABS_OF_W0: BigInteger768 = BigInteger768([
+    const FINAL_EXPONENT_LAST_CHUNK_ABS_OF_W0: BigInteger768 = BigInt::new([
         8824542903220142080,
         7711082599397206192,
         8303354903384568230,
@@ -64,13 +61,13 @@ impl MNT6Parameters for Parameters {
     ]);
     type Fp = Fq;
     type Fr = Fr;
-    type Fp3Params = Fq3Parameters;
-    type Fp6Params = Fq6Parameters;
+    type Fp3Config = Fq3Config;
+    type Fp6Config = Fq6Config;
     type G1Parameters = self::g1::Parameters;
     type G2Parameters = self::g2::Parameters;
 }
 
-pub const FQ_ZERO: Fq = field_new!(Fq, "0");
-pub const FQ_ONE: Fq = field_new!(Fq, "1");
-pub const FR_ZERO: Fr = field_new!(Fr, "0");
-pub const FR_ONE: Fr = field_new!(Fr, "1");
+pub const FQ_ZERO: Fq = MontFp!(Fq, "0");
+pub const FQ_ONE: Fq = MontFp!(Fq, "1");
+pub const FR_ZERO: Fr = MontFp!(Fr, "0");
+pub const FR_ONE: Fr = MontFp!(Fr, "1");

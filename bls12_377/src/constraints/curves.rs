@@ -1,10 +1,10 @@
-use crate::Parameters;
-use ark_ec::bls12::Bls12Parameters;
-use ark_ec::ModelParameters;
+use ark_ec::{bls12::Bls12Parameters, ModelParameters};
 use ark_r1cs_std::{
     fields::fp::FpVar,
     groups::{bls12, curves::twisted_edwards::AffineVar as TEAffineVar},
 };
+
+use crate::Parameters;
 
 /// An element of G1 in the BLS12-377 bilinear group.
 pub type G1Var = bls12::G1Var<Parameters>;

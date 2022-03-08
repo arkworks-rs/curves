@@ -1,9 +1,11 @@
-use crate::*;
 use ark_ec::{
     bn,
     bn::{Bn, BnParameters, TwistType},
 };
-use ark_ff::field_new;
+use ark_ff::{MontFp, QuadExt};
+
+use crate::*;
+
 pub mod g1;
 pub mod g2;
 
@@ -22,33 +24,31 @@ impl BnParameters for Parameters {
         -1, 0, 0, 1, 0, 1, 1,
     ];
 
-    const TWIST_MUL_BY_Q_X: Fq2 = field_new!(
-        Fq2,
-        field_new!(
+    const TWIST_MUL_BY_Q_X: Fq2 = QuadExt!(
+        MontFp!(
             Fq,
             "21575463638280843010398324269430826099269044274347216827212613867836435027261"
         ),
-        field_new!(
+        MontFp!(
             Fq,
             "10307601595873709700152284273816112264069230130616436755625194854815875713954"
         ),
     );
-    const TWIST_MUL_BY_Q_Y: Fq2 = field_new!(
-        Fq2,
-        field_new!(
+    const TWIST_MUL_BY_Q_Y: Fq2 = QuadExt!(
+        MontFp!(
             Fq,
             "2821565182194536844548159561693502659359617185244120367078079554186484126554"
         ),
-        field_new!(
+        MontFp!(
             Fq,
             "3505843767911556378687030309984248845540243509899259641013678093033130930403"
         ),
     );
     const TWIST_TYPE: TwistType = TwistType::D;
     type Fp = Fq;
-    type Fp2Params = Fq2Parameters;
-    type Fp6Params = Fq6Parameters;
-    type Fp12Params = Fq12Parameters;
+    type Fp2Config = Fq2Config;
+    type Fp6Config = Fq6Config;
+    type Fp12Config = Fq12Config;
     type G1Parameters = g1::Parameters;
     type G2Parameters = g2::Parameters;
 }

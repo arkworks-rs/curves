@@ -1,21 +1,11 @@
-#![allow(unused_imports)]
-use ark_ff::{
-    fields::{Field, FpParameters, PrimeField, SquareRootField},
-    One, Zero,
-};
-use ark_serialize::CanonicalSerialize;
-use ark_std::test_rng;
-
-use ark_ec::{models::SWModelParameters, AffineCurve, PairingEngine, ProjectiveCurve};
-use ark_std::ops::{AddAssign, MulAssign};
-use ark_std::rand::Rng;
-
-use crate::{Affine, PallasParameters, Projective};
-
 use ark_algebra_test_templates::{
     curves::{curve_tests, sw_tests},
     groups::group_test,
 };
+use ark_ec::AffineCurve;
+use ark_std::{rand::Rng, test_rng};
+
+use crate::{Affine, PallasParameters, Projective};
 
 #[test]
 fn test_projective_curve() {

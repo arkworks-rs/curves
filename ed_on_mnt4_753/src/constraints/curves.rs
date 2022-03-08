@@ -1,7 +1,6 @@
-use crate::*;
 use ark_r1cs_std::groups::curves::twisted_edwards::AffineVar;
 
-use crate::constraints::fields::FqVar;
+use crate::{constraints::fields::FqVar, *};
 
 /// A variable that is the R1CS equivalent of `crate::EdwardsAffine`.
 pub type EdwardsVar = AffineVar<EdwardsParameters, FqVar>;
