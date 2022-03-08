@@ -1,6 +1,6 @@
 use crate::*;
 use ark_ec::models::{ModelParameters, SWModelParameters};
-use ark_ff::{field_new};
+use ark_ff::{MontFp, QuadExt};
 
 use ark_ec::hashing::curve_maps::swu::{SWUParams};
 
@@ -10,25 +10,6 @@ pub struct Parameters;
 impl ModelParameters for Parameters {
     type BaseField = Fq2;
     type ScalarField = Fr;
-}
-
-// https://datatracker.ietf.org/doc/draft-irtf-cfrg-hash-to-curve/
-// Hashing to Elliptic Curves
-// 8.8.2.  BLS12-381 G2
-//   *  E': y'^2 = x'^3 + A' * x' + B', where
-//
-//      -  A' = 240 * I
-//
-//      -  B' = 1012 * (1 + I)
-//
-//   * Z: -(2 + I)
-
-impl SWModelParameters for Parameters {
-    /// COEFF_A = [240, 0]
-    const COEFF_A: Fq2 = field_new!(Fq2, field_new!(Fq, "0"), field_new!(Fq, "240"),);
-
-    /// COEFF_B = [1012, 1012]
-    const COEFF_B: Fq2 = field_new!(Fq2, field_new!(Fq, "1012"), field_new!(Fq, "1012"),);
 
     //sage: g2_iso.codomain().order() == g2_iso.domain().order()
     //True
@@ -50,7 +31,27 @@ impl SWModelParameters for Parameters {
     /// COFACTOR_INV = COFACTOR^{-1} mod r
     /// 26652489039290660355457965112010883481355318854675681319708643586776743290055
     #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, "26652489039290660355457965112010883481355318854675681319708643586776743290055");
+    const COFACTOR_INV: Fr = MontFp!(Fr, "26652489039290660355457965112010883481355318854675681319708643586776743290055");
+
+}
+
+// https://datatracker.ietf.org/doc/draft-irtf-cfrg-hash-to-curve/
+// Hashing to Elliptic Curves
+// 8.8.2.  BLS12-381 G2
+//   *  E': y'^2 = x'^3 + A' * x' + B', where
+//
+//      -  A' = 240 * I
+//
+//      -  B' = 1012 * (1 + I)
+//
+//   * Z: -(2 + I)
+
+impl SWModelParameters for Parameters {
+    /// COEFF_A = [240, 0]
+    const COEFF_A: Fq2 = QuadExt!(MontFp!(Fq, "0"), MontFp!(Fq, "240"),);
+
+    /// COEFF_B = [1012, 1012]
+    const COEFF_B: Fq2 = QuadExt!(MontFp!(Fq, "1012"), MontFp!(Fq, "1012"),);
 
     /// AFFINE_GENERATOR_COEFFS = (G2_GENERATOR_X, G2_GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
@@ -58,8 +59,8 @@ impl SWModelParameters for Parameters {
 
 }
 
-pub const G2_GENERATOR_X: Fq2 = field_new!(Fq2, G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
-pub const G2_GENERATOR_Y: Fq2 = field_new!(Fq2, G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
+pub const G2_GENERATOR_X: Fq2 = QuadExt!(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
+pub const G2_GENERATOR_Y: Fq2 = QuadExt!(G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
 
 // sage: gen_p = E2p.random_point()
 // sage: gen_p *= 305502333931268344200999753193121504214466019254188142667664032982267604182971884026507427359259977847832272839041616661285803823378372096355777062779109
@@ -67,19 +68,19 @@ pub const G2_GENERATOR_Y: Fq2 = field_new!(Fq2, G2_GENERATOR_Y_C0, G2_GENERATOR_
 // (3742867872338536021971219193407057626975566811775929228638115610845414823755734136602223916420662890679205212867815*X + 2008970337784971958599114573863246208442825790877271736434783886837659225024554344101831904846457859657000371883048 : 347020557560111175564150279686487416538085532798697633906066128669670325197422119639641125873165591545442034801173*X + 3002750085289950562156391971969303286031832683890522668239999505933394032768942051901168474820339778663917384775384 : 1)
 
 #[rustfmt::skip]
-pub const G2_GENERATOR_X_C0: Fq = field_new!(Fq, "2008970337784971958599114573863246208442825790877271736434783886837659225024554344101831904846457859657000371883048");
+pub const G2_GENERATOR_X_C0: Fq = MontFp!(Fq, "2008970337784971958599114573863246208442825790877271736434783886837659225024554344101831904846457859657000371883048");
 
 /// G2_GENERATOR_X_C1 =
 #[rustfmt::skip]
-pub const G2_GENERATOR_X_C1: Fq = field_new!(Fq, "3742867872338536021971219193407057626975566811775929228638115610845414823755734136602223916420662890679205212867815");
+pub const G2_GENERATOR_X_C1: Fq = MontFp!(Fq, "3742867872338536021971219193407057626975566811775929228638115610845414823755734136602223916420662890679205212867815");
 
 /// G2_GENERATOR_Y_C0 =
 #[rustfmt::skip]
-pub const G2_GENERATOR_Y_C0: Fq = field_new!(Fq, "3002750085289950562156391971969303286031832683890522668239999505933394032768942051901168474820339778663917384775384");
+pub const G2_GENERATOR_Y_C0: Fq = MontFp!(Fq, "3002750085289950562156391971969303286031832683890522668239999505933394032768942051901168474820339778663917384775384");
 
 /// G2_GENERATOR_Y_C1 =
 #[rustfmt::skip]
-pub const G2_GENERATOR_Y_C1: Fq = field_new!(Fq, "347020557560111175564150279686487416538085532798697633906066128669670325197422119639641125873165591545442034801173");
+pub const G2_GENERATOR_Y_C1: Fq = MontFp!(Fq, "347020557560111175564150279686487416538085532798697633906066128669670325197422119639641125873165591545442034801173");
 
 // sage: Fq2 = g2_iso.domain().base_field()
 // sage: Fq2
@@ -95,8 +96,8 @@ pub const G2_GENERATOR_Y_C1: Fq = field_new!(Fq, "347020557560111175564150279686
 // sage: (Xi/Zeta).square_root()
 //X
 impl SWUParams for Parameters {    
-    const XI : Fq2 = field_new!(Fq2, field_new!(Fq, "-2"), field_new!(Fq, "-1"),); //a nonsquare in Fq ietf standard
-    const ZETA: Fq2 = field_new!(Fq2, field_new!(Fq, "2"), field_new!(Fq, "1"),);  //arbitatry primitive root of unity (element)
-    const XI_ON_ZETA_SQRT: Fq2 = field_new!(Fq2, field_new!(Fq, "0"), field_new!(Fq, "1"),); ////square root of THETA=Xi/Zeta
+    const XI : Fq2 = QuadExt!(MontFp!(Fq, "-2"), MontFp!(Fq, "-1"),); //a nonsquare in Fq ietf standard
+    const ZETA: Fq2 = QuadExt!(MontFp!(Fq, "2"), MontFp!(Fq, "1"),);  //arbitatry primitive root of unity (element)
+    const XI_ON_ZETA_SQRT: Fq2 = QuadExt!(MontFp!(Fq, "0"), MontFp!(Fq, "1"),); ////square root of THETA=Xi/Zeta
 
 }

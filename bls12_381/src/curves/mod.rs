@@ -25,9 +25,9 @@ impl Bls12Parameters for Parameters {
     const X_IS_NEGATIVE: bool = true;
     const TWIST_TYPE: TwistType = TwistType::M;
     type Fp = Fq;
-    type Fp2Params = Fq2Config;
-    type Fp6Params = Fq6Config;
-    type Fp12Params = Fq12Config;
+    type Fp2Config = Fq2Config;
+    type Fp6Config = Fq6Config;
+    type Fp12Config = Fq12Config;
     type G1Parameters = self::g1::Parameters;
     type G2Parameters = self::g2::Parameters;
 }

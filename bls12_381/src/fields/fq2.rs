@@ -1,11 +1,11 @@
 use crate::*;
-use ark_ff::{MontFp, fields::*};
+use ark_ff::{MontFp, QuadExt, fields::*};
 
 pub type Fq2 = Fp2<Fq2Config>;
 
 pub struct Fq2Config;
 
-impl Fp2Parameters for Fq2Config {
+impl Fp2Config for Fq2Config {
     type Fp = Fq;
 
     /// NONRESIDUE = -1
@@ -14,7 +14,7 @@ impl Fp2Parameters for Fq2Config {
 
     /// QUADRATIC_NONRESIDUE = (U + 1)
     #[rustfmt::skip]
-    const QUADRATIC_NONRESIDUE: (Fq, Fq) = (FQ_ONE, FQ_ONE);
+    const QUADRATIC_NONRESIDUE: Fq2 = QuadExt!(FQ_ONE, FQ_ONE);
 
     /// Coefficients for the Frobenius automorphism.
     #[rustfmt::skip]
