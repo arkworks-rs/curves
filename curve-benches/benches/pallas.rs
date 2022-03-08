@@ -3,8 +3,7 @@ use ark_std::ops::{AddAssign, MulAssign, SubAssign};
 
 use ark_ec::ProjectiveCurve;
 use ark_ff::{
-    biginteger::BigInteger256 as FrRepr, BigInteger, Field, PrimeField, SquareRootField,
-    UniformRand,
+    biginteger::BigInteger256 as Repr, BigInteger, Field, PrimeField, SquareRootField, UniformRand,
 };
 use ark_pallas::{fq::Fq, fr::Fr, Affine as GAffine, Projective as G};
 
@@ -13,7 +12,7 @@ mod g {
     ec_bench!(G, GAffine);
 }
 
-f_bench!(Fq, Fq, FqRepr, FqRepr, fq);
-f_bench!(Fr, Fr, FrRepr, FrRepr, fr);
+f_bench!(Fq, Fq, Repr, Repr, fq);
+f_bench!(Fr, Fr, Repr, Repr, fr);
 
 bencher::benchmark_main!(fq, fr, g::group_ops);
