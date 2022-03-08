@@ -1,6 +1,6 @@
-use crate::{BandersnatchParameters, Fq, Fr, FrParameters};
+use crate::{BandersnatchParameters, Fq, Fr};
 use ark_ec::{glv::GLVParameters, AffineCurve, ProjectiveCurve};
-use ark_ff::{field_new, BigInteger, BigInteger256, FpParameters, One};
+use ark_ff::{fields::MontFp, BigInteger, BigInteger256, One, PrimeField};
 use ark_std::{cmp::max, Zero};
 use num_bigint::BigUint;
 
@@ -10,42 +10,42 @@ impl GLVParameters for BandersnatchParameters {
 
     // phi(P) = lambda*P for all P
     // constants that are used to calculate phi(P)
-    const COEFF_A1: Self::BaseField = field_new!(
+    const COEFF_A1: Self::BaseField = MontFp!(
         Fq,
         "16179988757916560824577558193084210236647645729299773892093730683504906651604"
     );
 
-    const COEFF_A2: Self::BaseField = field_new!(
+    const COEFF_A2: Self::BaseField = MontFp!(
         Fq,
         "37446463827641770816307242315180085052603635617490163568005256780843403514036"
     );
 
-    const COEFF_A3: Self::BaseField = field_new!(
+    const COEFF_A3: Self::BaseField = MontFp!(
         Fq,
         "14989411347484419663140498193005880785086916883037474254598401919095177670477"
     );
 
-    const COEFF_B1: Self::BaseField = field_new!(
+    const COEFF_B1: Self::BaseField = MontFp!(
         Fq,
         "37446463827641770816307242315180085052603635617490163568005256780843403514036"
     );
 
-    const COEFF_B2: Self::BaseField = field_new!(
+    const COEFF_B2: Self::BaseField = MontFp!(
         Fq,
         "36553259151239542273674161596529768046449890757310263666255995151154432137034"
     );
 
-    const COEFF_B3: Self::BaseField = field_new!(
+    const COEFF_B3: Self::BaseField = MontFp!(
         Fq,
         "15882616023886648205773578911656197791240661743217374156347663548784149047479"
     );
 
-    const COEFF_C1: Self::BaseField = field_new!(
+    const COEFF_C1: Self::BaseField = MontFp!(
         Fq,
         "42910309089382041158038545419309140955400939872179826051492616687477682993077"
     );
 
-    const COEFF_C2: Self::BaseField = field_new!(
+    const COEFF_C2: Self::BaseField = MontFp!(
         Fq,
         "9525566085744149321409195088876824882289612628347811771111042012460898191436"
     );
@@ -58,13 +58,13 @@ impl GLVParameters for BandersnatchParameters {
     // [21482638764116277775478679919733259912,
     // -113482231691339203864511368254957623327]])
 
-    const COEFF_N11: Self::ScalarField = field_new!(Fr, "113482231691339203864511368254957623327");
+    const COEFF_N11: Self::ScalarField = MontFp!(Fr, "113482231691339203864511368254957623327");
 
-    const COEFF_N12: Self::ScalarField = field_new!(Fr, "10741319382058138887739339959866629956");
+    const COEFF_N12: Self::ScalarField = MontFp!(Fr, "10741319382058138887739339959866629956");
 
-    const COEFF_N21: Self::ScalarField = field_new!(Fr, "21482638764116277775478679919733259912");
+    const COEFF_N21: Self::ScalarField = MontFp!(Fr, "21482638764116277775478679919733259912");
 
-    const COEFF_N22: Self::ScalarField = field_new!(Fr, "-113482231691339203864511368254957623327");
+    const COEFF_N22: Self::ScalarField = MontFp!(Fr, "-113482231691339203864511368254957623327");
 
     /// Mapping a point G to phi(G):= lambda G where phi is the endomorphism
     fn endomorphism(base: &Self::CurveAffine) -> Self::CurveAffine {
@@ -96,7 +96,7 @@ impl GLVParameters for BandersnatchParameters {
         let tmp: BigInteger256 = Self::COEFF_N12.into();
         let n12: BigUint = tmp.into();
 
-        let r: BigUint = <FrParameters as FpParameters>::MODULUS.into();
+        let r: BigUint = Fr::MODULUS.into();
 
         // beta = vector([n,0]) * self.curve.N_inv
         let beta_1 = scalar_z.clone() * n11;
@@ -138,7 +138,7 @@ pub(crate) fn multi_scalar_mul(
     let mut b2 = (*endor_base).into_projective();
     let mut s2 = *scalar_2;
 
-    let r_over_2: Fr = <FrParameters as FpParameters>::MODULUS_MINUS_ONE_DIV_TWO.into();
+    let r_over_2: Fr = Fr::MODULUS_MINUS_ONE_DIV_TWO.into();
 
     if s1 > r_over_2 {
         b1 = -b1;

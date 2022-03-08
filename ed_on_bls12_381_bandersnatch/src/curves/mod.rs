@@ -1,14 +1,14 @@
+use crate::{Fq, Fr};
+use ark_ec::glv::GLVParameters;
 use ark_ec::{
     models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
     short_weierstrass_jacobian::{
         GroupAffine as SWGroupAffine, GroupProjective as SWGroupProjective,
     },
     twisted_edwards_extended::{GroupAffine, GroupProjective},
-    SWModelParameters,
+    ProjectiveCurve, SWModelParameters,
 };
 use ark_ff::{Field, MontFp};
-
-use crate::{Fq, Fr};
 
 mod glv;
 #[cfg(test)]
@@ -84,7 +84,6 @@ impl TEModelParameters for BandersnatchParameters {
         "45022363124591815672509500913686876175488063829319466900776701791074614335719"
     );
 
-
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
         (TE_GENERATOR_X, TE_GENERATOR_Y);
@@ -97,6 +96,11 @@ impl TEModelParameters for BandersnatchParameters {
         let t = (*elem).double().double();
         -(t + *elem)
     }
+
+    /// Default implementation of group multiplication with GLV
+    fn mul(base: &GroupProjective<Self>, scalar: &Self::ScalarField) -> GroupProjective<Self> {
+        <BandersnatchParameters as GLVParameters>::glv_mul(&base.into_affine(), scalar)
+    }
 }
 
 impl MontgomeryModelParameters for BandersnatchParameters {
@@ -108,7 +112,6 @@ impl MontgomeryModelParameters for BandersnatchParameters {
 
     /// COEFF_B = 25465760566081946422412445027709227188579564747101592991722834452325077642517
     const COEFF_B: Fq = MontFp!(
-
         Fq,
         "25465760566081946422412445027709227188579564747101592991722834452325077642517"
     );

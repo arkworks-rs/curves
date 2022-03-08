@@ -23,13 +23,3 @@ ark-r1cs-std = { version = "^0.3.0", default-features = false }
 [features]
 default = []
 std = [ "ark-std/std", "ark-ff/std", "ark-serialize/std", "ark-ec/std", "ark-relations/std", "ark-r1cs-std/std" ]
-
-
-# To be removed in the new release.
-[patch.crates-io]
-ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-std = { git = "https://github.com/arkworks-rs/std", default-features = false  }
-ark-r1cs-std = { git = "https://github.com/arkworks-rs/r1cs-std", default-features = false, optional = true }
-ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
-ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }

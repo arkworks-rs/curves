@@ -29,8 +29,3 @@ ark-curve-constraint-tests = { path = "../curve-constraint-tests", default-featu
 default = []
 std = [ "ark-std/std", "ark-ff/std", "ark-ec/std", "ark-bls12-381/std" ]
 r1cs = ["ark-r1cs-std"]
-
-# To be removed in the new release.
-[patch.crates-io]
-ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }

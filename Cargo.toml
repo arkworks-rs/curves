@@ -64,3 +64,7 @@ ark-ff = { git = "https://github.com/arkworks-rs/algebra" }
 ark-serialize = { git = "https://github.com/arkworks-rs/algebra" }
 ark-algebra-test-templates = { git = "https://github.com/arkworks-rs/algebra" }
 ark-r1cs-std = { git = "https://github.com/arkworks-rs/r1cs-std" }
+ark-std = { git = "https://github.com/arkworks-rs/std", default-features = false  }
+ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
+ark-bls12-381 = { path = "bls12_381" }
+

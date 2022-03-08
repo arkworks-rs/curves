@@ -1,6 +1,6 @@
 use ark_algebra_test_templates::{curves::*, groups::*};
 use ark_ec::{glv::GLVParameters, AffineCurve, ProjectiveCurve};
-use ark_ff::{bytes::FromBytes, field_new, Zero};
+use ark_ff::{bytes::FromBytes, MontFp, Zero};
 use ark_std::{rand::Rng, str::FromStr, test_rng};
 
 use crate::*;
@@ -144,12 +144,12 @@ fn test_psi() {
 
 #[test]
 fn test_decomp() {
-    let scalar: Fr = field_new!(
+    let scalar: Fr = MontFp!(
         Fr,
         "4257185345094557079734489188109952172285839137338142340240392707284963971010"
     );
-    let k1: Fr = field_new!(Fr, "30417741863887432744214758610616508258");
-    let k2: Fr = field_new!(Fr, "-6406990765953933188067911864924578940");
+    let k1: Fr = MontFp!(Fr, "30417741863887432744214758610616508258");
+    let k2: Fr = MontFp!(Fr, "-6406990765953933188067911864924578940");
     assert_eq!(
         BandersnatchParameters::scalar_decomposition(&scalar),
         (k1, k2)
@@ -171,12 +171,12 @@ fn test_msm() {
     let t = BandersnatchParameters::endomorphism(&base_point);
     assert_eq!(t, psi_point);
 
-    let scalar: Fr = field_new!(
+    let scalar: Fr = MontFp!(
         Fr,
         "4257185345094557079734489188109952172285839137338142340240392707284963971010"
     );
-    let k1: Fr = field_new!(Fr, "30417741863887432744214758610616508258");
-    let k2: Fr = field_new!(Fr, "-6406990765953933188067911864924578940");
+    let k1: Fr = MontFp!(Fr, "30417741863887432744214758610616508258");
+    let k2: Fr = MontFp!(Fr, "-6406990765953933188067911864924578940");
     assert_eq!(
         BandersnatchParameters::scalar_decomposition(&scalar),
         (k1, k2)
@@ -198,7 +198,7 @@ fn test_msm() {
 #[test]
 fn test_gen_mul() {
     let a = EdwardsAffine::prime_subgroup_generator();
-    let r: Fr = field_new!(
+    let r: Fr = MontFp!(
         Fr,
         "4257185345094557079734489188109952172285839137338142340240392707284963971010"
     );

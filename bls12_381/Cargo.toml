@@ -27,8 +27,3 @@ std = [ "ark-std/std", "ark-ff/std", "ark-ec/std" ]
 
 curve = [ "scalar_field" ]
 scalar_field = []
-
-# To be removed in the new release.
-[patch.crates-io]
-ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
