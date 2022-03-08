@@ -1,9 +1,10 @@
-use crate::*;
 use ark_ec::{
     bw6,
     bw6::{BW6Parameters, TwistType, BW6},
 };
-use ark_ff::biginteger::BigInteger768 as BigInteger;
+use ark_ff::{biginteger::BigInteger768 as BigInteger, BigInt};
+
+use crate::*;
 
 pub mod g1;
 pub mod g2;
@@ -15,7 +16,7 @@ mod tests;
 pub struct Parameters;
 
 impl BW6Parameters for Parameters {
-    const X: BigInteger = BigInteger([
+    const X: BigInteger = BigInt::new([
         0x8508c00000000001,
         0x0,
         0x0,
@@ -47,8 +48,8 @@ impl BW6Parameters for Parameters {
     const ATE_LOOP_COUNT_2_IS_NEGATIVE: bool = false;
     const TWIST_TYPE: TwistType = TwistType::M;
     type Fp = Fq;
-    type Fp3Params = Fq3Parameters;
-    type Fp6Params = Fq6Parameters;
+    type Fp3Config = Fq3Config;
+    type Fp6Config = Fq6Config;
     type G1Parameters = g1::Parameters;
     type G2Parameters = g2::Parameters;
 }

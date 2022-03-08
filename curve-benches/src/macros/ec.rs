@@ -231,10 +231,10 @@ macro_rules! ec_bench {
             let g = <$projective>::rand(&mut rng).into_affine();
             let v: Vec<_> = (0..SAMPLES).map(|_| g).collect();
             let scalars: Vec<_> = (0..SAMPLES)
-                .map(|_| Fr::rand(&mut rng).into_repr())
+                .map(|_| Fr::rand(&mut rng).into_bigint())
                 .collect();
             b.bench_n(1, |b| {
-                b.iter(|| ark_ec::msm::VariableBaseMSM::multi_scalar_mul(&v, &scalars));
+                b.iter(|| ark_ec::msm::VariableBase::msm(&v, &scalars));
             })
         }
 

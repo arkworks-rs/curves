@@ -8,9 +8,10 @@
 )]
 #![forbid(unsafe_code)]
 
-//! This library implements a twisted Edwards curve whose base field is the scalar field of the
-//! curve MNT4-753. This allows defining cryptographic primitives that use elliptic curves over
-//! the scalar field of the latter curve.
+//! This library implements a twisted Edwards curve whose base field is the
+//! scalar field of the curve MNT4-753. This allows defining cryptographic
+//! primitives that use elliptic curves over the scalar field of the latter
+//! curve.
 //!
 //! Curve information:
 //! * Base field: q = 41898490967918953402344214791240637128170709919953949071783502921025352812571106773058893763790338921418070971888458477323173057491593855069696241854796396165721416325350064441470418137846398469611935719059908164220784476160001

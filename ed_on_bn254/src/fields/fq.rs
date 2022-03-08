@@ -1,1 +1,1 @@
-pub use ark_bn254::{Fr as Fq, FrParameters as FqParameters};
+pub use ark_bn254::{Fr as Fq, FrConfig as FqConfig};

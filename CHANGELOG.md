@@ -4,7 +4,8 @@
 
 
 - [\#66](https://github.com/arkworks-rs/curves/pull/66) Enabling GLV multiplication for bandersnatch curve.
-
+- [\#76](https://github.com/arkworks-rs/curves/pull/76) twisted Edwards parameters for bls12-377
+- Fixed curve benches
 
 ### Breaking changes
 

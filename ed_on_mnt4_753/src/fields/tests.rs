@@ -1,23 +1,12 @@
-use ark_std::rand::Rng;
-use ark_std::test_rng;
+use ark_algebra_test_templates::{
+    fields::*, generate_field_serialization_test, generate_field_test,
+};
+use ark_ff::{Field, One, PrimeField, SquareRootField, UniformRand, Zero};
+use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
+use ark_std::{rand::Rng, test_rng};
+use core::ops::{AddAssign, MulAssign, SubAssign};
 
-use crate::{Fq, Fr};
-use ark_algebra_test_templates::fields::*;
+use crate::{Fq, FqConfig, Fr, FrConfig};
 
-#[test]
-fn test_fr() {
-    let mut rng = test_rng();
-    let a: Fr = rng.gen();
-    let b: Fr = rng.gen();
-    field_test(a, b);
-    primefield_test::<Fr>();
-}
-
-#[test]
-fn test_fq() {
-    let mut rng = test_rng();
-    let a: Fq = rng.gen();
-    let b: Fq = rng.gen();
-    field_test(a, b);
-    primefield_test::<Fq>();
-}
+generate_field_test!(ed_on_mnt4_753; mont(12, 12); );
+generate_field_serialization_test!(ed_on_mnt4_753;);

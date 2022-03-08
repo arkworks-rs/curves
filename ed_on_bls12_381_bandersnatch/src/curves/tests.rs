@@ -1,8 +1,9 @@
-use crate::*;
 use ark_algebra_test_templates::{curves::*, groups::*};
 use ark_ec::{glv::GLVParameters, AffineCurve, ProjectiveCurve};
 use ark_ff::{bytes::FromBytes, field_new, Zero};
 use ark_std::{rand::Rng, str::FromStr, test_rng};
+
+use crate::*;
 
 #[test]
 fn test_projective_curve() {
