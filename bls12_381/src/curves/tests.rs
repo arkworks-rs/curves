@@ -1,6 +1,6 @@
 use ark_algebra_test_templates::{
     curves::*, generate_bilinearity_test, generate_g1_generator_raw_test, generate_g1_test,
-    generate_g2_test, groups::*, msm::*,
+    generate_g2_test, generate_glv_test, groups::*, msm::*,
 };
 use ark_ec::{models::SWModelParameters, AffineCurve, PairingEngine, ProjectiveCurve};
 use ark_ff::{
@@ -16,6 +16,8 @@ generate_g1_test!(bls12_381; curve_tests; sw_tests;);
 generate_g2_test!(bls12_381; curve_tests; sw_tests;);
 generate_bilinearity_test!(Bls12_381, Fq12);
 generate_g1_generator_raw_test!(bls12_381, 4);
+
+generate_glv_test!(Parameters);
 
 #[test]
 fn test_g1_endomorphism_beta() {

@@ -1,6 +1,6 @@
 use ark_algebra_test_templates::{
-    curves::{curve_tests, edwards_tests, sw_tests},
-    generate_bilinearity_test, generate_g1_generator_raw_test, generate_g1_test, generate_g2_test,
+    curves::{curve_tests, edwards_tests, sw_tests, glv_tests},
+    generate_bilinearity_test, generate_g1_generator_raw_test, generate_g1_test, generate_g2_test, generate_glv_test,
     groups::group_test,
     msm::test_var_base_msm,
 };
@@ -20,3 +20,5 @@ generate_g1_test!(bls12_377; curve_tests; sw_tests; edwards_tests; te_group_test
 generate_g2_test!(bls12_377; curve_tests; sw_tests;);
 generate_bilinearity_test!(Bls12_377, Fq12);
 generate_g1_generator_raw_test!(bls12_377, 1);
+
+generate_glv_test!(Parameters);
