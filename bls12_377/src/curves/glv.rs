@@ -25,7 +25,10 @@ impl GLVParameters for Parameters {
 
     const COEFF_C2: Self::BaseField = MontFp!(Fq, "0");
 
-    const LAMBDA: Self::ScalarField = MontFp!(Fr, "8444461749428370424248824938781546531284005582649182570233710176290576793600");
+    const LAMBDA: Self::ScalarField = MontFp!(
+        Fr,
+        "8444461749428370424248824938781546531284005582649182570233710176290576793600"
+    );
 
     // LLL Matrix
     const COEFF_N11: Self::ScalarField = MontFp!(Fr, "91893752504881257701523279626832445441");

@@ -1,9 +1,11 @@
-use ark_algebra_test_templates::{curves::*, groups::*};
+use ark_algebra_test_templates::{curves::*, generate_glv_test, groups::*};
 use ark_ec::{AffineCurve, ProjectiveCurve};
 use ark_ff::{bytes::FromBytes, Zero};
 use ark_std::{rand::Rng, str::FromStr, test_rng};
 
 use crate::*;
+
+generate_glv_test!(BandersnatchParameters);
 
 #[test]
 fn test_projective_curve() {

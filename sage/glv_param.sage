@@ -52,3 +52,6 @@ for (p,r) in [
     print_scalar(n22, name='COEFF_N22')
     print()
 '''
+
+p_bandersnatch = r_bls12_381
+r_bandersnatch = 0x0e7db4ea6533afa906673b0101343b00a6682093ccc81082d0970e5ed6f72cb7

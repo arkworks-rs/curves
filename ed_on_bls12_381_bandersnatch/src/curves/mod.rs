@@ -10,6 +10,8 @@ use ark_ff::{Field, MontFp};
 
 use crate::{Fq, Fr};
 
+mod glv;
+
 #[cfg(test)]
 mod tests;
 

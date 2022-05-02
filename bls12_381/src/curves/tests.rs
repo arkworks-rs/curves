@@ -10,7 +10,10 @@ use ark_ff::{
 use ark_std::{rand::Rng, test_rng};
 use core::ops::{AddAssign, MulAssign};
 
-use crate::{g1, g2, Bls12_381, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
+use crate::{
+    g1, g1::Parameters, g2, Bls12_381, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine,
+    G2Projective,
+};
 
 generate_g1_test!(bls12_381; curve_tests; sw_tests;);
 generate_g2_test!(bls12_381; curve_tests; sw_tests;);
