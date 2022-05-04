@@ -8,6 +8,8 @@ use ark_ff::{MontFp, Zero};
 #[cfg(test)]
 mod tests;
 
+mod glv;
+
 #[derive(Copy, Clone, Default, PartialEq, Eq)]
 pub struct VestaParameters;
 

@@ -6,6 +6,8 @@ use ark_ff::{MontFp, Zero};
 
 use crate::{fq::Fq, fr::Fr};
 
+mod glv;
+
 #[cfg(test)]
 mod tests;
 

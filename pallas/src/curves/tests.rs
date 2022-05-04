@@ -1,11 +1,14 @@
 use ark_algebra_test_templates::{
-    curves::{curve_tests, sw_tests},
+    curves::{curve_tests, glv_tests, sw_tests},
+    generate_glv_test,
     groups::group_test,
 };
 use ark_ec::AffineCurve;
 use ark_std::{rand::Rng, test_rng};
 
 use crate::{Affine, PallasParameters, Projective};
+
+generate_glv_test!(PallasParameters);
 
 #[test]
 fn test_projective_curve() {
