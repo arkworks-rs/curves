@@ -19,7 +19,6 @@ generate_g1_test!(bls12_381; curve_tests; sw_tests;);
 generate_g2_test!(bls12_381; curve_tests; sw_tests;);
 generate_bilinearity_test!(Bls12_381, Fq12);
 generate_g1_generator_raw_test!(bls12_381, 4);
-
 generate_glv_test!(Parameters);
 
 #[test]
