@@ -12,8 +12,8 @@ use core::ops::MulAssign;
 
 use crate::*;
 
-generate_glv_test!(Parameters);
-
 generate_g1_test!(bw6_761; curve_tests; sw_tests;);
 generate_g2_test!(bw6_761; curve_tests; sw_tests;);
 generate_bilinearity_test!(BW6_761, Fq6);
+generate_glv_test!(Parameters);
+// error here!!!!!!
