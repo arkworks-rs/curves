@@ -1,7 +1,6 @@
 use crate::{g1::Parameters, Fq, Fr};
-use ark_ec::{glv::GLVParameters, msm::ScalarMul};
-use ark_ff::MontFp;
-use num_bigint::Sign::{self, Plus, Minus};
+use ark_ec::{glv::GLVParameters, msm::ScalarMul, ModelParameters};
+use ark_ff::{MontFp, PrimeField};
 
 impl ScalarMul for Parameters {
     type CurveAffine = crate::G1Affine;
@@ -31,13 +30,13 @@ impl GLVParameters for Parameters {
         "52435875175126190479447740508185965837461563690374988244538805122978187051009"
     );
 
-    const COEFF_N: [[u32;4]; 4] = [
-        [0,1,107522,2890245121], // 228988810152649578064853576960394133504
-        [1,0,0,0], // 1
-        [1,0,0,0], // -1
-        [4294967295,0,107522,2890245121], // 228988810152649578064853576960394133503
+    const COEFF_N: [<<Self as ModelParameters>::ScalarField as PrimeField>::BigInt; 4] = [
+        MontFp!(Fr, "228988810152649578064853576960394133504").into_bigint(),
+        MontFp!(Fr, "1").into_bigint(),
+        MontFp!(Fr, "1").into_bigint(),
+        MontFp!(Fr, "228988810152649578064853576960394133503").into_bigint(),
     ];
-    const SGN_N: [Sign;4] = [Plus, Plus, Minus, Plus];
+    const SGN_N: [bool;4] = [true, true, false, true];
 
     fn endomorphism(base: &Self::CurveAffine) -> Self::CurveAffine {
         Self::CurveAffine::new(Self::COEFF_B1 * base.x, base.y, false)
