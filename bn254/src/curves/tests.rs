@@ -14,8 +14,7 @@ use crate::{
     g1, g1::Parameters, g2, Bn254, Fq12, Fr, G1Affine, G1Projective, G2Affine, G2Projective,
 };
 
-generate_glv_test!(Parameters);
-
 generate_g1_test!(bn254; curve_tests; sw_tests;);
 generate_g2_test!(bn254; curve_tests; sw_tests;);
 generate_bilinearity_test!(Bn254, Fq12);
+generate_glv_test!(Parameters);

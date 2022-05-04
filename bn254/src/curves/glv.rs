@@ -9,24 +9,9 @@ impl ScalarMul for Parameters {
 impl GLVParameters for Parameters {
     type CurveProjective = crate::G1Projective;
 
-    const COEFF_A1: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_A2: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_A3: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_B1: Self::BaseField = MontFp!(
-        Fq,
-        "21888242871839275220042445260109153167277707414472061641714758635765020556616"
-    );
-
-    const COEFF_B2: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_B3: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_C1: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_C2: Self::BaseField = MontFp!(Fq, "0");
+    const COEFFS_ENDOMORPHISM: &'static[Self::BaseField] = &[
+        MontFp!(Fq, "21888242871839275220042445260109153167277707414472061641714758635765020556616")
+    ];
 
     const LAMBDA: Self::ScalarField = MontFp!(
         Fr,
@@ -42,6 +27,6 @@ impl GLVParameters for Parameters {
     const SGN_N: [bool; 4] = [false, true, false, false];
 
     fn endomorphism(base: &Self::CurveAffine) -> Self::CurveAffine {
-        Self::CurveAffine::new(Self::COEFF_B1 * base.x, base.y, false)
+        Self::CurveAffine::new(Self::COEFFS_ENDOMORPHISM[0] * base.x, base.y, false)
     }
 }
