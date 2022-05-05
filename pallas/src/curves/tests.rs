@@ -8,8 +8,6 @@ use ark_std::{rand::Rng, test_rng};
 
 use crate::{Affine, PallasParameters, Projective};
 
-generate_glv_test!(PallasParameters);
-
 #[test]
 fn test_projective_curve() {
     curve_tests::<Projective>();
@@ -30,3 +28,5 @@ fn test_generator() {
     assert!(generator.is_on_curve());
     assert!(generator.is_in_correct_subgroup_assuming_on_curve());
 }
+
+generate_glv_test!(PallasParameters);

@@ -41,6 +41,7 @@ ark-bn254 = { path = "../bn254" }
 ark-bls12-377 = { path = "../bls12_377" }
 ark-bls12-381 = { path = "../bls12_381" }
 ark-ed-on-bls12-381 = { path = "../ed_on_bls12_381" }
+ark-ed-on-bls12-381-bandersnatch = { path = "../ed_on_bls12_381_bandersnatch" }
 ark-bw6-761 = { path = "../bw6_761" }
 ark-cp6-782 = { path = "../cp6_782" }
 ark-pallas = { path = "../pallas" }
@@ -82,6 +83,11 @@ harness = false
 [[bench]]
 name = "ed_on_bls12_381"
 path = "benches/ed_on_bls12_381.rs"
+harness = false
+
+[[bench]]
+name = "ed_on_bls12_381_bandersnatch"
+path = "benches/ed_on_bls12_381_bandersnatch.rs"
 harness = false
 
 [[bench]]

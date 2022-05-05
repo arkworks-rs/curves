@@ -5,8 +5,6 @@ use ark_std::{rand::Rng, str::FromStr, test_rng};
 
 use crate::*;
 
-generate_glv_test!(BandersnatchParameters);
-
 #[test]
 fn test_projective_curve() {
     curve_tests::<EdwardsProjective>();
@@ -126,3 +124,5 @@ fn test_bytes() {
 fn test_montgomery_conversion() {
     montgomery_conversion_test::<BandersnatchParameters>();
 }
+
+generate_glv_test!(BandersnatchParameters);

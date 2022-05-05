@@ -7,7 +7,7 @@ macro_rules! ec_bench {
         }
 
         fn mul_assign(b: &mut $crate::bencher::Bencher) {
-            const SAMPLES: usize = 1000;
+            const SAMPLES: usize = 100;;
 
             let mut rng = ark_std::test_rng();
 
@@ -25,7 +25,7 @@ macro_rules! ec_bench {
         }
 
         fn add_assign(b: &mut $crate::bencher::Bencher) {
-            const SAMPLES: usize = 1000;
+            const SAMPLES: usize = 100;;
 
             let mut rng = ark_std::test_rng();
 
@@ -43,7 +43,7 @@ macro_rules! ec_bench {
         }
 
         fn sub_assign(b: &mut $crate::bencher::Bencher) {
-            const SAMPLES: usize = 1000;
+            const SAMPLES: usize = 100;;
 
             let mut rng = ark_std::test_rng();
 
@@ -61,7 +61,7 @@ macro_rules! ec_bench {
         }
 
         fn double(b: &mut $crate::bencher::Bencher) {
-            const SAMPLES: usize = 1000;
+            const SAMPLES: usize = 100;;
 
             let mut rng = ark_std::test_rng();
 
@@ -79,7 +79,7 @@ macro_rules! ec_bench {
         }
 
         fn add_assign_mixed(b: &mut $crate::bencher::Bencher) {
-            const SAMPLES: usize = 1000;
+            const SAMPLES: usize = 100;;
 
             let mut rng = ark_std::test_rng();
 
@@ -104,7 +104,7 @@ macro_rules! ec_bench {
         fn deser(b: &mut $crate::bencher::Bencher) {
             use ark_ec::ProjectiveCurve;
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
-            const SAMPLES: usize = 1000;
+            const SAMPLES: usize = 100;;
 
             let mut rng = ark_std::test_rng();
 
@@ -130,7 +130,7 @@ macro_rules! ec_bench {
         fn ser(b: &mut $crate::bencher::Bencher) {
             use ark_ec::ProjectiveCurve;
             use ark_serialize::CanonicalSerialize;
-            const SAMPLES: usize = 1000;
+            const SAMPLES: usize = 100;;
 
             let mut rng = ark_std::test_rng();
 
@@ -152,7 +152,7 @@ macro_rules! ec_bench {
         fn deser_unchecked(b: &mut $crate::bencher::Bencher) {
             use ark_ec::ProjectiveCurve;
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
-            const SAMPLES: usize = 1000;
+            const SAMPLES: usize = 100;;
 
             let mut rng = ark_std::test_rng();
 
@@ -177,7 +177,7 @@ macro_rules! ec_bench {
 
         fn ser_unchecked(b: &mut $crate::bencher::Bencher) {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
-            const SAMPLES: usize = 1000;
+            const SAMPLES: usize = 100;;
 
             let mut rng = ark_std::test_rng();
 
@@ -199,7 +199,7 @@ macro_rules! ec_bench {
         fn deser_uncompressed(b: &mut $crate::bencher::Bencher) {
             use ark_ec::ProjectiveCurve;
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
-            const SAMPLES: usize = 1000;
+            const SAMPLES: usize = 100;;
 
             let mut rng = ark_std::test_rng();
 
@@ -255,3 +255,4 @@ macro_rules! ec_bench {
         );
     };
 }
+

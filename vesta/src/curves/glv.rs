@@ -9,24 +9,9 @@ impl ScalarMul for VestaParameters {
 impl GLVParameters for VestaParameters {
     type CurveProjective = crate::Projective;
 
-    const COEFF_A1: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_A2: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_A3: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_B1: Self::BaseField = MontFp!(
-        Fq,
-        "26005156700822196841419187675678338661165322343552424574062261873906994770353"
-    );
-
-    const COEFF_B2: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_B3: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_C1: Self::BaseField = MontFp!(Fq, "0");
-
-    const COEFF_C2: Self::BaseField = MontFp!(Fq, "0");
+    const COEFFS_ENDOMORPHISM: &'static[Self::BaseField] = &[
+        MontFp!(Fq, "26005156700822196841419187675678338661165322343552424574062261873906994770353")
+    ];
 
     const LAMBDA: Self::ScalarField = MontFp!(
         Fr,
@@ -46,6 +31,6 @@ impl GLVParameters for VestaParameters {
     const SGN_N: [bool; 4] = [false, true, false, false];
 
     fn endomorphism(base: &Self::CurveAffine) -> Self::CurveAffine {
-        Self::CurveAffine::new(Self::COEFF_B1 * base.x, base.y, false)
+        Self::CurveAffine::new(Self::COEFFS_ENDOMORPHISM[0] * base.x, base.y, false)
     }
 }
