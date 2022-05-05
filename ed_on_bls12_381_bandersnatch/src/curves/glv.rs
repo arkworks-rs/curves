@@ -9,9 +9,15 @@ impl ScalarMul for BandersnatchParameters {
 impl GLVParameters for BandersnatchParameters {
     type CurveProjective = crate::EdwardsProjective;
 
-    const COEFFS_ENDOMORPHISM: &'static[Self::BaseField] = &[
-        MontFp!(Fq, "37446463827641770816307242315180085052603635617490163568005256780843403514036"),
-        MontFp!(Fq, "49199877423542878313146170939139662862850515542392585932876811575731455068989")
+    const COEFFS_ENDOMORPHISM: &'static [Self::BaseField] = &[
+        MontFp!(
+            Fq,
+            "37446463827641770816307242315180085052603635617490163568005256780843403514036"
+        ),
+        MontFp!(
+            Fq,
+            "49199877423542878313146170939139662862850515542392585932876811575731455068989"
+        ),
     ];
 
     const LAMBDA: Self::ScalarField = MontFp!(

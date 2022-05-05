@@ -12,8 +12,8 @@ use ark_ff::{
 };
 
 mod g1 {
-    use ark_bls12_381::g1::Parameters;
     use super::*;
+    use ark_bls12_381::g1::Parameters;
     ec_bench!(G1, G1Affine);
     glv_bench!(G1Affine, Parameters);
 }
@@ -29,4 +29,13 @@ f_bench!(target, Fq12, Fq12, fq12);
 
 pairing_bench!(Bls12_381, Fq12);
 
-bencher::benchmark_main!(fq, fr, fq2, fq12, g1::group_ops, g1::group_glv_ops, g2::group_ops, pairing);
+bencher::benchmark_main!(
+    fq,
+    fr,
+    fq2,
+    fq12,
+    g1::group_ops,
+    g1::group_glv_ops,
+    g2::group_ops,
+    pairing
+);

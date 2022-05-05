@@ -12,8 +12,8 @@ use ark_ff::{
 };
 
 mod g1 {
-    use ark_bw6_761::g1::Parameters;
     use super::*;
+    use ark_bw6_761::g1::Parameters;
     ec_bench!(G1, G1Affine);
     glv_bench!(G1Affine, Parameters);
 }
@@ -28,4 +28,13 @@ f_bench!(Fq, Fq, FqRepr, FqRepr, fq);
 f_bench!(Fr, Fr, FrRepr, FrRepr, fr);
 pairing_bench!(BW6_761, Fq6);
 
-bencher::benchmark_main!(fq, fr, fq3, fq6, g1::group_ops, g1::group_glv_ops, g2::group_ops, pairing);
+bencher::benchmark_main!(
+    fq,
+    fr,
+    fq3,
+    fq6,
+    g1::group_ops,
+    g1::group_glv_ops,
+    g2::group_ops,
+    pairing
+);

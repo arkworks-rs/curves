@@ -11,15 +11,15 @@ use ark_std::{rand::Rng, test_rng};
 use core::ops::{AddAssign, MulAssign};
 
 use crate::{
-    g1, g1::Parameters, g2, Bls12_381, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine,
-    G2Projective,
+    g1, g1::Parameters as G1Parameters, g2, g2::Parameters as G2Parameters, Bls12_381, Fq, Fq12,
+    Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective,
 };
 
 generate_g1_test!(bls12_381; curve_tests; sw_tests;);
 generate_g2_test!(bls12_381; curve_tests; sw_tests;);
 generate_bilinearity_test!(Bls12_381, Fq12);
 generate_g1_generator_raw_test!(bls12_381, 4);
-generate_glv_test!(Parameters);
+generate_glv_test!(G1Parameters, G2Parameters);
 
 #[test]
 fn test_g1_endomorphism_beta() {

@@ -9,9 +9,10 @@ impl ScalarMul for VestaParameters {
 impl GLVParameters for VestaParameters {
     type CurveProjective = crate::Projective;
 
-    const COEFFS_ENDOMORPHISM: &'static[Self::BaseField] = &[
-        MontFp!(Fq, "26005156700822196841419187675678338661165322343552424574062261873906994770353")
-    ];
+    const COEFFS_ENDOMORPHISM: &'static [Self::BaseField] = &[MontFp!(
+        Fq,
+        "26005156700822196841419187675678338661165322343552424574062261873906994770353"
+    )];
 
     const LAMBDA: Self::ScalarField = MontFp!(
         Fr,

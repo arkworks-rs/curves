@@ -255,4 +255,3 @@ macro_rules! ec_bench {
         );
     };
 }
-
