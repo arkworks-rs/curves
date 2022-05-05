@@ -18,7 +18,9 @@ mod g1 {
 }
 mod g2 {
     use super::*;
+    use ark_bn254::g2::Parameters;
     ec_bench!(G2, G2Affine);
+    glv_bench!(G2Affine, Parameters);
 }
 
 f_bench!(Fq, Fq, Repr, Repr, fq);
@@ -36,5 +38,6 @@ bencher::benchmark_main!(
     g1::group_ops,
     g1::group_glv_ops,
     g2::group_ops,
+    g2::group_glv_ops,
     pairing
 );

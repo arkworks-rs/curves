@@ -44,11 +44,11 @@ impl GLVParameters for g1::Parameters {
 }
 
 impl ScalarMul for g2::Parameters {
-    type CurveAffine = crate::G1Affine;
+    type CurveAffine = crate::G2Affine;
 }
 
 impl GLVParameters for g2::Parameters {
-    type CurveProjective = crate::G1Projective;
+    type CurveProjective = crate::G2Projective;
 
     const COEFFS_ENDOMORPHISM: &'static[Self::BaseField] = &[
         MontFp!(Fq, "4922464560225523242118178942575080391082002530232324381063048548642823052024664478336818169867474395270858391911405337707247735739826664939444490469542109391530482826728203582549674992333383150446779312029624171857054392282775648")
