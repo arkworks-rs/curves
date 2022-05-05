@@ -9,9 +9,10 @@ impl ScalarMul for Parameters {
 impl GLVParameters for Parameters {
     type CurveProjective = crate::G1Projective;
 
-    const COEFFS_ENDOMORPHISM: &'static[Self::BaseField] = &[
-        MontFp!(Fq, "21888242871839275220042445260109153167277707414472061641714758635765020556616")
-    ];
+    const COEFFS_ENDOMORPHISM: &'static [Self::BaseField] = &[MontFp!(
+        Fq,
+        "21888242871839275220042445260109153167277707414472061641714758635765020556616"
+    )];
 
     const LAMBDA: Self::ScalarField = MontFp!(
         Fr,
