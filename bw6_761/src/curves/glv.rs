@@ -17,7 +17,7 @@ impl GLVParameters for Parameters {
         Fr,
         "258664426012969093929703085429980814127835149614277183275038967946009968870203535512256352201271898244626862047231"
     );
-    
+
     const COEFF_N: [<Self as ModelParameters>::ScalarField; 4] = [
         MontFp!(
             Fr,
