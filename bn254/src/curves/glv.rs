@@ -49,16 +49,16 @@ impl GLVParameters for G2Parameters {
 
     const LAMBDA: Self::ScalarField = MontFp!(
         Fr,
-        "21888242871839275217838484774961031246154997185409878258781734729429964517155"
+        "4407920970296243842393367215006156084916469457145843978461"
     );
 
     const COEFF_N: [<Self as ModelParameters>::ScalarField; 4] = [
-        MontFp!(Fr, "147946756881789319000765030803803410728"),
-        MontFp!(Fr, "9931322734385697763"),
-        MontFp!(Fr, "9931322734385697763"),
         MontFp!(Fr, "147946756881789319010696353538189108491"),
+        MontFp!(Fr, "9931322734385697763"),
+        MontFp!(Fr, "9931322734385697763"),
+        MontFp!(Fr, "147946756881789319000765030803803410728"),
     ];
-    const SGN_N: [bool; 4] = [false, true, false, false];
+    const SGN_N: [bool; 4] = [false, false, false, true];
 
     fn endomorphism(base: &Self::CurveAffine) -> Self::CurveAffine {
         Self::CurveAffine::new(Self::COEFFS_ENDOMORPHISM[0] * base.x, base.y, false)
