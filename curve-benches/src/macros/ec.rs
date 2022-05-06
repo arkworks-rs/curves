@@ -130,7 +130,7 @@ macro_rules! ec_bench {
         fn ser(b: &mut $crate::bencher::Bencher) {
             use ark_ec::ProjectiveCurve;
             use ark_serialize::CanonicalSerialize;
-            const SAMPLES: usize = 100;;
+            const SAMPLES: usize = 100;
 
             let mut rng = ark_std::test_rng();
 
