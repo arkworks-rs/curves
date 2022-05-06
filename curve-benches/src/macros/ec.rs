@@ -43,7 +43,7 @@ macro_rules! ec_bench {
         }
 
         fn sub_assign(b: &mut $crate::bencher::Bencher) {
-            const SAMPLES: usize = 100;;
+            const SAMPLES: usize = 100;
 
             let mut rng = ark_std::test_rng();
 
