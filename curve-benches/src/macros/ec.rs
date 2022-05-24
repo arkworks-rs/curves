@@ -238,6 +238,20 @@ macro_rules! ec_bench {
             })
         }
 
+        fn cofactor_clearing(b: &mut $crate::bencher::Bencher) {
+            use ark_ec::AffineCurve;
+            let mut rng = ark_std::test_rng();
+            const SAMPLES: usize = 1000;
+            let v: Vec<($affine)> = (0..SAMPLES).map(|_| (<$affine>::rand(&mut rng))).collect();
+
+            let mut count = 0;
+            b.iter(|| {
+                let tmp = v[count];
+                count = (count + 1) % SAMPLES;
+                tmp.clear_cofactor()
+            });
+        }
+
         $crate::benchmark_group!(
             group_ops,
             rand,
@@ -252,6 +266,7 @@ macro_rules! ec_bench {
             deser_unchecked,
             deser_uncompressed,
             msm_131072,
+            cofactor_clearing,
         );
     };
 }
