@@ -77,25 +77,36 @@ impl SWModelParameters for Parameters {
 
     #[inline]
     fn clear_cofactor(p: &G2Affine) -> G2Affine {
-        let p_projective = p.into_projective();
-        // c1 = -15132376222941642752
+        // Based on Section 4.1 of https://eprint.iacr.org/2017/419.pdf
+        // [h(ψ)]P = [x^2 − x − 1]P + [x − 1]ψ(P) + (ψ^2)(2P)
+
+        // x = -15132376222941642752
         // When multiplying, use -c1 instead, and then negate the result. That's much
         // more efficient, since the scalar -c1 has less limbs and a much lower Hamming
         // weight.
-        let c1: &'static [u64] = crate::Parameters::X;
+        let x: &'static [u64] = crate::Parameters::X;
+        let p_projective = p.into_projective();
 
-        let t1 = Parameters::mul_affine(p, &c1).neg();
-        let t2 = p_power_endomorphism(&p);
-        let mut t3 = double_p_power_endomorphism(&p_projective.double());
-        t3.add_assign_mixed(&-t2);
-        let mut tmp = t1.clone();
-        tmp.add_assign_mixed(&t2);
-        let mut t2: GroupProjective<Parameters> = tmp;
-        t2 = t2.mul(c1).neg();
-        t3 += t2;
-        t3 -= t1;
-        let q = t3 - p_projective;
-        q.into_affine()
+        // [x]P
+        let x_p = Parameters::mul_affine(p, &x).neg();
+        // ψ(P) 
+        let psi_p = p_power_endomorphism(&p);
+        // (ψ^2)(2P)
+        let mut psi2_p2 = double_p_power_endomorphism(&p_projective.double());
+
+        // tmp = [x]P + ψ(P)
+        let mut tmp = x_p.clone();
+        tmp.add_assign_mixed(&psi_p);
+
+        // tmp2 = [x^2]P + [x]ψ(P)
+        let mut tmp2: GroupProjective<Parameters> = tmp;
+        tmp2 = tmp2.mul(x).neg();
+
+        // add up all the terms
+        psi2_p2 += tmp2;
+        psi2_p2 -= x_p;
+        psi2_p2.add_assign_mixed(&-psi_p);
+        (psi2_p2 - p_projective).into_affine()
     }
 }
 
