@@ -12,9 +12,6 @@ impl Fp2Config for Fq2Config {
     /// NONRESIDUE = -5
     const NONRESIDUE: Fq = MontFp!(Fq, "-5");
 
-    /// QUADRATIC_NONRESIDUE = U
-    const QUADRATIC_NONRESIDUE: Fq2 = QuadExt!(FQ_ZERO, FQ_ONE);
-
     /// Coefficients for the Frobenius automorphism.
     const FROBENIUS_COEFF_FP2_C1: &'static [Fq] = &[
         // NONRESIDUE**(((q^0) - 1) / 2)

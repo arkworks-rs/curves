@@ -147,26 +147,6 @@ fn test_fq2_legendre() {
 }
 
 #[test]
-fn test_fq2_mul_nonresidue() {
-    let mut rng = test_rng();
-
-    let nqr = Fq2::new(Fq::zero(), Fq::one());
-
-    let quadratic_non_residue = Fq2::new(
-        Fq2Config::QUADRATIC_NONRESIDUE.c0,
-        Fq2Config::QUADRATIC_NONRESIDUE.c1,
-    );
-    for _ in 0..1000 {
-        let mut a = Fq2::rand(&mut rng);
-        let mut b = a;
-        a = quadratic_non_residue * &a;
-        b.mul_assign(&nqr);
-
-        assert_eq!(a, b);
-    }
-}
-
-#[test]
 fn test_fq6_mul_by_1() {
     let mut rng = test_rng();
 
