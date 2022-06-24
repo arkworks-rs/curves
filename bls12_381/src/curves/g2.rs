@@ -89,7 +89,7 @@ impl SWModelParameters for Parameters {
 
         // [x]P
         let x_p = Parameters::mul_affine(p, &x).neg();
-        // ψ(P) 
+        // ψ(P)
         let psi_p = p_power_endomorphism(&p);
         // (ψ^2)(2P)
         let mut psi2_p2 = double_p_power_endomorphism(&p_projective.double());
