@@ -182,3 +182,36 @@ pub fn double_p_power_endomorphism(p: &GroupProjective<Parameters>) -> GroupProj
     res
 }
 
+#[cfg(test)]
+mod test {
+
+    use super::*;
+    use ark_std::UniformRand;
+
+    #[test]
+    fn test_cofactor_clearing() {
+        // multiplying by h_eff and clearing the cofactor by the efficient
+        // endomorphism-based method should yield the same result.
+        let h_eff: &'static [u64] = &[
+            0xe8020005aaa95551,
+            0x59894c0adebbf6b4,
+            0xe954cbc06689f6a3,
+            0x2ec0ec69d7477c1a,
+            0x6d82bf015d1212b0,
+            0x329c2f178731db95,
+            0x9986ff031508ffe1,
+            0x88e2a8e9145ad768,
+            0x584c6a0ea91b3528,
+            0xbc69f08f2ee75b3,
+        ];
+
+        let mut rng = ark_std::test_rng();
+        const SAMPLES: usize = 10;
+        for _ in 0..SAMPLES {
+            let p = GroupAffine::<g2::Parameters>::rand(&mut rng);
+            let optimised = p.clear_cofactor().into_projective();
+            let naive = g2::Parameters::mul_affine(&p, h_eff);
+            assert_eq!(optimised, naive);
+        }
+    }
+}
