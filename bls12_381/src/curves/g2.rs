@@ -1,8 +1,10 @@
+use core::ops::Neg;
+
 use ark_ec::{
     bls12,
     bls12::Bls12Parameters,
     models::{ModelParameters, SWModelParameters},
-    short_weierstrass_jacobian::GroupAffine,
+    short_weierstrass_jacobian::{GroupAffine, GroupProjective},
     AffineCurve, ProjectiveCurve,
 };
 use ark_ff::{BigInt, Field, MontFp, QuadExt, Zero};
@@ -75,40 +77,24 @@ impl SWModelParameters for Parameters {
 
     #[inline]
     fn clear_cofactor(p: &G2Affine) -> G2Affine {
-        // Using the effective cofactor, as explained in
-        // Section 5 of https://eprint.iacr.org/2019/403.pdf.
         let p_projective = p.into_projective();
-        let c1: Fr = MontFp!(Fr, "-15132376222941642752");
+        // c1 = -15132376222941642752
+        // When multiplying, use -c1 instead, and then negate the result. That's much
+        // more efficient, since the scalar -c1 has less limbs and a much lower Hamming
+        // weight.
+        let c1: &'static [u64] = crate::Parameters::X;
 
-        let h_eff: &'static [u64] = &[
-            0xe8020005aaa95551,
-            0x59894c0adebbf6b4,
-            0xe954cbc06689f6a3,
-            0x2ec0ec69d7477c1a,
-            0x6d82bf015d1212b0,
-            0x329c2f178731db95,
-            0x9986ff031508ffe1,
-            0x88e2a8e9145ad768,
-            0x584c6a0ea91b3528,
-            0xbc69f08f2ee75b3,
-        ];
-        let t1 = p.mul(c1);
-        let mut t2 = p_power_endomorphism(&p).into_projective();
-        let mut t3 =
-            p_power_endomorphism(&p_power_endomorphism(&p_projective.double().into_affine()))
-                .into_projective()
-                - t2;
-        t2 += t1;
-        t2 = t2.into_affine().mul(c1);
+        let t1 = Parameters::mul_affine(p, &c1).neg();
+        let t2 = p_power_endomorphism(&p);
+        let mut t3 = double_p_power_endomorphism(&p_projective.double());
+        t3.add_assign_mixed(&-t2);
+        let mut tmp = t1.clone();
+        tmp.add_assign_mixed(&t2);
+        let mut t2: GroupProjective<Parameters> = tmp;
+        t2 = t2.mul(c1).neg();
         t3 += t2;
         t3 -= t1;
         let q = t3 - p_projective;
-        let naive = Parameters::mul_affine(&p, h_eff);
-        assert!(naive
-            .into_affine()
-            .is_in_correct_subgroup_assuming_on_curve());
-        assert!(q.into_affine().is_in_correct_subgroup_assuming_on_curve());
-        assert_eq!(q, naive);
         q.into_affine()
     }
 }
@@ -154,6 +140,11 @@ pub const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = QuadExt!(
         "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
 );
 
+pub const DOUBLE_P_POWER_ENDOMORPHISM: Fq2 = QuadExt!(
+    MontFp!(Fq, "4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436"),
+    FQ_ZERO
+);
+
 pub fn p_power_endomorphism(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
     // The p-power endomorphism for G2 is defined as follows:
     // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1).
@@ -180,3 +171,14 @@ pub fn p_power_endomorphism(p: &GroupAffine<Parameters>) -> GroupAffine<Paramete
 
     res
 }
+
+/// For a p-power endomorphism psi(P), compute psi(psi(P))
+pub fn double_p_power_endomorphism(p: &GroupProjective<Parameters>) -> GroupProjective<Parameters> {
+    let mut res = *p;
+
+    res.x *= DOUBLE_P_POWER_ENDOMORPHISM;
+    res.y = res.y.neg();
+
+    res
+}
+
