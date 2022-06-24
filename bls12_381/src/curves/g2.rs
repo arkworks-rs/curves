@@ -3,7 +3,7 @@ use ark_ec::{
     bls12::Bls12Parameters,
     models::{ModelParameters, SWModelParameters},
     short_weierstrass_jacobian::GroupAffine,
-    AffineCurve,
+    AffineCurve, ProjectiveCurve,
 };
 use ark_ff::{BigInt, Field, MontFp, QuadExt, Zero};
 
@@ -71,6 +71,45 @@ impl SWModelParameters for Parameters {
         let p_times_point = p_power_endomorphism(point);
 
         x_times_point.eq(&p_times_point)
+    }
+
+    #[inline]
+    fn clear_cofactor(p: &G2Affine) -> G2Affine {
+        // Using the effective cofactor, as explained in
+        // Section 5 of https://eprint.iacr.org/2019/403.pdf.
+        let p_projective = p.into_projective();
+        let c1: Fr = MontFp!(Fr, "-15132376222941642752");
+
+        let h_eff: &'static [u64] = &[
+            0xe8020005aaa95551,
+            0x59894c0adebbf6b4,
+            0xe954cbc06689f6a3,
+            0x2ec0ec69d7477c1a,
+            0x6d82bf015d1212b0,
+            0x329c2f178731db95,
+            0x9986ff031508ffe1,
+            0x88e2a8e9145ad768,
+            0x584c6a0ea91b3528,
+            0xbc69f08f2ee75b3,
+        ];
+        let t1 = p.mul(c1);
+        let mut t2 = p_power_endomorphism(&p).into_projective();
+        let mut t3 =
+            p_power_endomorphism(&p_power_endomorphism(&p_projective.double().into_affine()))
+                .into_projective()
+                - t2;
+        t2 += t1;
+        t2 = t2.into_affine().mul(c1);
+        t3 += t2;
+        t3 -= t1;
+        let q = t3 - p_projective;
+        let naive = Parameters::mul_affine(&p, h_eff);
+        assert!(naive
+            .into_affine()
+            .is_in_correct_subgroup_assuming_on_curve());
+        assert!(q.into_affine().is_in_correct_subgroup_assuming_on_curve());
+        assert_eq!(q, naive);
+        q.into_affine()
     }
 }
 
