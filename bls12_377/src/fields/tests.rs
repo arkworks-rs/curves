@@ -3,7 +3,7 @@ use ark_algebra_test_templates::{
 };
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger384},
-    fields::{FftField, Field, Fp2Config, Fp6Config, PrimeField, SquareRootField},
+    fields::{FftField, Field, Fp6Config, PrimeField, SquareRootField},
     One, UniformRand, Zero,
 };
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
@@ -13,7 +13,7 @@ use core::{
     ops::{AddAssign, MulAssign, SubAssign},
 };
 
-use crate::{Fq, Fq12, Fq2, Fq2Config, Fq6, Fq6Config, FqConfig, Fr, FrConfig};
+use crate::{Fq, Fq12, Fq2, Fq6, Fq6Config, FqConfig, Fr, FrConfig};
 
 generate_field_test!(bls12_377; fq2; fq6; fq12; mont(6, 4); );
 generate_field_serialization_test!(bls12_377; fq2; fq6; fq12;);
