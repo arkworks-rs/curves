@@ -1,7 +1,7 @@
 use crate::{fq::Fq, fr::Fr};
 use ark_ec::{
-    models::{CurveConfig, SWCurveConfig},
-    short_weierstrass::{Affine, Projective},
+    models::CurveConfig,
+    short_weierstrass::{Affine, Projective, SWCurveConfig},
 };
 use ark_ff::{MontFp, Zero};
 
@@ -19,21 +19,21 @@ impl CurveConfig for VestaParameters {
     const COFACTOR: &'static [u64] = &[0x1];
 
     /// COFACTOR_INV = 1
-    const COFACTOR_INV: Fr = MontFp!(Fr, "1");
+    const COFACTOR_INV: Fr = MontFp!("1");
 }
 
-pub type Affine = Affine<VestaParameters>;
-pub type Projective = Projective<VestaParameters>;
+pub type G1Affine = Affine<VestaParameters>;
+pub type G1Projective = Projective<VestaParameters>;
 
 impl SWCurveConfig for VestaParameters {
     /// COEFF_A = 0
-    const COEFF_A: Fq = MontFp!(Fq, "0");
+    const COEFF_A: Fq = MontFp!("0");
 
     /// COEFF_B = 5
-    const COEFF_B: Fq = MontFp!(Fq, "5");
+    const COEFF_B: Fq = MontFp!("5");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
+    const GENERATOR: G1Affine = G1Affine::new_unchecked
         (G_GENERATOR_X, G_GENERATOR_Y);
 
     #[inline(always)]
@@ -44,8 +44,8 @@ impl SWCurveConfig for VestaParameters {
 
 /// G_GENERATOR_X = -1
 /// Encoded in Montgomery form, so the value here is -R mod p.
-pub const G_GENERATOR_X: Fq = MontFp!(Fq, "-1");
+pub const G_GENERATOR_X: Fq = MontFp!("-1");
 
 /// G_GENERATOR_Y = 2
 /// Encoded in Montgomery form, so the value here is 2R mod p.
-pub const G_GENERATOR_Y: Fq = MontFp!(Fq, "2");
+pub const G_GENERATOR_Y: Fq = MontFp!("2");

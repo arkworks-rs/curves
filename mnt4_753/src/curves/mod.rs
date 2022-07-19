@@ -1,7 +1,7 @@
 use ark_ec::models::mnt4::{MNT4Parameters, MNT4};
 use ark_ff::{
     biginteger::{BigInt, BigInteger768},
-    Fp2, MontFp, QuadExt,
+    Fp2, MontFp,
 };
 
 use crate::{Fq, Fq2Config, Fq4Config, Fr};
@@ -22,14 +22,14 @@ pub type MNT4_753 = MNT4<Parameters>;
 pub struct Parameters;
 
 impl MNT4Parameters for Parameters {
-    const TWIST: Fp2<Self::Fp2Config> = QuadExt!(FQ_ZERO, FQ_ONE);
+    const TWIST: Fp2<Self::Fp2Config> = Fp2::new(FQ_ZERO, FQ_ONE);
     // A coefficient of MNT4-753 G2 =
     // ```
     // mnt4753_twist_coeff_a = mnt4753_Fq2(mnt4753_G1::coeff_a * non_residue, mnt6753_Fq::zero());
     //  = (A_COEFF * NONRESIDUE, ZERO)
     //  = (26, ZERO)
     // ```
-    const TWIST_COEFF_A: Fp2<Self::Fp2Config> = QuadExt!(G1_COEFF_A_NON_RESIDUE, FQ_ZERO,);
+    const TWIST_COEFF_A: Fp2<Self::Fp2Config> = Fp2::new(G1_COEFF_A_NON_RESIDUE, FQ_ZERO);
     // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt4753.ml
     const ATE_LOOP_COUNT: &'static [u64] = &[
         8824542903220142080,
@@ -66,9 +66,9 @@ impl MNT4Parameters for Parameters {
 }
 
 // 26
-pub const G1_COEFF_A_NON_RESIDUE: Fq = MontFp!(Fq, "26");
+pub const G1_COEFF_A_NON_RESIDUE: Fq = MontFp!("26");
 
-pub const FQ_ZERO: Fq = MontFp!(Fq, "0");
-pub const FQ_ONE: Fq = MontFp!(Fq, "1");
-pub const FR_ZERO: Fr = MontFp!(Fr, "0");
-pub const FR_ONE: Fr = MontFp!(Fr, "1");
+pub const FQ_ZERO: Fq = MontFp!("0");
+pub const FQ_ONE: Fq = MontFp!("1");
+pub const FR_ZERO: Fr = MontFp!("0");
+pub const FR_ONE: Fr = MontFp!("1");

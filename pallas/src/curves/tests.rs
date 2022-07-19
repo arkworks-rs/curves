@@ -16,8 +16,8 @@ fn test_projective_curve() {
 #[test]
 fn test_projective_group() {
     let mut rng = test_rng();
-    let a: Projective = rng.gen();
-    let b: Projective = rng.gen();
+    let a: G1Projective = rng.gen();
+    let b: G1Projective = rng.gen();
     group_test(a, b);
 }
 

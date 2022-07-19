@@ -7,4 +7,4 @@ pub struct FqConfig;
 pub type Fq = Fp384<MontBackend<FqConfig, 6>>;
 
 pub const FQ_ONE: Fq = Fq::new(FqConfig::R);
-pub const FQ_ZERO: Fq = MontFp!(Fq, "0");
+pub const FQ_ZERO: Fq = MontFp!("0");

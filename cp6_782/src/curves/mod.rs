@@ -1,8 +1,8 @@
-use ark_ec::{models::SWCurveConfig, PairingEngine};
+use ark_ec::{models::short_weierstrass::SWCurveConfig, PairingEngine};
 use ark_ff::{
     biginteger::BigInteger832,
     fields::{BitIteratorBE, Field},
-    BigInt, CubicExt, One,
+    BigInt, One,
 };
 
 use crate::{Fq, Fq3, Fq6, Fr, FQ_ONE, FQ_ZERO};
@@ -87,7 +87,7 @@ impl CP6_782 {
 
             let x = py_twist_squared;
             let y = gamma_old_rx - &old_ry - &gamma_twist_px;
-            let ell_rr_at_p = Fq6::new(x, y);
+            let ell_rr_at_p: Fq6 = Fq6::new(x, y);
 
             rx = gamma.square() - &old_rx.double();
             ry = gamma * &(old_rx - &rx) - &old_ry;
@@ -105,7 +105,7 @@ impl CP6_782 {
 
                 let x = py_twist_squared;
                 let y = gamma_qx - &qy - &gamma_twist_px;
-                let ell_rq_at_p = Fq6::new(x, y);
+                let ell_rq_at_p: Fq6 = Fq6::new(x, y);
 
                 rx = gamma.square() - &old_rx - &qx;
                 ry = gamma * &(old_rx - &rx) - &old_ry;
@@ -153,7 +153,7 @@ impl CP6_782 {
 }
 
 /// TWIST = (0, 1, 0)
-pub const TWIST: Fq3 = CubicExt!(FQ_ZERO, FQ_ONE, FQ_ZERO);
+pub const TWIST: Fq3 = Fq3::new(FQ_ZERO, FQ_ONE, FQ_ZERO);
 
 /// ATE_IS_LOOP_COUNT_NEG = false
 pub const ATE_IS_LOOP_COUNT_NEG: bool = false;

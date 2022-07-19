@@ -231,8 +231,8 @@ pub mod fields {
 
 pub mod curves {
     use ark_ec::{
-        short_weierstrass::Projective as SWProjective,
-        twisted_edwards::Projective as TEProjective, ProjectiveCurve,
+        short_weierstrass::Projective as SWProjective, twisted_edwards::Projective as TEProjective,
+        ProjectiveCurve,
     };
     use ark_ff::{BitIteratorLE, Field, One, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
@@ -380,7 +380,7 @@ pub mod curves {
 
     pub fn sw_test<P, GG>() -> Result<(), SynthesisError>
     where
-        P: ark_ec::SWCurveConfig,
+        P: ark_ec::models::short_weierstrass::SWCurveConfig,
         GG: CurveVar<SWProjective<P>, <P::BaseField as Field>::BasePrimeField>,
         for<'a> &'a GG: GroupOpsBounds<'a, SWProjective<P>, GG>,
     {
@@ -391,7 +391,6 @@ pub mod curves {
             AllocationMode::Constant,
         ];
         for &mode in &modes {
-            use ark_ec::group::Group;
 
             let mut rng = test_rng();
 
@@ -428,7 +427,7 @@ pub mod curves {
             gadget_a_zero.enforce_equal(&gadget_a)?;
 
             // Check doubling
-            let aa = Group::double(&a);
+            let aa = &a.double();
             let aa_affine = aa.into_affine();
             gadget_a.double_in_place()?;
             let aa_val = gadget_a.value()?.into_affine();
@@ -464,7 +463,6 @@ pub mod curves {
             AllocationMode::Constant,
         ];
         for &mode in &modes {
-            use ark_ec::group::Group;
 
             let mut rng = test_rng();
 
@@ -498,7 +496,7 @@ pub mod curves {
             assert!(cs.is_satisfied().unwrap());
 
             // Check doubling
-            let aa = Group::double(&a);
+            let aa = &a.double();
             let aa_affine = aa.into_affine();
             gadget_a.double_in_place()?;
             let aa_val = gadget_a.value()?.into_affine();

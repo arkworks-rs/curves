@@ -1,8 +1,8 @@
 use ark_ec::models::{
     mnt6::{MNT6Parameters, MNT6},
-    SWCurveConfig,
+    short_weierstrass::SWCurveConfig,
 };
-use ark_ff::{biginteger::BigInteger768, BigInt, CubicExt, Fp3, MontFp};
+use ark_ff::{biginteger::BigInteger768, BigInt, Fp3, MontFp};
 
 use crate::{Fq, Fq3Config, Fq6Config, Fr};
 
@@ -22,7 +22,7 @@ pub type MNT6_753 = MNT6<Parameters>;
 pub struct Parameters;
 
 impl MNT6Parameters for Parameters {
-    const TWIST: Fp3<Self::Fp3Config> = CubicExt!(FQ_ZERO, FQ_ONE, FQ_ZERO);
+    const TWIST: Fp3<Self::Fp3Config> = Fp3::new(FQ_ZERO, FQ_ONE, FQ_ZERO);
     // A coefficient of MNT6-753 G2 =
     // ```
     // mnt6753_twist_coeff_a = mnt6753_Fq3(mnt6753_Fq::zero(), mnt6753_Fq::zero(),
@@ -30,7 +30,7 @@ impl MNT6Parameters for Parameters {
     //  = (ZERO, ZERO, A_COEFF);
     // ```
     const TWIST_COEFF_A: Fp3<Self::Fp3Config> =
-        CubicExt!(FQ_ZERO, FQ_ZERO, g1::Parameters::COEFF_A,);
+       Fp3::new(FQ_ZERO, FQ_ZERO, g1::Parameters::COEFF_A,);
 
     // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt6753.ml
     const ATE_LOOP_COUNT: &'static [u64] = &[
@@ -67,7 +67,7 @@ impl MNT6Parameters for Parameters {
     type G2Parameters = self::g2::Parameters;
 }
 
-pub const FQ_ZERO: Fq = MontFp!(Fq, "0");
-pub const FQ_ONE: Fq = MontFp!(Fq, "1");
-pub const FR_ZERO: Fr = MontFp!(Fr, "0");
-pub const FR_ONE: Fr = MontFp!(Fr, "1");
+pub const FQ_ZERO: Fq = MontFp!("0");
+pub const FQ_ONE: Fq = MontFp!("1");
+pub const FR_ZERO: Fr = MontFp!("0");
+pub const FR_ONE: Fr = MontFp!("1");

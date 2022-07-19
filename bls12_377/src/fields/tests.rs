@@ -156,7 +156,7 @@ fn test_fq6_mul_by_1() {
         let mut b = a;
 
         a.mul_by_1(&c1);
-        b.mul_assign(&Fq6::new(Fq2::zero(), c1, Fq2::zero()));
+        b.mul_assign(&Fq6 = Fq6::new(Fq2::zero(), c1, Fq2::zero()));
 
         assert_eq!(a, b);
     }
@@ -173,7 +173,7 @@ fn test_fq6_mul_by_01() {
         let mut b = a;
 
         a.mul_by_01(&c0, &c1);
-        b.mul_assign(&Fq6::new(c0, c1, Fq2::zero()));
+        b.mul_assign(&Fq6 = Fq6::new(c0, c1, Fq2::zero()));
 
         assert_eq!(a, b);
     }
@@ -192,8 +192,8 @@ fn test_fq12_mul_by_014() {
 
         a.mul_by_014(&c0, &c1, &c5);
         b.mul_assign(&Fq12::new(
-            Fq6::new(c0, c1, Fq2::zero()),
-            Fq6::new(Fq2::zero(), c5, Fq2::zero()),
+            Fq6 = Fq6::new(c0, c1, Fq2::zero()),
+            Fq6 = Fq6::new(Fq2::zero(), c5, Fq2::zero()),
         ));
 
         assert_eq!(a, b);
@@ -213,8 +213,8 @@ fn test_fq12_mul_by_034() {
 
         a.mul_by_034(&c0, &c3, &c4);
         b.mul_assign(&Fq12::new(
-            Fq6::new(c0, Fq2::zero(), Fq2::zero()),
-            Fq6::new(c3, c4, Fq2::zero()),
+            Fq6 = Fq6::new(c0, Fq2::zero(), Fq2::zero()),
+            Fq6 = Fq6::new(c3, c4, Fq2::zero()),
         ));
 
         assert_eq!(a, b);

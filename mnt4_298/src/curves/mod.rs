@@ -1,5 +1,5 @@
 use ark_ec::models::mnt4::{MNT4Parameters, MNT4};
-use ark_ff::{biginteger::BigInteger320, BigInt, Fp2, MontFp, QuadExt};
+use ark_ff::{biginteger::BigInteger320, BigInt, Fp2, MontFp};
 
 use crate::{Fq, Fq2Config, Fq4Config, Fr};
 
@@ -19,14 +19,14 @@ pub type MNT4_298 = MNT4<Parameters>;
 pub struct Parameters;
 
 impl MNT4Parameters for Parameters {
-    const TWIST: Fp2<Self::Fp2Config> = QuadExt!(FQ_ZERO, FQ_ONE);
+    const TWIST: Fp2<Self::Fp2Config> = Fp2::<Self::Fp2Config>::new(FQ_ZERO, FQ_ONE);
     // A coefficient of MNT4-298 G2 =
     // ```
     // mnt4298_twist_coeff_a = mnt4298_Fq2(mnt4298_G1::coeff_a * non_residue, mnt6298_Fq::zero());
     //  = (A_COEFF * NONRESIDUE, ZERO)
     //  = (34, ZERO)
     // ```
-    const TWIST_COEFF_A: Fp2<Self::Fp2Config> = QuadExt!(G1_COEFF_A_NON_RESIDUE, FQ_ZERO);
+    const TWIST_COEFF_A: Fp2<Self::Fp2Config> = Fp2::<Self::Fp2Config>::new(G1_COEFF_A_NON_RESIDUE, FQ_ZERO);
 
     const ATE_LOOP_COUNT: &'static [u64] = &[993502997770534912, 5071219579242586943, 2027349];
     const ATE_IS_LOOP_COUNT_NEG: bool = false;
@@ -43,8 +43,8 @@ impl MNT4Parameters for Parameters {
 }
 
 // 34
-pub const G1_COEFF_A_NON_RESIDUE: Fq = MontFp!(Fq, "34");
-pub const FQ_ZERO: Fq = MontFp!(Fq, "0");
-pub const FQ_ONE: Fq = MontFp!(Fq, "1");
-pub const FR_ZERO: Fr = MontFp!(Fr, "0");
-pub const FR_ONE: Fr = MontFp!(Fr, "1");
+pub const G1_COEFF_A_NON_RESIDUE: Fq = MontFp!("34");
+pub const FQ_ZERO: Fq = MontFp!("0");
+pub const FQ_ONE: Fq = MontFp!("1");
+pub const FR_ZERO: Fr = MontFp!("0");
+pub const FR_ONE: Fr = MontFp!("1");

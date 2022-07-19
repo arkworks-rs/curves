@@ -1,6 +1,6 @@
 use ark_algebra_test_templates::{
     curves::*, generate_bilinearity_test, generate_g1_test, generate_g2_test,
-    generate_product_of_pairings_test, groups::*, msm::*,
+    generate_product_of_pairings_test, msm::*,
 };
 use ark_ec::{AffineCurve, PairingEngine, ProjectiveCurve};
 use ark_ff::{Field, One, PrimeField, UniformRand};

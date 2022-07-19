@@ -6,5 +6,5 @@ use ark_ff::fields::{Fp832, MontBackend, MontConfig, MontFp};
 pub struct FqConfig;
 pub type Fq = Fp832<MontBackend<FqConfig, 13>>;
 
-pub const FQ_ONE: Fq = MontFp!(Fq, "1");
-pub const FQ_ZERO: Fq = MontFp!(Fq, "0");
+pub const FQ_ONE: Fq = MontFp!("1");
+pub const FQ_ZERO: Fq = MontFp!("0");
