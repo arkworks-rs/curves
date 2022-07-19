@@ -1,18 +1,18 @@
 use ark_ec::{
-    models::{ModelParameters, SWModelParameters},
-    short_weierstrass_jacobian::{GroupAffine, GroupProjective},
+    models::{CurveConfig, SWCurveConfig},
+    short_weierstrass::{Affine, Projective},
 };
 use ark_ff::{CubicExt, MontFp};
 
 use crate::{Fq, Fq3, Fr, FQ_ZERO};
 
-pub type G2Affine = GroupAffine<Parameters>;
-pub type G2Projective = GroupProjective<Parameters>;
+pub type G2Affine = Affine<Parameters>;
+pub type G2Projective = Projective<Parameters>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
-impl ModelParameters for Parameters {
+impl CurveConfig for Parameters {
     type BaseField = Fq3;
     type ScalarField = Fr;
 
@@ -58,7 +58,7 @@ impl ModelParameters for Parameters {
     const COFACTOR_INV: Fr = MontFp!(Fr, "45586359457219724873147353901735745013467692594291916855200979604570630929674383405372210802279573887880950375598");
 }
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for Parameters {
     /// COEFF_A = (0, 0, COEFF_A * TWIST^2) = (0, 0, 5)
     const COEFF_A: Fq3 = CubicExt!(FQ_ZERO, FQ_ZERO, MontFp!(Fq, "5"),);
 

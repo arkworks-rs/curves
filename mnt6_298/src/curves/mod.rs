@@ -1,6 +1,6 @@
 use ark_ec::{
     models::mnt6::{MNT6Parameters, MNT6},
-    SWModelParameters,
+    SWCurveConfig,
 };
 use ark_ff::{biginteger::BigInteger320, BigInt, CubicExt, Fp3, MontFp};
 

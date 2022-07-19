@@ -1,7 +1,7 @@
 use ark_ec::{
     mnt6,
     mnt6::MNT6Parameters,
-    models::{ModelParameters, SWModelParameters},
+    models::{CurveConfig, SWCurveConfig},
 };
 use ark_ff::{CubicExt, MontFp};
 
@@ -14,7 +14,7 @@ pub type G2Prepared = mnt6::G2Prepared<crate::Parameters>;
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
-impl ModelParameters for Parameters {
+impl CurveConfig for Parameters {
     type BaseField = Fq3;
     type ScalarField = Fr;
 
@@ -66,7 +66,7 @@ pub const MUL_BY_A_C1: Fq = MontFp!(Fq, "121");
 /// MUL_BY_A_C2 = COEFF_A
 pub const MUL_BY_A_C2: Fq = g1::Parameters::COEFF_A;
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for Parameters {
     const COEFF_A: Fq3 = crate::Parameters::TWIST_COEFF_A;
     // B coefficient of MNT6-753 G2 =
     // ```

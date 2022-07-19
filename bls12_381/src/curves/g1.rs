@@ -1,8 +1,8 @@
 use ark_ec::{
     bls12,
     bls12::Bls12Parameters,
-    models::{ModelParameters, SWModelParameters},
-    short_weierstrass_jacobian::GroupAffine,
+    models::{CurveConfig, SWCurveConfig},
+    short_weierstrass::Affine,
     AffineCurve, ProjectiveCurve,
 };
 use ark_ff::{biginteger::BigInteger256, MontFp, Zero};
@@ -16,7 +16,7 @@ pub type G1Projective = bls12::G1Projective<crate::Parameters>;
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
-impl ModelParameters for Parameters {
+impl CurveConfig for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -31,7 +31,7 @@ impl ModelParameters for Parameters {
     );
 }
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for Parameters {
     /// COEFF_A = 0
     const COEFF_A: Fq = MontFp!(Fq, "0");
 
@@ -80,7 +80,7 @@ pub const G1_GENERATOR_Y: Fq = MontFp!(Fq, "133950654494447647302047137994192122
 /// BETA is a non-trivial cubic root of unity in Fq.
 pub const BETA: Fq = MontFp!(Fq, "793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350");
 
-pub fn endomorphism(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
+pub fn endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     // Endomorphism of the points on the curve.
     // endomorphism_p(x,y) = (BETA * x, y)
     // where BETA is a non-trivial cubic root of unity in Fq.

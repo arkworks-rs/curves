@@ -2,7 +2,7 @@
 //! This module implements the R1CS equivalent of `ark_ed_on_cp6_782`.
 //!
 //! It implements field variables for `crate::Fq`,
-//! and group variables for `crate::GroupProjective`.
+//! and group variables for `crate::Projective`.
 //!
 //! The field underlying these constraints is `crate::Fq`.
 //!

@@ -1,6 +1,6 @@
 use ark_ec::{
-    models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
-    twisted_edwards_extended::{GroupAffine, GroupProjective},
+    models::CurveConfig,
+    twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
 use ark_ff::MontFp;
 
@@ -9,13 +9,13 @@ use crate::{fq::Fq, fr::Fr};
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = GroupAffine<EdwardsParameters>;
-pub type EdwardsProjective = GroupProjective<EdwardsParameters>;
+pub type EdwardsAffine = Affine<EdwardsParameters>;
+pub type EdwardsProjective = Projective<EdwardsParameters>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct EdwardsParameters;
 
-impl ModelParameters for EdwardsParameters {
+impl CurveConfig for EdwardsParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -30,7 +30,7 @@ impl ModelParameters for EdwardsParameters {
     );
 }
 
-impl TEModelParameters for EdwardsParameters {
+impl TECurveConfig for EdwardsParameters {
     /// COEFF_A = -1
     const COEFF_A: Fq = MontFp!(Fq, "-1");
 
@@ -40,7 +40,7 @@ impl TEModelParameters for EdwardsParameters {
     /// Generated randomly
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);
 
-    type MontgomeryModelParameters = EdwardsParameters;
+    type MontCurveConfig = EdwardsParameters;
 
     /// Multiplication by `a` is just negation.
     /// Is `a` 1 or -1?
@@ -50,7 +50,7 @@ impl TEModelParameters for EdwardsParameters {
     }
 }
 
-impl MontgomeryModelParameters for EdwardsParameters {
+impl MontCurveConfig for EdwardsParameters {
     /// COEFF_A = 0x8D26E3FADA9010A26949031ECE3971B93952AD84D4753DDEDB748DA37E8F552
     ///         = 3990301581132929505568273333084066329187552697088022219156688740916631500114
     const COEFF_A: Fq = MontFp!(
@@ -65,7 +65,7 @@ impl MontgomeryModelParameters for EdwardsParameters {
         "4454160168295440918680551605697480202188346638066041608778544715000777738925"
     );
 
-    type TEModelParameters = EdwardsParameters;
+    type TECurveConfig = EdwardsParameters;
 }
 
 /// GENERATOR_X =

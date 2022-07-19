@@ -1,6 +1,6 @@
 use ark_ec::{
-    models::{ModelParameters, SWModelParameters},
-    short_weierstrass_jacobian::{GroupAffine, GroupProjective},
+    models::{CurveConfig, SWCurveConfig},
+    short_weierstrass::{Affine, Projective},
 };
 use ark_ff::{MontFp, Zero};
 
@@ -12,7 +12,7 @@ mod tests;
 #[derive(Copy, Clone, Default, PartialEq, Eq)]
 pub struct PallasParameters;
 
-impl ModelParameters for PallasParameters {
+impl CurveConfig for PallasParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -23,10 +23,10 @@ impl ModelParameters for PallasParameters {
     const COFACTOR_INV: Fr = MontFp!(Fr, "1");
 }
 
-pub type Affine = GroupAffine<PallasParameters>;
-pub type Projective = GroupProjective<PallasParameters>;
+pub type Affine = Affine<PallasParameters>;
+pub type Projective = Projective<PallasParameters>;
 
-impl SWModelParameters for PallasParameters {
+impl SWCurveConfig for PallasParameters {
     /// COEFF_A = 0
     const COEFF_A: Fq = MontFp!(Fq, "0");
 

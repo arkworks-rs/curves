@@ -1,6 +1,6 @@
 use ark_ec::{
-    models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
-    twisted_edwards_extended::{GroupAffine, GroupProjective},
+    models::CurveConfig,
+    twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
 use ark_ff::MontFp;
 
@@ -9,8 +9,8 @@ use crate::{Fq, Fr};
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = GroupAffine<EdwardsParameters>;
-pub type EdwardsProjective = GroupProjective<EdwardsParameters>;
+pub type EdwardsAffine = Affine<EdwardsParameters>;
+pub type EdwardsProjective = Projective<EdwardsParameters>;
 
 /// `Baby-JubJub` is a twisted Edwards curve. These curves have equations of the
 /// form: ax² + y² = 1 + dx²y².
@@ -22,7 +22,7 @@ pub type EdwardsProjective = GroupProjective<EdwardsParameters>;
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct EdwardsParameters;
 
-impl ModelParameters for EdwardsParameters {
+impl CurveConfig for EdwardsParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -37,7 +37,7 @@ impl ModelParameters for EdwardsParameters {
     );
 }
 
-impl TEModelParameters for EdwardsParameters {
+impl TECurveConfig for EdwardsParameters {
     /// COEFF_A = 1
     const COEFF_A: Fq = MontFp!(Fq, "1");
 
@@ -56,16 +56,16 @@ impl TEModelParameters for EdwardsParameters {
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);
 
-    type MontgomeryModelParameters = EdwardsParameters;
+    type MontCurveConfig = EdwardsParameters;
 }
 
-impl MontgomeryModelParameters for EdwardsParameters {
+impl MontCurveConfig for EdwardsParameters {
     /// COEFF_A = 168698
     const COEFF_A: Fq = MontFp!(Fq, "168698");
     /// COEFF_B = 168700
     const COEFF_B: Fq = MontFp!(Fq, "168700");
 
-    type TEModelParameters = EdwardsParameters;
+    type TECurveConfig = EdwardsParameters;
 }
 
 const GENERATOR_X: Fq = MontFp!(

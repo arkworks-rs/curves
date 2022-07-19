@@ -231,8 +231,8 @@ pub mod fields {
 
 pub mod curves {
     use ark_ec::{
-        short_weierstrass_jacobian::GroupProjective as SWProjective,
-        twisted_edwards_extended::GroupProjective as TEProjective, ProjectiveCurve,
+        short_weierstrass::Projective as SWProjective,
+        twisted_edwards::Projective as TEProjective, ProjectiveCurve,
     };
     use ark_ff::{BitIteratorLE, Field, One, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
@@ -380,7 +380,7 @@ pub mod curves {
 
     pub fn sw_test<P, GG>() -> Result<(), SynthesisError>
     where
-        P: ark_ec::SWModelParameters,
+        P: ark_ec::SWCurveConfig,
         GG: CurveVar<SWProjective<P>, <P::BaseField as Field>::BasePrimeField>,
         for<'a> &'a GG: GroupOpsBounds<'a, SWProjective<P>, GG>,
     {
@@ -453,7 +453,7 @@ pub mod curves {
 
     pub fn te_test<P, GG>() -> Result<(), SynthesisError>
     where
-        P: ark_ec::TEModelParameters,
+        P: ark_ec::twisted_edwards::TECurveConfig,
         GG: CurveVar<TEProjective<P>, <P::BaseField as Field>::BasePrimeField>,
         for<'a> &'a GG: GroupOpsBounds<'a, TEProjective<P>, GG>,
     {

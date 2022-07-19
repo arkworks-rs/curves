@@ -1,6 +1,6 @@
 use ark_ec::{
-    models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
-    twisted_edwards_extended::{GroupAffine, GroupProjective},
+    models::CurveConfig,
+    twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
 use ark_ff::MontFp;
 
@@ -9,13 +9,13 @@ use crate::{fq::Fq, fr::Fr};
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = GroupAffine<EdwardsParameters>;
-pub type EdwardsProjective = GroupProjective<EdwardsParameters>;
+pub type EdwardsAffine = Affine<EdwardsParameters>;
+pub type EdwardsProjective = Projective<EdwardsParameters>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct EdwardsParameters;
 
-impl ModelParameters for EdwardsParameters {
+impl CurveConfig for EdwardsParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -27,7 +27,7 @@ impl ModelParameters for EdwardsParameters {
     const COFACTOR_INV: Fr = MontFp!(Fr, "4582647449616135528381398492791944685893671397494963179726320631987147963874964803303316505414568319530101512550297775574042810022553679071007001162683923594233560231270043634777390699589793776691858866199511300853468155295505");
 }
 
-impl TEModelParameters for EdwardsParameters {
+impl TECurveConfig for EdwardsParameters {
     /// COEFF_A = -1
     const COEFF_A: Fq = MontFp!(Fq, "-1");
 
@@ -37,7 +37,7 @@ impl TEModelParameters for EdwardsParameters {
     /// Generated randomly
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);
 
-    type MontgomeryModelParameters = EdwardsParameters;
+    type MontCurveConfig = EdwardsParameters;
 
     /// Multiplication by `a` is just negation.
     #[inline(always)]
@@ -46,14 +46,14 @@ impl TEModelParameters for EdwardsParameters {
     }
 }
 
-impl MontgomeryModelParameters for EdwardsParameters {
+impl MontCurveConfig for EdwardsParameters {
     /// COEFF_A = 40212480635445336270302172549278415015971955924352275480357619589919378421241453024646804979794897776496091377551124233752850182852486874251193367187677349266115879541798515219680194853352256809837126277708211496794264654247419
     const COEFF_A: Fq = MontFp!(Fq, "40212480635445336270302172549278415015971955924352275480357619589919378421241453024646804979794897776496091377551124233752850182852486874251193367187677349266115879541798515219680194853352256809837126277708211496794264654247419");
 
     /// COEFF_B = 1686010332473617132042042241962222112198753995601673591425883331105974391329653748412088783995441144921979594337334243570322874639106980818502874667119046899605536783551549221790223284494141659774809441351696667426519821912580
     const COEFF_B: Fq = MontFp!(Fq, "1686010332473617132042042241962222112198753995601673591425883331105974391329653748412088783995441144921979594337334243570322874639106980818502874667119046899605536783551549221790223284494141659774809441351696667426519821912580");
 
-    type TEModelParameters = EdwardsParameters;
+    type TECurveConfig = EdwardsParameters;
 }
 
 /// GENERATOR_X =

@@ -1,10 +1,7 @@
 use ark_ec::{
-    models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
-    short_weierstrass_jacobian::{
-        GroupAffine as SWGroupAffine, GroupProjective as SWGroupProjective,
-    },
-    twisted_edwards_extended::{GroupAffine, GroupProjective},
-    SWModelParameters,
+    models::CurveConfig,
+    short_weierstrass::{Affine as SWAffine, Projective as SWProjective, SWCurveConfig},
+    twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
 use ark_ff::MontFp;
 
@@ -13,10 +10,10 @@ use crate::{Fq, Fr};
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = GroupAffine<JubjubParameters>;
-pub type EdwardsProjective = GroupProjective<JubjubParameters>;
-pub type SWAffine = SWGroupAffine<JubjubParameters>;
-pub type SWProjective = SWGroupProjective<JubjubParameters>;
+pub type EdwardsAffine = Affine<JubjubParameters>;
+pub type EdwardsProjective = Projective<JubjubParameters>;
+pub type SWAffine = SWAffine<JubjubParameters>;
+pub type SWProjective = SWProjective<JubjubParameters>;
 
 /// `JubJub` is a twisted Edwards curve. These curves have equations of the
 /// form: ax² + y² = 1 - dx²y².
@@ -56,7 +53,7 @@ pub struct JubjubParameters;
 pub type EdwardsParameters = JubjubParameters;
 pub type SWParameters = JubjubParameters;
 
-impl ModelParameters for JubjubParameters {
+impl CurveConfig for JubjubParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -71,7 +68,7 @@ impl ModelParameters for JubjubParameters {
     );
 }
 
-impl TEModelParameters for JubjubParameters {
+impl TECurveConfig for JubjubParameters {
     /// COEFF_A = -1
     const COEFF_A: Fq = MontFp!(Fq, "-1");
 
@@ -84,7 +81,7 @@ impl TEModelParameters for JubjubParameters {
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);
 
-    type MontgomeryModelParameters = JubjubParameters;
+    type MontCurveConfig = JubjubParameters;
 
     /// Multiplication by `a` is simply negation here.
     #[inline(always)]
@@ -93,14 +90,14 @@ impl TEModelParameters for JubjubParameters {
     }
 }
 
-impl MontgomeryModelParameters for JubjubParameters {
+impl MontCurveConfig for JubjubParameters {
     /// COEFF_A = 40962
     const COEFF_A: Fq = MontFp!(Fq, "40962");
 
     /// COEFF_B = -40964
     const COEFF_B: Fq = MontFp!(Fq, "-40964");
 
-    type TEModelParameters = JubjubParameters;
+    type TECurveConfig = JubjubParameters;
 }
 
 const GENERATOR_X: Fq = MontFp!(
@@ -113,7 +110,7 @@ const GENERATOR_Y: Fq = MontFp!(
     "13262374693698910701929044844600465831413122818447359594527400194675274060458"
 );
 
-impl SWModelParameters for JubjubParameters {
+impl SWCurveConfig for JubjubParameters {
     /// COEFF_A = 52296097456646850916096512823759002727550416093741407922227928430486925478210
     const COEFF_A: Self::BaseField = MontFp!(
         Fq,

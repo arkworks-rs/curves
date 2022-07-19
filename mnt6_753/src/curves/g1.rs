@@ -1,6 +1,6 @@
 use ark_ec::{
     mnt6,
-    models::{ModelParameters, SWModelParameters},
+    models::{CurveConfig, SWCurveConfig},
 };
 use ark_ff::MontFp;
 
@@ -13,7 +13,7 @@ pub type G1Prepared = mnt6::G1Prepared<crate::Parameters>;
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
-impl ModelParameters for Parameters {
+impl CurveConfig for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -24,7 +24,7 @@ impl ModelParameters for Parameters {
     const COFACTOR_INV: Fr = FR_ONE;
 }
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for Parameters {
     /// COEFF_A = 11
     const COEFF_A: Fq = MontFp!(Fq, "11");
 

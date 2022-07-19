@@ -4,7 +4,7 @@ use ark_algebra_test_templates::{
     groups::group_test,
     msm::test_var_base_msm,
 };
-use ark_ec::{models::SWModelParameters, AffineCurve, PairingEngine};
+use ark_ec::{models::SWCurveConfig, AffineCurve, PairingEngine};
 use ark_ff::{
     fields::{Field, PrimeField, SquareRootField},
     One, Zero,

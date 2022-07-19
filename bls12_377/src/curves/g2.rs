@@ -1,4 +1,4 @@
-use ark_ec::models::{ModelParameters, SWModelParameters};
+use ark_ec::models::{CurveConfig, SWCurveConfig};
 use ark_ff::{MontFp, QuadExt, Zero};
 
 use crate::{fields::FQ_ZERO, g1, Fq, Fq2, Fr};
@@ -6,7 +6,7 @@ use crate::{fields::FQ_ZERO, g1, Fq, Fq2, Fr};
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
-impl ModelParameters for Parameters {
+impl CurveConfig for Parameters {
     type BaseField = Fq2;
     type ScalarField = Fr;
 
@@ -32,7 +32,7 @@ impl ModelParameters for Parameters {
     );
 }
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for Parameters {
     /// COEFF_A = [0, 0]
     const COEFF_A: Fq2 = QuadExt!(g1::Parameters::COEFF_A, g1::Parameters::COEFF_A,);
 

@@ -1,8 +1,6 @@
 use ark_ec::models::{
-    twisted_edwards_extended::{
-        GroupAffine as TEGroupAffine, GroupProjective as TEGroupProjective,
-    },
-    ModelParameters, MontgomeryModelParameters, SWModelParameters, TEModelParameters,
+    twisted_edwards::{Affine as TEAffine, Projective as TEProjective, TECurveConfig},
+    CurveConfig, MontCurveConfig, SWCurveConfig,
 };
 use ark_ff::{MontFp, Zero};
 use core::ops::Neg;
@@ -15,7 +13,7 @@ use crate::{
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
-impl ModelParameters for Parameters {
+impl CurveConfig for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -30,7 +28,7 @@ impl ModelParameters for Parameters {
     );
 }
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for Parameters {
     /// COEFF_A = 0
     const COEFF_A: Fq = FQ_ZERO;
 
@@ -47,8 +45,8 @@ impl SWModelParameters for Parameters {
     }
 }
 
-pub type G1TEAffine = TEGroupAffine<Parameters>;
-pub type G1TEProjective = TEGroupProjective<Parameters>;
+pub type G1TEAffine = TEAffine<Parameters>;
+pub type G1TEProjective = TEProjective<Parameters>;
 
 /// Bls12_377::G1 also has a twisted Edwards form.
 /// It can be obtained via the following script, implementing
@@ -97,7 +95,7 @@ pub type G1TEProjective = TEGroupProjective<Parameters>;
 /// # b = -TE1d/TE1a
 /// TE2d = Fp(122268283598675559488486339158635529096981886914877139579534153582033676785385790730042363341236035746924960903179)
 /// ```
-impl TEModelParameters for Parameters {
+impl TECurveConfig for Parameters {
     /// COEFF_A = -1
     const COEFF_A: Fq = MontFp!(Fq, "-1");
 
@@ -108,7 +106,7 @@ impl TEModelParameters for Parameters {
     const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
         (TE_GENERATOR_X, TE_GENERATOR_Y);
 
-    type MontgomeryModelParameters = Parameters;
+    type MontCurveConfig = Parameters;
 
     /// Multiplication by `a` is multiply by `-1`.
     #[inline(always)]
@@ -146,14 +144,14 @@ impl TEModelParameters for Parameters {
 // # MB = s
 // MB=Fp(10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931)
 // ```
-impl MontgomeryModelParameters for Parameters {
+impl MontCurveConfig for Parameters {
     /// COEFF_A = 228097355113300204138531148905234651262148041026195375645000724271212049151994375092458297304264351187709081232384
     const COEFF_A: Fq = MontFp!(Fq, "228097355113300204138531148905234651262148041026195375645000724271212049151994375092458297304264351187709081232384");
 
     /// COEFF_B = 10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931
     const COEFF_B: Fq = MontFp!(Fq, "10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931");
 
-    type TEModelParameters = Parameters;
+    type TECurveConfig = Parameters;
 }
 
 /// G1_GENERATOR_X =

@@ -1,4 +1,4 @@
-use ark_ec::{models::SWModelParameters, PairingEngine};
+use ark_ec::{models::SWCurveConfig, PairingEngine};
 use ark_ff::{
     biginteger::BigInteger832,
     fields::{BitIteratorBE, Field},

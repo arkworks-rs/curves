@@ -1,6 +1,6 @@
 use ark_ec::{
     mnt4,
-    models::{ModelParameters, SWModelParameters},
+    models::{CurveConfig, SWCurveConfig},
 };
 use ark_ff::MontFp;
 
@@ -13,7 +13,7 @@ pub type G1Prepared = mnt4::G1Prepared<crate::Parameters>;
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
-impl ModelParameters for Parameters {
+impl CurveConfig for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -25,7 +25,7 @@ impl ModelParameters for Parameters {
     const COFACTOR_INV: Fr = FR_ONE;
 }
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for Parameters {
     /// COEFF_A = 2
     /// Reference: <https://github.com/scipr-lab/libff/blob/c927821ebe02e0a24b5e0f9170cec5e211a35f08/libff/algebra/curves/mnt/mnt4/mnt4_init.cpp#L116>
     const COEFF_A: Fq = MontFp!(Fq, "2");

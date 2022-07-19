@@ -1,7 +1,7 @@
 use ark_ec::{
     mnt4,
     mnt4::MNT4Parameters,
-    models::{ModelParameters, SWModelParameters},
+    models::{CurveConfig, SWCurveConfig},
 };
 use ark_ff::{MontFp, QuadExt};
 
@@ -14,7 +14,7 @@ pub type G2Prepared = mnt4::G2Prepared<crate::Parameters>;
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
-impl ModelParameters for Parameters {
+impl CurveConfig for Parameters {
     type BaseField = Fq2;
     type ScalarField = Fr;
 
@@ -40,7 +40,7 @@ pub const MUL_BY_A_C0: Fq = G1_COEFF_A_NON_RESIDUE;
 /// MUL_BY_A_C1 = NONRESIDUE * COEFF_A
 pub const MUL_BY_A_C1: Fq = G1_COEFF_A_NON_RESIDUE;
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for Parameters {
     const COEFF_A: Fq2 = crate::Parameters::TWIST_COEFF_A;
     // B coefficient of MNT4-298 G2 =
     // ```
