@@ -1,6 +1,6 @@
 use ark_algebra_test_templates::{
     curves::{curve_tests, sw_tests},
-    groups::group_test,
+    
 };
 use ark_ec::AffineCurve;
 use ark_std::{rand::Rng, test_rng};

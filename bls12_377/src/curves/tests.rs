@@ -1,12 +1,12 @@
 use ark_algebra_test_templates::{
     curves::{curve_tests, edwards_tests, sw_tests},
     generate_bilinearity_test, generate_g1_generator_raw_test, generate_g1_test, generate_g2_test,
-    groups::group_test,
+    
     msm::test_var_base_msm,
 };
 use ark_ec::{models::short_weierstrass::SWCurveConfig, AffineCurve, PairingEngine};
 use ark_ff::{
-    fields::{Field, PrimeField, SquareRootField},
+    fields::{Field, PrimeField},
     One, Zero,
 };
 use ark_std::{rand::Rng, test_rng};

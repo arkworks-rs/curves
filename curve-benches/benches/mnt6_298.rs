@@ -3,7 +3,7 @@ use ark_std::ops::{AddAssign, MulAssign, SubAssign};
 
 use ark_ec::{PairingEngine, ProjectiveCurve};
 use ark_ff::{
-    biginteger::BigInteger320 as FqRepr, BigInteger, Field, PrimeField, SquareRootField,
+    biginteger::BigInteger320 as FqRepr, BigInteger, Field, PrimeField,
     UniformRand,
 };
 use ark_mnt6_298::{

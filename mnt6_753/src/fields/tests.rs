@@ -2,7 +2,7 @@ use ark_algebra_test_templates::{
     fields::*, generate_field_serialization_test, generate_field_test,
 };
 use ark_ff::{
-    fields::{models::fp6_2over3::*, quadratic_extension::QuadExtConfig, SquareRootField},
+    fields::{models::fp6_2over3::*, quadratic_extension::QuadExtConfig},
     Field, PrimeField,
 };
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};

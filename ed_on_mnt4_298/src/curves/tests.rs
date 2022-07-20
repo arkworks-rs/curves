@@ -1,4 +1,5 @@
 use ark_algebra_test_templates::{curves::*, groups::*};
+use ark_curve_constraint_tests::curves::group_test;
 use ark_ec::{AffineCurve, ProjectiveCurve};
 use ark_std::{rand::Rng, test_rng};
 
@@ -45,7 +46,7 @@ fn test_conversion() {
     let a: EdwardsAffine = rng.gen();
     let b: EdwardsAffine = rng.gen();
     let a_b = {
-        use ark_ec::group::Group;
+        
         (a + &b).double().double()
     };
     let a_b2 = (a.into_projective() + &b.into_projective())

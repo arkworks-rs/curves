@@ -4,7 +4,7 @@ use ark_algebra_test_templates::{
 use ark_ff::{
     biginteger::BigInteger256 as BigInteger,
     bytes::{FromBytes, ToBytes},
-    fields::{Field, LegendreSymbol::*, PrimeField, SquareRootField},
+    fields::{Field, LegendreSymbol::*, PrimeField},
     One, UniformRand, Zero,
 };
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
