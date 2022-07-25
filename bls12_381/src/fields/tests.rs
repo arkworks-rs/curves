@@ -21,7 +21,7 @@ generate_field_serialization_test!(bls12_381; fq2; fq6; fq12;);
 
 #[test]
 fn test_negative_one() {
-    let neg_one = Fq::new(BigInt::new([
+    let neg_one = Fq::new_unchecked(BigInt::new([
         0x43f5fffffffcaaae,
         0x32b7fff2ed47fffd,
         0x7e83a49a2e99d69,
