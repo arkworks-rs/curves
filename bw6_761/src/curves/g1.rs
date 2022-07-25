@@ -1,5 +1,5 @@
 use ark_ec::{
-    models::{CurveConfig, short_weierstrass::SWCurveConfig},
+    models::{short_weierstrass::SWCurveConfig, CurveConfig},
     short_weierstrass::{Affine, Projective},
 };
 use ark_ff::MontFp;
@@ -41,8 +41,7 @@ impl SWCurveConfig for Parameters {
     const COEFF_B: Fq = MontFp!("-1");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const GENERATOR: G1Affine = G1Affine::new_unchecked
-        (G1_GENERATOR_X, G1_GENERATOR_Y);
+    const GENERATOR: G1Affine = G1Affine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);
     #[inline(always)]
     fn mul_by_a(_elem: &Self::BaseField) -> Self::BaseField {
         use ark_ff::Zero;

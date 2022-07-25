@@ -1,6 +1,6 @@
 use ark_ec::{
     models::CurveConfig,
-    short_weierstrass::{SWCurveConfig, self},
+    short_weierstrass::{self, SWCurveConfig},
     twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
 use ark_ff::MontFp;
@@ -75,7 +75,7 @@ impl TECurveConfig for JubjubParameters {
         MontFp!("19257038036680949359750312669786877991949435402254120286184196891950884077233");
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
-    const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked (GENERATOR_X, GENERATOR_Y);
+    const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
     type MontCurveConfig = JubjubParameters;
 
@@ -112,8 +112,7 @@ impl SWCurveConfig for JubjubParameters {
         MontFp!("48351165704696163914533707656614864561753505123260775585269522553028192119009");
 
     /// generators
-    const GENERATOR: SWAffine = SWAffine::new_unchecked
-        (SW_GENERATOR_X, SW_GENERATOR_Y);
+    const GENERATOR: SWAffine = SWAffine::new_unchecked(SW_GENERATOR_X, SW_GENERATOR_Y);
 }
 
 /// x coordinate for SW curve generator

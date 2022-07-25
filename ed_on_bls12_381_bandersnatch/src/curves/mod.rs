@@ -77,8 +77,7 @@ impl TECurveConfig for BandersnatchParameters {
         MontFp!("45022363124591815672509500913686876175488063829319466900776701791074614335719");
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
-    const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked
-        (TE_GENERATOR_X, TE_GENERATOR_Y);
+    const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(TE_GENERATOR_X, TE_GENERATOR_Y);
 
     type MontCurveConfig = BandersnatchParameters;
 
@@ -137,6 +136,5 @@ impl SWCurveConfig for BandersnatchParameters {
         MontFp!("29569587568322301171008055308580903175558631321415017492731745847794083609535");
 
     /// generators
-    const GENERATOR: SWAffine = SWAffine::new_unchecked
-        (SW_GENERATOR_X, SW_GENERATOR_Y);
+    const GENERATOR: SWAffine = SWAffine::new_unchecked(SW_GENERATOR_X, SW_GENERATOR_Y);
 }

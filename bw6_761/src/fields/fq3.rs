@@ -3,7 +3,10 @@ use ark_ff::{
     MontFp,
 };
 
-use crate::{fields::{FQ_ONE, FQ_ZERO}, Fq};
+use crate::{
+    fields::{FQ_ONE, FQ_ZERO},
+    Fq,
+};
 
 pub type Fq3 = Fp3<Fq3Config>;
 

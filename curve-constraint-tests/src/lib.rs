@@ -2,7 +2,7 @@
 extern crate ark_relations;
 
 pub mod fields {
-    use ark_ff::{BitIteratorLE, Field, UniformRand, BigInteger, PrimeField};
+    use ark_ff::{BigInteger, BitIteratorLE, Field, PrimeField, UniformRand};
     use ark_r1cs_std::prelude::*;
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
     use ark_std::{test_rng, vec::Vec};
@@ -391,7 +391,6 @@ pub mod curves {
             AllocationMode::Constant,
         ];
         for &mode in &modes {
-
             let mut rng = test_rng();
 
             let cs = ConstraintSystem::<<P::BaseField as Field>::BasePrimeField>::new_ref();
@@ -463,7 +462,6 @@ pub mod curves {
             AllocationMode::Constant,
         ];
         for &mode in &modes {
-
             let mut rng = test_rng();
 
             let cs = ConstraintSystem::<<P::BaseField as Field>::BasePrimeField>::new_ref();

@@ -72,8 +72,7 @@ impl SWCurveConfig for Parameters {
     );
 
     /// AFFINE_GENERATOR_COEFFS = (G2_GENERATOR_X, G2_GENERATOR_Y)
-    const GENERATOR: G2Affine = G2Affine::new_unchecked
-        (G2_GENERATOR_X, G2_GENERATOR_Y);
+    const GENERATOR: G2Affine = G2Affine::new_unchecked(G2_GENERATOR_X, G2_GENERATOR_Y);
 }
 
 const G2_GENERATOR_X: Fq3 = Fq3::new(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1, G2_GENERATOR_X_C2);

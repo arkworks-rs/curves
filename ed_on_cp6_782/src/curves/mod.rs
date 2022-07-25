@@ -35,7 +35,7 @@ impl TECurveConfig for EdwardsParameters {
     const COEFF_D: Fq = MontFp!("79743");
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
-    const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked (GENERATOR_X, GENERATOR_Y);
+    const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
     type MontCurveConfig = EdwardsParameters;
 

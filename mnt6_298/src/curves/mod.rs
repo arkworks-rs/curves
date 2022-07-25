@@ -1,4 +1,7 @@
-use ark_ec::{models::mnt6::{MNT6Parameters, MNT6}, short_weierstrass::SWCurveConfig};
+use ark_ec::{
+    models::mnt6::{MNT6Parameters, MNT6},
+    short_weierstrass::SWCurveConfig,
+};
 use ark_ff::{biginteger::BigInteger320, BigInt, Fp3, MontFp};
 
 use crate::{Fq, Fq3Config, Fq6Config, Fr};

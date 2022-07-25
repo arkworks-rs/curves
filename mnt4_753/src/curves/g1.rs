@@ -1,6 +1,6 @@
 use ark_ec::{
     mnt4,
-    models::{CurveConfig, short_weierstrass::SWCurveConfig},
+    models::{short_weierstrass::SWCurveConfig, CurveConfig},
 };
 use ark_ff::MontFp;
 
@@ -32,8 +32,7 @@ impl SWCurveConfig for Parameters {
     const COEFF_B: Fq = MontFp!("28798803903456388891410036793299405764940372360099938340752576406393880372126970068421383312482853541572780087363938442377933706865252053507077543420534380486492786626556269083255657125025963825610840222568694137138741554679540");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const GENERATOR: G1Affine = G1Affine::new_unchecked
-        (G1_GENERATOR_X, G1_GENERATOR_Y);
+    const GENERATOR: G1Affine = G1Affine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);
 }
 
 // Generator of G1

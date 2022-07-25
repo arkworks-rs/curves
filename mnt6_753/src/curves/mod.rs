@@ -29,8 +29,7 @@ impl MNT6Parameters for Parameters {
     //                                  mnt6753_G1::coeff_a);
     //  = (ZERO, ZERO, A_COEFF);
     // ```
-    const TWIST_COEFF_A: Fp3<Self::Fp3Config> =
-       Fp3::new(FQ_ZERO, FQ_ZERO, g1::Parameters::COEFF_A,);
+    const TWIST_COEFF_A: Fp3<Self::Fp3Config> = Fp3::new(FQ_ZERO, FQ_ZERO, g1::Parameters::COEFF_A);
 
     // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt6753.ml
     const ATE_LOOP_COUNT: &'static [u64] = &[

@@ -1,10 +1,7 @@
-use ark_algebra_test_templates::{
-    curves::{curve_tests, sw_tests},
-    
-};
+use ark_algebra_test_templates::curves::{curve_tests, sw_tests};
 use ark_ec::AffineCurve;
 
-use crate::{G1Affine, PallasParameters, G1Projective};
+use crate::{G1Affine, G1Projective, PallasParameters};
 
 #[test]
 fn test_projective_curve() {

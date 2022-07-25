@@ -34,8 +34,7 @@ impl SWCurveConfig for PallasParameters {
     const COEFF_B: Fq = MontFp!("5");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const GENERATOR: G1Affine = Affine::new_unchecked
-        (G_GENERATOR_X, G_GENERATOR_Y);
+    const GENERATOR: G1Affine = Affine::new_unchecked(G_GENERATOR_X, G_GENERATOR_Y);
 
     #[inline(always)]
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {

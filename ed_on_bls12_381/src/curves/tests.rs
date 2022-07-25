@@ -1,7 +1,7 @@
-use ark_algebra_test_templates::{curves::*};
+use ark_algebra_test_templates::curves::*;
 use ark_ec::{AffineCurve, ProjectiveCurve};
 use ark_ff::{bytes::FromBytes, Zero};
-use ark_std::{rand::Rng, str::FromStr, test_rng};
+use ark_std::str::FromStr;
 
 use crate::*;
 

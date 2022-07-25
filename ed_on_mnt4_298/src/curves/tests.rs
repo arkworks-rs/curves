@@ -1,6 +1,5 @@
-use ark_algebra_test_templates::{curves::*};
-use ark_ec::{AffineCurve, ProjectiveCurve};
-use ark_std::{rand::Rng, test_rng};
+use ark_algebra_test_templates::curves::*;
+use ark_ec::AffineCurve;
 
 use crate::*;
 

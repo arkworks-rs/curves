@@ -1,5 +1,5 @@
 use ark_ec::models::{
-    short_weierstrass::{SWCurveConfig, Affine as SWAffine},
+    short_weierstrass::{Affine as SWAffine, SWCurveConfig},
     twisted_edwards::{
         Affine as TEAffine, MontCurveConfig, Projective as TEProjective, TECurveConfig,
     },
@@ -8,7 +8,10 @@ use ark_ec::models::{
 use ark_ff::{MontFp, Zero};
 use core::ops::Neg;
 
-use crate::{fields::{FQ_ONE, FQ_ZERO}, Fq, Fr};
+use crate::{
+    fields::{FQ_ONE, FQ_ZERO},
+    Fq, Fr,
+};
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
@@ -33,8 +36,7 @@ impl SWCurveConfig for Parameters {
     const COEFF_B: Fq = FQ_ONE;
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const GENERATOR: G1SWAffine = G1SWAffine::new_unchecked
-        (G1_GENERATOR_X, G1_GENERATOR_Y);
+    const GENERATOR: G1SWAffine = G1SWAffine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);
 
     #[inline(always)]
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
@@ -101,8 +103,7 @@ impl TECurveConfig for Parameters {
     const COEFF_D: Fq = MontFp!("122268283598675559488486339158635529096981886914877139579534153582033676785385790730042363341236035746924960903179");
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
-    const GENERATOR: G1TEAffine = G1TEAffine::new_unchecked
-        (TE_GENERATOR_X, TE_GENERATOR_Y);
+    const GENERATOR: G1TEAffine = G1TEAffine::new_unchecked(TE_GENERATOR_X, TE_GENERATOR_Y);
 
     type MontCurveConfig = Parameters;
 
