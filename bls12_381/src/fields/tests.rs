@@ -740,23 +740,6 @@ fn test_frob_coeffs() {
 }
 
 #[test]
-fn test_neg_one() {
-    let o = -Fq::one();
-
-    let thing: [u64; 6] = [
-        0x43f5fffffffcaaae,
-        0x32b7fff2ed47fffd,
-        0x7e83a49a2e99d69,
-        0xeca8f3318332bb7a,
-        0xef148d1ea0f4c069,
-        0x40ab3263eff0206,
-    ];
-    let negative_one = Fq::new(BigInt::new(thing));
-
-    assert_eq!(negative_one, o);
-}
-
-#[test]
 fn test_fq_repr_from() {
     assert_eq!(BigInt::from(100u64), BigInt::new([100, 0, 0, 0, 0, 0]));
 }
