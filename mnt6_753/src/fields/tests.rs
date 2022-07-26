@@ -11,7 +11,7 @@ use core::ops::{AddAssign, MulAssign, SubAssign};
 
 use crate::*;
 
-generate_field_test!(mnt6_753; fq3; fq6; mont(12, 12); );
+generate_field_test!(mnt6_753; fq3; fq6_2_on_3; mont(12, 12); );
 generate_field_serialization_test!(mnt6_753;);
 
 #[test]
