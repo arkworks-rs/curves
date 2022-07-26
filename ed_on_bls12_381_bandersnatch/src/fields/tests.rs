@@ -3,7 +3,6 @@ use ark_algebra_test_templates::{
 };
 use ark_ff::{
     biginteger::BigInteger256 as BigInteger,
-    bytes::{FromBytes, ToBytes},
     fields::{Field, LegendreSymbol::*, PrimeField},
     One, UniformRand, Zero,
 };
@@ -299,22 +298,6 @@ fn test_fq_legendre() {
 }
 
 #[test]
-fn test_fq_bytes() {
-    let f1_from_repr = Fq::from(BigInteger::new([
-        0xab8a2535947d1a77,
-        0x9ba74cbfda0bbcda,
-        0xe928b59724d60baf,
-        0x1cccaaeb9bb1680a,
-    ]));
-
-    let mut f1_bytes = [0u8; 32];
-    f1_from_repr.write(f1_bytes.as_mut()).unwrap();
-
-    let f1 = Fq::read(f1_bytes.as_ref()).unwrap();
-    assert_eq!(f1_from_repr, f1);
-}
-
-#[test]
 fn test_fr_add() {
     let f1 = Fr::from(BigInteger::new([
         0xc81265fb4130fe0c,
@@ -358,22 +341,6 @@ fn test_fr_mul() {
         0x15a75fba99bc8ad,
     ]));
     assert_eq!(f1 * &f2, f3);
-}
-
-#[test]
-fn test_fr_bytes() {
-    let f1_from_repr = Fr::from(BigInteger::new([
-        0xc81265fb4130fe0c,
-        0xb308836c14e22279,
-        0x699e887f96bff372,
-        0x84ecc7e76c11ad,
-    ]));
-
-    let mut f1_bytes = [0u8; 32];
-    f1_from_repr.write(f1_bytes.as_mut()).unwrap();
-
-    let f1 = Fr::read(f1_bytes.as_ref()).unwrap();
-    assert_eq!(f1_from_repr, f1);
 }
 
 #[test]

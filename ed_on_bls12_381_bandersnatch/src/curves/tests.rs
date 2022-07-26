@@ -1,6 +1,6 @@
 use ark_algebra_test_templates::curves::*;
 use ark_ec::{AffineCurve, ProjectiveCurve};
-use ark_ff::{bytes::FromBytes, Zero};
+use ark_ff::Zero;
 use ark_std::str::FromStr;
 
 use crate::*;
@@ -55,19 +55,6 @@ fn test_scalar_multiplication() {
     let f1g = g.mul(f1).into_affine();
     assert_eq!(g.mul(f1 * &f2).into_affine(), f1f2g);
     assert_eq!(f1g.mul(f2).into_affine(), f1f2g);
-}
-
-#[test]
-fn test_bytes() {
-    let g_from_repr = EdwardsAffine::from_str(
-        "(29627151942733444043031429156003786749302466371339015363120350521834195802525, \
-         27488387519748396681411951718153463804682561779047093991696427532072116857978)",
-    )
-    .unwrap();
-
-    let g_bytes = ark_ff::to_bytes![g_from_repr].unwrap();
-    let g = EdwardsAffine::read(g_bytes.as_slice()).unwrap();
-    assert_eq!(g_from_repr, g);
 }
 
 #[test]
