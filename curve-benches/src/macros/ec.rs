@@ -224,6 +224,7 @@ macro_rules! ec_bench {
 
         fn msm_131072(b: &mut $crate::bencher::Bencher) {
             use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
+            use ark_ec::msm::VariableBaseMSM;
             const SAMPLES: usize = 131072;
 
             let mut rng = ark_std::test_rng();
@@ -234,7 +235,7 @@ macro_rules! ec_bench {
                 .map(|_| Fr::rand(&mut rng).into_bigint())
                 .collect();
             b.bench_n(1, |b| {
-                b.iter(|| ark_ec::msm::VariableBase::msm(&v, &scalars));
+                b.iter(|| <$projective as VariableBaseMSM>::msm_bigint(&v, &scalars));
             })
         }
 
