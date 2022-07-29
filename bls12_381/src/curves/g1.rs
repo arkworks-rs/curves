@@ -1,11 +1,11 @@
 use ark_ec::{
     bls12,
     bls12::Bls12Parameters,
-    models::{ModelParameters, SWModelParameters},
-    short_weierstrass_jacobian::GroupAffine,
+    models::CurveConfig,
+    short_weierstrass::{Affine, SWCurveConfig},
     AffineCurve, ProjectiveCurve,
 };
-use ark_ff::{biginteger::BigInteger256, MontFp, Zero};
+use ark_ff::{biginteger::BigInteger256, Field, MontFp, Zero};
 use ark_std::ops::Neg;
 
 use crate::*;
@@ -16,7 +16,7 @@ pub type G1Projective = bls12::G1Projective<crate::Parameters>;
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
-impl ModelParameters for Parameters {
+impl CurveConfig for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -25,22 +25,19 @@ impl ModelParameters for Parameters {
 
     /// COFACTOR_INV = COFACTOR^{-1} mod r
     /// = 52435875175126190458656871551744051925719901746859129887267498875565241663483
-    const COFACTOR_INV: Fr = MontFp!(
-        Fr,
-        "52435875175126190458656871551744051925719901746859129887267498875565241663483"
-    );
+    const COFACTOR_INV: Fr =
+        MontFp!("52435875175126190458656871551744051925719901746859129887267498875565241663483");
 }
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for Parameters {
     /// COEFF_A = 0
-    const COEFF_A: Fq = MontFp!(Fq, "0");
+    const COEFF_A: Fq = Fq::ZERO;
 
     /// COEFF_B = 4
-    const COEFF_B: Fq = MontFp!(Fq, "4");
+    const COEFF_B: Fq = MontFp!("4");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
-        (G1_GENERATOR_X, G1_GENERATOR_Y);
+    const GENERATOR: G1Affine = G1Affine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);
 
     #[inline(always)]
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
@@ -71,16 +68,16 @@ impl SWModelParameters for Parameters {
 
 /// G1_GENERATOR_X =
 /// 3685416753713387016781088315183077757961620795782546409894578378688607592378376318836054947676345821548104185464507
-pub const G1_GENERATOR_X: Fq = MontFp!(Fq, "3685416753713387016781088315183077757961620795782546409894578378688607592378376318836054947676345821548104185464507");
+pub const G1_GENERATOR_X: Fq = MontFp!("3685416753713387016781088315183077757961620795782546409894578378688607592378376318836054947676345821548104185464507");
 
 /// G1_GENERATOR_Y =
 /// 1339506544944476473020471379941921221584933875938349620426543736416511423956333506472724655353366534992391756441569
-pub const G1_GENERATOR_Y: Fq = MontFp!(Fq, "1339506544944476473020471379941921221584933875938349620426543736416511423956333506472724655353366534992391756441569");
+pub const G1_GENERATOR_Y: Fq = MontFp!("1339506544944476473020471379941921221584933875938349620426543736416511423956333506472724655353366534992391756441569");
 
 /// BETA is a non-trivial cubic root of unity in Fq.
-pub const BETA: Fq = MontFp!(Fq, "793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350");
+pub const BETA: Fq = MontFp!("793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350");
 
-pub fn endomorphism(p: &GroupAffine<Parameters>) -> GroupAffine<Parameters> {
+pub fn endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     // Endomorphism of the points on the curve.
     // endomorphism_p(x,y) = (BETA * x, y)
     // where BETA is a non-trivial cubic root of unity in Fq.

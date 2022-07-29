@@ -2,7 +2,7 @@ use ark_algebra_test_templates::{
     fields::*, generate_field_serialization_test, generate_field_test,
 };
 use ark_ff::{
-    fields::{Field, PrimeField, SquareRootField},
+    fields::{Field, PrimeField},
     One, UniformRand, Zero,
 };
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};

@@ -6,9 +6,7 @@ use ark_bn254::{
     G2Projective as G2,
 };
 use ark_ec::{PairingEngine, ProjectiveCurve};
-use ark_ff::{
-    biginteger::BigInteger256 as Repr, BigInteger, Field, PrimeField, SquareRootField, UniformRand,
-};
+use ark_ff::{biginteger::BigInteger256 as Repr, BigInteger, Field, PrimeField, UniformRand};
 
 mod g1 {
     use super::*;

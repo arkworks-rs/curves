@@ -8,7 +8,7 @@ use ark_bw6_761::{
 use ark_ec::{PairingEngine, ProjectiveCurve};
 use ark_ff::{
     biginteger::{BigInteger384 as FrRepr, BigInteger768 as FqRepr},
-    BigInteger, Field, PrimeField, SquareRootField, UniformRand,
+    BigInteger, Field, PrimeField, UniformRand,
 };
 
 mod g1 {

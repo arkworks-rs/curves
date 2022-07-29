@@ -2,10 +2,7 @@ use ark_curve_benches::*;
 use ark_std::ops::{AddAssign, MulAssign, SubAssign};
 
 use ark_ec::{PairingEngine, ProjectiveCurve};
-use ark_ff::{
-    biginteger::BigInteger768 as FqRepr, BigInteger, Field, PrimeField, SquareRootField,
-    UniformRand,
-};
+use ark_ff::{biginteger::BigInteger768 as FqRepr, BigInteger, Field, PrimeField, UniformRand};
 use ark_mnt4_753::{
     fq::Fq, fq2::Fq2, fr::Fr, Fq4, G1Affine, G1Projective as G1, G2Affine, G2Projective as G2,
     MNT4_753,

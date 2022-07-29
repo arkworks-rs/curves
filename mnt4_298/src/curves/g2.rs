@@ -1,11 +1,11 @@
 use ark_ec::{
     mnt4,
     mnt4::MNT4Parameters,
-    models::{ModelParameters, SWModelParameters},
+    models::{short_weierstrass::SWCurveConfig, CurveConfig},
 };
-use ark_ff::{MontFp, QuadExt};
+use ark_ff::{Field, MontFp};
 
-use crate::{Fq, Fq2, Fr, FQ_ZERO, G1_COEFF_A_NON_RESIDUE};
+use crate::{Fq, Fq2, Fr, G1_COEFF_A_NON_RESIDUE};
 
 pub type G2Affine = mnt4::G2Affine<crate::Parameters>;
 pub type G2Projective = mnt4::G2Projective<crate::Parameters>;
@@ -14,7 +14,7 @@ pub type G2Prepared = mnt4::G2Prepared<crate::Parameters>;
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
-impl ModelParameters for Parameters {
+impl CurveConfig for Parameters {
     type BaseField = Fq2;
     type ScalarField = Fr;
 
@@ -31,7 +31,7 @@ impl ModelParameters for Parameters {
 
     /// COFACTOR^(-1) mod r =
     /// 475922286169261325753349249653048451545124878207887910632124039320641839552134835598065665
-    const COFACTOR_INV: Fr = MontFp!(Fr, "475922286169261325753349249653048451545124878207887910632124039320641839552134835598065665");
+    const COFACTOR_INV: Fr = MontFp!("475922286169261325753349249653048451545124878207887910632124039320641839552134835598065665");
 }
 
 /// MUL_BY_A_C0 = NONRESIDUE * COEFF_A
@@ -40,7 +40,7 @@ pub const MUL_BY_A_C0: Fq = G1_COEFF_A_NON_RESIDUE;
 /// MUL_BY_A_C1 = NONRESIDUE * COEFF_A
 pub const MUL_BY_A_C1: Fq = G1_COEFF_A_NON_RESIDUE;
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for Parameters {
     const COEFF_A: Fq2 = crate::Parameters::TWIST_COEFF_A;
     // B coefficient of MNT4-298 G2 =
     // ```
@@ -51,23 +51,22 @@ impl SWModelParameters for Parameters {
     //  =
     //  (0, 67372828414711144619833451280373307321534573815811166723479321465776723059456513877937430)
     // ```
-    const COEFF_B: Fq2 = QuadExt!(
-        FQ_ZERO,
-        MontFp!(Fq, "67372828414711144619833451280373307321534573815811166723479321465776723059456513877937430"),
+    const COEFF_B: Fq2 = Fq2::new(
+        Fq::ZERO,
+        MontFp!("67372828414711144619833451280373307321534573815811166723479321465776723059456513877937430"),
     );
 
     /// AFFINE_GENERATOR_COEFFS = (G2_GENERATOR_X, G2_GENERATOR_Y)
-    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
-        (G2_GENERATOR_X, G2_GENERATOR_Y);
+    const GENERATOR: G2Affine = G2Affine::new_unchecked(G2_GENERATOR_X, G2_GENERATOR_Y);
 
     #[inline(always)]
     fn mul_by_a(elt: &Fq2) -> Fq2 {
-        QuadExt!(MUL_BY_A_C0 * &elt.c0, MUL_BY_A_C1 * &elt.c1,)
+        Fq2::new(MUL_BY_A_C0 * &elt.c0, MUL_BY_A_C1 * &elt.c1)
     }
 }
 
-const G2_GENERATOR_X: Fq2 = QuadExt!(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
-const G2_GENERATOR_Y: Fq2 = QuadExt!(G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
+const G2_GENERATOR_X: Fq2 = Fq2::new(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
+const G2_GENERATOR_Y: Fq2 = Fq2::new(G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
 
 // Generator of G2
 // These are two Fq elements each because X and Y (and Z) are elements of Fq^2
@@ -76,21 +75,17 @@ const G2_GENERATOR_Y: Fq2 = QuadExt!(G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
 // Y = 37437409008528968268352521034936931842973546441370663118543015118291998305624025037512482,
 //     424621479598893882672393190337420680597584695892317197646113820787463109735345923009077489,
 pub const G2_GENERATOR_X_C0: Fq = MontFp!(
-    Fq,
     "438374926219350099854919100077809681842783509163790991847867546339851681564223481322252708"
 );
 
 pub const G2_GENERATOR_X_C1: Fq = MontFp!(
-    Fq,
     "37620953615500480110935514360923278605464476459712393277679280819942849043649216370485641"
 );
 
 pub const G2_GENERATOR_Y_C0: Fq = MontFp!(
-    Fq,
     "37437409008528968268352521034936931842973546441370663118543015118291998305624025037512482"
 );
 
 pub const G2_GENERATOR_Y_C1: Fq = MontFp!(
-    Fq,
     "424621479598893882672393190337420680597584695892317197646113820787463109735345923009077489"
 );

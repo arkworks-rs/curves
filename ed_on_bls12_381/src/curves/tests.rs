@@ -1,7 +1,7 @@
-use ark_algebra_test_templates::{curves::*, groups::*};
+use ark_algebra_test_templates::curves::*;
 use ark_ec::{AffineCurve, ProjectiveCurve};
-use ark_ff::{bytes::FromBytes, Zero};
-use ark_std::{rand::Rng, str::FromStr, test_rng};
+use ark_ff::Zero;
+use ark_std::str::FromStr;
 
 use crate::*;
 
@@ -15,31 +15,6 @@ fn test_projective_curve() {
 }
 
 #[test]
-fn test_projective_group() {
-    let mut rng = test_rng();
-    let a = rng.gen();
-    let b = rng.gen();
-
-    let c = rng.gen();
-    let d = rng.gen();
-
-    for _i in 0..100 {
-        group_test::<EdwardsProjective>(a, b);
-        group_test::<SWProjective>(c, d);
-    }
-}
-
-#[test]
-fn test_affine_group() {
-    let mut rng = test_rng();
-    let a: EdwardsAffine = rng.gen();
-    let b: EdwardsAffine = rng.gen();
-    for _i in 0..100 {
-        group_test::<EdwardsAffine>(a, b);
-    }
-}
-
-#[test]
 fn test_generator() {
     // edward curve
     let generator = EdwardsAffine::prime_subgroup_generator();
@@ -50,22 +25,6 @@ fn test_generator() {
     let generator = SWAffine::prime_subgroup_generator();
     assert!(generator.is_on_curve());
     assert!(generator.is_in_correct_subgroup_assuming_on_curve());
-}
-
-#[test]
-fn test_conversion() {
-    let mut rng = test_rng();
-    let a: EdwardsAffine = rng.gen();
-    let b: EdwardsAffine = rng.gen();
-    let a_b = {
-        use ark_ec::group::Group;
-        (a + &b).double().double()
-    };
-    let a_b2 = (a.into_projective() + &b.into_projective())
-        .double()
-        .double();
-    assert_eq!(a_b, a_b2.into_affine());
-    assert_eq!(a_b.into_projective(), a_b2);
 }
 
 #[test]
@@ -96,19 +55,6 @@ fn test_scalar_multiplication() {
     let f1g = g.mul(f1).into_affine();
     assert_eq!(g.mul(f1 * &f2).into_affine(), f1f2g);
     assert_eq!(f1g.mul(f2).into_affine(), f1f2g);
-}
-
-#[test]
-fn test_bytes() {
-    let g_from_repr = EdwardsAffine::from_str(
-        "(1158870117176967269192899343636553522971009777237254192973081388797299308391, \
-         36933624999642413792569726058244472742169727126562409632889593958355839948294)",
-    )
-    .unwrap();
-
-    let g_bytes = ark_ff::to_bytes![g_from_repr].unwrap();
-    let g = EdwardsAffine::read(g_bytes.as_slice()).unwrap();
-    assert_eq!(g_from_repr, g);
 }
 
 #[test]

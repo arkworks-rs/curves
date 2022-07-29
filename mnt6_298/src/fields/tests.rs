@@ -2,7 +2,7 @@ use ark_algebra_test_templates::{
     fields::*, generate_field_serialization_test, generate_field_test,
 };
 use ark_ff::{
-    fields::{models::fp6_2over3::*, quadratic_extension::QuadExtConfig, SquareRootField},
+    fields::{models::fp6_2over3::*, quadratic_extension::QuadExtConfig},
     Field, PrimeField,
 };
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
@@ -11,7 +11,7 @@ use core::ops::{AddAssign, MulAssign, SubAssign};
 
 use crate::*;
 
-generate_field_test!(mnt6_298; fq3; fq6; mont(5, 5); );
+generate_field_test!(mnt6_298; fq3; fq6_2_on_3; mont(5, 5); );
 generate_field_serialization_test!(mnt6_298;);
 
 #[test]

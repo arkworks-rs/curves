@@ -1,4 +1,4 @@
-use ark_ff::{fields::*, MontFp, QuadExt};
+use ark_ff::{fields::*, MontFp};
 
 use crate::*;
 
@@ -10,14 +10,14 @@ impl Fp2Config for Fq2Config {
     type Fp = Fq;
 
     /// NONRESIDUE = -5
-    const NONRESIDUE: Fq = MontFp!(Fq, "-5");
+    const NONRESIDUE: Fq = MontFp!("-5");
 
     /// Coefficients for the Frobenius automorphism.
     const FROBENIUS_COEFF_FP2_C1: &'static [Fq] = &[
         // NONRESIDUE**(((q^0) - 1) / 2)
-        FQ_ONE,
+        Fq::ONE,
         // NONRESIDUE**(((q^1) - 1) / 2)
-        MontFp!(Fq, "-1"),
+        MontFp!("-1"),
     ];
 
     #[inline(always)]
@@ -28,6 +28,3 @@ impl Fp2Config for Fq2Config {
         fe - original
     }
 }
-
-pub const FQ2_ZERO: Fq2 = QuadExt!(FQ_ZERO, FQ_ZERO);
-pub const FQ2_ONE: Fq2 = QuadExt!(FQ_ONE, FQ_ZERO);
