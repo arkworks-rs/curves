@@ -2,7 +2,7 @@ use ark_ec::{
     models::CurveConfig,
     twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
-use ark_ff::{MontFp, Field};
+use ark_ff::{Field, MontFp};
 
 use crate::{Fq, Fr};
 
