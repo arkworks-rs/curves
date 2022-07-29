@@ -5,7 +5,7 @@ use ark_ff::{
     BigInt, One,
 };
 
-use crate::{Fq, Fq::ONE, Fq::ZERO, Fq3, Fq6, Fr};
+use crate::{Fq, Fq3, Fq6, Fr};
 
 pub mod g1;
 pub use self::g1::{G1Affine, G1Projective};

@@ -2,9 +2,9 @@ use ark_ec::{
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
     short_weierstrass::Affine,
 };
-use ark_ff::{MontFp, Zero};
+use ark_ff::{Field, MontFp, Zero};
 
-use crate::{fields::Fq::ZERO, g1, Fq, Fq2, Fr};
+use crate::{g1, Fq, Fq2, Fr};
 
 pub type G2Affine = Affine<Parameters>;
 #[derive(Clone, Default, PartialEq, Eq)]

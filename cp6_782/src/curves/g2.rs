@@ -2,9 +2,9 @@ use ark_ec::{
     models::CurveConfig,
     short_weierstrass::{Affine, Projective, SWCurveConfig},
 };
-use ark_ff::MontFp;
+use ark_ff::{Field, MontFp};
 
-use crate::{Fq, Fq::ZERO, Fq3, Fr};
+use crate::{Fq, Fq3, Fr};
 
 pub type G2Affine = Affine<Parameters>;
 pub type G2Projective = Projective<Parameters>;

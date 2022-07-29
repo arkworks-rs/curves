@@ -2,9 +2,9 @@ use ark_ec::{
     mnt4,
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
 };
-use ark_ff::MontFp;
+use ark_ff::{Field, MontFp};
 
-use crate::{Fq, Fr, FR_ONE};
+use crate::{Fq, Fr};
 
 pub type G1Affine = mnt4::G1Affine<crate::Parameters>;
 pub type G1Projective = mnt4::G1Projective<crate::Parameters>;
@@ -21,7 +21,7 @@ impl CurveConfig for Parameters {
     const COFACTOR: &'static [u64] = &[1];
 
     /// COFACTOR^(-1) mod r = 1
-    const COFACTOR_INV: Fr = FR_ONE;
+    const COFACTOR_INV: Fr = Fr::ONE;
 }
 
 impl SWCurveConfig for Parameters {

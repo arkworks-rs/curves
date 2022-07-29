@@ -3,7 +3,7 @@ use ark_ec::{
     models::CurveConfig,
     short_weierstrass::{Affine, Projective, SWCurveConfig},
 };
-use ark_ff::{MontFp, Zero};
+use ark_ff::{Field, MontFp, Zero};
 
 #[cfg(test)]
 mod tests;
@@ -19,7 +19,7 @@ impl CurveConfig for VestaParameters {
     const COFACTOR: &'static [u64] = &[0x1];
 
     /// COFACTOR_INV = 1
-    const COFACTOR_INV: Fr = Fq::ONE;
+    const COFACTOR_INV: Fr = Fr::ONE;
 }
 
 pub type G1Affine = Affine<VestaParameters>;

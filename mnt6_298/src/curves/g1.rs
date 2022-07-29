@@ -2,7 +2,7 @@ use ark_ec::{
     mnt6,
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
 };
-use ark_ff::MontFp;
+use ark_ff::{Field, MontFp};
 
 use crate::{Fq, Fr};
 
@@ -21,7 +21,7 @@ impl CurveConfig for Parameters {
     const COFACTOR: &'static [u64] = &[1];
 
     /// COFACTOR^(-1) mod r = 1
-    const COFACTOR_INV: Fr = Fq::ONE;
+    const COFACTOR_INV: Fr = Fr::ONE;
 }
 
 impl SWCurveConfig for Parameters {

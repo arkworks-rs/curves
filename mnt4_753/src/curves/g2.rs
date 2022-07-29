@@ -3,9 +3,9 @@ use ark_ec::{
     mnt4::MNT4Parameters,
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
 };
-use ark_ff::MontFp;
+use ark_ff::{Field, MontFp};
 
-use crate::{Fq, Fq::ZERO, Fq2, Fr, G1_COEFF_A_NON_RESIDUE};
+use crate::{Fq, Fq2, Fr, G1_COEFF_A_NON_RESIDUE};
 
 pub type G2Affine = mnt4::G2Affine<crate::Parameters>;
 pub type G2Projective = mnt4::G2Projective<crate::Parameters>;

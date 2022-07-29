@@ -5,13 +5,10 @@ use ark_ec::models::{
     },
     CurveConfig,
 };
-use ark_ff::{MontFp, Zero};
+use ark_ff::{Field, MontFp, Zero};
 use core::ops::Neg;
 
-use crate::{
-    fields::{Fq::ONE, Fq::ZERO},
-    Fq, Fr,
-};
+use crate::{Fq, Fr};
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;

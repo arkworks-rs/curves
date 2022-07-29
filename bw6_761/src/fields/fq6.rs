@@ -1,9 +1,9 @@
 use ark_ff::{
     fields::fp6_2over3::{Fp6, Fp6Config},
-    MontFp,
+    Field, MontFp,
 };
 
-use crate::{Fq, Fq::ONE, Fq::ZERO, Fq3, Fq3Config};
+use crate::{Fq, Fq3, Fq3Config};
 
 pub type Fq6 = Fp6<Fq6Config>;
 
