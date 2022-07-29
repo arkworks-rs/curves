@@ -5,6 +5,3 @@ use ark_ff::fields::{Fp832, MontBackend, MontConfig, MontFp};
 #[generator = "13"]
 pub struct FqConfig;
 pub type Fq = Fp832<MontBackend<FqConfig, 13>>;
-
-pub const FQ_ONE: Fq = MontFp!("1");
-pub const FQ_ZERO: Fq = MontFp!("0");

@@ -20,7 +20,7 @@ impl CurveConfig for PallasParameters {
     const COFACTOR: &'static [u64] = &[0x1];
 
     /// COFACTOR_INV = 1
-    const COFACTOR_INV: Fr = MontFp!("1");
+    const COFACTOR_INV: Fr = Fq::ONE;
 }
 
 pub type G1Affine = Affine<PallasParameters>;
@@ -28,7 +28,7 @@ pub type G1Projective = Projective<PallasParameters>;
 
 impl SWCurveConfig for PallasParameters {
     /// COEFF_A = 0
-    const COEFF_A: Fq = MontFp!("0");
+    const COEFF_A: Fq = Fq::ZERO;
 
     /// COEFF_B = 5
     const COEFF_B: Fq = MontFp!("5");

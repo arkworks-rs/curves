@@ -37,7 +37,7 @@ impl CurveConfig for EdwardsParameters {
 
 impl TECurveConfig for EdwardsParameters {
     /// COEFF_A = 1
-    const COEFF_A: Fq = MontFp!("1");
+    const COEFF_A: Fq = Fq::ONE;
 
     #[inline(always)]
     fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {

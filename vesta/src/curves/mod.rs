@@ -19,7 +19,7 @@ impl CurveConfig for VestaParameters {
     const COFACTOR: &'static [u64] = &[0x1];
 
     /// COFACTOR_INV = 1
-    const COFACTOR_INV: Fr = MontFp!("1");
+    const COFACTOR_INV: Fr = Fq::ONE;
 }
 
 pub type G1Affine = Affine<VestaParameters>;
@@ -27,7 +27,7 @@ pub type G1Projective = Projective<VestaParameters>;
 
 impl SWCurveConfig for VestaParameters {
     /// COEFF_A = 0
-    const COEFF_A: Fq = MontFp!("0");
+    const COEFF_A: Fq = Fq::ZERO;
 
     /// COEFF_B = 5
     const COEFF_B: Fq = MontFp!("5");

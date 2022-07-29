@@ -5,7 +5,7 @@ use ark_ec::{
     short_weierstrass::{Affine, SWCurveConfig},
     AffineCurve, ProjectiveCurve,
 };
-use ark_ff::{biginteger::BigInteger256, MontFp, Zero};
+use ark_ff::{biginteger::BigInteger256, Field, MontFp, Zero};
 use ark_std::ops::Neg;
 
 use crate::*;
@@ -31,7 +31,7 @@ impl CurveConfig for Parameters {
 
 impl SWCurveConfig for Parameters {
     /// COEFF_A = 0
-    const COEFF_A: Fq = MontFp!("0");
+    const COEFF_A: Fq = Fq::ZERO;
 
     /// COEFF_B = 4
     const COEFF_B: Fq = MontFp!("4");

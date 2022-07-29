@@ -5,7 +5,7 @@ use ark_ff::{
     BigInt, One,
 };
 
-use crate::{Fq, Fq3, Fq6, Fr, FQ_ONE, FQ_ZERO};
+use crate::{Fq, Fq::ONE, Fq::ZERO, Fq3, Fq6, Fr};
 
 pub mod g1;
 pub use self::g1::{G1Affine, G1Projective};
@@ -153,7 +153,7 @@ impl CP6_782 {
 }
 
 /// TWIST = (0, 1, 0)
-pub const TWIST: Fq3 = Fq3::new(FQ_ZERO, FQ_ONE, FQ_ZERO);
+pub const TWIST: Fq3 = Fq3::new(Fq::ZERO, Fq::ONE, Fq::ZERO);
 
 /// ATE_IS_LOOP_COUNT_NEG = false
 pub const ATE_IS_LOOP_COUNT_NEG: bool = false;

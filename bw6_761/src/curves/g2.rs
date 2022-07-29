@@ -35,7 +35,7 @@ impl CurveConfig for Parameters {
 
 impl SWCurveConfig for Parameters {
     /// COEFF_A = 0
-    const COEFF_A: Fq = MontFp!("0");
+    const COEFF_A: Fq = Fq::ZERO;
 
     /// COEFF_B = 4
     const COEFF_B: Fq = MontFp!("4");

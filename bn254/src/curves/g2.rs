@@ -2,7 +2,7 @@ use ark_ec::{
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
     short_weierstrass::Affine,
 };
-use ark_ff::{MontFp, Zero};
+use ark_ff::{Field, MontFp, Zero};
 
 use crate::{Fq, Fq2, Fr};
 
@@ -32,7 +32,7 @@ impl CurveConfig for Parameters {
 
 impl SWCurveConfig for Parameters {
     /// COEFF_A = [0, 0]
-    const COEFF_A: Fq2 = Fq2::new(MontFp!("0"), MontFp!("0"));
+    const COEFF_A: Fq2 = Fq2::ZERO;
 
     /// COEFF_B = 3/(u+9)
     /// (19485874751759354771024239261021720505790618469301721065564631296452457478373, 266929791119991161246907387137283842545076965332900288569378510910307636690)

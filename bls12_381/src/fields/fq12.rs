@@ -10,13 +10,13 @@ pub struct Fq12Config;
 impl Fp12Config for Fq12Config {
     type Fp6Config = Fq6Config;
 
-    const NONRESIDUE: Fq6 = Fq6::new(FQ2_ZERO, FQ2_ONE, FQ2_ZERO);
+    const NONRESIDUE: Fq6 = Fq6::new(Fq2::ZERO, Fq2::ONE, Fq2::ZERO);
 
     const FROBENIUS_COEFF_FP12_C1: &'static [Fq2] = &[
         // Fp2::NONRESIDUE^(((q^0) - 1) / 6)
         Fq2::new(
-            MontFp!("1"),
-            MontFp!("0"),
+            Fq::ONE,
+            Fq::ZERO,
         ),
         // Fp2::NONRESIDUE^(((q^1) - 1) / 6)
         Fq2::new(
@@ -26,7 +26,7 @@ impl Fp12Config for Fq12Config {
         // Fp2::NONRESIDUE^(((q^2) - 1) / 6)
         Fq2::new(
             MontFp!("793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620351"),
-            MontFp!("0"),
+            Fq::ZERO,
         ),
         // Fp2::NONRESIDUE^(((q^3) - 1) / 6)
         Fq2::new(
@@ -36,7 +36,7 @@ impl Fp12Config for Fq12Config {
         // Fp2::NONRESIDUE^(((q^4) - 1) / 6)
         Fq2::new(
             MontFp!("793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350"),
-            MontFp!("0"),
+            Fq::ZERO,
         ),
         // Fp2::NONRESIDUE^(((q^5) - 1) / 6)
         Fq2::new(
@@ -46,7 +46,7 @@ impl Fp12Config for Fq12Config {
         // Fp2::NONRESIDUE^(((q^6) - 1) / 6)
         Fq2::new(
             MontFp!("-1"),
-            MontFp!("0"),
+            Fq::ZERO,
         ),
         // Fp2::NONRESIDUE^(((q^7) - 1) / 6)
         Fq2::new(
@@ -56,7 +56,7 @@ impl Fp12Config for Fq12Config {
         // Fp2::NONRESIDUE^(((q^8) - 1) / 6)
         Fq2::new(
             MontFp!("4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436"),
-            MontFp!("0"),
+            Fq::ZERO,
         ),
         // Fp2::NONRESIDUE^(((q^9) - 1) / 6)
         Fq2::new(
@@ -66,7 +66,7 @@ impl Fp12Config for Fq12Config {
         // Fp2::NONRESIDUE^(((q^10) - 1) / 6)
         Fq2::new(
             MontFp!("4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939437"),
-            MontFp!("0"),
+            Fq::ZERO,
         ),
         // Fp2::NONRESIDUE^(((q^11) - 1) / 6)
         Fq2::new(

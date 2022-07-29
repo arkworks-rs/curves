@@ -15,7 +15,7 @@ impl Fp2Config for Fq2Config {
     /// Coefficients for the Frobenius automorphism.
     const FROBENIUS_COEFF_FP2_C1: &'static [Fq] = &[
         // Fq(-1)**(((q^0) - 1) / 2)
-        MontFp!("1"),
+        Fq::ONE,
         // Fq(-1)**(((q^1) - 1) / 2)
         MontFp!("-1"),
     ];
@@ -25,6 +25,3 @@ impl Fp2Config for Fq2Config {
         -(*fp)
     }
 }
-
-pub const FQ2_ZERO: Fq2 = Fq2::new(FQ_ZERO, FQ_ZERO);
-pub const FQ2_ONE: Fq2 = Fq2::new(FQ_ONE, FQ_ZERO);

@@ -11,11 +11,11 @@ impl Fp6Config for Fq6Config {
     type Fp2Config = Fq2Config;
 
     /// NONRESIDUE = U+9
-    const NONRESIDUE: Fq2 = Fq2::new(MontFp!("9"), MontFp!("1"));
+    const NONRESIDUE: Fq2 = Fq2::new(MontFp!("9"), Fq::ONE);
 
     const FROBENIUS_COEFF_FP6_C1: &'static [Fq2] = &[
         // Fp2::NONRESIDUE^(((q^0) - 1) / 3)
-        Fq2::new(MontFp!("1"), MontFp!("0")),
+        Fq2::new(Fq::ONE, Fq::ZERO),
         // Fp2::NONRESIDUE^(((q^1) - 1) / 3)
         Fq2::new(
             MontFp!(
@@ -30,7 +30,7 @@ impl Fp6Config for Fq6Config {
             MontFp!(
                 "21888242871839275220042445260109153167277707414472061641714758635765020556616"
             ),
-            MontFp!("0"),
+            Fq::ZERO,
         ),
         // Fp2::NONRESIDUE^(((q^3) - 1) / 3)
         Fq2::new(
@@ -40,7 +40,7 @@ impl Fp6Config for Fq6Config {
         // Fp2::NONRESIDUE^(((q^4) - 1) / 3)
         Fq2::new(
             MontFp!("2203960485148121921418603742825762020974279258880205651966"),
-            MontFp!("0"),
+            Fq::ZERO,
         ),
         // Fp2::NONRESIDUE^(((q^5) - 1) / 3)
         Fq2::new(
@@ -53,7 +53,7 @@ impl Fp6Config for Fq6Config {
 
     const FROBENIUS_COEFF_FP6_C2: &'static [Fq2] = &[
         // Fp2::NONRESIDUE^((2*(q^0) - 2) / 3)
-        Fq2::new(MontFp!("1"), MontFp!("0")),
+        Fq2::new(Fq::ONE, Fq::ZERO),
         // Fp2::NONRESIDUE^((2*(q^1) - 2) / 3)
         Fq2::new(
             MontFp!("2581911344467009335267311115468803099551665605076196740867805258568234346338"),
@@ -64,7 +64,7 @@ impl Fp6Config for Fq6Config {
         // Fp2::NONRESIDUE^((2*(q^2) - 2) / 3)
         Fq2::new(
             MontFp!("2203960485148121921418603742825762020974279258880205651966"),
-            MontFp!("0"),
+            Fq::ZERO,
         ),
         // Fp2::NONRESIDUE^((2*(q^3) - 2) / 3)
         Fq2::new(
@@ -78,7 +78,7 @@ impl Fp6Config for Fq6Config {
             MontFp!(
                 "21888242871839275220042445260109153167277707414472061641714758635765020556616"
             ),
-            MontFp!("0"),
+            Fq::ZERO,
         ),
         // Fp2::NONRESIDUE^((2*(q^5) - 2) / 3)
         Fq2::new(

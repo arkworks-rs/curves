@@ -5,7 +5,7 @@ use ark_ec::{
 };
 use ark_ff::MontFp;
 
-use crate::{Fq, Fq2, Fr, FQ_ZERO, G1_COEFF_A_NON_RESIDUE};
+use crate::{Fq, Fq::ZERO, Fq2, Fr, G1_COEFF_A_NON_RESIDUE};
 
 pub type G2Affine = mnt4::G2Affine<crate::Parameters>;
 pub type G2Projective = mnt4::G2Projective<crate::Parameters>;
@@ -52,7 +52,7 @@ impl SWCurveConfig for Parameters {
     //  (0, 67372828414711144619833451280373307321534573815811166723479321465776723059456513877937430)
     // ```
     const COEFF_B: Fq2 = Fq2::new(
-        FQ_ZERO,
+        Fq::ZERO,
         MontFp!("67372828414711144619833451280373307321534573815811166723479321465776723059456513877937430"),
     );
 

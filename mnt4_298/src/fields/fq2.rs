@@ -3,7 +3,7 @@ use ark_ff::{
     MontFp,
 };
 
-use crate::{Fq, FQ_ONE};
+use crate::{Fq, Fq::ONE};
 
 pub type Fq2 = Fp2<Fq2Config>;
 
@@ -19,7 +19,7 @@ impl Fp2Config for Fq2Config {
     /// Precomputed coefficients:
     /// `[1, 475922286169261325753349249653048451545124879242694725395555128576210262817955800483758080]`
     const FROBENIUS_COEFF_FP2_C1: &'static [Self::Fp] = &[
-        FQ_ONE,
+        Fq::ONE,
         MontFp!("475922286169261325753349249653048451545124879242694725395555128576210262817955800483758080"),
     ];
 }

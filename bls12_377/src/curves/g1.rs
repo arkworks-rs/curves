@@ -9,7 +9,7 @@ use ark_ff::{MontFp, Zero};
 use core::ops::Neg;
 
 use crate::{
-    fields::{FQ_ONE, FQ_ZERO},
+    fields::{Fq::ONE, Fq::ZERO},
     Fq, Fr,
 };
 
@@ -30,10 +30,10 @@ impl CurveConfig for Parameters {
 
 impl SWCurveConfig for Parameters {
     /// COEFF_A = 0
-    const COEFF_A: Fq = FQ_ZERO;
+    const COEFF_A: Fq = Fq::ZERO;
 
     /// COEFF_B = 1
-    const COEFF_B: Fq = FQ_ONE;
+    const COEFF_B: Fq = Fq::ONE;
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
     const GENERATOR: G1SWAffine = G1SWAffine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);

@@ -21,7 +21,7 @@ impl CurveConfig for Parameters {
     const COFACTOR: &'static [u64] = &[1];
 
     /// COFACTOR^(-1) mod r = 1
-    const COFACTOR_INV: Fr = MontFp!("1");
+    const COFACTOR_INV: Fr = Fq::ONE;
 }
 
 impl SWCurveConfig for Parameters {

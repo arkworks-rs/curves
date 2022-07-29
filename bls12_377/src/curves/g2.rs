@@ -4,7 +4,7 @@ use ark_ec::{
 };
 use ark_ff::{MontFp, Zero};
 
-use crate::{fields::FQ_ZERO, g1, Fq, Fq2, Fr};
+use crate::{fields::Fq::ZERO, g1, Fq, Fq2, Fr};
 
 pub type G2Affine = Affine<Parameters>;
 #[derive(Clone, Default, PartialEq, Eq)]
@@ -45,7 +45,7 @@ impl SWCurveConfig for Parameters {
     /// COEFF_B = [0,
     /// 155198655607781456406391640216936120121836107652948796323930557600032281009004493664981332883744016074664192874906]
     const COEFF_B: Fq2 = Fq2::new(
-        FQ_ZERO,
+        Fq::ZERO,
         MontFp!("155198655607781456406391640216936120121836107652948796323930557600032281009004493664981332883744016074664192874906"),
     );
 
