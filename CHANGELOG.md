@@ -7,6 +7,8 @@
 
 ### Breaking changes
 
+- [\#104](https://github.com/arkworks-rs/curves/pull/104) Remove `QUADRATIC_NONRESIDUE` parameter from implementors of `Fp2Config`.
+ 
 ### Features
 
 ### Improvements

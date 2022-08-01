@@ -1,21 +1,19 @@
 use ark_ec::models::{
-    twisted_edwards_extended::{
-        GroupAffine as TEGroupAffine, GroupProjective as TEGroupProjective,
+    short_weierstrass::{Affine as SWAffine, SWCurveConfig},
+    twisted_edwards::{
+        Affine as TEAffine, MontCurveConfig, Projective as TEProjective, TECurveConfig,
     },
-    ModelParameters, MontgomeryModelParameters, SWModelParameters, TEModelParameters,
+    CurveConfig,
 };
-use ark_ff::{field_new, Zero};
+use ark_ff::{Field, MontFp, Zero};
 use core::ops::Neg;
 
-use crate::{
-    fields::{FQ_ONE, FQ_ZERO},
-    Fq, Fr,
-};
+use crate::{Fq, Fr};
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
 
-impl ModelParameters for Parameters {
+impl CurveConfig for Parameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -24,21 +22,18 @@ impl ModelParameters for Parameters {
 
     /// COFACTOR_INV = COFACTOR^{-1} mod r
     /// = 5285428838741532253824584287042945485047145357130994810877
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = field_new!(Fr, "5285428838741532253824584287042945485047145357130994810877");
+    const COFACTOR_INV: Fr = MontFp!("5285428838741532253824584287042945485047145357130994810877");
 }
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for Parameters {
     /// COEFF_A = 0
-    const COEFF_A: Fq = FQ_ZERO;
+    const COEFF_A: Fq = Fq::ZERO;
 
     /// COEFF_B = 1
-    #[rustfmt::skip]
-    const COEFF_B: Fq = FQ_ONE;
+    const COEFF_B: Fq = Fq::ONE;
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
-        (G1_GENERATOR_X, G1_GENERATOR_Y);
+    const GENERATOR: G1SWAffine = G1SWAffine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);
 
     #[inline(always)]
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
@@ -46,15 +41,15 @@ impl SWModelParameters for Parameters {
     }
 }
 
-pub type G1TEAffine = TEGroupAffine<Parameters>;
-pub type G1TEProjective = TEGroupProjective<Parameters>;
+pub type G1SWAffine = SWAffine<Parameters>;
+pub type G1TEAffine = TEAffine<Parameters>;
+pub type G1TEProjective = TEProjective<Parameters>;
 
 /// Bls12_377::G1 also has a twisted Edwards form.
 /// It can be obtained via the following script, implementing
 /// 1. SW -> Montgomery -> TE1 transformation: <https://en.wikipedia.org/wiki/Montgomery_curve>
 /// 2. TE1 -> TE2 normalization (enforcing `a = -1`)
 /// ``` sage
-///
 /// # modulus
 /// p = 0x1ae3a4617c510eac63b05c06ca1493b1a22d9f300f5138f1ef3622fba094800170b5d44300000008508c00000000001
 /// Fp = Zmod(p)
@@ -96,21 +91,18 @@ pub type G1TEProjective = TEGroupProjective<Parameters>;
 /// TE2a = Fp(-1)
 /// # b = -TE1d/TE1a
 /// TE2d = Fp(122268283598675559488486339158635529096981886914877139579534153582033676785385790730042363341236035746924960903179)
-///
 /// ```
-impl TEModelParameters for Parameters {
+impl TECurveConfig for Parameters {
     /// COEFF_A = -1
-    const COEFF_A: Fq = field_new!(Fq, "-1");
+    const COEFF_A: Fq = MontFp!("-1");
 
     /// COEFF_D = 122268283598675559488486339158635529096981886914877139579534153582033676785385790730042363341236035746924960903179 mod q
-    #[rustfmt::skip]
-    const COEFF_D: Fq = field_new!(Fq, "122268283598675559488486339158635529096981886914877139579534153582033676785385790730042363341236035746924960903179");
+    const COEFF_D: Fq = MontFp!("122268283598675559488486339158635529096981886914877139579534153582033676785385790730042363341236035746924960903179");
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
-    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
-        (TE_GENERATOR_X, TE_GENERATOR_Y);
+    const GENERATOR: G1TEAffine = G1TEAffine::new_unchecked(TE_GENERATOR_X, TE_GENERATOR_Y);
 
-    type MontgomeryModelParameters = Parameters;
+    type MontCurveConfig = Parameters;
 
     /// Multiplication by `a` is multiply by `-1`.
     #[inline(always)]
@@ -124,7 +116,6 @@ impl TEModelParameters for Parameters {
 // It can be obtained via the following script, implementing
 // SW -> Montgomery transformation: <https://en.wikipedia.org/wiki/Montgomery_curve>
 // ``` sage
-//
 // # modulus
 // p=0x1ae3a4617c510eac63b05c06ca1493b1a22d9f300f5138f1ef3622fba094800170b5d44300000008508c00000000001
 // Fp=Zmod(p)
@@ -149,30 +140,27 @@ impl TEModelParameters for Parameters {
 // # MB = s
 // MB=Fp(10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931)
 // ```
-impl MontgomeryModelParameters for Parameters {
+impl MontCurveConfig for Parameters {
     /// COEFF_A = 228097355113300204138531148905234651262148041026195375645000724271212049151994375092458297304264351187709081232384
-    #[rustfmt::skip]
-    const COEFF_A: Fq = field_new!(Fq, "228097355113300204138531148905234651262148041026195375645000724271212049151994375092458297304264351187709081232384");
+    const COEFF_A: Fq = MontFp!("228097355113300204138531148905234651262148041026195375645000724271212049151994375092458297304264351187709081232384");
 
     /// COEFF_B = 10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931
-    #[rustfmt::skip]
-    const COEFF_B: Fq = field_new!(Fq, "10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931");
+    const COEFF_B: Fq = MontFp!("10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931");
 
-    type TEModelParameters = Parameters;
+    type TECurveConfig = Parameters;
 }
 
 /// G1_GENERATOR_X =
 /// 81937999373150964239938255573465948239988671502647976594219695644855304257327692006745978603320413799295628339695
-#[rustfmt::skip]
-pub const G1_GENERATOR_X: Fq = field_new!(Fq, "81937999373150964239938255573465948239988671502647976594219695644855304257327692006745978603320413799295628339695");
+pub const G1_GENERATOR_X: Fq = MontFp!("81937999373150964239938255573465948239988671502647976594219695644855304257327692006745978603320413799295628339695");
 
 /// G1_GENERATOR_Y =
 /// 241266749859715473739788878240585681733927191168601896383759122102112907357779751001206799952863815012735208165030
-#[rustfmt::skip]
-pub const G1_GENERATOR_Y: Fq = field_new!(Fq, "241266749859715473739788878240585681733927191168601896383759122102112907357779751001206799952863815012735208165030");
+pub const G1_GENERATOR_Y: Fq = MontFp!("241266749859715473739788878240585681733927191168601896383759122102112907357779751001206799952863815012735208165030");
 
-// The generator for twisted Edward form is the same SW generator converted into the normalized TE form (TE2).
-// ``` sage
+// The generator for twisted Edward form is the same SW generator converted into
+// the normalized TE form (TE2).
+//``` sage
 // # following scripts in previous section
 // #####################################################
 // # Weierstrass curve generator
@@ -216,10 +204,8 @@ pub const G1_GENERATOR_Y: Fq = field_new!(Fq, "241266749859715473739788878240585
 // ```
 /// TE_GENERATOR_X =
 /// 71222569531709137229370268896323705690285216175189308202338047559628438110820800641278662592954630774340654489393
-#[rustfmt::skip]
-pub const TE_GENERATOR_X: Fq = field_new!(Fq, "71222569531709137229370268896323705690285216175189308202338047559628438110820800641278662592954630774340654489393");
+pub const TE_GENERATOR_X: Fq = MontFp!("71222569531709137229370268896323705690285216175189308202338047559628438110820800641278662592954630774340654489393");
 
 /// TE_GENERATOR_Y =
 /// 6177051365529633638563236407038680211609544222665285371549726196884440490905471891908272386851767077598415378235
-#[rustfmt::skip]
-pub const TE_GENERATOR_Y: Fq = field_new!(Fq, "6177051365529633638563236407038680211609544222665285371549726196884440490905471891908272386851767077598415378235");
+pub const TE_GENERATOR_Y: Fq = MontFp!("6177051365529633638563236407038680211609544222665285371549726196884440490905471891908272386851767077598415378235");

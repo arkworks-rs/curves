@@ -1,9 +1,9 @@
 use crate::{fq::Fq, fr::Fr};
 use ark_ec::{
-    models::{ModelParameters, SWModelParameters},
-    short_weierstrass_jacobian::{GroupAffine, GroupProjective},
+    models::CurveConfig,
+    short_weierstrass::{Affine, Projective, SWCurveConfig},
 };
-use ark_ff::{field_new, Zero};
+use ark_ff::{Field, MontFp, Zero};
 
 #[cfg(test)]
 mod tests;
@@ -11,7 +11,7 @@ mod tests;
 #[derive(Copy, Clone, Default, PartialEq, Eq)]
 pub struct VestaParameters;
 
-impl ModelParameters for VestaParameters {
+impl CurveConfig for VestaParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -19,22 +19,21 @@ impl ModelParameters for VestaParameters {
     const COFACTOR: &'static [u64] = &[0x1];
 
     /// COFACTOR_INV = 1
-    const COFACTOR_INV: Fr = field_new!(Fr, "1");
+    const COFACTOR_INV: Fr = Fr::ONE;
 }
 
-pub type Affine = GroupAffine<VestaParameters>;
-pub type Projective = GroupProjective<VestaParameters>;
+pub type G1Affine = Affine<VestaParameters>;
+pub type G1Projective = Projective<VestaParameters>;
 
-impl SWModelParameters for VestaParameters {
+impl SWCurveConfig for VestaParameters {
     /// COEFF_A = 0
-    const COEFF_A: Fq = field_new!(Fq, "0");
+    const COEFF_A: Fq = Fq::ZERO;
 
     /// COEFF_B = 5
-    const COEFF_B: Fq = field_new!(Fq, "5");
+    const COEFF_B: Fq = MontFp!("5");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
-        (G_GENERATOR_X, G_GENERATOR_Y);
+    const GENERATOR: G1Affine = G1Affine::new_unchecked(G_GENERATOR_X, G_GENERATOR_Y);
 
     #[inline(always)]
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
@@ -44,8 +43,8 @@ impl SWModelParameters for VestaParameters {
 
 /// G_GENERATOR_X = -1
 /// Encoded in Montgomery form, so the value here is -R mod p.
-pub const G_GENERATOR_X: Fq = field_new!(Fq, "-1");
+pub const G_GENERATOR_X: Fq = MontFp!("-1");
 
 /// G_GENERATOR_Y = 2
 /// Encoded in Montgomery form, so the value here is 2R mod p.
-pub const G_GENERATOR_Y: Fq = field_new!(Fq, "2");
+pub const G_GENERATOR_Y: Fq = MontFp!("2");
