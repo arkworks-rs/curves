@@ -1,5 +1,5 @@
 use ark_algebra_test_templates::{
-    curves::*, generate_bilinearity_test, generate_g1_test, generate_g2_test, groups::*, msm::*,
+    curves::*, generate_bilinearity_test, generate_g1_test, generate_g2_test, msm::*,
 };
 use ark_ec::{AffineCurve, PairingEngine};
 use ark_ff::{Field, One, PrimeField};

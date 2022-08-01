@@ -3,7 +3,7 @@ use ark_algebra_test_templates::{
 };
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger384},
-    fields::{FftField, Field, Fp12Config, Fp2Config, Fp6Config, PrimeField, SquareRootField},
+    fields::{FftField, Field, Fp12Config, Fp2Config, Fp6Config, PrimeField},
     One, UniformRand, Zero,
 };
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
@@ -21,7 +21,7 @@ generate_field_serialization_test!(bls12_381; fq2; fq6; fq12;);
 
 #[test]
 fn test_negative_one() {
-    let neg_one = Fq::new(BigInt::new([
+    let neg_one = Fq::new_unchecked(BigInt::new([
         0x43f5fffffffcaaae,
         0x32b7fff2ed47fffd,
         0x7e83a49a2e99d69,
@@ -737,23 +737,6 @@ fn test_frob_coeffs() {
             0x22d582b,
         ])
     );
-}
-
-#[test]
-fn test_neg_one() {
-    let o = -Fq::one();
-
-    let thing: [u64; 6] = [
-        0x43f5fffffffcaaae,
-        0x32b7fff2ed47fffd,
-        0x7e83a49a2e99d69,
-        0xeca8f3318332bb7a,
-        0xef148d1ea0f4c069,
-        0x40ab3263eff0206,
-    ];
-    let negative_one = Fq::new(BigInt::new(thing));
-
-    assert_eq!(negative_one, o);
 }
 
 #[test]

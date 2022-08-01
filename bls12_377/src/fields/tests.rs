@@ -3,7 +3,7 @@ use ark_algebra_test_templates::{
 };
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger384},
-    fields::{FftField, Field, Fp2Config, Fp6Config, PrimeField, SquareRootField},
+    fields::{FftField, Field, Fp6Config, PrimeField},
     One, UniformRand, Zero,
 };
 use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
@@ -13,7 +13,7 @@ use core::{
     ops::{AddAssign, MulAssign, SubAssign},
 };
 
-use crate::{Fq, Fq12, Fq2, Fq2Config, Fq6, Fq6Config, FqConfig, Fr, FrConfig};
+use crate::{Fq, Fq12, Fq2, Fq6, Fq6Config, FqConfig, Fr, FrConfig};
 
 generate_field_test!(bls12_377; fq2; fq6; fq12; mont(6, 4); );
 generate_field_serialization_test!(bls12_377; fq2; fq6; fq12;);
@@ -144,26 +144,6 @@ fn test_fq2_legendre() {
     assert_eq!(QuadraticResidue, m1.legendre());
     m1 = Fq6Config::mul_fp2_by_nonresidue(&m1);
     assert_eq!(QuadraticNonResidue, m1.legendre());
-}
-
-#[test]
-fn test_fq2_mul_nonresidue() {
-    let mut rng = test_rng();
-
-    let nqr = Fq2::new(Fq::zero(), Fq::one());
-
-    let quadratic_non_residue = Fq2::new(
-        Fq2Config::QUADRATIC_NONRESIDUE.c0,
-        Fq2Config::QUADRATIC_NONRESIDUE.c1,
-    );
-    for _ in 0..1000 {
-        let mut a = Fq2::rand(&mut rng);
-        let mut b = a;
-        a = quadratic_non_residue * &a;
-        b.mul_assign(&nqr);
-
-        assert_eq!(a, b);
-    }
 }
 
 #[test]
