@@ -1,7 +1,7 @@
 use crate::{fq::Fq, fr::Fr};
 use ark_ec::{
     models::CurveConfig,
-    short_weierstrass::{Affine, Projective, SWCurveConfig},
+    short_weierstrass::{self as sw, SWCurveConfig},
 };
 use ark_ff::{Field, MontFp, Zero};
 
@@ -22,8 +22,8 @@ impl CurveConfig for VestaParameters {
     const COFACTOR_INV: Fr = Fr::ONE;
 }
 
-pub type G1Affine = Affine<VestaParameters>;
-pub type G1Projective = Projective<VestaParameters>;
+pub type Affine = sw::Affine<VestaParameters>;
+pub type Projective = sw::Projective<VestaParameters>;
 
 impl SWCurveConfig for VestaParameters {
     /// COEFF_A = 0
@@ -33,7 +33,7 @@ impl SWCurveConfig for VestaParameters {
     const COEFF_B: Fq = MontFp!("5");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const GENERATOR: G1Affine = G1Affine::new_unchecked(G_GENERATOR_X, G_GENERATOR_Y);
+    const GENERATOR: Affine = Affine::new_unchecked(G_GENERATOR_X, G_GENERATOR_Y);
 
     #[inline(always)]
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {

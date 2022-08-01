@@ -1,6 +1,6 @@
 use ark_ec::{
     models::CurveConfig,
-    short_weierstrass::{Affine, Projective, SWCurveConfig},
+    short_weierstrass::{self as sw, SWCurveConfig},
 };
 use ark_ff::{Field, MontFp, Zero};
 
@@ -23,8 +23,8 @@ impl CurveConfig for PallasParameters {
     const COFACTOR_INV: Fr = Fr::ONE;
 }
 
-pub type G1Affine = Affine<PallasParameters>;
-pub type G1Projective = Projective<PallasParameters>;
+pub type Affine = sw::Affine<PallasParameters>;
+pub type Projective = sw::Projective<PallasParameters>;
 
 impl SWCurveConfig for PallasParameters {
     /// COEFF_A = 0
@@ -34,7 +34,7 @@ impl SWCurveConfig for PallasParameters {
     const COEFF_B: Fq = MontFp!("5");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const GENERATOR: G1Affine = Affine::new_unchecked(G_GENERATOR_X, G_GENERATOR_Y);
+    const GENERATOR: Affine = Affine::new_unchecked(G_GENERATOR_X, G_GENERATOR_Y);
 
     #[inline(always)]
     fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
