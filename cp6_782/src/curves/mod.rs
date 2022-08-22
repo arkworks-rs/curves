@@ -2,7 +2,7 @@ use ark_ec::{models::short_weierstrass::SWCurveConfig, PairingEngine};
 use ark_ff::{
     biginteger::BigInteger832,
     fields::{BitIteratorBE, Field},
-    BigInt, One,
+    BigInt, CyclotomicMultSubgroup, One,
 };
 
 use crate::{Fq, Fq3, Fq6, Fr};

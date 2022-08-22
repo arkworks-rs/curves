@@ -5,7 +5,7 @@ use ark_ec::{
     short_weierstrass::{Affine, SWCurveConfig},
     AffineCurve, ProjectiveCurve,
 };
-use ark_ff::{biginteger::BigInteger256, Field, MontFp, Zero};
+use ark_ff::{Field, MontFp, Zero};
 use ark_std::ops::Neg;
 
 use crate::*;
@@ -50,17 +50,15 @@ impl SWCurveConfig for Parameters {
         //
         // Check that endomorphism_p(P) == -[X^2]P
 
-        let x = BigInteger256::new([crate::Parameters::X[0], 0, 0, 0]);
-
         // An early-out optimization described in Section 6.
         // If uP == P but P != point of infinity, then the point is not in the right
         // subgroup.
-        let x_times_p = p.mul(x);
+        let x_times_p = p.mul_bigint(crate::Parameters::X);
         if x_times_p.eq(p) && !p.infinity {
             return false;
         }
 
-        let minus_x_squared_times_p = x_times_p.mul(x).neg();
+        let minus_x_squared_times_p = x_times_p.mul_bigint(crate::Parameters::X).neg();
         let endomorphism_p = endomorphism(p);
         minus_x_squared_times_p.eq(&endomorphism_p)
     }
