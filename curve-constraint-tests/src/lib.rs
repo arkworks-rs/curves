@@ -2,15 +2,15 @@
 extern crate ark_relations;
 
 pub mod fields {
-    use ark_ff::{BigInteger, BitIteratorLE, Field, PrimeField, UniformRand};
+    use ark_ff::{BitIteratorLE, Field, PrimeField, UniformRand};
     use ark_r1cs_std::prelude::*;
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
     use ark_std::{test_rng, vec::Vec};
 
     pub fn field_test<F, ConstraintF, AF>() -> Result<(), SynthesisError>
     where
-        F: PrimeField,
-        ConstraintF: Field,
+        F: Field,
+        ConstraintF: PrimeField,
         AF: FieldVar<F, ConstraintF>,
         AF: TwoBitLookupGadget<ConstraintF, TableConstant = F>,
         for<'a> &'a AF: FieldOpsBounds<'a, F, AF>,
@@ -173,13 +173,6 @@ pub mod fields {
             let _ = r.to_non_unique_bits_le()?;
             assert!(cs.is_satisfied().unwrap());
             let _ = r.to_bits_le()?;
-            assert!(cs.is_satisfied().unwrap());
-
-            let bytes = r.to_non_unique_bytes()?;
-            assert_eq!(r_native.into_bigint().to_bytes_le(), bytes.value().unwrap());
-            assert!(cs.is_satisfied().unwrap());
-            let bytes = r.to_bytes()?;
-            assert_eq!(r_native.into_bigint().to_bytes_le(), bytes.value().unwrap());
             assert!(cs.is_satisfied().unwrap());
 
             let ab_false = &a + (AF::from(Boolean::Constant(false)) * b_native);

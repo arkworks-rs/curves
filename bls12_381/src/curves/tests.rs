@@ -39,7 +39,11 @@ fn test_g1_subgroup_non_membership_via_endomorphism() {
         let greatest = rng.gen();
 
         if let Some(p) = G1Affine::get_point_from_x(x, greatest) {
-            if !p.into_projective().mul(Fr::characteristic()).is_zero() {
+            if !p
+                .into_projective()
+                .mul_bigint(Fr::characteristic())
+                .is_zero()
+            {
                 assert!(!p.is_in_correct_subgroup_assuming_on_curve());
                 return;
             }
@@ -62,7 +66,11 @@ fn test_g2_subgroup_non_membership_via_endomorphism() {
         let greatest = rng.gen();
 
         if let Some(p) = G2Affine::get_point_from_x(x, greatest) {
-            if !p.into_projective().mul(Fr::characteristic()).is_zero() {
+            if !p
+                .into_projective()
+                .mul_bigint(Fr::characteristic())
+                .is_zero()
+            {
                 assert!(!p.is_in_correct_subgroup_assuming_on_curve());
                 return;
             }
