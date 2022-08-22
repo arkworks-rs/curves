@@ -340,7 +340,7 @@ pub mod curves {
 
             // Check scalar mul with edge cases
             for scalar in scalars.iter() {
-                let native_result = a_native.mul(scalar);
+                let native_result = a_native.mul_bigint(scalar);
                 let native_result = native_result.into_affine();
 
                 let scalar_bits: Vec<bool> = BitIteratorLE::new(&scalar).collect();
