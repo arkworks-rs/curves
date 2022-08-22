@@ -5,7 +5,7 @@ use ark_ec::{
     short_weierstrass::{Affine, SWCurveConfig},
     AffineCurve,
 };
-use ark_ff::{BigInt, Field, MontFp, Zero};
+use ark_ff::{Field, MontFp, Zero};
 
 use crate::*;
 
@@ -60,7 +60,7 @@ impl SWCurveConfig for Parameters {
         //
         // Checks that [p]P = [X]P
 
-        let mut x_times_point = point.mul(BigInt::new([crate::Parameters::X[0], 0, 0, 0]));
+        let mut x_times_point = point.mul_bigint(crate::Parameters::X);
         if crate::Parameters::X_IS_NEGATIVE {
             x_times_point = -x_times_point;
         }
