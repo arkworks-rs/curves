@@ -29,7 +29,7 @@ impl MNT4Parameters for Parameters {
     const TWIST_COEFF_A: Fq2 = Fq2::new(G1_COEFF_A_NON_RESIDUE, Fq::ZERO);
 
     // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt4_80.ml#L88
-    const ATE_LOOP_COUNT_2: &'static [i8] = &[
+    const ATE_LOOP_COUNT: &'static [i8] = &[
         1, 0, 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0, -1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, -1,
         0, 1, 0, -1, 0, 0, 0, 0, 0, 1, 0, 1, 0, -1, 0, 0, 0, -1, 0, -1, 0, -1, 0, 0, -1, 0, -1, 0,
         0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, -1, 0, 1, 0, 0, 0, 0, 0, -1,

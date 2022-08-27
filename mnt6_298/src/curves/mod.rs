@@ -27,7 +27,7 @@ impl MNT6Parameters for Parameters {
         Fp3::<Self::Fp3Config>::new(Fq::ZERO, Fq::ZERO, g1::Parameters::COEFF_A);
 
     // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt4_80.ml#L88
-    const ATE_LOOP_COUNT_2: &'static [i8] = &[
+    const ATE_LOOP_COUNT: &'static [i8] = &[
         1, 0, 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0, -1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, -1,
         0, 1, 0, -1, 0, 0, 0, 0, 0, 1, 0, 1, 0, -1, 0, 0, 0, -1, 0, -1, 0, -1, 0, 0, -1, 0, -1, 0,
         0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, -1, 0, 1, 0, 0, 0, 0, 0, -1,
