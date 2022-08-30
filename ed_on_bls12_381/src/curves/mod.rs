@@ -70,7 +70,7 @@ impl TECurveConfig for JubjubParameters {
     /// COEFF_A = -1
     const COEFF_A: Fq = MontFp!("-1");
 
-    /// COEFF_D = (10240/10241) mod q
+    /// COEFF_D = -(10240/10241) mod q
     const COEFF_D: Fq =
         MontFp!("19257038036680949359750312669786877991949435402254120286184196891950884077233");
 
