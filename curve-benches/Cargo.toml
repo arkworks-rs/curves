@@ -16,11 +16,10 @@ repository = "https://github.com/arkworks-rs/curves"
 documentation = "https://docs.rs/algebra/"
 keywords = ["cryptography", "finite-fields", "elliptic-curves", "pairing"]
 categories = ["cryptography"]
-include = ["Cargo.toml", "src", "README.md", "LICENSE-APACHE", "LICENSE-MIT"]
+include = ["Cargo.toml", "README.md", "LICENSE-APACHE", "LICENSE-MIT"]
 license = "MIT/Apache-2.0"
 edition = "2021"
 publish = false
-build = "build.rs"
 
 ################################# Dependencies ################################
 
@@ -32,6 +31,7 @@ ark-std = { version = "^0.3.0", default-features = false }
 ark-ec = { version = "^0.3.0", default-features = false }
 ark-ff = { version = "^0.3.0", default-features = false }
 ark-serialize = { version = "^0.3.0", default-features = false }
+ark-algebra-bench-templates = { version = "^0.3.0", default-features = false }
 
 ark-mnt4-298 = { path = "../mnt4_298" }
 ark-mnt6-298 = { path = "../mnt6_298" }
@@ -48,7 +48,7 @@ ark-vesta = { path = "../vesta" }
 
 [features]
 asm = [ "ark-ff/asm"]
-parallel = [ "ark-ff/parallel",  "ark-ec/parallel", ]
+parallel = [ "ark-ff/parallel",  "ark-ec/parallel" ]
 n_fold = []
 
 [build-dependencies]

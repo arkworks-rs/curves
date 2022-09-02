@@ -1,11 +1,11 @@
-use ark_curve_benches::*;
+use ark_algebra_bench_templates::*;
 use ark_std::ops::{AddAssign, MulAssign, SubAssign};
 
 use ark_bn254::{
     fq::Fq, fq2::Fq2, fr::Fr, Bn254, Fq12, G1Affine, G1Projective as G1, G2Affine,
     G2Projective as G2,
 };
-use ark_ec::{PairingEngine, ProjectiveCurve};
+use ark_ec::{CurveGroup, Group, bn::{G1Prepared, G2Prepared}};
 use ark_ff::{biginteger::BigInteger256 as Repr, BigInteger, Field, PrimeField, UniformRand};
 
 mod g1 {
