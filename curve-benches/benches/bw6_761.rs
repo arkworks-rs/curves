@@ -5,7 +5,10 @@ use ark_bw6_761::{
     fq::Fq, fq3::Fq3, fr::Fr, Fq6, G1Affine, G1Projective as G1, G2Affine, G2Projective as G2,
     BW6_761,
 };
-use ark_ec::{Group, CurveGroup, bw6::{G1Prepared, G2Prepared}};
+use ark_ec::{
+    bw6::{G1Prepared, G2Prepared},
+    CurveGroup, Group,
+};
 use ark_ff::{
     biginteger::{BigInteger384 as FrRepr, BigInteger768 as FqRepr},
     BigInteger, Field, PrimeField, UniformRand,

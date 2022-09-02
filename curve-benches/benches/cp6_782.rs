@@ -2,8 +2,8 @@ use ark_algebra_bench_templates::*;
 use ark_std::ops::{AddAssign, MulAssign, SubAssign};
 
 use ark_cp6_782::{
-    fq::Fq, fq3::Fq3, fr::Fr, Fq6, G1Affine, G1Projective as G1, G2Affine, G2Projective as G2,
-    CP6_782, G1Prepared, G2Prepared
+    fq::Fq, fq3::Fq3, fr::Fr, Fq6, G1Affine, G1Prepared, G1Projective as G1, G2Affine, G2Prepared,
+    G2Projective as G2, CP6_782,
 };
 use ark_ec::{CurveGroup, Group};
 use ark_ff::{

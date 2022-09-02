@@ -6,7 +6,7 @@ use ark_bls12_377::{
     G2Projective as G2,
 };
 use ark_ec::bls12::{G1Prepared, G2Prepared};
-use ark_ec::{Group, CurveGroup};
+use ark_ec::{CurveGroup, Group};
 use ark_ff::{
     biginteger::{BigInteger256 as FrRepr, BigInteger384 as FqRepr},
     BigInteger, Field, PrimeField, UniformRand,

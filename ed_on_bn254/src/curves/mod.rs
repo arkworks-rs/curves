@@ -41,7 +41,7 @@ impl TECurveConfig for EdwardsParameters {
 
     #[inline(always)]
     fn mul_by_a(elem: Self::BaseField) -> Self::BaseField {
-        *elem
+        elem
     }
 
     /// COEFF_D = 168696/168700 mod q
