@@ -40,7 +40,7 @@ impl TECurveConfig for EdwardsParameters {
     const COEFF_A: Fq = Fq::ONE;
 
     #[inline(always)]
-    fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {
+    fn mul_by_a(elem: Self::BaseField) -> Self::BaseField {
         *elem
     }
 
