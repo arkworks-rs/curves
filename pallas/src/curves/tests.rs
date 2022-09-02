@@ -1,5 +1,5 @@
 use ark_algebra_test_templates::curves::{curve_tests, sw_tests};
-use ark_ec::AffineCurve;
+use ark_ec::AffineRepr;
 
 use crate::{Affine, PallasParameters, Projective};
 

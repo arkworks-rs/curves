@@ -1,7 +1,10 @@
-use ark_curve_benches::*;
+use ark_algebra_bench_templates::*;
 use ark_std::ops::{AddAssign, MulAssign, SubAssign};
 
-use ark_ec::{PairingEngine, ProjectiveCurve};
+use ark_ec::{
+    mnt6::{G1Prepared, G2Prepared},
+    CurveGroup, Group,
+};
 use ark_ff::{biginteger::BigInteger768 as FqRepr, BigInteger, Field, PrimeField, UniformRand};
 use ark_mnt6_753::{
     fq::Fq, fq3::Fq3, fr::Fr, Fq6, G1Affine, G1Projective as G1, G2Affine, G2Projective as G2,

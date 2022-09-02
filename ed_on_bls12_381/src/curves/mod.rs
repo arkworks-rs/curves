@@ -24,7 +24,7 @@ pub type SWProjective = short_weierstrass::Projective<JubjubParameters>;
 /// q = 52435875175126190479447740508185965837690552500527637822603658699938581184513.
 ///
 /// a = -1.
-/// d = (10240/10241) mod q
+/// d = -(10240/10241) mod q
 ///   = 19257038036680949359750312669786877991949435402254120286184196891950884077233.
 ///
 /// Sage script to calculate these:
@@ -70,7 +70,7 @@ impl TECurveConfig for JubjubParameters {
     /// COEFF_A = -1
     const COEFF_A: Fq = MontFp!("-1");
 
-    /// COEFF_D = (10240/10241) mod q
+    /// COEFF_D = -(10240/10241) mod q
     const COEFF_D: Fq =
         MontFp!("19257038036680949359750312669786877991949435402254120286184196891950884077233");
 
@@ -81,8 +81,8 @@ impl TECurveConfig for JubjubParameters {
 
     /// Multiplication by `a` is simply negation here.
     #[inline(always)]
-    fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {
-        -(*elem)
+    fn mul_by_a(elem: Self::BaseField) -> Self::BaseField {
+        -elem
     }
 }
 

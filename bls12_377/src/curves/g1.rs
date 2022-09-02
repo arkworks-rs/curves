@@ -36,7 +36,7 @@ impl SWCurveConfig for Parameters {
     const GENERATOR: G1SWAffine = G1SWAffine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);
 
     #[inline(always)]
-    fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
+    fn mul_by_a(_: Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
     }
 }
@@ -106,7 +106,7 @@ impl TECurveConfig for Parameters {
 
     /// Multiplication by `a` is multiply by `-1`.
     #[inline(always)]
-    fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {
+    fn mul_by_a(elem: Self::BaseField) -> Self::BaseField {
         elem.neg()
     }
 }

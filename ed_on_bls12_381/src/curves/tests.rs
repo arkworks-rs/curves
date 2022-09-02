@@ -1,5 +1,5 @@
 use ark_algebra_test_templates::curves::*;
-use ark_ec::{AffineCurve, ProjectiveCurve};
+use ark_ec::{AffineRepr, ProjectiveCurve};
 use ark_ff::Zero;
 use ark_std::{ops::Mul, str::FromStr};
 

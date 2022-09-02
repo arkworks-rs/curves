@@ -67,7 +67,7 @@ impl SWCurveConfig for Parameters {
     const GENERATOR: G2Affine = G2Affine::new_unchecked(G2_GENERATOR_X, G2_GENERATOR_Y);
 
     #[inline(always)]
-    fn mul_by_a(elt: &Fq2) -> Fq2 {
+    fn mul_by_a(elt: Fq2) -> Fq2 {
         Fq2::new(MUL_BY_A_C0 * &elt.c0, MUL_BY_A_C1 * &elt.c1)
     }
 }

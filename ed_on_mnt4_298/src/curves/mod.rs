@@ -54,8 +54,8 @@ impl TECurveConfig for EdwardsParameters {
 
     /// Multiplication by `a` is just negation.
     #[inline(always)]
-    fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {
-        -*elem
+    fn mul_by_a(elem: Self::BaseField) -> Self::BaseField {
+        -elem
     }
 }
 
