@@ -83,9 +83,8 @@ impl TECurveConfig for BandersnatchParameters {
 
     /// Multiplication by `a` is multiply by `-5`.
     #[inline(always)]
-    fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {
-        let t = (*elem).double().double();
-        -(t + *elem)
+    fn mul_by_a(elem: Self::BaseField) -> Self::BaseField {
+        elem.double().double() * elem;
     }
 }
 
