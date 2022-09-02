@@ -33,7 +33,7 @@ impl SWCurveConfig for Parameters {
     const GENERATOR: G1Affine = G1Affine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);
 
     #[inline(always)]
-    fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
+    fn mul_by_a(_: Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
     }
 }
