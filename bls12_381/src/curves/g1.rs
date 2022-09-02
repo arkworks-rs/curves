@@ -3,7 +3,7 @@ use ark_ec::{
     bls12::Bls12Parameters,
     models::CurveConfig,
     short_weierstrass::{Affine, SWCurveConfig},
-    AffineCurve, ProjectiveCurve,
+    AffineRepr, Group,
 };
 use ark_ff::{Field, MontFp, Zero};
 use ark_std::ops::Neg;
@@ -40,7 +40,7 @@ impl SWCurveConfig for Parameters {
     const GENERATOR: G1Affine = G1Affine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);
 
     #[inline(always)]
-    fn mul_by_a(_: &Self::BaseField) -> Self::BaseField {
+    fn mul_by_a(_: Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
     }
 

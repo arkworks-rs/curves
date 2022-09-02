@@ -1,23 +1,22 @@
-use ark_algebra_test_templates::{
-    fields::*, generate_field_serialization_test, generate_field_test,
-};
+use ark_algebra_test_templates::*;
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger384},
     fields::{FftField, Field, Fp12Config, Fp2Config, Fp6Config, PrimeField},
     One, UniformRand, Zero,
 };
-use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
 use ark_std::{
     cmp::Ordering,
     ops::{AddAssign, MulAssign, SubAssign},
-    rand::Rng,
-    test_rng, vec,
+    vec,
 };
 
-use crate::{Fq, Fq12, Fq12Config, Fq2, Fq2Config, Fq6, Fq6Config, FqConfig, Fr, FrConfig};
+use crate::{Fq, Fq12, Fq12Config, Fq2, Fq2Config, Fq6, Fq6Config, Fr};
 
-generate_field_test!(bls12_381; fq2; fq6; fq12; mont(6, 4); );
-generate_field_serialization_test!(bls12_381; fq2; fq6; fq12;);
+test_field!(fr; Fr; mont_prime_field);
+test_field!(fq; Fq; mont_prime_field);
+test_field!(fq2; Fq2);
+test_field!(fq6; Fq6);
+test_field!(fq12; Fq12);
 
 #[test]
 fn test_negative_one() {

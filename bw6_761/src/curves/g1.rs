@@ -43,7 +43,7 @@ impl SWCurveConfig for Parameters {
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
     const GENERATOR: G1Affine = G1Affine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);
     #[inline(always)]
-    fn mul_by_a(_elem: &Self::BaseField) -> Self::BaseField {
+    fn mul_by_a(_elem: Self::BaseField) -> Self::BaseField {
         use ark_ff::Zero;
         Self::BaseField::zero()
     }

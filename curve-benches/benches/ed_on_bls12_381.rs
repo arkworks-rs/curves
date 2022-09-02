@@ -1,7 +1,7 @@
-use ark_curve_benches::*;
+use ark_algebra_bench_templates::*;
 use ark_std::ops::{AddAssign, MulAssign, SubAssign};
 
-use ark_ec::ProjectiveCurve;
+use ark_ec::{CurveGroup, Group};
 use ark_ed_on_bls12_381::{fq::Fq, fr::Fr, EdwardsAffine as GAffine, EdwardsProjective as G};
 use ark_ff::{biginteger::BigInteger256 as Repr, BigInteger, Field, PrimeField, UniformRand};
 

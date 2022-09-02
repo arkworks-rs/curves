@@ -1,6 +1,7 @@
 use ark_ec::{
     models::CurveConfig,
     short_weierstrass::{Affine, Projective, SWCurveConfig},
+    AffineRepr, CurveGroup,
 };
 use ark_ff::{Field, MontFp};
 
@@ -8,6 +9,45 @@ use crate::{Fq, Fq3, Fr};
 
 pub type G2Affine = Affine<Parameters>;
 pub type G2Projective = Projective<Parameters>;
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct G2Prepared(pub G2Affine);
+
+impl From<G2Affine> for G2Prepared {
+    fn from(other: G2Affine) -> Self {
+        G2Prepared(other)
+    }
+}
+
+impl From<G2Projective> for G2Prepared {
+    fn from(q: G2Projective) -> Self {
+        q.into_affine().into()
+    }
+}
+
+impl<'a> From<&'a G2Affine> for G2Prepared {
+    fn from(other: &'a G2Affine) -> Self {
+        G2Prepared(*other)
+    }
+}
+
+impl<'a> From<&'a G2Projective> for G2Prepared {
+    fn from(q: &'a G2Projective) -> Self {
+        q.into_affine().into()
+    }
+}
+
+impl G2Prepared {
+    pub fn is_zero(&self) -> bool {
+        self.0.is_identity()
+    }
+}
+
+impl Default for G2Prepared {
+    fn default() -> Self {
+        G2Prepared(G2Affine::generator())
+    }
+}
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;

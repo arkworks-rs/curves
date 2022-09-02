@@ -1,17 +1,19 @@
-use ark_ec::{models::short_weierstrass::SWCurveConfig, PairingEngine};
+use ark_ec::pairing::{MillerLoopOutput, PairingOutput};
+use ark_ec::{models::short_weierstrass::SWCurveConfig, pairing::Pairing};
 use ark_ff::{
     biginteger::BigInteger832,
     fields::{BitIteratorBE, Field},
     BigInt, CyclotomicMultSubgroup, One,
 };
+use itertools::Itertools;
 
 use crate::{Fq, Fq3, Fq6, Fr};
 
 pub mod g1;
-pub use self::g1::{G1Affine, G1Projective};
+pub use self::g1::{G1Affine, G1Prepared, G1Projective};
 
 pub mod g2;
-pub use self::g2::{G2Affine, G2Projective};
+pub use self::g2::{G2Affine, G2Prepared, G2Projective};
 
 #[cfg(test)]
 mod tests;
@@ -21,40 +23,39 @@ pub type GT = Fq6;
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub struct CP6_782;
 
-impl PairingEngine for CP6_782 {
-    type Fr = Fr;
-    type G1Projective = G1Projective;
+impl Pairing for CP6_782 {
+    type ScalarField = Fr;
+    type G1 = G1Projective;
     type G1Affine = G1Affine;
-    type G1Prepared = G1Affine;
-    type G2Projective = G2Projective;
+    type G1Prepared = G1Prepared;
+    type G2 = G2Projective;
     type G2Affine = G2Affine;
-    type G2Prepared = G2Affine;
-    type Fq = Fq;
-    type Fqe = Fq3;
-    type Fqk = Fq6;
+    type G2Prepared = G2Prepared;
+    type TargetField = Fq6;
 
-    fn miller_loop<'a, I>(i: I) -> Self::Fqk
-    where
-        I: IntoIterator<Item = &'a (Self::G1Prepared, Self::G2Prepared)>,
-    {
-        let mut result = Self::Fqk::one();
-        for &(ref p, ref q) in i {
-            result *= &CP6_782::ate_miller_loop(p, q);
-        }
-        result
+    fn multi_miller_loop(
+        a: impl IntoIterator<Item = impl Into<Self::G1Prepared>>,
+        b: impl IntoIterator<Item = impl Into<Self::G2Prepared>>,
+    ) -> MillerLoopOutput<Self> {
+        let mut result = Self::TargetField::one();
+        a.into_iter().zip_eq(b).for_each(|(p, q)| {
+            let (p, q) = (p.into(), q.into());
+            result *= &CP6_782::ate_miller_loop(&p, &q);
+        });
+
+        MillerLoopOutput(result)
     }
 
-    fn final_exponentiation(r: &Self::Fqk) -> Option<Self::Fqk> {
-        Some(CP6_782::final_exponentiation(r))
+    fn final_exponentiation(r: MillerLoopOutput<Self>) -> Option<PairingOutput<Self>> {
+        Some(PairingOutput(CP6_782::final_exponentiation(&r.0)))
     }
 }
 
 impl CP6_782 {
-    pub fn ate_pairing(p: &G1Affine, q: &G2Affine) -> GT {
-        CP6_782::final_exponentiation(&CP6_782::ate_miller_loop(p, q))
-    }
+    fn ate_miller_loop(p: &G1Prepared, q: &G2Prepared) -> Fq6 {
+        let p = p.0;
+        let q = q.0;
 
-    fn ate_miller_loop(p: &G1Affine, q: &G2Affine) -> Fq6 {
         let px = p.x;
         let py = p.y;
         let qx = q.x;

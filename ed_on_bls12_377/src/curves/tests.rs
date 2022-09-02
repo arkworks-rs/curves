@@ -1,5 +1,5 @@
 use ark_algebra_test_templates::curves::*;
-use ark_ec::AffineCurve;
+use ark_ec::AffineRepr;
 
 use crate::*;
 
