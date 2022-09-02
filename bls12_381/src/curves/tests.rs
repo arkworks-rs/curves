@@ -29,7 +29,7 @@ fn test_g1_subgroup_non_membership_via_endomorphism() {
         let x = Fq::rand(&mut rng);
         let greatest = rng.gen();
 
-        if let Some(p) = G1Affine::get_point_from_x(x, greatest) {
+        if let Some(p) = G1Affine::get_point_from_x_unchecked(x, greatest) {
             if !p.mul_bigint(Fr::characteristic()).is_zero() {
                 assert!(!p.is_in_correct_subgroup_assuming_on_curve());
                 return;
@@ -52,7 +52,7 @@ fn test_g2_subgroup_non_membership_via_endomorphism() {
         let x = Fq2::rand(&mut rng);
         let greatest = rng.gen();
 
-        if let Some(p) = G2Affine::get_point_from_x(x, greatest) {
+        if let Some(p) = G2Affine::get_point_from_x_unchecked(x, greatest) {
             if !p.mul_bigint(Fr::characteristic()).is_zero() {
                 assert!(!p.is_in_correct_subgroup_assuming_on_curve());
                 return;
