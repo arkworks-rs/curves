@@ -3,7 +3,7 @@ use ark_ec::{
     bls12::Bls12Parameters,
     models::CurveConfig,
     short_weierstrass::{Affine, SWCurveConfig},
-    AffineCurve, ProjectiveCurve,
+    AffineRepr, Group,
 };
 use ark_ff::{Field, MontFp, Zero};
 use ark_std::ops::Neg;
