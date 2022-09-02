@@ -28,7 +28,15 @@ impl MNT4Parameters for Parameters {
     // ```
     const TWIST_COEFF_A: Fq2 = Fq2::new(G1_COEFF_A_NON_RESIDUE, Fq::ZERO);
 
-    const ATE_LOOP_COUNT: &'static [u64] = &[993502997770534912, 5071219579242586943, 2027349];
+    // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt4_80.ml#L88
+    const ATE_LOOP_COUNT: &'static [i8] = &[
+        1, 0, 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0, -1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, -1,
+        0, 1, 0, -1, 0, 0, 0, 0, 0, 1, 0, 1, 0, -1, 0, 0, 0, -1, 0, -1, 0, -1, 0, 0, -1, 0, -1, 0,
+        0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, -1, 0, 1, 0, 0, 0, 0, 0, -1,
+        0, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, 1, 0, 1, 0, -1, 0, 1, 0, 0, 0, 1, 0, 0, -1, 0, 0, -1,
+        0, -1, 0, 1, 0, 0, -1, 0, 0, 1, 0, -1, 0, -1, 0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+    ];
     const ATE_IS_LOOP_COUNT_NEG: bool = false;
     const FINAL_EXPONENT_LAST_CHUNK_1: BigInteger320 = BigInt::new([0x1, 0x0, 0x0, 0x0, 0x0]);
     const FINAL_EXPONENT_LAST_CHUNK_W0_IS_NEG: bool = false;
