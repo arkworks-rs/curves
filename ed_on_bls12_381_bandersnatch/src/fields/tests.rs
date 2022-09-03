@@ -1,19 +1,14 @@
-use ark_algebra_test_templates::{
-    fields::*, generate_field_serialization_test, generate_field_test,
-};
+use crate::{Fq, Fr};
+use ark_algebra_test_templates::*;
 use ark_ff::{
     biginteger::BigInteger256 as BigInteger,
-    fields::{Field, LegendreSymbol::*, PrimeField},
-    One, UniformRand, Zero,
+    fields::{Field, LegendreSymbol::*},
+    One, Zero,
 };
-use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
-use ark_std::{rand::Rng, str::FromStr, test_rng};
-use core::ops::{AddAssign, MulAssign, SubAssign};
+use ark_std::str::FromStr;
 
-use crate::{Fq, FqConfig, Fr, FrConfig};
-
-generate_field_test!(ed_on_bls12_381_bandersnatch; mont(4, 4); );
-generate_field_serialization_test!(ed_on_bls12_381_bandersnatch;);
+test_field!(fr; Fr; mont_prime_field);
+test_field!(fq; Fq; mont_prime_field);
 
 #[test]
 fn test_fq_add() {

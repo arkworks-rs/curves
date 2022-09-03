@@ -225,7 +225,7 @@ pub mod fields {
 pub mod curves {
     use ark_ec::{
         short_weierstrass::Projective as SWProjective, twisted_edwards::Projective as TEProjective,
-        CurveGroup,
+        CurveGroup, Group,
     };
     use ark_ff::{BitIteratorLE, Field, One, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
@@ -512,6 +512,7 @@ pub mod curves {
 }
 
 pub mod pairing {
+    use ark_ec::pairing::PairingOutput;
     use ark_ec::{pairing::Pairing, CurveGroup};
     use ark_ff::{BitIteratorLE, Field, PrimeField};
     use ark_r1cs_std::prelude::*;
@@ -578,7 +579,7 @@ pub mod pairing {
 
                 let mut ans_g = P::pairing(a_prep_g, b_prep_g)?;
                 let mut ans_n = E::pairing(a, b);
-                ans_n = ans_n.pow(s.into_bigint());
+                ans_n = PairingOutput(ans_n.0.pow(s.into_bigint()));
                 ans_g = ans_g.pow_le(&s_iter)?;
 
                 (ans_g, ans_n)
@@ -587,12 +588,12 @@ pub mod pairing {
             ans1_g.enforce_equal(&ans2_g)?;
             ans2_g.enforce_equal(&ans3_g)?;
 
-            assert_eq!(ans1_g.value()?, ans1_n, "Failed native test 1");
-            assert_eq!(ans2_g.value()?, ans2_n, "Failed native test 2");
-            assert_eq!(ans3_g.value()?, ans3_n, "Failed native test 3");
+            assert_eq!(ans1_g.value()?, ans1_n.0, "Failed native test 1");
+            assert_eq!(ans2_g.value()?, ans2_n.0, "Failed native test 2");
+            assert_eq!(ans3_g.value()?, ans3_n.0, "Failed native test 3");
 
-            assert_eq!(ans1_n, ans2_n, "Failed ans1_native == ans2_native");
-            assert_eq!(ans2_n, ans3_n, "Failed ans2_native == ans3_native");
+            assert_eq!(ans1_n.0, ans2_n.0, "Failed ans1_native == ans2_native");
+            assert_eq!(ans2_n.0, ans3_n.0, "Failed ans2_native == ans3_native");
             assert_eq!(ans1_g.value()?, ans3_g.value()?, "Failed ans1 == ans3");
             assert_eq!(ans1_g.value()?, ans2_g.value()?, "Failed ans1 == ans2");
             assert_eq!(ans2_g.value()?, ans3_g.value()?, "Failed ans2 == ans3");
