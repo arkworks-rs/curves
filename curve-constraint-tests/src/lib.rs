@@ -225,7 +225,7 @@ pub mod fields {
 pub mod curves {
     use ark_ec::{
         short_weierstrass::Projective as SWProjective, twisted_edwards::Projective as TEProjective,
-        ProjectiveCurve,
+        CurveGroup,
     };
     use ark_ff::{BitIteratorLE, Field, One, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
@@ -235,7 +235,7 @@ pub mod curves {
 
     pub fn group_test<C, ConstraintF, GG>() -> Result<(), SynthesisError>
     where
-        C: ProjectiveCurve,
+        C: CurveGroup,
         ConstraintF: Field,
         GG: CurveVar<C, ConstraintF>,
         for<'a> &'a GG: GroupOpsBounds<'a, C, GG>,
@@ -512,18 +512,18 @@ pub mod curves {
 }
 
 pub mod pairing {
-    use ark_ec::{PairingEngine, ProjectiveCurve};
+    use ark_ec::{pairing::Pairing, CurveGroup};
     use ark_ff::{BitIteratorLE, Field, PrimeField};
     use ark_r1cs_std::prelude::*;
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
     use ark_std::{test_rng, vec::Vec, UniformRand};
 
     #[allow(dead_code)]
-    pub fn bilinearity_test<E: PairingEngine, P: PairingVar<E>>() -> Result<(), SynthesisError>
+    pub fn bilinearity_test<E: Pairing, P: PairingVar<E>>() -> Result<(), SynthesisError>
     where
-        for<'a> &'a P::G1Var: GroupOpsBounds<'a, E::G1Projective, P::G1Var>,
-        for<'a> &'a P::G2Var: GroupOpsBounds<'a, E::G2Projective, P::G2Var>,
-        for<'a> &'a P::GTVar: FieldOpsBounds<'a, E::Fqk, P::GTVar>,
+        for<'a> &'a P::G1Var: GroupOpsBounds<'a, E::G1, P::G1Var>,
+        for<'a> &'a P::G2Var: GroupOpsBounds<'a, E::G2, P::G2Var>,
+        for<'a> &'a P::GTVar: FieldOpsBounds<'a, E::TargetField, P::GTVar>,
     {
         let modes = [
             AllocationMode::Input,
@@ -531,12 +531,12 @@ pub mod pairing {
             AllocationMode::Constant,
         ];
         for &mode in &modes {
-            let cs = ConstraintSystem::<E::Fq>::new_ref();
+            let cs = ConstraintSystem::<<E::G1 as CurveGroup>::BaseField>::new_ref();
 
             let mut rng = test_rng();
-            let a = E::G1Projective::rand(&mut rng);
-            let b = E::G2Projective::rand(&mut rng);
-            let s = E::Fr::rand(&mut rng);
+            let a = E::G1::rand(&mut rng);
+            let b = E::G2::rand(&mut rng);
+            let s = E::ScalarField::rand(&mut rng);
 
             let mut sa = a;
             sa *= s;
