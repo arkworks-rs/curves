@@ -1,6 +1,6 @@
 use ark_r1cs_std::fields::fp::FpVar;
 
-use crate::fq::Fq;
+use crate::Fq;
 
 /// A variable that is the R1CS equivalent of `crate::Fq`.
 pub type FqVar = FpVar<Fq>;
