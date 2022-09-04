@@ -106,7 +106,7 @@
 //! ```
 //! # fn main() -> Result<(), ark_relations::r1cs::SynthesisError> {
 //! # use ark_std::UniformRand;
-//! # use ark_ec::PairingEngine;
+//! # use ark_ec::pairing::Pairing;
 //! # use ark_relations::r1cs::*;
 //! # use ark_r1cs_std::prelude::*;
 //! # use ark_bls12_377::{*, constraints::*};
@@ -135,7 +135,7 @@
 //! let pairing_result = constraints::PairingVar::pairing(a_prep, b_prep)?;
 //!
 //! // Check that the value of &a + &b is correct.
-//! assert_eq!(pairing_result.value()?, pairing_result_native);
+//! assert_eq!(pairing_result.value()?, pairing_result_native.0);
 //!
 //! // Check that operations on variables and constants are equivalent.
 //! let a_prep_const = constraints::PairingVar::prepare_g1(&a_const)?;
