@@ -18,9 +18,9 @@ ark-ec = { version = "^0.3.0", default-features = false }
 ark-std = { version = "^0.3.0", default-features = false }
 ark-bls12-377 = { version = "^0.3.0", path = "../bls12_377", default-features = false, features = [ "base_field" ] }
 itertools = { version = "0.10", default-features = false }
+ark-serialize = { version = "^0.3.0", default-features = false }
 
 [dev-dependencies]
-ark-serialize = { version = "^0.3.0", default-features = false }
 ark-algebra-test-templates = { version = "^0.3.0", default-features = false }
 
 [features]

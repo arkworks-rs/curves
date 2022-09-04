@@ -4,13 +4,15 @@ use ark_ec::{
     AffineRepr, CurveGroup,
 };
 use ark_ff::{Field, MontFp};
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
+use ark_std::vec::Vec;
 
 use crate::{Fq, Fq3, Fr};
 
 pub type G2Affine = Affine<Parameters>;
 pub type G2Projective = Projective<Parameters>;
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, CanonicalSerialize, CanonicalDeserialize)]
 pub struct G2Prepared(pub G2Affine);
 
 impl From<G2Affine> for G2Prepared {
