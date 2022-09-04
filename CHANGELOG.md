@@ -11,6 +11,8 @@
  
 ### Features
 
+- [\#121](https://github.com/arkworks-rs/curves/pull/121) Add the ed25519 curve.
+
 ### Improvements
 
 - [\#74](https://github.com/arkworks-rs/curves/pull/74) Use Scott's subgroup membership tests for `G1` and `G2` of BLS12-381.
