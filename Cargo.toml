@@ -31,7 +31,7 @@ members = [
     "pallas",
     "vesta",
 
-    "ed25519",
+    "curve25519",
 ]
 
 [profile.release]

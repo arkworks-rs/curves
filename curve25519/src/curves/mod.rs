@@ -1,7 +1,7 @@
 use crate::{Fq, Fr};
 use ark_ec::{
     models::CurveConfig,
-    twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
+    twisted_edwards::{Affine, MontCurveConfig, MontgomeryAffine, Projective, TECurveConfig},
 };
 use ark_ff::MontFp;
 
@@ -10,6 +10,7 @@ mod tests;
 
 pub type EdwardsAffine = Affine<EdwardsParameters>;
 pub type EdwardsProjective = Projective<EdwardsParameters>;
+pub type NonZeroMontgomeryAffine = MontgomeryAffine<EdwardsParameters>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct EdwardsParameters;
@@ -27,43 +28,34 @@ impl CurveConfig for EdwardsParameters {
         MontFp!("2713877091499598330239944961141122840321418634767465352250731601857045344121");
 }
 
+// We want to emphasize that this twisted Edwards curve is not ed25519.
 impl TECurveConfig for EdwardsParameters {
-    /// COEFF_A = -1
-    const COEFF_A: Fq = MontFp!("-1");
+    /// COEFF_A = 486664
+    const COEFF_A: Fq = MontFp!("486664");
 
-    /// COEFF_D = -121665 / 121666
-    const COEFF_D: Fq =
-        MontFp!("37095705934669439343138083508754565189542113879843219016388785533085940283555");
+    /// COEFF_D = 486660
+    const COEFF_D: Fq = MontFp!("486660");
 
     /// Generated randomly
     const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
     type MontCurveConfig = EdwardsParameters;
-
-    /// Multiplication by `a` is just negation.
-    #[inline(always)]
-    fn mul_by_a(elem: Self::BaseField) -> Self::BaseField {
-        -elem
-    }
 }
 
-// We want to emphasize that this Montgomery curve is not Curve25519.
 impl MontCurveConfig for EdwardsParameters {
     /// COEFF_A = 486662
     const COEFF_A: Fq = MontFp!("486662");
 
-    /// COEFF_B = 57896044618658097711785492504343953926634992332820282019728792003956564333285
-    /// This is not one, because ed25519 != curve25519
-    const COEFF_B: Fq =
-        MontFp!("57896044618658097711785492504343953926634992332820282019728792003956564333285");
+    /// COEFF_B = 1
+    const COEFF_B: Fq = MontFp!("1");
 
     type TECurveConfig = EdwardsParameters;
 }
 
 /// GENERATOR_X =
-/// 15112221349535400772501151409588531511454012693041857206046113283949847762202
+/// 38213832894368730265794714087330135568483813637251082400757400312561599933396
 const GENERATOR_X: Fq =
-    MontFp!("15112221349535400772501151409588531511454012693041857206046113283949847762202");
+    MontFp!("38213832894368730265794714087330135568483813637251082400757400312561599933396");
 
 /// GENERATOR_Y =
 /// (4/5)
