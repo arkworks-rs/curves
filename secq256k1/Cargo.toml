@@ -1,11 +1,11 @@
 [package]
-name = "ark-secp256k1"
+name = "ark-secq256k1"
 version = "0.3.0"
 authors = [ "arkworks contributors" ]
-description = "The secp256k1 curve"
+description = "The secq256k1 curve"
 homepage = "https://arkworks.rs"
 repository = "https://github.com/arkworks-rs/curves"
-documentation = "https://docs.rs/ark-secp256k1/"
+documentation = "https://docs.rs/ark-secq256k1/"
 keywords = ["cryptography", "finite-fields", "elliptic-curves" ]
 categories = ["cryptography"]
 include = ["Cargo.toml", "src"]
