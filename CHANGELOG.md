@@ -11,7 +11,7 @@
  
 ### Features
 
-- [\#122](https://github.com/arkworks-rs/curves/pull/122) Add the secp256k1 curve.
+- [\#123](https://github.com/arkworks-rs/curves/pull/123) Add the secq256k1 curve.
 
 ### Improvements
 
