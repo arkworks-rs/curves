@@ -1,7 +1,7 @@
 use crate::{constraints::FqVar, *};
 use ark_r1cs_std::groups::curves::short_weierstrass::ProjectiveVar;
 
-/// A group element in the secp256k1 curve.
+/// A group element in the secq256k1 curve.
 pub type GVar = ProjectiveVar<Parameters, FqVar>;
 
 #[test]
