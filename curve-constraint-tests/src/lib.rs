@@ -320,6 +320,7 @@ pub mod curves {
             for limb in &mut max {
                 *limb = u64::MAX;
             }
+
             let modulus_last_limb_bits = <C::ScalarField as PrimeField>::MODULUS_BIT_SIZE % 64;
             if modulus_last_limb_bits == 0 {
                 *max.last_mut().unwrap() >>= 0;
