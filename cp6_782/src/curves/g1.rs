@@ -41,7 +41,7 @@ impl<'a> From<&'a G1Projective> for G1Prepared {
 
 impl G1Prepared {
     pub fn is_zero(&self) -> bool {
-        self.0.is_identity()
+        self.0.is_zero()
     }
 }
 
