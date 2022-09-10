@@ -22,6 +22,7 @@ ark-r1cs-std = { version = "^0.3.0", default-features = false, optional = true }
 ark-relations = { version = "^0.3.0", default-features = false }
 ark-serialize = { version = "^0.3.0", default-features = false }
 ark-algebra-test-templates = { version = "^0.3.0", default-features = false }
+ark-algebra-bench-templates = { version = "^0.3.0", default-features = false }
 ark-curve-constraint-tests = { path = "../curve-constraint-tests", default-features = false }
 
 [features]
@@ -32,3 +33,8 @@ curve = [ "scalar_field", "base_field" ]
 scalar_field = []
 base_field = []
 r1cs = [ "base_field", "ark-r1cs-std" ]
+
+[[bench]]
+name = "mnt4_298"
+path = "benches/mnt4_298.rs"
+harness = false
