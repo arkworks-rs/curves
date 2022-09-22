@@ -35,7 +35,7 @@ impl Fp2Config for Fq2Config {
         *y = *x;
     }
 
-    fn mul_fp_by_nonresidue_in_place_and_add(y: &mut Self::Fp, x: &Self::Fp) {
+    fn mul_fp_by_nonresidue_and_add(y: &mut Self::Fp, x: &Self::Fp) {
         y.neg_in_place();
         *y += x;
     }
