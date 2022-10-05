@@ -1,5 +1,9 @@
-use ark_ec::models::{ModelParameters, SWModelParameters};
-use ark_ec::hashing::curve_maps::swu::{SWUParams};
+use ark_ec::{models::{
+    short_weierstrass::{Affine, SWCurveConfig},
+	CurveConfig,},
+	     hashing::curve_maps::swu::SWUParams,
+	     
+};
 
 use ark_ff::{MontFp};
 
@@ -7,10 +11,12 @@ use crate::{
     Fq, Fr,
 };
 
-#[derive(Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+type G1Affine = Affine<SwuIsoParameters>;
 
-impl ModelParameters for Parameters {
+#[derive(Clone, Default, PartialEq, Eq)]
+pub struct SwuIsoParameters;
+
+impl CurveConfig for SwuIsoParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -21,7 +27,6 @@ impl ModelParameters for Parameters {
 
     /// COFACTOR_INV = COFACTOR^{-1} mod r
     /// = 5285428838741532253824584287042945485047145357130994810877
-    #[rustfmt::skip]
     const COFACTOR_INV: Fr = MontFp!("5285428838741532253824584287042945485047145357130994810877");
 
 }
@@ -29,17 +34,16 @@ impl ModelParameters for Parameters {
 //sage: iso_G1
 //Isogeny of degree 2 from Elliptic Curve defined by y^2 = x^3 + 258664426012969092796408009721202742408018065645352501567204841856062976176281513834280849065051431927238430294002*x + 22 over Finite Field of size 258664426012969094010652733694893533536393512754914660539884262666720468348340822774968888139573360124440321458177 to Elliptic Curve defined by y^2 = x^3 + 1 over Finite Field of size 258664426012969094010652733694893533536393512754914660539884262666720468348340822774968888139573360124440321458177
 
-impl SWModelParameters for Parameters {
+impl SWCurveConfig for SwuIsoParameters {
     /// COEFF_A 
     const COEFF_A: Fq = MontFp!("258664426012969092796408009721202742408018065645352501567204841856062976176281513834280849065051431927238430294002");
 
     /// COEFF_B
-    #[rustfmt::skip]
     const COEFF_B: Fq = MontFp!("22");
 
     /// AFFINE_GENERATOR_COEFFS = (G1_GENERATOR_X, G1_GENERATOR_Y)
-    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
-        (G1_GENERATOR_X, G1_GENERATOR_Y);
+    const GENERATOR: G1Affine = G1Affine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);
+	
 }
 
 // sage: G1_gen  = iso_G1.domain().random_point()
@@ -50,18 +54,26 @@ impl SWModelParameters for Parameters {
 // (183898640136580512316530045470998831691790391453237259434516336279447756609241220664846162561503820562316877867830 : 69018534046895515891776145953191511526693172354818719412306559690461416836925400134233128432719372819569406562974 : 1)
 /// G1_GENERATOR_X =
 /// 183898640136580512316530045470998831691790391453237259434516336279447756609241220664846162561503820562316877867830
-#[rustfmt::skip]
 pub const G1_GENERATOR_X: Fq = MontFp!("183898640136580512316530045470998831691790391453237259434516336279447756609241220664846162561503820562316877867830");
 
 /// G1_GENERATOR_Y =
 /// 69018534046895515891776145953191511526693172354818719412306559690461416836925400134233128432719372819569406562974
-#[rustfmt::skip]
-pub const G1_GENERATOR_Y: Fq = MontFp!("183898640136580512316530045470998831691790391453237259434516336279447756609241220664846162561503820562316877867830");
+pub const G1_GENERATOR_Y: Fq = MontFp!("69018534046895515891776145953191511526693172354818719412306559690461416836925400134233128432719372819569406562974");
 
-impl SWUParams for Parameters {
+impl SWUParams for SwuIsoParameters {
 
-    const XI : Fq = MontFp!("5"); //a nonsquare in Fq
     const ZETA: Fq = MontFp!("15"); //arbitatry primitive root of unity (element)
-    const XI_ON_ZETA_SQRT: Fq = MontFp!("10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931"); ////square root of THETA=Xi/Zeta
 
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_gen() {
+        let gen: G1Affine = SwuIsoParameters::GENERATOR;
+        assert!(gen.is_on_curve());
+        assert!(gen.is_in_correct_subgroup_assuming_on_curve());
+    }
 }

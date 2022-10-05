@@ -1,4 +1,3 @@
-use crate::*;
 use ark_ec::{
     hashing::curve_maps::swu::SWUParams,
     models::{
@@ -7,6 +6,7 @@ use ark_ec::{
     },
 };
 use ark_ff::MontFp;
+use crate::{Fq, Fr};
 
 type G1Affine = Affine<SwuIsoParameters>;
 
@@ -22,7 +22,6 @@ impl CurveConfig for SwuIsoParameters {
 
     /// COFACTOR_INV = COFACTOR^{-1} mod r
     /// = 52435875175126190458656871551744051925719901746859129887267498875565241663483
-    #[rustfmt::skip]
     const COFACTOR_INV: Fr = MontFp!("52435875175126190458656871551744051925719901746859129887267498875565241663483");
 }
 

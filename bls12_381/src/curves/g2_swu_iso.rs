@@ -1,12 +1,12 @@
 use crate::*;
 
-use ark_ec::models::{
+use ark_ec::{models::{
     short_weierstrass::{Affine, SWCurveConfig},
-    CurveConfig,
+	CurveConfig,},
+	     hashing::curve_maps::swu::SWUParams,
+	     
 };
 use ark_ff::MontFp;
-
-use ark_ec::hashing::curve_maps::swu::SWUParams;
 
 type G2Affine = Affine<SwuIsoParameters>;
 
@@ -20,7 +20,7 @@ impl CurveConfig for SwuIsoParameters {
     /// Cofactors of g2_iso and g2 are the same.
     /// COFACTOR = (x^8 - 4 x^7 + 5 x^6) - (4 x^4 + 6 x^3 - 4 x^2 - 4 x + 13) //
     /// 9
-    /// = 305502333931268344200999753193121504214466019254188142667664032982267604182971884026507427359259977847832272839041616661285803823378372096355777062779109
+    /// = 3055023339312683442009997531931215042144660192541881426676640329822676041829718840265074273592599778478322728390416166612858038233783720963550777062779109
     #[rustfmt::skip]
     const COFACTOR: &'static [u64] = &[
         0xcf1c38e31c7238e5,
@@ -35,7 +35,6 @@ impl CurveConfig for SwuIsoParameters {
 
     /// COFACTOR_INV = COFACTOR^{-1} mod r
     /// 26652489039290660355457965112010883481355318854675681319708643586776743290055
-    #[rustfmt::skip]
     const COFACTOR_INV: Fr = MontFp!("26652489039290660355457965112010883481355318854675681319708643586776743290055");
 }
 
@@ -79,7 +78,6 @@ impl SWUParams for SwuIsoParameters {
 #[cfg(test)]
 mod test {
 	use super::*;
-
 
     #[test]
     fn test_gen() {

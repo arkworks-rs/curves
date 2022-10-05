@@ -10,7 +10,7 @@ use ark_ff::{Field, MontFp, Zero};
 use ark_std::ops::Neg;
 
 use super::{g1_swu_iso::SwuIsoParameters};
-use crate::*;
+use crate::{Fq, Fr};
 
 pub type G1Affine = bls12::G1Affine<crate::Parameters>;
 pub type G1Projective = bls12::G1Projective<crate::Parameters>;
