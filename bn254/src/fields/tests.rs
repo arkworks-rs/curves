@@ -1,25 +1,21 @@
+use ark_algebra_test_templates::*;
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger256},
-    fields::{
-        fp6_3over2::Fp6Parameters, FftField, FftParameters, Field, FpParameters, PrimeField,
-        SquareRootField,
-    },
+    fields::{FftField, Field, Fp6Config, PrimeField},
     One, UniformRand, Zero,
 };
-use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
-use ark_std::{rand::Rng, test_rng};
-use core::{
+use ark_std::{
     cmp::Ordering,
-    ops::{AddAssign, MulAssign, SubAssign},
+    ops::{AddAssign, MulAssign},
 };
 
-use crate::{Fq, Fq12, Fq2, Fq6, Fq6Config, FqConfig, Fr};
-use ark_algebra_test_templates::{
-    fields::*, generate_field_serialization_test, generate_field_test,
-};
+use crate::{Fq, Fq12, Fq2, Fq6, Fq6Config, Fr};
 
-generate_field_test!(bn254; fq2; fq6; fq12;);
-generate_field_serialization_test!(bn254; fq2; fq6; fq12;);
+test_field!(fr; Fr; mont_prime_field);
+test_field!(fq; Fq; mont_prime_field);
+test_field!(fq2; Fq2);
+test_field!(fq6; Fq6);
+test_field!(fq12; Fq12);
 
 #[test]
 fn test_fq_repr_from() {
@@ -28,14 +24,14 @@ fn test_fq_repr_from() {
 
 #[test]
 fn test_fq_repr_is_odd() {
-    assert!(!BigInteger256::from(0).is_odd());
-    assert!(BigInteger256::from(0).is_even());
-    assert!(BigInteger256::from(1).is_odd());
-    assert!(!BigInteger256::from(1).is_even());
-    assert!(!BigInteger256::from(324834872).is_odd());
-    assert!(BigInteger256::from(324834872).is_even());
-    assert!(BigInteger256::from(324834873).is_odd());
-    assert!(!BigInteger256::from(324834873).is_even());
+    assert!(!BigInteger256::from(0u64).is_odd());
+    assert!(BigInteger256::from(0u64).is_even());
+    assert!(BigInteger256::from(1u64).is_odd());
+    assert!(!BigInteger256::from(1u64).is_even());
+    assert!(!BigInteger256::from(324834872u64).is_odd());
+    assert!(BigInteger256::from(324834872u64).is_even());
+    assert!(BigInteger256::from(324834873u64).is_odd());
+    assert!(!BigInteger256::from(324834873u64).is_even());
 }
 
 #[test]
@@ -47,9 +43,9 @@ fn test_fq_repr_is_zero() {
 
 #[test]
 fn test_fq_repr_num_bits() {
-    let mut a = BigInteger256::from(0);
+    let mut a = BigInteger256::from(0u64);
     assert_eq!(0, a.num_bits());
-    a = BigInteger256::from(1);
+    a = BigInteger256::from(1u64);
     for i in 1..257 {
         assert_eq!(i, a.num_bits());
         a.mul2();
@@ -59,34 +55,33 @@ fn test_fq_repr_num_bits() {
 
 #[test]
 fn test_fq_num_bits() {
-    assert_eq!(FqConfig::MODULUS_BITS, 254);
-    assert_eq!(FqConfig::CAPACITY, 253);
+    assert_eq!(Fq::MODULUS_BIT_SIZE, 254);
 }
 
 #[test]
 fn test_fq_root_of_unity() {
-    assert_eq!(FqConfig::TWO_ADICITY, 1);
+    assert_eq!(Fq::TWO_ADICITY, 1);
     assert_eq!(
-        Fq::multiplicative_generator().pow([
+        Fq::GENERATOR.pow([
             0x9e10460b6c3e7ea3,
             0xcbc0b548b438e546,
             0xdc2822db40c0ac2e,
             0x183227397098d014,
         ]),
-        Fq::two_adic_root_of_unity()
+        Fq::TWO_ADIC_ROOT_OF_UNITY
     );
     assert_eq!(
-        Fq::two_adic_root_of_unity().pow([1 << FqConfig::TWO_ADICITY]),
+        Fq::TWO_ADIC_ROOT_OF_UNITY.pow([1 << Fq::TWO_ADICITY]),
         Fq::one()
     );
-    assert!(Fq::multiplicative_generator().sqrt().is_none());
+    assert!(Fq::GENERATOR.sqrt().is_none());
 }
 
 #[test]
 fn test_fq_ordering() {
     // BigInteger256's ordering is well-tested, but we still need to make sure the
     // Fq elements aren't being compared in Montgomery form.
-    for i in 0..100 {
+    for i in 0..100u64 {
         assert!(Fq::from(BigInteger256::from(i + 1)) > Fq::from(BigInteger256::from(i)));
     }
 }
@@ -99,11 +94,11 @@ fn test_fq_legendre() {
     assert_eq!(Zero, Fq::zero().legendre());
     assert_eq!(
         QuadraticResidue,
-        Fq::from(BigInteger256::from(4)).legendre()
+        Fq::from(BigInteger256::from(4u64)).legendre()
     );
     assert_eq!(
         QuadraticNonResidue,
-        Fq::from(BigInteger256::from(5)).legendre()
+        Fq::from(BigInteger256::from(5u64)).legendre()
     );
 }
 
@@ -144,7 +139,7 @@ fn test_fq2_legendre() {
     // i^2 = -1
     let mut m1 = -Fq2::one();
     assert_eq!(QuadraticResidue, m1.legendre());
-    m1 = Fq6Config::mul_fp2_by_nonresidue(&m1);
+    Fq6Config::mul_fp2_by_nonresidue_in_place(&mut m1);
     assert_eq!(QuadraticNonResidue, m1.legendre());
 }
 

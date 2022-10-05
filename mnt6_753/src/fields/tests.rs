@@ -1,36 +1,19 @@
-use ark_ff::{
-    fields::{models::fp6_2over3::*, quadratic_extension::QuadExtConfig},
-    Field,
-};
+use crate::*;
+use ark_algebra_test_templates::*;
+use ark_ff::fields::{models::fp6_2over3::*, quadratic_extension::QuadExtConfig};
 use ark_std::{rand::Rng, test_rng};
 
-use crate::*;
-
-use ark_algebra_test_templates::{fields::*, generate_field_test};
-
-use core::ops::{AddAssign, MulAssign, SubAssign};
-
-generate_field_test!(mnt6_753;);
+test_field!(fr; Fr; mont_prime_field);
+test_field!(fq; Fq; mont_prime_field);
+test_field!(fq3; Fq3);
+test_field!(fq6; Fq6);
 
 #[test]
-fn test_fq3() {
+fn test_fq3_more() {
     let mut rng = test_rng();
-    let a: Fq3 = rng.gen();
-    let b: Fq3 = rng.gen();
-    field_test(a, b);
-    sqrt_field_test(a);
-    frobenius_test::<Fq3, _>(Fq::characteristic(), 13);
+    let mut a: Fq3 = rng.gen();
     assert_eq!(
         a * Fq6Config::NONRESIDUE,
-        <Fp6ParamsWrapper<Fq6Config>>::mul_base_field_by_nonresidue(&a)
+        *<Fp6ConfigWrapper<Fq6Config>>::mul_base_field_by_nonresidue_in_place(&mut a)
     );
-}
-
-#[test]
-fn test_fq6() {
-    let mut rng = test_rng();
-    let a: Fq6 = rng.gen();
-    let b: Fq6 = rng.gen();
-    field_test(a, b);
-    frobenius_test::<Fq6, _>(Fq::characteristic(), 13);
 }

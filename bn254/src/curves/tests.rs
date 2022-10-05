@@ -1,19 +1,9 @@
-#![allow(unused_imports)]
-use ark_ec::{models::SWModelParameters, AffineCurve, PairingEngine, ProjectiveCurve};
-use ark_ff::{
-    fields::{Field, FpParameters, PrimeField, SquareRootField},
-    One, Zero,
-};
-use ark_serialize::CanonicalSerialize;
-use ark_std::{rand::Rng, test_rng};
-use core::ops::{AddAssign, MulAssign};
+use ark_algebra_test_templates::*;
+use ark_ff::fields::Field;
 
-use crate::{g1, g2, Bn254, Fq, Fq12, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};
+use crate::{Bn254, G1Projective, G2Projective};
 
-use ark_algebra_test_templates::{
-    curves::*, generate_bilinearity_test, generate_g1_test, generate_g2_test, groups::*, msm::*,
-};
-
-generate_g1_test!(bn254; curve_tests; sw_tests;);
-generate_g2_test!(bn254; curve_tests; sw_tests;);
-generate_bilinearity_test!(Bn254, Fq12);
+test_group!(g1; G1Projective; sw);
+test_group!(g2; G2Projective; sw);
+test_group!(pairing_output; ark_ec::pairing::PairingOutput<Bn254>; msm);
+test_pairing!(pairing; crate::Bn254);

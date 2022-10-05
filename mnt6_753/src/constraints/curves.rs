@@ -1,5 +1,6 @@
-use crate::Parameters;
 use ark_r1cs_std::groups::mnt6;
+
+use crate::Parameters;
 
 /// An element of G1 in the MNT6-753 bilinear group.
 pub type G1Var = mnt6::G1Var<Parameters>;

@@ -1,9 +1,7 @@
-use ark_ff::{Field, One, SquareRootField, UniformRand, Zero};
-use ark_std::test_rng;
-
 use crate::*;
-use ark_algebra_test_templates::{fields::*, generate_field_test};
+use ark_algebra_test_templates::*;
 
-use core::ops::{AddAssign, MulAssign, SubAssign};
-
-generate_field_test!(mnt4_753; fq2; fq4;);
+test_field!(fr; Fr; mont_prime_field);
+test_field!(fq; Fq; mont_prime_field);
+test_field!(fq2; Fq2);
+test_field!(fq4; Fq4);

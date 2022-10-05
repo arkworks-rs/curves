@@ -1,15 +1,9 @@
-use ark_ec::{AffineCurve, PairingEngine};
-use ark_ff::{Field, One, PrimeField};
-use ark_std::{rand::Rng, test_rng};
+use ark_algebra_test_templates::*;
+use ark_ff::Field;
 
 use crate::*;
 
-use ark_algebra_test_templates::{
-    curves::*, generate_bilinearity_test, generate_g1_test, generate_g2_test, groups::*, msm::*,
-};
-
-use core::ops::MulAssign;
-
-generate_g1_test!(cp6_782; curve_tests; sw_tests;);
-generate_g2_test!(cp6_782; curve_tests; sw_tests;);
-generate_bilinearity_test!(CP6_782, Fq6);
+test_group!(g1; G1Projective; sw);
+test_group!(g2; G2Projective; sw);
+test_group!(pairing_output; ark_ec::pairing::PairingOutput<CP6_782>; msm);
+test_pairing!(pairing; crate::CP6_782);

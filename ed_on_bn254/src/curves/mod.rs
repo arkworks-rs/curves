@@ -1,15 +1,16 @@
-use crate::{Fq, Fr};
 use ark_ec::{
-    models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
-    twisted_edwards_extended::{GroupAffine, GroupProjective},
+    models::CurveConfig,
+    twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
-use ark_ff::MontFp;
+use ark_ff::{Field, MontFp};
+
+use crate::{Fq, Fr};
 
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = GroupAffine<EdwardsParameters>;
-pub type EdwardsProjective = GroupProjective<EdwardsParameters>;
+pub type EdwardsAffine = Affine<EdwardsParameters>;
+pub type EdwardsProjective = Projective<EdwardsParameters>;
 
 /// `Baby-JubJub` is a twisted Edwards curve. These curves have equations of the
 /// form: ax² + y² = 1 + dx²y².
@@ -18,11 +19,10 @@ pub type EdwardsProjective = GroupProjective<EdwardsParameters>;
 /// Baby-JubJub's curve equation: x² + y² = 1 + (168696/168700)x²y²
 ///
 /// q = 21888242871839275222246405745257275088548364400416034343698204186575808495617
-///
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct EdwardsParameters;
 
-impl ModelParameters for EdwardsParameters {
+impl CurveConfig for EdwardsParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -31,43 +31,41 @@ impl ModelParameters for EdwardsParameters {
 
     /// COFACTOR^(-1) mod r =
     /// 2394026564107420727433200628387514462817212225638746351800188703329891451411
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = MontFp!(Fr, "2394026564107420727433200628387514462817212225638746351800188703329891451411");
+    const COFACTOR_INV: Fr =
+        MontFp!("2394026564107420727433200628387514462817212225638746351800188703329891451411");
 }
 
-impl TEModelParameters for EdwardsParameters {
+impl TECurveConfig for EdwardsParameters {
     /// COEFF_A = 1
-    #[rustfmt::skip]
-    const COEFF_A: Fq = MontFp!(Fq, "1");
+    const COEFF_A: Fq = Fq::ONE;
 
     #[inline(always)]
-    fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {
-        *elem
+    fn mul_by_a(elem: Self::BaseField) -> Self::BaseField {
+        elem
     }
 
     /// COEFF_D = 168696/168700 mod q
     ///         = 9706598848417545097372247223557719406784115219466060233080913168975159366771
-    #[rustfmt::skip]
-    const COEFF_D: Fq = MontFp!(Fq, "9706598848417545097372247223557719406784115219466060233080913168975159366771");
+    const COEFF_D: Fq =
+        MontFp!("9706598848417545097372247223557719406784115219466060233080913168975159366771");
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
-    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);
+    const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
-    type MontgomeryModelParameters = EdwardsParameters;
+    type MontCurveConfig = EdwardsParameters;
 }
 
-impl MontgomeryModelParameters for EdwardsParameters {
+impl MontCurveConfig for EdwardsParameters {
     /// COEFF_A = 168698
-    #[rustfmt::skip]
-    const COEFF_A: Fq = MontFp!(Fq, "168698");
+    const COEFF_A: Fq = MontFp!("168698");
     /// COEFF_B = 168700
-    #[rustfmt::skip]
-    const COEFF_B: Fq = MontFp!(Fq, "168700");
+    const COEFF_B: Fq = MontFp!("168700");
 
-    type TEModelParameters = EdwardsParameters;
+    type TECurveConfig = EdwardsParameters;
 }
 
-#[rustfmt::skip]
-const GENERATOR_X: Fq = MontFp!(Fq, "19698561148652590122159747500897617769866003486955115824547446575314762165298");
-#[rustfmt::skip]
-const GENERATOR_Y: Fq = MontFp!(Fq, "19298250018296453272277890825869354524455968081175474282777126169995084727839");
+const GENERATOR_X: Fq =
+    MontFp!("19698561148652590122159747500897617769866003486955115824547446575314762165298");
+
+const GENERATOR_Y: Fq =
+    MontFp!("19298250018296453272277890825869354524455968081175474282777126169995084727839");
