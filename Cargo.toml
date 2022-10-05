@@ -62,8 +62,8 @@ debug = true
 ark-ec = { git = "https://github.com/w3f/arkworks-algebra", branch = 'master'}
 ark-ff = { git = "https://github.com/w3f/arkworks-algebra", branch = 'master'}
 ark-serialize = { git = "https://github.com/w3f/arkworks-algebra", branch = 'master'}
-ark-algebra-bench-templates = { git = "https://github.com/w3f/arkworks-algebra" }
-ark-algebra-test-templates = { git = "https://github.com/w3f/arkworks-algebra" }
+ark-algebra-bench-templates = { git = "https://github.com/w3f/arkworks-algebra", branch = 'master'}
+ark-algebra-test-templates = { git = "https://github.com/w3f/arkworks-algebra", branch = 'master'}
 
 # ark-ec = { git = "https://github.com/arkworks-rs/algebra" }
 # ark-ff = { git = "https://github.com/arkworks-rs/algebra" }

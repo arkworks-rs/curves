@@ -1,19 +1,21 @@
 use core::ops::Neg;
 
-use crate::*;
 use super::g2_swu_iso;
 
 use ark_ec::{
-    bls12::{self, Bls12Parameters},
     hashing::curve_maps::wb::WBParams,
+    bls12,
+    bls12::Bls12Parameters,
     models::CurveConfig,
-    short_weierstrass::{self, *},
+    short_weierstrass::{Affine, Projective, SWCurveConfig},
     AffineRepr, CurveGroup, Group,
 };
-use ark_ff::{BigInt, Field, MontFp, Zero};
+use ark_ff::{Field, MontFp, Zero};
 
-pub type G2Affine = bls12::G2Affine<super::Parameters>;
-pub type G2Projective = bls12::G2Projective<super::Parameters>;
+use crate::*;
+
+pub type G2Affine = bls12::G2Affine<crate::Parameters>;
+pub type G2Projective = bls12::G2Projective<crate::Parameters>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Parameters;
@@ -39,13 +41,11 @@ impl CurveConfig for Parameters {
 
     /// COFACTOR_INV = COFACTOR^{-1} mod r
     /// 26652489039290660355457965112010883481355318854675681319708643586776743290055
-    #[rustfmt::skip]
-    const COFACTOR_INV: Fr = MontFp!(
-        "26652489039290660355457965112010883481355318854675681319708643586776743290055"
-    );
+    const COFACTOR_INV: Fr =
+        MontFp!("26652489039290660355457965112010883481355318854675681319708643586776743290055");
 }
 
-impl short_weierstrass::SWCurveConfig for Parameters {
+impl SWCurveConfig for Parameters {
     /// COEFF_A = [0, 0]
     const COEFF_A: Fq2 = Fq2::new(g1::Parameters::COEFF_A, g1::Parameters::COEFF_A);
 
@@ -65,9 +65,8 @@ impl short_weierstrass::SWCurveConfig for Parameters {
         //
         // Checks that [p]P = [X]P
 
-        let mut x_times_point =
-            point.mul_bigint(BigInt::new([super::Parameters::X[0], 0, 0, 0]));
-        if super::Parameters::X_IS_NEGATIVE {
+        let mut x_times_point = point.mul_bigint(crate::Parameters::X);
+        if crate::Parameters::X_IS_NEGATIVE {
             x_times_point = -x_times_point;
         }
 
@@ -111,22 +110,18 @@ pub const G2_GENERATOR_Y: Fq2 = Fq2::new(G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
 
 /// G2_GENERATOR_X_C0 =
 /// 352701069587466618187139116011060144890029952792775240219908644239793785735715026873347600343865175952761926303160
-#[rustfmt::skip]
 pub const G2_GENERATOR_X_C0: Fq = MontFp!("352701069587466618187139116011060144890029952792775240219908644239793785735715026873347600343865175952761926303160");
 
 /// G2_GENERATOR_X_C1 =
 /// 3059144344244213709971259814753781636986470325476647558659373206291635324768958432433509563104347017837885763365758
-#[rustfmt::skip]
 pub const G2_GENERATOR_X_C1: Fq = MontFp!("3059144344244213709971259814753781636986470325476647558659373206291635324768958432433509563104347017837885763365758");
 
 /// G2_GENERATOR_Y_C0 =
 /// 1985150602287291935568054521177171638300868978215655730859378665066344726373823718423869104263333984641494340347905
-#[rustfmt::skip]
 pub const G2_GENERATOR_Y_C0: Fq = MontFp!("1985150602287291935568054521177171638300868978215655730859378665066344726373823718423869104263333984641494340347905");
 
 /// G2_GENERATOR_Y_C1 =
 /// 927553665492332455747201965776037880757740193453592970025027978793976877002675564980949289727957565575433344219582
-#[rustfmt::skip]
 pub const G2_GENERATOR_Y_C1: Fq = MontFp!("927553665492332455747201965776037880757740193453592970025027978793976877002675564980949289727957565575433344219582");
 
 // psi(x,y) = (x**p * PSI_X, y**p * PSI_Y) is the Frobenius composed
@@ -134,16 +129,16 @@ pub const G2_GENERATOR_Y_C1: Fq = MontFp!("9275536654923324557472019657760378807
 
 // PSI_X = 1/(u+1)^((p-1)/3)
 pub const P_POWER_ENDOMORPHISM_COEFF_0 : Fq2 = Fq2::new(
-    FQ_ZERO,
+    Fq::ZERO,
     MontFp!(
-       "4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939437"
+                "4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939437"
     )
 );
 
 // PSI_Y = 1/(u+1)^((p-1)/2)
 pub const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = Fq2::new(
     MontFp!(
-       "2973677408986561043442465346520108879172042883009249989176415018091420807192182638567116318576472649347015917690530"),
+                "2973677408986561043442465346520108879172042883009249989176415018091420807192182638567116318576472649347015917690530"),
     MontFp!(
        "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
 );
@@ -155,11 +150,13 @@ pub const DOUBLE_P_POWER_ENDOMORPHISM: Fq2 = Fq2::new(
 
 pub fn p_power_endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     // The p-power endomorphism for G2 is defined as follows:
-    // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1). To map a point
-    // (x, y) in E' to (s, t) in E,    one set s = x / ((u+1) ^ (1/3)), t = y /
-    // ((u+1) ^ (1/2)), because E: y^2 = x^3 + 4. 2. Apply the Frobenius
-    // endomorphism (s, t) => (s', t'), another point on curve E,    where s' =
-    // s^p, t' = t^p. 3. Map the point from E back to E'; that is,
+    // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1).
+    //    To map a point (x, y) in E' to (s, t) in E,
+    //    one set s = x / ((u+1) ^ (1/3)), t = y / ((u+1) ^ (1/2)),
+    //    because E: y^2 = x^3 + 4.
+    // 2. Apply the Frobenius endomorphism (s, t) => (s', t'),
+    //    another point on curve E, where s' = s^p, t' = t^p.
+    // 3. Map the point from E back to E'; that is,
     //    one set x' = s' * ((u+1) ^ (1/3)), y' = t' * ((u+1) ^ (1/2)).
     //
     // To sum up, it maps
@@ -170,9 +167,9 @@ pub fn p_power_endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     res.x.frobenius_map(1);
     res.y.frobenius_map(1);
 
-    let tmp_x = res.x;
-    res.x.c0 = -P_POWER_ENDOMORPHISM_COEFF_0.c1 * tmp_x.c1;
-    res.x.c1 = P_POWER_ENDOMORPHISM_COEFF_0.c1 * tmp_x.c0;
+    let tmp_x = res.x.clone();
+    res.x.c0 = -P_POWER_ENDOMORPHISM_COEFF_0.c1 * &tmp_x.c1;
+    res.x.c1 = P_POWER_ENDOMORPHISM_COEFF_0.c1 * &tmp_x.c0;
     res.y *= P_POWER_ENDOMORPHISM_COEFF_1;
 
     res
