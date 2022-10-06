@@ -1,3 +1,4 @@
+use crate::{Fq, Fr};
 use ark_ec::{
     hashing::curve_maps::swu::SWUParams,
     models::{
@@ -6,7 +7,6 @@ use ark_ec::{
     },
 };
 use ark_ff::MontFp;
-use crate::{Fq, Fr};
 
 type G1Affine = Affine<SwuIsoParameters>;
 
@@ -22,19 +22,20 @@ impl CurveConfig for SwuIsoParameters {
 
     /// COFACTOR_INV = COFACTOR^{-1} mod r
     /// = 52435875175126190458656871551744051925719901746859129887267498875565241663483
-    const COFACTOR_INV: Fr = MontFp!("52435875175126190458656871551744051925719901746859129887267498875565241663483");
+    const COFACTOR_INV: Fr =
+        MontFp!("52435875175126190458656871551744051925719901746859129887267498875565241663483");
 }
 
 // https://datatracker.ietf.org/doc/draft-irtf-cfrg-hash-to-curve/
 // Hashing to Elliptic Curves
 // 8.8.1.  BLS12-381 G1
 // BLS12381G1_XMD:SHA-256_SSWU_RO_ is defined as follows:
-// *  E': y'^2 = x'^3 + A' * x' + B', where
+// * E': y'^2 = x'^3 + A' * x' + B', where
 //      -  A' = 0x144698a3b8e9433d693a02c96d4982b0ea985383ee66a8d8e8981aefd881ac98936f8da0e0f97f5cf428082d584c1d
 //      -  B' = 0x12e2908d11688030018b12e8753eee3b2016c1f0f24f4070a0b9c14fcef35ef55a23215a316ceaa5d1cc48e98e172be0
 //      -  A' = 12190336318893619529228877361869031420615612348429846051986726275283378313155663745811710833465465981901188123677
 //      -  B' = 2906670324641927570491258158026293881577086121416628140204402091718288198173574630967936031029026176254968826637280
-//  *  Z: 11
+//  * Z: 11
 impl SWCurveConfig for SwuIsoParameters {
     const COEFF_A: Fq = MontFp!("12190336318893619529228877361869031420615612348429846051986726275283378313155663745811710833465465981901188123677");
 
@@ -44,8 +45,8 @@ impl SWCurveConfig for SwuIsoParameters {
     const GENERATOR: G1Affine = G1Affine::new_unchecked(G1_GENERATOR_X, G1_GENERATOR_Y);
 }
 
-/// Lexicographically smallest, valid x-coordinate of a point P on the curve (with its corresponding y) multiplied by the cofactor.
-/// P_x = 2
+/// Lexicographically smallest, valid x-coordinate of a point P on the curve
+/// (with its corresponding y) multiplied by the cofactor. P_x = 2
 /// P_y = 658522096176515125667361255350269797307718222519385801637008089782287711363858559738763090642304321670226247205569
 /// P = E(P_x, P_y)
 /// G = P * COFACTOR

@@ -9,7 +9,7 @@ use ark_ec::{
 use ark_ff::{Field, MontFp, Zero};
 use ark_std::ops::Neg;
 
-use super::{g1_swu_iso::SwuIsoParameters};
+use super::g1_swu_iso::SwuIsoParameters;
 use crate::{Fq, Fr};
 
 pub type G1Affine = bls12::G1Affine<crate::Parameters>;
@@ -59,10 +59,9 @@ impl SWCurveConfig for Parameters {
         if x_times_p.eq(p) && !p.infinity {
             return false;
         }
-	let minus_x_squared_times_p = x_times_p.mul_bigint(crate::Parameters::X).neg();
+        let minus_x_squared_times_p = x_times_p.mul_bigint(crate::Parameters::X).neg();
         let endomorphism_p = endomorphism(p);
         minus_x_squared_times_p.eq(&endomorphism_p)
-
     }
 
     #[inline]
@@ -75,8 +74,6 @@ impl SWCurveConfig for Parameters {
         let h_eff: &[u64] = &[0xd201000000010001];
         Parameters::mul_affine(p, h_eff).into()
     }
-
-    
 }
 // Parameters from the [IETF draft v16, section E.2](https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-16.html#name-11-isogeny-map-for-bls12-381).
 impl WBParams for Parameters {

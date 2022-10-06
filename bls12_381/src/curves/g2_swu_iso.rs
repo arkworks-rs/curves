@@ -1,10 +1,11 @@
 use crate::*;
 
-use ark_ec::{models::{
-    short_weierstrass::{Affine, SWCurveConfig},
-	CurveConfig,},
-	     hashing::curve_maps::swu::SWUParams,
-	     
+use ark_ec::{
+    hashing::curve_maps::swu::SWUParams,
+    models::{
+        short_weierstrass::{Affine, SWCurveConfig},
+        CurveConfig,
+    },
 };
 use ark_ff::MontFp;
 
@@ -35,17 +36,18 @@ impl CurveConfig for SwuIsoParameters {
 
     /// COFACTOR_INV = COFACTOR^{-1} mod r
     /// 26652489039290660355457965112010883481355318854675681319708643586776743290055
-    const COFACTOR_INV: Fr = MontFp!("26652489039290660355457965112010883481355318854675681319708643586776743290055");
+    const COFACTOR_INV: Fr =
+        MontFp!("26652489039290660355457965112010883481355318854675681319708643586776743290055");
 }
 
 // https://datatracker.ietf.org/doc/draft-irtf-cfrg-hash-to-curve/
 // Hashing to Elliptic Curves
 // 8.8.2.  BLS12-381 G2
-//   *  E': y'^2 = x'^3 + A' * x' + B', where
+//   * E': y'^2 = x'^3 + A' * x' + B', where
 //
-//      -  A' = 240 * I
+//      - A' = 240 * I
 //
-//      -  B' = 1012 * (1 + I)
+//      - B' = 1012 * (1 + I)
 //
 //   * Z: -(2 + I)
 impl SWCurveConfig for SwuIsoParameters {
@@ -58,8 +60,8 @@ impl SWCurveConfig for SwuIsoParameters {
     const GENERATOR: G2Affine = G2Affine::new_unchecked(G2_GENERATOR_X, G2_GENERATOR_Y);
 }
 
-/// Lexicographically smallest, valid x-coordinate of a point P on the curve (with its corresponding y) multiplied by the cofactor.
-/// P_x = 1
+/// Lexicographically smallest, valid x-coordinate of a point P on the curve
+/// (with its corresponding y) multiplied by the cofactor. P_x = 1
 /// P_y = 1199519624119946820355795551601605892701128025883245860600494152840508171012839086684258857614063467038089173303263 + 2721622435888802346851223931977585460571674503470326381323808470905804676865417627238564067834747838523978879375704 * I
 /// P = E(P_x, P_y)
 /// G = P * COFACTOR
@@ -77,7 +79,7 @@ impl SWUParams for SwuIsoParameters {
 }
 #[cfg(test)]
 mod test {
-	use super::*;
+    use super::*;
 
     #[test]
     fn test_gen() {

@@ -22,7 +22,6 @@ ark-serialize = { version="^0.3.0", default-features = false }
 ark-algebra-test-templates = { version="^0.3.0", default-features = false }
 ark-algebra-bench-templates = { version = "^0.3.0", default-features = false }
 
-
 [features]
 default = [ "curve" ]
 std = [ "ark-std/std", "ark-ff/std", "ark-ec/std" ]

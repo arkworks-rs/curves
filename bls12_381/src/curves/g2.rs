@@ -3,9 +3,9 @@ use core::ops::Neg;
 use super::g2_swu_iso;
 
 use ark_ec::{
-    hashing::curve_maps::wb::WBParams,
     bls12,
     bls12::Bls12Parameters,
+    hashing::curve_maps::wb::WBParams,
     models::CurveConfig,
     short_weierstrass::{Affine, Projective, SWCurveConfig},
     AffineRepr, CurveGroup, Group,

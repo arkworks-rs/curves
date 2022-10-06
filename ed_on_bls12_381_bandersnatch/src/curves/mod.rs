@@ -16,8 +16,8 @@ pub type EdwardsProjective = Projective<BandersnatchParameters>;
 pub type SWAffine = short_weierstrass::Affine<BandersnatchParameters>;
 pub type SWProjective = short_weierstrass::Projective<BandersnatchParameters>;
 
-/// `bandersnatch` is an incomplete twisted Edwards curve. These curves have equations of
-/// the form: ax² + y² = 1 + dx²y².
+/// `bandersnatch` is an incomplete twisted Edwards curve. These curves have
+/// equations of the form: ax² + y² = 1 + dx²y².
 /// over some base finite field Fq.
 ///
 /// bandersnatch's curve equation: -5x² + y² = 1 + dx²y²
