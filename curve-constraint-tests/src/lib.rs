@@ -512,8 +512,10 @@ pub mod curves {
 }
 
 pub mod pairing {
-    use ark_ec::pairing::PairingOutput;
-    use ark_ec::{pairing::Pairing, CurveGroup};
+    use ark_ec::{
+        pairing::{Pairing, PairingOutput},
+        CurveGroup,
+    };
     use ark_ff::{BitIteratorLE, Field, PrimeField};
     use ark_r1cs_std::prelude::*;
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
