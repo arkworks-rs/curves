@@ -96,3 +96,33 @@ pub fn endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     res.x *= BETA;
     res
 }
+
+#[cfg(test)]
+mod test {
+
+    use super::*;
+    use ark_std::{rand::Rng, UniformRand};
+
+    fn sample_unchecked() -> Affine<g1::Parameters> {
+        let mut rng = ark_std::test_rng();
+        loop {
+            let x = Fq::rand(&mut rng);
+            let greatest = rng.gen();
+
+            if let Some(p) = Affine::get_point_from_x_unchecked(x, greatest) {
+                return p;
+            }
+        }
+    }
+
+    #[test]
+    fn test_cofactor_clearing() {
+        const SAMPLES: usize = 100;
+        for _ in 0..SAMPLES {
+            let p: Affine<g1::Parameters> = sample_unchecked();
+            let p = p.clear_cofactor();
+            assert!(p.is_on_curve());
+            assert!(p.is_in_correct_subgroup_assuming_on_curve());
+        }
+    }
+}
