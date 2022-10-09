@@ -10,7 +10,7 @@ keywords = ["cryptography", "finite-fields" ]
 categories = ["cryptography"]
 include = ["Cargo.toml", "src", "README.md", "LICENSE-APACHE", "LICENSE-MIT"]
 license = "MIT/Apache-2.0"
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 ark-ff = { version = "^0.3.0", default-features = false }
@@ -22,6 +22,7 @@ ark-r1cs-std = { version = "^0.3.0", default-features = false, optional = true }
 ark-relations = { version = "^0.3.0", default-features = false }
 ark-serialize = { version = "^0.3.0", default-features = false }
 ark-algebra-test-templates = { version = "^0.3.0", default-features = false }
+ark-algebra-bench-templates = { version = "^0.3.0", default-features = false }
 ark-curve-constraint-tests = { path = "../curve-constraint-tests", default-features = false }
 
 [features]
@@ -32,3 +33,8 @@ curve = [ "scalar_field", "base_field" ]
 scalar_field = []
 base_field = []
 r1cs = [ "base_field", "ark-r1cs-std" ]
+
+[[bench]]
+name = "mnt4_753"
+path = "benches/mnt4_753.rs"
+harness = false

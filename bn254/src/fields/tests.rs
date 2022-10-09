@@ -1,22 +1,21 @@
-use ark_algebra_test_templates::{
-    fields::*, generate_field_serialization_test, generate_field_test,
-};
+use ark_algebra_test_templates::*;
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger256},
-    fields::{FftField, Field, Fp6Config, PrimeField, SquareRootField},
+    fields::{FftField, Field, Fp6Config, PrimeField},
     One, UniformRand, Zero,
 };
-use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
-use ark_std::{rand::Rng, test_rng};
-use core::{
+use ark_std::{
     cmp::Ordering,
-    ops::{AddAssign, MulAssign, SubAssign},
+    ops::{AddAssign, MulAssign},
 };
 
-use crate::{Fq, Fq12, Fq2, Fq6, Fq6Config, FqConfig, Fr, FrConfig};
+use crate::{Fq, Fq12, Fq2, Fq6, Fq6Config, Fr};
 
-generate_field_test!(bn254; fq2; fq6; fq12; mont(4, 4); );
-generate_field_serialization_test!(bn254; fq2; fq6; fq12;);
+test_field!(fr; Fr; mont_prime_field);
+test_field!(fq; Fq; mont_prime_field);
+test_field!(fq2; Fq2);
+test_field!(fq6; Fq6);
+test_field!(fq12; Fq12);
 
 #[test]
 fn test_fq_repr_from() {
@@ -140,7 +139,7 @@ fn test_fq2_legendre() {
     // i^2 = -1
     let mut m1 = -Fq2::one();
     assert_eq!(QuadraticResidue, m1.legendre());
-    m1 = Fq6Config::mul_fp2_by_nonresidue(&m1);
+    Fq6Config::mul_fp2_by_nonresidue_in_place(&mut m1);
     assert_eq!(QuadraticNonResidue, m1.legendre());
 }
 

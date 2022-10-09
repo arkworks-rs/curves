@@ -1,10 +1,7 @@
 use ark_ec::{
-    models::{ModelParameters, MontgomeryModelParameters, TEModelParameters},
-    short_weierstrass_jacobian::{
-        GroupAffine as SWGroupAffine, GroupProjective as SWGroupProjective,
-    },
-    twisted_edwards_extended::{GroupAffine, GroupProjective},
-    SWModelParameters,
+    models::CurveConfig,
+    short_weierstrass::{self, SWCurveConfig},
+    twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
 use ark_ff::MontFp;
 
@@ -13,10 +10,10 @@ use crate::{Fq, Fr};
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = GroupAffine<JubjubParameters>;
-pub type EdwardsProjective = GroupProjective<JubjubParameters>;
-pub type SWAffine = SWGroupAffine<JubjubParameters>;
-pub type SWProjective = SWGroupProjective<JubjubParameters>;
+pub type EdwardsAffine = Affine<JubjubParameters>;
+pub type EdwardsProjective = Projective<JubjubParameters>;
+pub type SWAffine = short_weierstrass::Affine<JubjubParameters>;
+pub type SWProjective = short_weierstrass::Projective<JubjubParameters>;
 
 /// `JubJub` is a twisted Edwards curve. These curves have equations of the
 /// form: ax² + y² = 1 - dx²y².
@@ -27,7 +24,7 @@ pub type SWProjective = SWGroupProjective<JubjubParameters>;
 /// q = 52435875175126190479447740508185965837690552500527637822603658699938581184513.
 ///
 /// a = -1.
-/// d = (10240/10241) mod q
+/// d = -(10240/10241) mod q
 ///   = 19257038036680949359750312669786877991949435402254120286184196891950884077233.
 ///
 /// Sage script to calculate these:
@@ -56,7 +53,7 @@ pub struct JubjubParameters;
 pub type EdwardsParameters = JubjubParameters;
 pub type SWParameters = JubjubParameters;
 
-impl ModelParameters for JubjubParameters {
+impl CurveConfig for JubjubParameters {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -65,80 +62,63 @@ impl ModelParameters for JubjubParameters {
 
     /// COFACTOR^(-1) mod r =
     /// 819310549611346726241370945440405716213240158234039660170669895299022906775
-    const COFACTOR_INV: Fr = MontFp!(
-        Fr,
-        "819310549611346726241370945440405716213240158234039660170669895299022906775"
-    );
+    const COFACTOR_INV: Fr =
+        MontFp!("819310549611346726241370945440405716213240158234039660170669895299022906775");
 }
 
-impl TEModelParameters for JubjubParameters {
+impl TECurveConfig for JubjubParameters {
     /// COEFF_A = -1
-    const COEFF_A: Fq = MontFp!(Fq, "-1");
+    const COEFF_A: Fq = MontFp!("-1");
 
-    /// COEFF_D = (10240/10241) mod q
-    const COEFF_D: Fq = MontFp!(
-        Fq,
-        "19257038036680949359750312669786877991949435402254120286184196891950884077233"
-    );
+    /// COEFF_D = -(10240/10241) mod q
+    const COEFF_D: Fq =
+        MontFp!("19257038036680949359750312669786877991949435402254120286184196891950884077233");
 
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
-    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) = (GENERATOR_X, GENERATOR_Y);
+    const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
-    type MontgomeryModelParameters = JubjubParameters;
+    type MontCurveConfig = JubjubParameters;
 
     /// Multiplication by `a` is simply negation here.
     #[inline(always)]
-    fn mul_by_a(elem: &Self::BaseField) -> Self::BaseField {
-        -(*elem)
+    fn mul_by_a(elem: Self::BaseField) -> Self::BaseField {
+        -elem
     }
 }
 
-impl MontgomeryModelParameters for JubjubParameters {
+impl MontCurveConfig for JubjubParameters {
     /// COEFF_A = 40962
-    const COEFF_A: Fq = MontFp!(Fq, "40962");
+    const COEFF_A: Fq = MontFp!("40962");
 
     /// COEFF_B = -40964
-    const COEFF_B: Fq = MontFp!(Fq, "-40964");
+    const COEFF_B: Fq = MontFp!("-40964");
 
-    type TEModelParameters = JubjubParameters;
+    type TECurveConfig = JubjubParameters;
 }
 
-const GENERATOR_X: Fq = MontFp!(
-    Fq,
-    "8076246640662884909881801758704306714034609987455869804520522091855516602923"
-);
+const GENERATOR_X: Fq =
+    MontFp!("8076246640662884909881801758704306714034609987455869804520522091855516602923");
 
-const GENERATOR_Y: Fq = MontFp!(
-    Fq,
-    "13262374693698910701929044844600465831413122818447359594527400194675274060458"
-);
+const GENERATOR_Y: Fq =
+    MontFp!("13262374693698910701929044844600465831413122818447359594527400194675274060458");
 
-impl SWModelParameters for JubjubParameters {
+impl SWCurveConfig for JubjubParameters {
     /// COEFF_A = 52296097456646850916096512823759002727550416093741407922227928430486925478210
-    const COEFF_A: Self::BaseField = MontFp!(
-        Fq,
-        "52296097456646850916096512823759002727550416093741407922227928430486925478210"
-    );
+    const COEFF_A: Self::BaseField =
+        MontFp!("52296097456646850916096512823759002727550416093741407922227928430486925478210");
 
     /// COEFF_B = 48351165704696163914533707656614864561753505123260775585269522553028192119009
-    const COEFF_B: Self::BaseField = MontFp!(
-        Fq,
-        "48351165704696163914533707656614864561753505123260775585269522553028192119009"
-    );
+    const COEFF_B: Self::BaseField =
+        MontFp!("48351165704696163914533707656614864561753505123260775585269522553028192119009");
 
     /// generators
-    const AFFINE_GENERATOR_COEFFS: (Self::BaseField, Self::BaseField) =
-        (SW_GENERATOR_X, SW_GENERATOR_Y);
+    const GENERATOR: SWAffine = SWAffine::new_unchecked(SW_GENERATOR_X, SW_GENERATOR_Y);
 }
 
 /// x coordinate for SW curve generator
-const SW_GENERATOR_X: Fq = MontFp!(
-    Fq,
-    "33835869156188682335217394949746694649676633840125476177319971163079011318731"
-);
+const SW_GENERATOR_X: Fq =
+    MontFp!("33835869156188682335217394949746694649676633840125476177319971163079011318731");
 
 /// y coordinate for SW curve generator
-const SW_GENERATOR_Y: Fq = MontFp!(
-    Fq,
-    "43777270878440091394432848052353307184915192688165709016756678962558652055320"
-);
+const SW_GENERATOR_Y: Fq =
+    MontFp!("43777270878440091394432848052353307184915192688165709016756678962558652055320");

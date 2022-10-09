@@ -1,27 +1,26 @@
-use ark_algebra_test_templates::{
-    fields::*, generate_field_serialization_test, generate_field_test,
-};
+use ark_algebra_test_templates::*;
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger384},
-    fields::{FftField, Field, Fp12Config, Fp2Config, Fp6Config, PrimeField, SquareRootField},
+    fields::{FftField, Field, Fp12Config, Fp2Config, Fp6Config, PrimeField},
     One, UniformRand, Zero,
 };
-use ark_serialize::{buffer_bit_byte_size, CanonicalSerialize};
 use ark_std::{
     cmp::Ordering,
     ops::{AddAssign, MulAssign, SubAssign},
-    rand::Rng,
-    test_rng, vec,
+    vec,
 };
 
-use crate::{Fq, Fq12, Fq12Config, Fq2, Fq2Config, Fq6, Fq6Config, FqConfig, Fr, FrConfig};
+use crate::{Fq, Fq12, Fq12Config, Fq2, Fq2Config, Fq6, Fq6Config, Fr};
 
-generate_field_test!(bls12_381; fq2; fq6; fq12; mont(6, 4); );
-generate_field_serialization_test!(bls12_381; fq2; fq6; fq12;);
+test_field!(fr; Fr; mont_prime_field);
+test_field!(fq; Fq; mont_prime_field);
+test_field!(fq2; Fq2);
+test_field!(fq6; Fq6);
+test_field!(fq12; Fq12);
 
 #[test]
 fn test_negative_one() {
-    let neg_one = Fq::new(BigInt::new([
+    let neg_one = Fq::new_unchecked(BigInt::new([
         0x43f5fffffffcaaae,
         0x32b7fff2ed47fffd,
         0x7e83a49a2e99d69,
@@ -737,23 +736,6 @@ fn test_frob_coeffs() {
             0x22d582b,
         ])
     );
-}
-
-#[test]
-fn test_neg_one() {
-    let o = -Fq::one();
-
-    let thing: [u64; 6] = [
-        0x43f5fffffffcaaae,
-        0x32b7fff2ed47fffd,
-        0x7e83a49a2e99d69,
-        0xeca8f3318332bb7a,
-        0xef148d1ea0f4c069,
-        0x40ab3263eff0206,
-    ];
-    let negative_one = Fq::new(BigInt::new(thing));
-
-    assert_eq!(negative_one, o);
 }
 
 #[test]
@@ -1736,7 +1718,7 @@ fn test_fq2_legendre() {
     // i^2 = -1
     let mut m1 = -Fq2::one();
     assert_eq!(QuadraticResidue, m1.legendre());
-    m1 = Fq6Config::mul_fp2_by_nonresidue(&m1);
+    Fq6Config::mul_fp2_by_nonresidue_in_place(&mut m1);
     assert_eq!(QuadraticNonResidue, m1.legendre());
 }
 
@@ -1749,7 +1731,7 @@ fn test_fq2_mul_nonresidue() {
     for _ in 0..1000 {
         let mut a = Fq2::rand(&mut rng);
         let mut b = a;
-        a = Fq6Config::mul_fp2_by_nonresidue(&a);
+        Fq6Config::mul_fp2_by_nonresidue_in_place(&mut a);
         b.mul_assign(&nqr);
 
         assert_eq!(a, b);
@@ -1765,7 +1747,7 @@ fn test_fq6_mul_nonresidue() {
     for _ in 0..1000 {
         let mut a = Fq6::rand(&mut rng);
         let mut b = a;
-        a = Fq12Config::mul_fp6_by_nonresidue(&a);
+        Fq12Config::mul_fp6_by_nonresidue_in_place(&mut a);
         b.mul_assign(&nqr);
 
         assert_eq!(a, b);
