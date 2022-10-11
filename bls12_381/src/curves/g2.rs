@@ -6,7 +6,7 @@ use ark_ec::{
     AffineRepr,
 };
 use ark_ff::{Field, MontFp, Zero};
-use ark_serialize::{SerializationError, Compress};
+use ark_serialize::{Compress, SerializationError};
 
 use crate::*;
 
@@ -136,17 +136,32 @@ impl SWCurveConfig for Parameters {
         if encoding.is_infinity {
             p = G2Affine::default();
         }
-        let mut bytes = [0u8; G2_SERIALISED_SIZE];
 
-        // need to access the field struct `x` directly, otherwise we get None from xy()
-        // method
+        let mut x_bytes = [0u8; G2_SERIALISED_SIZE];
         let c1_bytes = serialise_fq(p.x.c1);
         let c0_bytes = serialise_fq(p.x.c0);
-        (&mut bytes[0..48]).copy_from_slice(&c1_bytes[..]);
-        (&mut bytes[48..96]).copy_from_slice(&c0_bytes[..]);
+        (&mut x_bytes[0..48]).copy_from_slice(&c1_bytes[..]);
+        (&mut x_bytes[48..96]).copy_from_slice(&c0_bytes[..]);
+        if encoding.is_compressed {
+            let mut bytes: [u8; G2_SERIALISED_SIZE] = x_bytes;
 
-        encoding.encode_flags(&mut bytes);
-        writer.write(&bytes)?;
+            encoding.encode_flags(&mut bytes);
+            writer.write(&bytes)?;
+        } else {
+            let mut bytes = [0u8; 2 * G2_SERIALISED_SIZE];
+
+            let mut y_bytes = [0u8; G2_SERIALISED_SIZE];
+            let c1_bytes = serialise_fq(p.y.c1);
+            let c0_bytes = serialise_fq(p.y.c0);
+            (&mut y_bytes[0..48]).copy_from_slice(&c1_bytes[..]);
+            (&mut y_bytes[48..96]).copy_from_slice(&c0_bytes[..]);
+            bytes[0..G2_SERIALISED_SIZE].copy_from_slice(&x_bytes);
+            bytes[G2_SERIALISED_SIZE..].copy_from_slice(&y_bytes);
+
+            encoding.encode_flags(&mut x_bytes);
+            writer.write(&x_bytes)?;
+        };
+
         Ok(())
     }
 

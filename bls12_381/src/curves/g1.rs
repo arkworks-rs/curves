@@ -113,23 +113,34 @@ impl SWCurveConfig for Parameters {
     fn serialize_with_mode<W: ark_serialize::Write>(
         item: &Affine<Self>,
         mut writer: W,
-        _compress: ark_serialize::Compress,
+        compress: ark_serialize::Compress,
     ) -> Result<(), SerializationError> {
         let encoding = EncodingFlags {
-            is_compressed: true,
+            is_compressed: compress == ark_serialize::Compress::Yes,
             is_infinity: item.is_zero(),
             is_lexographically_largest: item.y > -item.y,
         };
         let mut p = *item;
         if encoding.is_infinity {
-            p = G1Affine::default();  
+            p = G1Affine::default();
         }
         // need to access the field struct `x` directly, otherwise we get None from xy()
         // method
-        let mut bytes = serialise_fq(p.x);
+        let x_bytes = serialise_fq(p.x);
+        if encoding.is_compressed {
+            let mut bytes: [u8; G1_SERIALISED_SIZE] = x_bytes;
 
-        encoding.encode_flags(&mut bytes);
-        writer.write(&bytes)?;
+            encoding.encode_flags(&mut bytes);
+            writer.write(&bytes)?;
+        } else {
+            let mut bytes = [0u8; 2 * G1_SERIALISED_SIZE];
+            bytes[0..G1_SERIALISED_SIZE].copy_from_slice(&x_bytes[..]);
+            bytes[G1_SERIALISED_SIZE..].copy_from_slice(&serialise_fq(p.y)[..]);
+
+            encoding.encode_flags(&mut bytes);
+            writer.write(&bytes)?;
+        };
+
         Ok(())
     }
 
