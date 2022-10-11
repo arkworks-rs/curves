@@ -73,46 +73,14 @@ impl SWCurveConfig for Parameters {
 
     fn deserialize_with_mode<R: ark_serialize::Read>(
         mut reader: R,
-        _compress: ark_serialize::Compress,
+        compress: ark_serialize::Compress,
         validate: ark_serialize::Validate,
     ) -> Result<Affine<Self>, ark_serialize::SerializationError> {
-        let mut bytes: [u8; G2_SERIALISED_SIZE] = [0u8; G2_SERIALISED_SIZE];
-        // Obtain the three flags from the start of the byte sequence
-        reader
-            .read_exact(&mut bytes)
-            .ok()
-            .ok_or(SerializationError::InvalidData)?;
-        let flags = EncodingFlags::get_flags(&bytes);
-
-        if flags.is_infinity {
-            return Ok(G2Affine::default());
-        }
-
-        if !flags.is_compressed {
-            return Err(SerializationError::UnexpectedFlags);
-        }
-
-        // Attempt to obtain the x-coordinate
-        let xc1 = {
-            let mut tmp = [0; G1_SERIALISED_SIZE];
-            tmp.copy_from_slice(&bytes[0..G1_SERIALISED_SIZE]);
-
-            // Mask away the flag bits
-            tmp[0] &= 0b0001_1111;
-
-            deserialise_fq(tmp).ok_or(SerializationError::InvalidData)
-        }?;
-        let xc0 = {
-            let mut tmp = [0; G1_SERIALISED_SIZE];
-            tmp.copy_from_slice(&bytes[G1_SERIALISED_SIZE..2 * G1_SERIALISED_SIZE]);
-
-            deserialise_fq(tmp).ok_or(SerializationError::InvalidData)
-        }?;
-
-        let x = Fq2::new(xc0, xc1);
-
-        let p = G2Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
-            .ok_or(SerializationError::InvalidData)?;
+        let p = if compress == ark_serialize::Compress::Yes {
+            read_compressed(&mut reader)?
+        } else {
+            read_uncompressed(&mut reader)?
+        };
 
         if validate == ark_serialize::Validate::Yes {
             if !p.is_in_correct_subgroup_assuming_on_curve() {
@@ -237,6 +205,72 @@ pub fn p_power_endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     res.y *= P_POWER_ENDOMORPHISM_COEFF_1;
 
     res
+}
+
+fn read_compressed<R: ark_serialize::Read>(
+    mut reader: R,
+) -> Result<Affine<Parameters>, ark_serialize::SerializationError> {
+    let mut bytes = [0u8; G2_SERIALISED_SIZE];
+    // Obtain the three flags from the start of the byte sequence
+    reader
+        .read_exact(&mut bytes)
+        .ok()
+        .ok_or(SerializationError::InvalidData)?;
+    let flags = EncodingFlags::get_flags(&bytes);
+
+    if flags.is_infinity {
+        return Ok(G2Affine::default());
+    }
+
+    if !flags.is_compressed {
+        return Err(SerializationError::UnexpectedFlags);
+    }
+
+    // Attempt to obtain the x-coordinate
+    let xc1 = read_fq_with_offset(&bytes, 0, true)?;
+    let xc0 = read_fq_with_offset(&bytes, 1, false)?;
+
+    let x = Fq2::new(xc0, xc1);
+
+    let p = G2Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
+        .ok_or(SerializationError::InvalidData)?;
+
+    Ok(p)
+}
+
+fn read_uncompressed<R: ark_serialize::Read>(
+    mut reader: R,
+) -> Result<Affine<Parameters>, ark_serialize::SerializationError> {
+    let mut bytes = [0u8; 2 * G2_SERIALISED_SIZE];
+    // Obtain the three flags from the start of the byte sequence
+    reader
+        .read_exact(&mut bytes)
+        .ok()
+        .ok_or(SerializationError::InvalidData)?;
+    let flags = EncodingFlags::get_flags(&bytes);
+
+    if flags.is_infinity {
+        return Ok(G2Affine::default());
+    }
+
+    if flags.is_compressed {
+        return Err(SerializationError::UnexpectedFlags);
+    }
+
+    // Attempt to obtain the x-coordinate
+    let xc1 = read_fq_with_offset(&bytes, 0, true)?;
+    let xc0 = read_fq_with_offset(&bytes, 1, false)?;
+
+    let x = Fq2::new(xc0, xc1);
+
+    // Attempt to obtain the y-coordinate
+    let yc1 = read_fq_with_offset(&bytes, 2, false)?;
+    let yc0 = read_fq_with_offset(&bytes, 3, false)?;
+    let y = Fq2::new(yc0, yc1);
+
+    let p = G2Affine::new_unchecked(x, y);
+
+    Ok(p)
 }
 
 #[cfg(test)]

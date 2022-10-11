@@ -1,5 +1,6 @@
 use ark_ec::bls12::{Bls12, Bls12Parameters, TwistType};
 use ark_ff::{BigInteger384, PrimeField};
+use ark_serialize::SerializationError;
 
 use crate::{Fq, Fq12Config, Fq2Config, Fq6Config};
 
@@ -95,4 +96,19 @@ pub(crate) fn serialise_fq(field: Fq) -> [u8; 48] {
     result[40..48].copy_from_slice(&rep.0[0].to_be_bytes());
 
     result
+}
+
+pub(crate) fn read_fq_with_offset(
+    bytes: &[u8],
+    offset: usize,
+    mask: bool,
+) -> Result<Fq, ark_serialize::SerializationError> {
+    let mut tmp = [0; G1_SERIALISED_SIZE];
+    tmp.copy_from_slice(&bytes[offset * G1_SERIALISED_SIZE..G1_SERIALISED_SIZE * (offset + 1)]);
+
+    if mask {
+        // Mask away the flag bits
+        tmp[0] &= 0b0001_1111;
+    }
+    deserialise_fq(tmp).ok_or(SerializationError::InvalidData)
 }
