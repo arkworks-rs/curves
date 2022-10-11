@@ -242,7 +242,7 @@ pub fn p_power_endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
 #[cfg(test)]
 mod tests {
     use ark_ec::AffineRepr;
-    use ark_serialize::{CanonicalSerialize, Compress};
+    use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress};
 
     use crate::G2Affine;
     extern crate alloc;
@@ -254,16 +254,23 @@ mod tests {
         let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
         p.serialize_with_mode(&mut serialized[..], Compress::Yes)
             .unwrap();
-        assert_eq!(hex::encode(serialized),
-        "93e02b6052719f607dacd3a088274f65596bd0d09920b61ab5da61bbdc7f5049334cf11213945d57e5ac7d055d042b7e024aa2b2f08f0a91260805272dc51051c6e47ad4fa403b02b4510b647ae3d1770bac0326a805bbefd48056c8c121bdb8"
-        );
+        let byte_string = "93e02b6052719f607dacd3a088274f65596bd0d09920b61ab5da61bbdc7f5049334cf11213945d57e5ac7d055d042b7e024aa2b2f08f0a91260805272dc51051c6e47ad4fa403b02b4510b647ae3d1770bac0326a805bbefd48056c8c121bdb8";
+        assert_eq!(hex::encode(serialized), byte_string);
+
+        let bytes = hex::decode(byte_string).unwrap();
+        let p2 = G2Affine::deserialize_with_mode(
+            &bytes[..],
+            Compress::Yes,
+            ark_serialize::Validate::Yes,
+        )
+        .unwrap();
+        assert_eq!(p, p2);
 
         let p = G2Affine::zero();
         let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
         p.serialize_with_mode(&mut serialized[..], Compress::Yes)
             .unwrap();
-        assert_eq!(hex::encode(serialized),
-        "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-        );
+        let byte_string = "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        assert_eq!(hex::encode(serialized), byte_string);
     }
 }

@@ -176,7 +176,7 @@ pub fn endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
 #[cfg(test)]
 mod tests {
     use ark_ec::AffineRepr;
-    use ark_serialize::{CanonicalSerialize, Compress};
+    use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress};
 
     use crate::G1Affine;
     extern crate alloc;
@@ -188,16 +188,33 @@ mod tests {
         let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
         p.serialize_with_mode(&mut serialized[..], Compress::Yes)
             .unwrap();
-        assert_eq!(hex::encode(serialized),
-        "97f1d3a73197d7942695638c4fa9ac0fc3688c4f9774b905a14e3a3f171bac586c55e83ff97a1aeffb3af00adb22c6bb"
-        );
+        let byte_string = "97f1d3a73197d7942695638c4fa9ac0fc3688c4f9774b905a14e3a3f171bac586c55e83ff97a1aeffb3af00adb22c6bb";
+        assert_eq!(hex::encode(serialized), byte_string);
+
+        let bytes = hex::decode(byte_string).unwrap();
+        let p2 = G1Affine::deserialize_with_mode(
+            &bytes[..],
+            Compress::Yes,
+            ark_serialize::Validate::Yes,
+        )
+        .unwrap();
+        assert_eq!(p, p2);
 
         let p = G1Affine::zero();
         let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
         p.serialize_with_mode(&mut serialized[..], Compress::Yes)
             .unwrap();
-        assert_eq!(hex::encode(serialized),
-        "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-        );
+        let byte_string = "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+
+        assert_eq!(hex::encode(serialized), byte_string);
+
+        let bytes = hex::decode(byte_string).unwrap();
+        let p2 = G1Affine::deserialize_with_mode(
+            &bytes[..],
+            Compress::Yes,
+            ark_serialize::Validate::Yes,
+        )
+        .unwrap();
+        assert_eq!(p, p2);
     }
 }
