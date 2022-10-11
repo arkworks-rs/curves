@@ -68,7 +68,7 @@ impl SWCurveConfig for Parameters {
     fn deserialize_with_mode<R: ark_serialize::Read>(
         mut reader: R,
         _compress: ark_serialize::Compress,
-        _validate: ark_serialize::Validate,
+        validate: ark_serialize::Validate,
     ) -> Result<Affine<Self>, ark_serialize::SerializationError> {
         // First, read the bytes
         let mut bytes: [u8; G1_SERIALISED_SIZE] = [0u8; G1_SERIALISED_SIZE];
@@ -99,8 +99,15 @@ impl SWCurveConfig for Parameters {
             deserialise_fq(tmp).ok_or(SerializationError::InvalidData)
         }?;
 
-        G1Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
-            .ok_or(SerializationError::InvalidData)
+        let p = G1Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
+            .ok_or(SerializationError::InvalidData)?;
+
+        if validate == ark_serialize::Validate::Yes {
+            if !p.is_in_correct_subgroup_assuming_on_curve() {
+                return Err(SerializationError::InvalidData);
+            }
+        }
+        Ok(p)
     }
 
     fn serialize_with_mode<W: ark_serialize::Write>(

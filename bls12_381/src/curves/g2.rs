@@ -74,7 +74,7 @@ impl SWCurveConfig for Parameters {
     fn deserialize_with_mode<R: ark_serialize::Read>(
         mut reader: R,
         _compress: ark_serialize::Compress,
-        _validate: ark_serialize::Validate,
+        validate: ark_serialize::Validate,
     ) -> Result<Affine<Self>, ark_serialize::SerializationError> {
         let mut bytes: [u8; G2_SERIALISED_SIZE] = [0u8; G2_SERIALISED_SIZE];
         // Obtain the three flags from the start of the byte sequence
@@ -111,8 +111,15 @@ impl SWCurveConfig for Parameters {
 
         let x = Fq2::new(xc0, xc1);
 
-        G2Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
-            .ok_or(SerializationError::InvalidData)
+        let p = G2Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
+            .ok_or(SerializationError::InvalidData)?;
+
+        if validate == ark_serialize::Validate::Yes {
+            if !p.is_in_correct_subgroup_assuming_on_curve() {
+                return Err(SerializationError::InvalidData);
+            }
+        }
+        Ok(p)
     }
 
     fn serialize_with_mode<W: ark_serialize::Write>(
