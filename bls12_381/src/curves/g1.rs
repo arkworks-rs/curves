@@ -120,9 +120,13 @@ impl SWCurveConfig for Parameters {
             is_infinity: item.is_zero(),
             is_lexographically_largest: item.y > -item.y,
         };
+        let mut p = *item;
+        if encoding.is_infinity {
+            p = G1Affine::default();  
+        }
         // need to access the field struct `x` directly, otherwise we get None from xy()
         // method
-        let mut bytes = serialise_fq(item.x);
+        let mut bytes = serialise_fq(p.x);
 
         encoding.encode_flags(&mut bytes);
         writer.write(&bytes)?;

@@ -132,12 +132,16 @@ impl SWCurveConfig for Parameters {
             is_infinity: item.is_zero(),
             is_lexographically_largest: item.y > -item.y,
         };
+        let mut p = *item;
+        if encoding.is_infinity {
+            p = G2Affine::default();
+        }
         let mut bytes = [0u8; G2_SERIALISED_SIZE];
 
         // need to access the field struct `x` directly, otherwise we get None from xy()
         // method
-        let c1_bytes = serialise_fq(item.x.c1);
-        let c0_bytes = serialise_fq(item.x.c0);
+        let c1_bytes = serialise_fq(p.x.c1);
+        let c0_bytes = serialise_fq(p.x.c0);
         (&mut bytes[0..48]).copy_from_slice(&c1_bytes[..]);
         (&mut bytes[48..96]).copy_from_slice(&c0_bytes[..]);
 
