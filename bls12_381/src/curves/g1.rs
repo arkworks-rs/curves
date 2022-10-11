@@ -6,6 +6,7 @@ use ark_ec::{
     AffineRepr, Group,
 };
 use ark_ff::{Field, MontFp, Zero};
+use ark_serialize::{Compress, SerializationError};
 use ark_std::ops::Neg;
 
 use crate::*;
@@ -62,6 +63,68 @@ impl SWCurveConfig for Parameters {
         let endomorphism_p = endomorphism(p);
         minus_x_squared_times_p.eq(&endomorphism_p)
     }
+
+    // modes are ignored, as the flags are already encoded in the data
+    fn deserialize_with_mode<R: ark_serialize::Read>(
+        mut reader: R,
+        _compress: ark_serialize::Compress,
+        _validate: ark_serialize::Validate,
+    ) -> Result<Affine<Self>, ark_serialize::SerializationError> {
+        // First, read the bytes
+        let mut bytes: [u8; G1_SERIALISED_SIZE] = [0u8; G1_SERIALISED_SIZE];
+        reader
+            .read_exact(&mut bytes)
+            .ok()
+            .ok_or(SerializationError::InvalidData)?;
+
+        // Obtain the three flags from the start of the byte sequence
+        let flags = EncodingFlags::get_flags(&bytes[..]);
+
+        if flags.is_infinity {
+            return Ok(G1Affine::default());
+        }
+
+        if !flags.is_compressed {
+            return Err(SerializationError::UnexpectedFlags);
+        }
+
+        // Attempt to obtain the x-coordinate
+        let x = {
+            let mut tmp = [0; G1_SERIALISED_SIZE];
+            tmp.copy_from_slice(&bytes[0..G1_SERIALISED_SIZE]);
+
+            // Mask away the flag bits
+            tmp[0] &= 0b0001_1111;
+
+            deserialise_fq(tmp).ok_or(SerializationError::InvalidData)
+        }?;
+
+        G1Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
+            .ok_or(SerializationError::InvalidData)
+    }
+
+    fn serialize_with_mode<W: ark_serialize::Write>(
+        item: &Affine<Self>,
+        mut writer: W,
+        _compress: ark_serialize::Compress,
+    ) -> Result<(), SerializationError> {
+        let encoding = EncodingFlags {
+            is_compressed: true,
+            is_infinity: item.is_zero(),
+            is_lexographically_largest: item.y > -item.y,
+        };
+        // need to access the field struct `x` directly, otherwise we get None from xy()
+        // method
+        let mut bytes = serialise_fq(item.x);
+
+        encoding.encode_flags(&mut bytes);
+        writer.write(&bytes)?;
+        Ok(())
+    }
+
+    fn serialized_size(_compress: Compress) -> usize {
+        G1_SERIALISED_SIZE
+    }
 }
 
 /// G1_GENERATOR_X =
@@ -82,4 +145,33 @@ pub fn endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     let mut res = (*p).clone();
     res.x *= BETA;
     res
+}
+
+#[cfg(test)]
+mod tests {
+    use ark_ec::AffineRepr;
+    use ark_serialize::{CanonicalSerialize, Compress};
+
+    use crate::G1Affine;
+    extern crate alloc;
+    use alloc::vec;
+
+    #[test]
+    fn g1_standard_serialization() {
+        let p = G1Affine::generator();
+        let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
+        p.serialize_with_mode(&mut serialized[..], Compress::Yes)
+            .unwrap();
+        assert_eq!(hex::encode(serialized),
+        "97f1d3a73197d7942695638c4fa9ac0fc3688c4f9774b905a14e3a3f171bac586c55e83ff97a1aeffb3af00adb22c6bb"
+        );
+
+        let p = G1Affine::zero();
+        let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
+        p.serialize_with_mode(&mut serialized[..], Compress::Yes)
+            .unwrap();
+        assert_eq!(hex::encode(serialized),
+        "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        );
+    }
 }

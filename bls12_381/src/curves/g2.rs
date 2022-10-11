@@ -6,6 +6,7 @@ use ark_ec::{
     AffineRepr,
 };
 use ark_ff::{Field, MontFp, Zero};
+use ark_serialize::SerializationError;
 
 use crate::*;
 
@@ -68,6 +69,78 @@ impl SWCurveConfig for Parameters {
         let p_times_point = p_power_endomorphism(point);
 
         x_times_point.eq(&p_times_point)
+    }
+
+    fn deserialize_with_mode<R: ark_serialize::Read>(
+        mut reader: R,
+        _compress: ark_serialize::Compress,
+        _validate: ark_serialize::Validate,
+    ) -> Result<Affine<Self>, ark_serialize::SerializationError> {
+        let mut bytes: [u8; G2_SERIALISED_SIZE] = [0u8; G2_SERIALISED_SIZE];
+        // Obtain the three flags from the start of the byte sequence
+        reader
+            .read_exact(&mut bytes)
+            .ok()
+            .ok_or(SerializationError::InvalidData)?;
+        let flags = EncodingFlags::get_flags(&bytes);
+
+        if flags.is_infinity {
+            return Ok(G2Affine::default());
+        }
+
+        if !flags.is_compressed {
+            return Err(SerializationError::UnexpectedFlags);
+        }
+
+        // Attempt to obtain the x-coordinate
+        let xc1 = {
+            let mut tmp = [0; G1_SERIALISED_SIZE];
+            tmp.copy_from_slice(&bytes[0..G1_SERIALISED_SIZE]);
+
+            // Mask away the flag bits
+            tmp[0] &= 0b0001_1111;
+
+            deserialise_fq(tmp).ok_or(SerializationError::InvalidData)
+        }?;
+        let xc0 = {
+            let mut tmp = [0; G1_SERIALISED_SIZE];
+            tmp.copy_from_slice(&bytes[G1_SERIALISED_SIZE..2 * G1_SERIALISED_SIZE]);
+
+            deserialise_fq(tmp).ok_or(SerializationError::InvalidData)
+        }?;
+
+        let x = Fq2::new(xc0, xc1);
+
+        G2Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
+            .ok_or(SerializationError::InvalidData)
+    }
+
+    fn serialize_with_mode<W: ark_serialize::Write>(
+        item: &Affine<Self>,
+        mut writer: W,
+        _compress: ark_serialize::Compress,
+    ) -> Result<(), SerializationError> {
+        let encoding = EncodingFlags {
+            is_compressed: true,
+            is_infinity: item.is_zero(),
+            is_lexographically_largest: item.y > -item.y,
+        };
+        let mut bytes = [0u8; G2_SERIALISED_SIZE];
+
+        // need to access the field struct `x` directly, otherwise we get None from xy()
+        // method
+        let c1_bytes = serialise_fq(item.x.c1);
+        let c0_bytes = serialise_fq(item.x.c0);
+        (&mut bytes[0..48]).copy_from_slice(&c1_bytes[..]);
+        (&mut bytes[48..96]).copy_from_slice(&c0_bytes[..]);
+
+        encoding.encode_flags(&mut bytes);
+        writer.write(&bytes)?;
+        Ok(())
+    }
+
+    fn serialized_size(_compress: ark_serialize::Compress) -> usize {
+        G2_SERIALISED_SIZE
     }
 }
 
@@ -134,4 +207,33 @@ pub fn p_power_endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     res.y *= P_POWER_ENDOMORPHISM_COEFF_1;
 
     res
+}
+
+#[cfg(test)]
+mod tests {
+    use ark_ec::AffineRepr;
+    use ark_serialize::{CanonicalSerialize, Compress};
+
+    use crate::G2Affine;
+    extern crate alloc;
+    use alloc::vec;
+
+    #[test]
+    fn g2_standard_serialization() {
+        let p = G2Affine::generator();
+        let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
+        p.serialize_with_mode(&mut serialized[..], Compress::Yes)
+            .unwrap();
+        assert_eq!(hex::encode(serialized),
+        "93e02b6052719f607dacd3a088274f65596bd0d09920b61ab5da61bbdc7f5049334cf11213945d57e5ac7d055d042b7e024aa2b2f08f0a91260805272dc51051c6e47ad4fa403b02b4510b647ae3d1770bac0326a805bbefd48056c8c121bdb8"
+        );
+
+        let p = G2Affine::zero();
+        let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
+        p.serialize_with_mode(&mut serialized[..], Compress::Yes)
+            .unwrap();
+        assert_eq!(hex::encode(serialized),
+        "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        );
+    }
 }
