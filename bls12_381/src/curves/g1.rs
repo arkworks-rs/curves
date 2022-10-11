@@ -129,8 +129,12 @@ impl SWCurveConfig for Parameters {
         Ok(())
     }
 
-    fn serialized_size(_compress: Compress) -> usize {
-        G1_SERIALISED_SIZE
+    fn serialized_size(compress: Compress) -> usize {
+        if compress == Compress::Yes {
+            G1_SERIALISED_SIZE
+        } else {
+            G1_SERIALISED_SIZE * 2
+        }
     }
 }
 

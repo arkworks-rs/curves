@@ -6,7 +6,7 @@ use ark_ec::{
     AffineRepr,
 };
 use ark_ff::{Field, MontFp, Zero};
-use ark_serialize::SerializationError;
+use ark_serialize::{SerializationError, Compress};
 
 use crate::*;
 
@@ -146,8 +146,12 @@ impl SWCurveConfig for Parameters {
         Ok(())
     }
 
-    fn serialized_size(_compress: ark_serialize::Compress) -> usize {
-        G2_SERIALISED_SIZE
+    fn serialized_size(compress: ark_serialize::Compress) -> usize {
+        if compress == Compress::Yes {
+            G2_SERIALISED_SIZE
+        } else {
+            2 * G2_SERIALISED_SIZE
+        }
     }
 }
 
