@@ -126,8 +126,8 @@ impl SWCurveConfig for Parameters {
             bytes[0..G2_SERIALISED_SIZE].copy_from_slice(&x_bytes);
             bytes[G2_SERIALISED_SIZE..].copy_from_slice(&y_bytes);
 
-            encoding.encode_flags(&mut x_bytes);
-            writer.write_all(&x_bytes)?;
+            encoding.encode_flags(&mut bytes);
+            writer.write_all(&bytes)?;
         };
 
         Ok(())
