@@ -67,7 +67,7 @@ impl EncodingFlags {
     }
 }
 
-pub(crate) fn deserialise_fq(bytes: [u8; 48]) -> Option<Fq> {
+fn deserialise_fq(bytes: [u8; 48]) -> Option<Fq> {
     let mut tmp = BigInteger384::new([0, 0, 0, 0, 0, 0]);
 
     // Note: The following unwraps are if the compiler cannot convert
@@ -104,6 +104,7 @@ pub(crate) fn read_fq_with_offset(
     mask: bool,
 ) -> Result<Fq, ark_serialize::SerializationError> {
     let mut tmp = [0; G1_SERIALISED_SIZE];
+    // read `G1_SERIALISED_SIZE` bytes
     tmp.copy_from_slice(&bytes[offset * G1_SERIALISED_SIZE..G1_SERIALISED_SIZE * (offset + 1)]);
 
     if mask {

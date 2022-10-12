@@ -211,19 +211,21 @@ fn read_compressed<R: ark_serialize::Read>(
     mut reader: R,
 ) -> Result<Affine<Parameters>, ark_serialize::SerializationError> {
     let mut bytes = [0u8; G2_SERIALISED_SIZE];
-    // Obtain the three flags from the start of the byte sequence
     reader
         .read_exact(&mut bytes)
         .ok()
         .ok_or(SerializationError::InvalidData)?;
+
+    // Obtain the three flags from the start of the byte sequence
     let flags = EncodingFlags::get_flags(&bytes);
+
+    // we expect to be deserializing a compressed point
+    if !flags.is_compressed {
+        return Err(SerializationError::UnexpectedFlags);
+    }
 
     if flags.is_infinity {
         return Ok(G2Affine::default());
-    }
-
-    if !flags.is_compressed {
-        return Err(SerializationError::UnexpectedFlags);
     }
 
     // Attempt to obtain the x-coordinate
@@ -242,25 +244,26 @@ fn read_uncompressed<R: ark_serialize::Read>(
     mut reader: R,
 ) -> Result<Affine<Parameters>, ark_serialize::SerializationError> {
     let mut bytes = [0u8; 2 * G2_SERIALISED_SIZE];
-    // Obtain the three flags from the start of the byte sequence
     reader
         .read_exact(&mut bytes)
         .ok()
         .ok_or(SerializationError::InvalidData)?;
+
+    // Obtain the three flags from the start of the byte sequence
     let flags = EncodingFlags::get_flags(&bytes);
+
+    // we expect to be deserializing an uncompressed point
+    if flags.is_compressed {
+        return Err(SerializationError::UnexpectedFlags);
+    }
 
     if flags.is_infinity {
         return Ok(G2Affine::default());
     }
 
-    if flags.is_compressed {
-        return Err(SerializationError::UnexpectedFlags);
-    }
-
     // Attempt to obtain the x-coordinate
     let xc1 = read_fq_with_offset(&bytes, 0, true)?;
     let xc0 = read_fq_with_offset(&bytes, 1, false)?;
-
     let x = Fq2::new(xc0, xc1);
 
     // Attempt to obtain the y-coordinate
@@ -284,27 +287,26 @@ mod tests {
 
     #[test]
     fn g2_standard_serialization() {
-        let p = G2Affine::generator();
-        let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
-        p.serialize_with_mode(&mut serialized[..], Compress::Yes)
-            .unwrap();
-        let byte_string = "93e02b6052719f607dacd3a088274f65596bd0d09920b61ab5da61bbdc7f5049334cf11213945d57e5ac7d055d042b7e024aa2b2f08f0a91260805272dc51051c6e47ad4fa403b02b4510b647ae3d1770bac0326a805bbefd48056c8c121bdb8";
-        assert_eq!(hex::encode(serialized), byte_string);
+        let pairs = [
+            (G2Affine::generator(), "93e02b6052719f607dacd3a088274f65596bd0d09920b61ab5da61bbdc7f5049334cf11213945d57e5ac7d055d042b7e024aa2b2f08f0a91260805272dc51051c6e47ad4fa403b02b4510b647ae3d1770bac0326a805bbefd48056c8c121bdb8"),
+            (G2Affine::zero(), "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
+        ];
 
-        let bytes = hex::decode(byte_string).unwrap();
-        let p2 = G2Affine::deserialize_with_mode(
-            &bytes[..],
-            Compress::Yes,
-            ark_serialize::Validate::Yes,
-        )
-        .unwrap();
-        assert_eq!(p, p2);
+        for (p, s) in pairs {
+            // serialize
+            let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
+            p.serialize_with_mode(&mut serialized[..], Compress::Yes)
+                .unwrap();
+            assert_eq!(hex::encode(&serialized), s);
 
-        let p = G2Affine::zero();
-        let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
-        p.serialize_with_mode(&mut serialized[..], Compress::Yes)
+            // deserialize, should get the same point
+            let p2 = G2Affine::deserialize_with_mode(
+                &serialized[..],
+                Compress::Yes,
+                ark_serialize::Validate::Yes,
+            )
             .unwrap();
-        let byte_string = "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-        assert_eq!(hex::encode(serialized), byte_string);
+            assert_eq!(p, p2);
+        }
     }
 }
