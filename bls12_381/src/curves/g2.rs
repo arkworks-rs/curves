@@ -93,10 +93,10 @@ impl SWCurveConfig for Parameters {
     fn serialize_with_mode<W: ark_serialize::Write>(
         item: &Affine<Self>,
         mut writer: W,
-        _compress: ark_serialize::Compress,
+        compress: ark_serialize::Compress,
     ) -> Result<(), SerializationError> {
         let encoding = EncodingFlags {
-            is_compressed: true,
+            is_compressed: compress == ark_serialize::Compress::Yes,
             is_infinity: item.is_zero(),
             is_lexographically_largest: item.y > -item.y,
         };
