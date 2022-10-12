@@ -105,14 +105,14 @@ impl SWCurveConfig for Parameters {
             let mut bytes: [u8; G1_SERIALISED_SIZE] = x_bytes;
 
             encoding.encode_flags(&mut bytes);
-            writer.write(&bytes)?;
+            writer.write_all(&bytes)?;
         } else {
             let mut bytes = [0u8; 2 * G1_SERIALISED_SIZE];
             bytes[0..G1_SERIALISED_SIZE].copy_from_slice(&x_bytes[..]);
             bytes[G1_SERIALISED_SIZE..].copy_from_slice(&serialise_fq(p.y)[..]);
 
             encoding.encode_flags(&mut bytes);
-            writer.write(&bytes)?;
+            writer.write_all(&bytes)?;
         };
 
         Ok(())

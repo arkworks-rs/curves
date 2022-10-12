@@ -114,7 +114,7 @@ impl SWCurveConfig for Parameters {
             let mut bytes: [u8; G2_SERIALISED_SIZE] = x_bytes;
 
             encoding.encode_flags(&mut bytes);
-            writer.write(&bytes)?;
+            writer.write_all(&bytes)?;
         } else {
             let mut bytes = [0u8; 2 * G2_SERIALISED_SIZE];
 
@@ -127,7 +127,7 @@ impl SWCurveConfig for Parameters {
             bytes[G2_SERIALISED_SIZE..].copy_from_slice(&y_bytes);
 
             encoding.encode_flags(&mut x_bytes);
-            writer.write(&x_bytes)?;
+            writer.write_all(&x_bytes)?;
         };
 
         Ok(())
