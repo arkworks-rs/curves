@@ -191,8 +191,8 @@ fn read_uncompressed<R: ark_serialize::Read>(
     // Obtain the three flags from the start of the byte sequence
     let flags = EncodingFlags::get_flags(&bytes[..]);
 
-    // we expect to be deserializing a compressed point
-    if !flags.is_compressed {
+    // we expect to be deserializing an uncompressed point
+    if flags.is_compressed {
         return Err(SerializationError::UnexpectedFlags);
     }
 
