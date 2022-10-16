@@ -1,5 +1,7 @@
-use ark_ec::pairing::{MillerLoopOutput, PairingOutput};
-use ark_ec::{models::short_weierstrass::SWCurveConfig, pairing::Pairing};
+use ark_ec::{
+    models::short_weierstrass::SWCurveConfig,
+    pairing::{MillerLoopOutput, Pairing, PairingOutput},
+};
 use ark_ff::{
     biginteger::BigInteger832,
     fields::{BitIteratorBE, Field},

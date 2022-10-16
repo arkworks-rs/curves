@@ -1,9 +1,11 @@
+use ark_std::ops::Neg;
+
 use ark_ec::{
     bls12,
     bls12::Bls12Parameters,
     models::CurveConfig,
-    short_weierstrass::{Affine, SWCurveConfig},
-    AffineRepr,
+    short_weierstrass::{Affine, Projective, SWCurveConfig},
+    AffineRepr, CurveGroup, Group,
 };
 use ark_ff::{Field, MontFp, Zero};
 
@@ -69,6 +71,40 @@ impl SWCurveConfig for Parameters {
 
         x_times_point.eq(&p_times_point)
     }
+
+    #[inline]
+    fn clear_cofactor(p: &G2Affine) -> G2Affine {
+        // Based on Section 4.1 of https://eprint.iacr.org/2017/419.pdf
+        // [h(ψ)]P = [x^2 − x − 1]P + [x − 1]ψ(P) + (ψ^2)(2P)
+
+        // x = -15132376222941642752
+        // When multiplying, use -c1 instead, and then negate the result. That's much
+        // more efficient, since the scalar -c1 has less limbs and a much lower Hamming
+        // weight.
+        let x: &'static [u64] = crate::Parameters::X;
+        let p_projective = p.into_group();
+
+        // [x]P
+        let x_p = Parameters::mul_affine(p, &x).neg();
+        // ψ(P)
+        let psi_p = p_power_endomorphism(&p);
+        // (ψ^2)(2P)
+        let mut psi2_p2 = double_p_power_endomorphism(&p_projective.double());
+
+        // tmp = [x]P + ψ(P)
+        let mut tmp = x_p.clone();
+        tmp += &psi_p;
+
+        // tmp2 = [x^2]P + [x]ψ(P)
+        let mut tmp2: Projective<Parameters> = tmp;
+        tmp2 = tmp2.mul_bigint(x).neg();
+
+        // add up all the terms
+        psi2_p2 += tmp2;
+        psi2_p2 -= x_p;
+        psi2_p2 += &-psi_p;
+        (psi2_p2 - p_projective).into_affine()
+    }
 }
 
 pub const G2_GENERATOR_X: Fq2 = Fq2::new(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
@@ -109,6 +145,11 @@ pub const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = Fq2::new(
                 "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
 );
 
+pub const DOUBLE_P_POWER_ENDOMORPHISM: Fq2 = Fq2::new(
+    MontFp!("4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436"),
+    Fq::ZERO
+);
+
 pub fn p_power_endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     // The p-power endomorphism for G2 is defined as follows:
     // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1).
@@ -134,4 +175,48 @@ pub fn p_power_endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     res.y *= P_POWER_ENDOMORPHISM_COEFF_1;
 
     res
+}
+
+/// For a p-power endomorphism psi(P), compute psi(psi(P))
+pub fn double_p_power_endomorphism(p: &Projective<Parameters>) -> Projective<Parameters> {
+    let mut res = *p;
+
+    res.x *= DOUBLE_P_POWER_ENDOMORPHISM;
+    res.y = res.y.neg();
+
+    res
+}
+
+#[cfg(test)]
+mod test {
+
+    use super::*;
+    use ark_std::UniformRand;
+
+    #[test]
+    fn test_cofactor_clearing() {
+        // multiplying by h_eff and clearing the cofactor by the efficient
+        // endomorphism-based method should yield the same result.
+        let h_eff: &'static [u64] = &[
+            0xe8020005aaa95551,
+            0x59894c0adebbf6b4,
+            0xe954cbc06689f6a3,
+            0x2ec0ec69d7477c1a,
+            0x6d82bf015d1212b0,
+            0x329c2f178731db95,
+            0x9986ff031508ffe1,
+            0x88e2a8e9145ad768,
+            0x584c6a0ea91b3528,
+            0xbc69f08f2ee75b3,
+        ];
+
+        let mut rng = ark_std::test_rng();
+        const SAMPLES: usize = 10;
+        for _ in 0..SAMPLES {
+            let p = Affine::<g2::Parameters>::rand(&mut rng);
+            let optimised = p.clear_cofactor().into_group();
+            let naive = g2::Parameters::mul_affine(&p, h_eff);
+            assert_eq!(optimised, naive);
+        }
+    }
 }

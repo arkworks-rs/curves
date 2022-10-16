@@ -1,3 +1,4 @@
+use crate::*;
 use ark_ec::{
     bls12,
     bls12::Bls12Parameters,
@@ -5,11 +6,8 @@ use ark_ec::{
     short_weierstrass::{Affine, SWCurveConfig},
     AffineRepr, Group,
 };
-use ark_ff::{Field, MontFp, Zero};
-use ark_std::ops::Neg;
-
-use crate::*;
-
+use ark_ff::{Field, MontFp, PrimeField, Zero};
+use ark_std::{ops::Neg, One};
 pub type G1Affine = bls12::G1Affine<crate::Parameters>;
 pub type G1Projective = bls12::G1Projective<crate::Parameters>;
 
@@ -62,6 +60,21 @@ impl SWCurveConfig for Parameters {
         let endomorphism_p = endomorphism(p);
         minus_x_squared_times_p.eq(&endomorphism_p)
     }
+
+    #[inline]
+    fn clear_cofactor(p: &G1Affine) -> G1Affine {
+        // Using the effective cofactor, as explained in
+        // Section 5 of https://eprint.iacr.org/2019/403.pdf.
+        //
+        // It is enough to multiply by (1 - x), instead of (x - 1)^2 / 3
+        let h_eff = one_minus_x().into_bigint();
+        Parameters::mul_affine(&p, h_eff.as_ref()).into()
+    }
+}
+
+fn one_minus_x() -> Fr {
+    const X: Fr = Fr::from_sign_and_limbs(!crate::Parameters::X_IS_NEGATIVE, crate::Parameters::X);
+    Fr::one() - X
 }
 
 /// G1_GENERATOR_X =
@@ -82,4 +95,34 @@ pub fn endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     let mut res = (*p).clone();
     res.x *= BETA;
     res
+}
+
+#[cfg(test)]
+mod test {
+
+    use super::*;
+    use ark_std::{rand::Rng, UniformRand};
+
+    fn sample_unchecked() -> Affine<g1::Parameters> {
+        let mut rng = ark_std::test_rng();
+        loop {
+            let x = Fq::rand(&mut rng);
+            let greatest = rng.gen();
+
+            if let Some(p) = Affine::get_point_from_x_unchecked(x, greatest) {
+                return p;
+            }
+        }
+    }
+
+    #[test]
+    fn test_cofactor_clearing() {
+        const SAMPLES: usize = 100;
+        for _ in 0..SAMPLES {
+            let p: Affine<g1::Parameters> = sample_unchecked();
+            let p = p.clear_cofactor();
+            assert!(p.is_on_curve());
+            assert!(p.is_in_correct_subgroup_assuming_on_curve());
+        }
+    }
 }
