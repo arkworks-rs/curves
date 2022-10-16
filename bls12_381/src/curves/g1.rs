@@ -64,7 +64,6 @@ impl SWCurveConfig for Parameters {
         minus_x_squared_times_p.eq(&endomorphism_p)
     }
 
-    // modes are ignored, as the flags are already encoded in the data
     fn deserialize_with_mode<R: ark_serialize::Read>(
         mut reader: R,
         compress: ark_serialize::Compress,
@@ -96,7 +95,7 @@ impl SWCurveConfig for Parameters {
         };
         let mut p = *item;
         if encoding.is_infinity {
-            p = G1Affine::default();
+            p = G1Affine::zero();
         }
         // need to access the field struct `x` directly, otherwise we get None from xy()
         // method
