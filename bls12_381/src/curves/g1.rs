@@ -9,6 +9,7 @@ use ark_ff::{Field, MontFp, Zero};
 use ark_serialize::{Compress, SerializationError};
 use ark_std::ops::Neg;
 
+use super::util::{read_fq_with_offset, serialise_fq, EncodingFlags, G1_SERIALISED_SIZE};
 use crate::*;
 
 pub type G1Affine = bls12::G1Affine<crate::Parameters>;
