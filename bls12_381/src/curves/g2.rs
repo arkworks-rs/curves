@@ -10,7 +10,7 @@ use ark_ec::{
 use ark_ff::{Field, MontFp, Zero};
 use ark_serialize::{Compress, SerializationError};
 
-use super::util::{serialise_fq, EncodingFlags, G2_SERIALISED_SIZE};
+use super::util::{serialize_fq, EncodingFlags, G2_SERIALIZED_SIZE};
 use crate::{
     util::{read_g2_compressed, read_g2_uncompressed},
     *,
@@ -144,26 +144,26 @@ impl SWCurveConfig for Parameters {
             p = G2Affine::zero();
         }
 
-        let mut x_bytes = [0u8; G2_SERIALISED_SIZE];
-        let c1_bytes = serialise_fq(p.x.c1);
-        let c0_bytes = serialise_fq(p.x.c0);
+        let mut x_bytes = [0u8; G2_SERIALIZED_SIZE];
+        let c1_bytes = serialize_fq(p.x.c1);
+        let c0_bytes = serialize_fq(p.x.c0);
         x_bytes[0..48].copy_from_slice(&c1_bytes[..]);
         x_bytes[48..96].copy_from_slice(&c0_bytes[..]);
         if encoding.is_compressed {
-            let mut bytes: [u8; G2_SERIALISED_SIZE] = x_bytes;
+            let mut bytes: [u8; G2_SERIALIZED_SIZE] = x_bytes;
 
             encoding.encode_flags(&mut bytes);
             writer.write_all(&bytes)?;
         } else {
-            let mut bytes = [0u8; 2 * G2_SERIALISED_SIZE];
+            let mut bytes = [0u8; 2 * G2_SERIALIZED_SIZE];
 
-            let mut y_bytes = [0u8; G2_SERIALISED_SIZE];
-            let c1_bytes = serialise_fq(p.y.c1);
-            let c0_bytes = serialise_fq(p.y.c0);
+            let mut y_bytes = [0u8; G2_SERIALIZED_SIZE];
+            let c1_bytes = serialize_fq(p.y.c1);
+            let c0_bytes = serialize_fq(p.y.c0);
             y_bytes[0..48].copy_from_slice(&c1_bytes[..]);
             y_bytes[48..96].copy_from_slice(&c0_bytes[..]);
-            bytes[0..G2_SERIALISED_SIZE].copy_from_slice(&x_bytes);
-            bytes[G2_SERIALISED_SIZE..].copy_from_slice(&y_bytes);
+            bytes[0..G2_SERIALIZED_SIZE].copy_from_slice(&x_bytes);
+            bytes[G2_SERIALIZED_SIZE..].copy_from_slice(&y_bytes);
 
             encoding.encode_flags(&mut bytes);
             writer.write_all(&bytes)?;
@@ -174,9 +174,9 @@ impl SWCurveConfig for Parameters {
 
     fn serialized_size(compress: ark_serialize::Compress) -> usize {
         if compress == Compress::Yes {
-            G2_SERIALISED_SIZE
+            G2_SERIALIZED_SIZE
         } else {
-            2 * G2_SERIALISED_SIZE
+            2 * G2_SERIALIZED_SIZE
         }
     }
 }

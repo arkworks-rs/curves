@@ -6,8 +6,8 @@ use crate::{
     g1::Parameters as G1Parameters, g2::Parameters as G2Parameters, Fq, Fq2, G1Affine, G2Affine,
 };
 
-pub const G1_SERIALISED_SIZE: usize = 48;
-pub const G2_SERIALISED_SIZE: usize = 96;
+pub const G1_SERIALIZED_SIZE: usize = 48;
+pub const G2_SERIALIZED_SIZE: usize = 96;
 
 pub struct EncodingFlags {
     pub is_compressed: bool,
@@ -42,7 +42,7 @@ impl EncodingFlags {
     }
 }
 
-pub(crate) fn deserialise_fq(bytes: [u8; 48]) -> Option<Fq> {
+pub(crate) fn deserialize_fq(bytes: [u8; 48]) -> Option<Fq> {
     let mut tmp = BigInteger384::new([0, 0, 0, 0, 0, 0]);
 
     // Note: The following unwraps are if the compiler cannot convert
@@ -58,7 +58,7 @@ pub(crate) fn deserialise_fq(bytes: [u8; 48]) -> Option<Fq> {
     Fq::from_bigint(tmp)
 }
 
-pub(crate) fn serialise_fq(field: Fq) -> [u8; 48] {
+pub(crate) fn serialize_fq(field: Fq) -> [u8; 48] {
     let mut result = [0u8; 48];
 
     let rep = field.into_bigint();
@@ -78,21 +78,21 @@ pub(crate) fn read_fq_with_offset(
     offset: usize,
     mask: bool,
 ) -> Result<Fq, ark_serialize::SerializationError> {
-    let mut tmp = [0; G1_SERIALISED_SIZE];
-    // read `G1_SERIALISED_SIZE` bytes
-    tmp.copy_from_slice(&bytes[offset * G1_SERIALISED_SIZE..G1_SERIALISED_SIZE * (offset + 1)]);
+    let mut tmp = [0; G1_SERIALIZED_SIZE];
+    // read `G1_SERIALIZED_SIZE` bytes
+    tmp.copy_from_slice(&bytes[offset * G1_SERIALIZED_SIZE..G1_SERIALIZED_SIZE * (offset + 1)]);
 
     if mask {
         // Mask away the flag bits
         tmp[0] &= 0b0001_1111;
     }
-    deserialise_fq(tmp).ok_or(SerializationError::InvalidData)
+    deserialize_fq(tmp).ok_or(SerializationError::InvalidData)
 }
 
 pub(crate) fn read_g1_compressed<R: ark_serialize::Read>(
     mut reader: R,
 ) -> Result<Affine<G1Parameters>, ark_serialize::SerializationError> {
-    let mut bytes = [0u8; G1_SERIALISED_SIZE];
+    let mut bytes = [0u8; G1_SERIALIZED_SIZE];
     reader
         .read_exact(&mut bytes)
         .ok()
@@ -122,7 +122,7 @@ pub(crate) fn read_g1_compressed<R: ark_serialize::Read>(
 pub(crate) fn read_g1_uncompressed<R: ark_serialize::Read>(
     mut reader: R,
 ) -> Result<Affine<G1Parameters>, ark_serialize::SerializationError> {
-    let mut bytes = [0u8; 2 * G1_SERIALISED_SIZE];
+    let mut bytes = [0u8; 2 * G1_SERIALIZED_SIZE];
     reader
         .read_exact(&mut bytes)
         .ok()
@@ -153,7 +153,7 @@ pub(crate) fn read_g1_uncompressed<R: ark_serialize::Read>(
 pub(crate) fn read_g2_compressed<R: ark_serialize::Read>(
     mut reader: R,
 ) -> Result<Affine<G2Parameters>, ark_serialize::SerializationError> {
-    let mut bytes = [0u8; G2_SERIALISED_SIZE];
+    let mut bytes = [0u8; G2_SERIALIZED_SIZE];
     reader
         .read_exact(&mut bytes)
         .ok()
@@ -186,7 +186,7 @@ pub(crate) fn read_g2_compressed<R: ark_serialize::Read>(
 pub(crate) fn read_g2_uncompressed<R: ark_serialize::Read>(
     mut reader: R,
 ) -> Result<Affine<G2Parameters>, ark_serialize::SerializationError> {
-    let mut bytes = [0u8; 2 * G2_SERIALISED_SIZE];
+    let mut bytes = [0u8; 2 * G2_SERIALIZED_SIZE];
     reader
         .read_exact(&mut bytes)
         .ok()

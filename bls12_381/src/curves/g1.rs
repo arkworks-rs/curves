@@ -11,7 +11,7 @@ use ark_serialize::{Compress, SerializationError};
 use ark_std::{ops::Neg, One};
 
 use crate::util::{
-    read_g1_compressed, read_g1_uncompressed, serialise_fq, EncodingFlags, G1_SERIALISED_SIZE,
+    read_g1_compressed, read_g1_uncompressed, serialize_fq, EncodingFlags, G1_SERIALIZED_SIZE,
 };
 
 pub type G1Affine = bls12::G1Affine<crate::Parameters>;
@@ -111,16 +111,16 @@ impl SWCurveConfig for Parameters {
         }
         // need to access the field struct `x` directly, otherwise we get None from xy()
         // method
-        let x_bytes = serialise_fq(p.x);
+        let x_bytes = serialize_fq(p.x);
         if encoding.is_compressed {
-            let mut bytes: [u8; G1_SERIALISED_SIZE] = x_bytes;
+            let mut bytes: [u8; G1_SERIALIZED_SIZE] = x_bytes;
 
             encoding.encode_flags(&mut bytes);
             writer.write_all(&bytes)?;
         } else {
-            let mut bytes = [0u8; 2 * G1_SERIALISED_SIZE];
-            bytes[0..G1_SERIALISED_SIZE].copy_from_slice(&x_bytes[..]);
-            bytes[G1_SERIALISED_SIZE..].copy_from_slice(&serialise_fq(p.y)[..]);
+            let mut bytes = [0u8; 2 * G1_SERIALIZED_SIZE];
+            bytes[0..G1_SERIALIZED_SIZE].copy_from_slice(&x_bytes[..]);
+            bytes[G1_SERIALIZED_SIZE..].copy_from_slice(&serialize_fq(p.y)[..]);
 
             encoding.encode_flags(&mut bytes);
             writer.write_all(&bytes)?;
@@ -131,9 +131,9 @@ impl SWCurveConfig for Parameters {
 
     fn serialized_size(compress: Compress) -> usize {
         if compress == Compress::Yes {
-            G1_SERIALISED_SIZE
+            G1_SERIALIZED_SIZE
         } else {
-            G1_SERIALISED_SIZE * 2
+            G1_SERIALIZED_SIZE * 2
         }
     }
 }
