@@ -148,38 +148,3 @@ pub fn endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
     res.x *= BETA;
     res
 }
-
-#[cfg(test)]
-mod tests {
-    use ark_ec::AffineRepr;
-    use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress};
-
-    use crate::G1Affine;
-    extern crate alloc;
-    use alloc::vec;
-
-    #[test]
-    fn g1_standard_serialization() {
-        let pairs = [
-            (G1Affine::generator(), "97f1d3a73197d7942695638c4fa9ac0fc3688c4f9774b905a14e3a3f171bac586c55e83ff97a1aeffb3af00adb22c6bb"),
-            (G1Affine::zero(), "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
-        ];
-
-        for (p, s) in pairs {
-            // serialize
-            let mut serialized = vec![0; p.serialized_size(Compress::Yes)];
-            p.serialize_with_mode(&mut serialized[..], Compress::Yes)
-                .unwrap();
-            assert_eq!(hex::encode(&serialized), s);
-
-            // deserialize, should get the same point
-            let p2 = G1Affine::deserialize_with_mode(
-                &serialized[..],
-                Compress::Yes,
-                ark_serialize::Validate::Yes,
-            )
-            .unwrap();
-            assert_eq!(p, p2);
-        }
-    }
-}
