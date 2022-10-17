@@ -10,10 +10,8 @@ use ark_ff::{Field, MontFp, PrimeField, Zero};
 use ark_serialize::{Compress, SerializationError};
 use ark_std::{ops::Neg, One};
 
-use super::util::{serialise_fq, EncodingFlags, G1_SERIALISED_SIZE};
-use crate::{
-    util::{read_g1_compressed, read_g1_uncompressed},
-    *,
+use crate::util::{
+    read_g1_compressed, read_g1_uncompressed, serialise_fq, EncodingFlags, G1_SERIALISED_SIZE,
 };
 
 pub type G1Affine = bls12::G1Affine<crate::Parameters>;
