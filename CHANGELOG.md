@@ -8,12 +8,15 @@
 ### Breaking changes
 
 - [\#104](https://github.com/arkworks-rs/curves/pull/104) Remove `QUADRATIC_NONRESIDUE` parameter from implementors of `Fp2Config`.
+- [\#129](https://github.com/arkworks-rs/curves/pull/129) Implement custom serialization for BLS12-381 curve to match zkcrypto/bls12_381.
  
 ### Features
 
 ### Improvements
 
 - [\#74](https://github.com/arkworks-rs/curves/pull/74) Use Scott's subgroup membership tests for `G1` and `G2` of BLS12-381.
+- [\#103](https://github.com/arkworks-rs/curves/pull/103) Faster cofactor clearing for BLS12-381.
+- [\#107](https://github.com/arkworks-rs/curves/pull/107/) Use 2-NAF of `ATE_LOOP_COUNT` to speed up the Miller loop in MNT curves.
 
 ### Bug fixes
 
