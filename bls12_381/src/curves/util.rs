@@ -1,8 +1,10 @@
-use ark_ec::bls12::{Bls12, Bls12Parameters, TwistType};
+use ark_ec::{short_weierstrass::Affine, AffineRepr};
 use ark_ff::{BigInteger384, PrimeField};
 use ark_serialize::SerializationError;
 
-use crate::{Fq, Fq12Config, Fq2Config, Fq6Config};
+use crate::{
+    g1::Parameters as G1Parameters, g2::Parameters as G2Parameters, Fq, Fq2, G1Affine, G2Affine,
+};
 
 pub const G1_SERIALISED_SIZE: usize = 48;
 pub const G2_SERIALISED_SIZE: usize = 96;
@@ -36,7 +38,6 @@ impl EncodingFlags {
 
         if self.is_compressed && !self.is_infinity && self.is_lexographically_largest {
             bytes[0] |= 1 << 5;
-            return;
         }
     }
 }
@@ -86,4 +87,134 @@ pub(crate) fn read_fq_with_offset(
         tmp[0] &= 0b0001_1111;
     }
     deserialise_fq(tmp).ok_or(SerializationError::InvalidData)
+}
+
+pub(crate) fn read_g1_compressed<R: ark_serialize::Read>(
+    mut reader: R,
+) -> Result<Affine<G1Parameters>, ark_serialize::SerializationError> {
+    let mut bytes = [0u8; G1_SERIALISED_SIZE];
+    reader
+        .read_exact(&mut bytes)
+        .ok()
+        .ok_or(SerializationError::InvalidData)?;
+
+    // Obtain the three flags from the start of the byte sequence
+    let flags = EncodingFlags::get_flags(&bytes[..]);
+
+    // we expect to be deserializing a compressed point
+    if !flags.is_compressed {
+        return Err(SerializationError::UnexpectedFlags);
+    }
+
+    if flags.is_infinity {
+        return Ok(G1Affine::zero());
+    }
+
+    // Attempt to obtain the x-coordinate
+    let x = read_fq_with_offset(&bytes, 0, true)?;
+
+    let p = G1Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
+        .ok_or(SerializationError::InvalidData)?;
+
+    Ok(p)
+}
+
+pub(crate) fn read_g1_uncompressed<R: ark_serialize::Read>(
+    mut reader: R,
+) -> Result<Affine<G1Parameters>, ark_serialize::SerializationError> {
+    let mut bytes = [0u8; 2 * G1_SERIALISED_SIZE];
+    reader
+        .read_exact(&mut bytes)
+        .ok()
+        .ok_or(SerializationError::InvalidData)?;
+
+    // Obtain the three flags from the start of the byte sequence
+    let flags = EncodingFlags::get_flags(&bytes[..]);
+
+    // we expect to be deserializing an uncompressed point
+    if flags.is_compressed {
+        return Err(SerializationError::UnexpectedFlags);
+    }
+
+    if flags.is_infinity {
+        return Ok(G1Affine::zero());
+    }
+
+    // Attempt to obtain the x-coordinate
+    let x = read_fq_with_offset(&bytes, 0, true)?;
+    // Attempt to obtain the y-coordinate
+    let y = read_fq_with_offset(&bytes, 1, false)?;
+
+    let p = G1Affine::new_unchecked(x, y);
+
+    Ok(p)
+}
+
+pub(crate) fn read_g2_compressed<R: ark_serialize::Read>(
+    mut reader: R,
+) -> Result<Affine<G2Parameters>, ark_serialize::SerializationError> {
+    let mut bytes = [0u8; G2_SERIALISED_SIZE];
+    reader
+        .read_exact(&mut bytes)
+        .ok()
+        .ok_or(SerializationError::InvalidData)?;
+
+    // Obtain the three flags from the start of the byte sequence
+    let flags = EncodingFlags::get_flags(&bytes);
+
+    // we expect to be deserializing a compressed point
+    if !flags.is_compressed {
+        return Err(SerializationError::UnexpectedFlags);
+    }
+
+    if flags.is_infinity {
+        return Ok(G2Affine::zero());
+    }
+
+    // Attempt to obtain the x-coordinate
+    let xc1 = read_fq_with_offset(&bytes, 0, true)?;
+    let xc0 = read_fq_with_offset(&bytes, 1, false)?;
+
+    let x = Fq2::new(xc0, xc1);
+
+    let p = G2Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
+        .ok_or(SerializationError::InvalidData)?;
+
+    Ok(p)
+}
+
+pub(crate) fn read_g2_uncompressed<R: ark_serialize::Read>(
+    mut reader: R,
+) -> Result<Affine<G2Parameters>, ark_serialize::SerializationError> {
+    let mut bytes = [0u8; 2 * G2_SERIALISED_SIZE];
+    reader
+        .read_exact(&mut bytes)
+        .ok()
+        .ok_or(SerializationError::InvalidData)?;
+
+    // Obtain the three flags from the start of the byte sequence
+    let flags = EncodingFlags::get_flags(&bytes);
+
+    // we expect to be deserializing an uncompressed point
+    if flags.is_compressed {
+        return Err(SerializationError::UnexpectedFlags);
+    }
+
+    if flags.is_infinity {
+        return Ok(G2Affine::zero());
+    }
+
+    // Attempt to obtain the x-coordinate
+    let xc1 = read_fq_with_offset(&bytes, 0, true)?;
+    let xc0 = read_fq_with_offset(&bytes, 1, false)?;
+    let x = Fq2::new(xc0, xc1);
+
+    // Attempt to obtain the y-coordinate
+    let yc1 = read_fq_with_offset(&bytes, 2, false)?;
+    let yc0 = read_fq_with_offset(&bytes, 3, false)?;
+    let y = Fq2::new(yc0, yc1);
+
+    let p = G2Affine::new_unchecked(x, y);
+
+    Ok(p)
 }

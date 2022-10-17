@@ -1,6 +1,4 @@
 use ark_ec::bls12::{Bls12, Bls12Parameters, TwistType};
-use ark_ff::{BigInteger384, PrimeField};
-use ark_serialize::SerializationError;
 
 use crate::{Fq, Fq12Config, Fq2Config, Fq6Config};
 
