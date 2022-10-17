@@ -165,7 +165,7 @@ fn read_compressed<R: ark_serialize::Read>(
     }
 
     if flags.is_infinity {
-        return Ok(G1Affine::default());
+        return Ok(G1Affine::zero());
     }
 
     // Attempt to obtain the x-coordinate
@@ -195,7 +195,7 @@ fn read_uncompressed<R: ark_serialize::Read>(
     }
 
     if flags.is_infinity {
-        return Ok(G1Affine::default());
+        return Ok(G1Affine::zero());
     }
 
     // Attempt to obtain the x-coordinate

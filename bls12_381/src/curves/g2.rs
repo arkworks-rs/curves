@@ -103,7 +103,7 @@ impl SWCurveConfig for Parameters {
         };
         let mut p = *item;
         if encoding.is_infinity {
-            p = G2Affine::default();
+            p = G2Affine::zero();
         }
 
         let mut x_bytes = [0u8; G2_SERIALISED_SIZE];
@@ -226,7 +226,7 @@ fn read_compressed<R: ark_serialize::Read>(
     }
 
     if flags.is_infinity {
-        return Ok(G2Affine::default());
+        return Ok(G2Affine::zero());
     }
 
     // Attempt to obtain the x-coordinate
@@ -259,7 +259,7 @@ fn read_uncompressed<R: ark_serialize::Read>(
     }
 
     if flags.is_infinity {
-        return Ok(G2Affine::default());
+        return Ok(G2Affine::zero());
     }
 
     // Attempt to obtain the x-coordinate
