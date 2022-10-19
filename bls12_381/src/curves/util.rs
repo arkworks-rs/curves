@@ -125,8 +125,7 @@ pub(crate) fn read_g1_uncompressed<R: ark_serialize::Read>(
     let mut bytes = [0u8; 2 * G1_SERIALIZED_SIZE];
     reader
         .read_exact(&mut bytes)
-        .ok()
-        .ok_or(SerializationError::InvalidData)?;
+        .map_err(|_| SerializationError::InvalidData)?;
 
     // Obtain the three flags from the start of the byte sequence
     let flags = EncodingFlags::get_flags(&bytes[..]);
@@ -156,8 +155,7 @@ pub(crate) fn read_g2_compressed<R: ark_serialize::Read>(
     let mut bytes = [0u8; G2_SERIALIZED_SIZE];
     reader
         .read_exact(&mut bytes)
-        .ok()
-        .ok_or(SerializationError::InvalidData)?;
+        .map_err(|_| SerializationError::InvalidData)?;
 
     // Obtain the three flags from the start of the byte sequence
     let flags = EncodingFlags::get_flags(&bytes);
@@ -189,8 +187,7 @@ pub(crate) fn read_g2_uncompressed<R: ark_serialize::Read>(
     let mut bytes = [0u8; 2 * G2_SERIALIZED_SIZE];
     reader
         .read_exact(&mut bytes)
-        .ok()
-        .ok_or(SerializationError::InvalidData)?;
+        .map_err(|_| SerializationError::InvalidData)?;
 
     // Obtain the three flags from the start of the byte sequence
     let flags = EncodingFlags::get_flags(&bytes);
