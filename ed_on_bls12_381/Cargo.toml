@@ -23,6 +23,7 @@ ark-bls12-381 = { version = "^0.3.0", path = "../bls12_381", default-features = 
 ark-relations = { version = "^0.3.0", default-features = false }
 ark-serialize = { version = "^0.3.0", default-features = false }
 ark-algebra-test-templates = { version = "^0.3.0", default-features = false }
+ark-algebra-bench-templates = { version = "^0.3.0", default-features = false }
 ark-curve-constraint-tests = { path = "../curve-constraint-tests", default-features = false }
 
 [features]

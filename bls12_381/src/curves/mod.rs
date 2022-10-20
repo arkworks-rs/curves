@@ -4,6 +4,7 @@ use crate::{Fq, Fq12Config, Fq2Config, Fq6Config};
 
 pub mod g1;
 pub mod g2;
+pub(crate) mod util;
 
 #[cfg(test)]
 mod tests;

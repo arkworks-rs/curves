@@ -4,13 +4,15 @@ use ark_ec::{
     AffineRepr, CurveGroup,
 };
 use ark_ff::MontFp;
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
+use ark_std::vec::Vec;
 
 use crate::{Fq, Fr};
 
 pub type G1Affine = Affine<Parameters>;
 pub type G1Projective = Projective<Parameters>;
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, CanonicalSerialize, CanonicalDeserialize)]
 pub struct G1Prepared(pub G1Affine);
 
 impl From<G1Affine> for G1Prepared {
@@ -39,7 +41,7 @@ impl<'a> From<&'a G1Projective> for G1Prepared {
 
 impl G1Prepared {
     pub fn is_zero(&self) -> bool {
-        self.0.is_identity()
+        self.0.is_zero()
     }
 }
 

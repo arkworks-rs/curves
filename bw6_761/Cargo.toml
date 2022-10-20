@@ -21,7 +21,13 @@ ark-bls12-377 = { version="^0.3.0", path = "../bls12_377", default-features = fa
 [dev-dependencies]
 ark-serialize = { version="^0.3.0", default-features = false }
 ark-algebra-test-templates = { version="^0.3.0", default-features = false }
+ark-algebra-bench-templates = { version="^0.3.0", default-features = false }
 
 [features]
 default = []
 std = [ "ark-std/std", "ark-ff/std", "ark-ec/std", "ark-bls12-377/std" ]
+
+[[bench]]
+name = "bw6_761"
+path = "benches/bw6_761.rs"
+harness = false

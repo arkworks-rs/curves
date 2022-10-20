@@ -225,7 +225,7 @@ pub mod fields {
 pub mod curves {
     use ark_ec::{
         short_weierstrass::Projective as SWProjective, twisted_edwards::Projective as TEProjective,
-        ProjectiveCurve,
+        CurveGroup, Group,
     };
     use ark_ff::{BitIteratorLE, Field, One, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
@@ -235,7 +235,7 @@ pub mod curves {
 
     pub fn group_test<C, ConstraintF, GG>() -> Result<(), SynthesisError>
     where
-        C: ProjectiveCurve,
+        C: CurveGroup,
         ConstraintF: Field,
         GG: CurveVar<C, ConstraintF>,
         for<'a> &'a GG: GroupOpsBounds<'a, C, GG>,
@@ -512,18 +512,21 @@ pub mod curves {
 }
 
 pub mod pairing {
-    use ark_ec::{AffineCurve, PairingEngine, ProjectiveCurve};
+    use ark_ec::{
+        pairing::{Pairing, PairingOutput},
+        AffineRepr, CurveGroup,
+    };
     use ark_ff::{BitIteratorLE, Field, PrimeField};
     use ark_r1cs_std::prelude::*;
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};
     use ark_std::{test_rng, vec::Vec, UniformRand};
 
     #[allow(dead_code)]
-    pub fn bilinearity_test<E: PairingEngine, P: PairingVar<E>>() -> Result<(), SynthesisError>
+    pub fn bilinearity_test<E: Pairing, P: PairingVar<E>>() -> Result<(), SynthesisError>
     where
-        for<'a> &'a P::G1Var: GroupOpsBounds<'a, E::G1Projective, P::G1Var>,
-        for<'a> &'a P::G2Var: GroupOpsBounds<'a, E::G2Projective, P::G2Var>,
-        for<'a> &'a P::GTVar: FieldOpsBounds<'a, E::Fqk, P::GTVar>,
+        for<'a> &'a P::G1Var: GroupOpsBounds<'a, E::G1, P::G1Var>,
+        for<'a> &'a P::G2Var: GroupOpsBounds<'a, E::G2, P::G2Var>,
+        for<'a> &'a P::GTVar: FieldOpsBounds<'a, E::TargetField, P::GTVar>,
     {
         let modes = [
             AllocationMode::Input,
@@ -531,12 +534,12 @@ pub mod pairing {
             AllocationMode::Constant,
         ];
         for &mode in &modes {
-            let cs = ConstraintSystem::<E::Fq>::new_ref();
+            let cs = ConstraintSystem::<<E::G1 as CurveGroup>::BaseField>::new_ref();
 
             let mut rng = test_rng();
-            let a = E::G1Projective::rand(&mut rng);
-            let b = E::G2Projective::rand(&mut rng);
-            let s = E::Fr::rand(&mut rng);
+            let a = E::G1::rand(&mut rng);
+            let b = E::G2::rand(&mut rng);
+            let s = E::ScalarField::rand(&mut rng);
 
             let mut sa = a;
             sa *= s;
@@ -578,7 +581,7 @@ pub mod pairing {
 
                 let mut ans_g = P::pairing(a_prep_g, b_prep_g)?;
                 let mut ans_n = E::pairing(a, b);
-                ans_n = ans_n.pow(s.into_bigint());
+                ans_n = PairingOutput(ans_n.0.pow(s.into_bigint()));
                 ans_g = ans_g.pow_le(&s_iter)?;
 
                 (ans_g, ans_n)
@@ -587,12 +590,12 @@ pub mod pairing {
             ans1_g.enforce_equal(&ans2_g)?;
             ans2_g.enforce_equal(&ans3_g)?;
 
-            assert_eq!(ans1_g.value()?, ans1_n, "Failed native test 1");
-            assert_eq!(ans2_g.value()?, ans2_n, "Failed native test 2");
-            assert_eq!(ans3_g.value()?, ans3_n, "Failed native test 3");
+            assert_eq!(ans1_g.value()?, ans1_n.0, "Failed native test 1");
+            assert_eq!(ans2_g.value()?, ans2_n.0, "Failed native test 2");
+            assert_eq!(ans3_g.value()?, ans3_n.0, "Failed native test 3");
 
-            assert_eq!(ans1_n, ans2_n, "Failed ans1_native == ans2_native");
-            assert_eq!(ans2_n, ans3_n, "Failed ans2_native == ans3_native");
+            assert_eq!(ans1_n.0, ans2_n.0, "Failed ans1_native == ans2_native");
+            assert_eq!(ans2_n.0, ans3_n.0, "Failed ans2_native == ans3_native");
             assert_eq!(ans1_g.value()?, ans3_g.value()?, "Failed ans1 == ans3");
             assert_eq!(ans1_g.value()?, ans2_g.value()?, "Failed ans1 == ans2");
             assert_eq!(ans2_g.value()?, ans3_g.value()?, "Failed ans2 == ans3");
