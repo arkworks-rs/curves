@@ -11,9 +11,9 @@ test_field!(fq6; Fq6);
 #[test]
 fn test_fq3_more() {
     let mut rng = test_rng();
-    let a: Fq3 = rng.gen();
+    let mut a: Fq3 = rng.gen();
     assert_eq!(
         a * Fq6Config::NONRESIDUE,
-        <Fp6ConfigWrapper<Fq6Config>>::mul_base_field_by_nonresidue(&a)
+        *<Fp6ConfigWrapper<Fq6Config>>::mul_base_field_by_nonresidue_in_place(&mut a)
     );
 }

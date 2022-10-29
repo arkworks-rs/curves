@@ -22,7 +22,13 @@ ark-serialize = { version = "^0.3.0", default-features = false }
 
 [dev-dependencies]
 ark-algebra-test-templates = { version = "^0.3.0", default-features = false }
+ark-algebra-bench-templates = { version="^0.3.0", default-features = false }
 
 [features]
 default = []
 std = [ "ark-std/std", "ark-ff/std", "ark-ec/std", "ark-bls12-377/std" ]
+
+[[bench]]
+name = "cp6_782"
+path = "benches/cp6_782.rs"
+harness = false
