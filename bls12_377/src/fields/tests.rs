@@ -136,7 +136,7 @@ fn test_fq2_legendre() {
     // i^2 = -1
     let mut m1 = -Fq2::one();
     assert_eq!(QuadraticResidue, m1.legendre());
-    m1 = Fq6Config::mul_fp2_by_nonresidue(&m1);
+    Fq6Config::mul_fp2_by_nonresidue_in_place(&mut m1);
     assert_eq!(QuadraticNonResidue, m1.legendre());
 }
 

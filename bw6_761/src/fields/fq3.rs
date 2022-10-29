@@ -82,9 +82,7 @@ impl Fp3Config for Fq3Config {
     ];
 
     #[inline(always)]
-    fn mul_fp_by_nonresidue(fe: &Self::Fp) -> Self::Fp {
-        let original = -(*fe);
-        let double = original + &original;
-        double + &double
+    fn mul_fp_by_nonresidue_in_place(fe: &mut Self::Fp) -> &mut Self::Fp {
+        fe.double_in_place().double_in_place().neg_in_place()
     }
 }

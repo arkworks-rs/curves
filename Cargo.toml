@@ -1,7 +1,6 @@
 [workspace]
 
 members = [
-    "curve-benches",
     "curve-constraint-tests",
 
     "bls12_377",
@@ -33,6 +32,7 @@ members = [
 
     "secp256k1",
 ]
+resolver = "2"
 
 [profile.release]
 opt-level = 3

@@ -90,12 +90,16 @@ impl Fp6Config for Fq6Config {
     ];
 
     #[inline(always)]
-    fn mul_fp2_by_nonresidue(fe: &Fq2) -> Fq2 {
+    fn mul_fp2_by_nonresidue_in_place(fe: &mut Fq2) -> &mut Fq2 {
         // (c0+u*c1)*(9+u) = (9*c0-c1)+u*(9*c1+c0)
         let mut f = *fe;
         f.double_in_place().double_in_place().double_in_place();
-        let c0 = f.c0 + fe.c0 + Fq2Config::mul_fp_by_nonresidue(&fe.c1);
+        let mut c0 = fe.c1;
+        Fq2Config::mul_fp_by_nonresidue_in_place(&mut c0);
+        c0 += &f.c0;
+        c0 += &fe.c0;
         let c1 = f.c1 + fe.c1 + fe.c0;
-        Fq2::new(c0, c1)
+        *fe = Fq2::new(c0, c1);
+        fe
     }
 }

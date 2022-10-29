@@ -103,7 +103,6 @@ jobs:
         exclude:
           - dir: scripts/
           - dir: curve-constraint-tests/
-          - dir: curve-benches/
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -159,10 +158,10 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
             command: check
-            args: --examples --workspace --exclude ark-curve-constraint-tests --exclude ark-curve-benches --target aarch64-unknown-none
+            args: --examples --workspace --exclude ark-curve-constraint-tests --target aarch64-unknown-none
 
       - name: build
         uses: actions-rs/cargo@v1
         with:
             command: build
-            args: --workspace --exclude ark-curve-constraint-tests --exclude ark-curve-benches --target aarch64-unknown-none
+            args: --workspace --exclude ark-curve-constraint-tests --target aarch64-unknown-none
