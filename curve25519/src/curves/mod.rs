@@ -29,6 +29,7 @@ impl CurveConfig for Curve25519Config {
 }
 
 // We want to emphasize that this twisted Edwards curve is not ed25519.
+// Ed25519 has COEFF_A = -1 and COEFF_D = -121665 / 121666.
 impl TECurveConfig for Curve25519Config {
     /// COEFF_A = 486664
     const COEFF_A: Fq = MontFp!("486664");
