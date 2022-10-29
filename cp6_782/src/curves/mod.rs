@@ -3,9 +3,7 @@ use ark_ec::{
     pairing::{MillerLoopOutput, Pairing, PairingOutput},
 };
 use ark_ff::{
-    biginteger::BigInteger832,
-    fields::{BitIteratorBE, Field},
-    BigInt, CyclotomicMultSubgroup, One,
+    biginteger::BigInteger832, BigInt, BitIteratorBE, CyclotomicMultSubgroup, Field, One,
 };
 use itertools::Itertools;
 
@@ -27,6 +25,7 @@ pub struct CP6_782;
 
 impl Pairing for CP6_782 {
     type ScalarField = Fr;
+    type BaseField = Fq;
     type G1 = G1Projective;
     type G1Affine = G1Affine;
     type G1Prepared = G1Prepared;
