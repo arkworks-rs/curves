@@ -68,10 +68,12 @@ impl Fp6Config for Fq6Config {
     ];
 
     #[inline(always)]
-    fn mul_fp2_by_nonresidue(fe: &Fq2) -> Fq2 {
+    fn mul_fp2_by_nonresidue_in_place(fe: &mut Fq2) -> &mut Fq2 {
         // Karatsuba multiplication with constant other = u.
-        let c0 = Fq2Config::mul_fp_by_nonresidue(&fe.c1);
-        let c1 = fe.c0;
-        Fq2::new(c0, c1)
+        let old_c0 = fe.c0;
+        fe.c0 = fe.c1;
+        Fq2Config::mul_fp_by_nonresidue_in_place(&mut fe.c0);
+        fe.c1 = old_c0;
+        fe
     }
 }

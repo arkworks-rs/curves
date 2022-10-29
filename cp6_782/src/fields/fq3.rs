@@ -77,11 +77,12 @@ impl Fp3Config for Fq3Config {
     ];
 
     #[inline(always)]
-    fn mul_fp_by_nonresidue(fe: &Self::Fp) -> Self::Fp {
+    fn mul_fp_by_nonresidue_in_place(fe: &mut Self::Fp) -> &mut Self::Fp {
         let original = *fe;
-        let mut four_fe = fe.double();
-        four_fe.double_in_place();
-        let eight_fe = four_fe.double();
-        eight_fe + &four_fe + &original
+        fe.double_in_place();
+        *fe += original;
+        fe.double_in_place().double_in_place();
+        *fe += original;
+        fe
     }
 }

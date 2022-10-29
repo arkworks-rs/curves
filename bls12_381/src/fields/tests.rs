@@ -1718,7 +1718,7 @@ fn test_fq2_legendre() {
     // i^2 = -1
     let mut m1 = -Fq2::one();
     assert_eq!(QuadraticResidue, m1.legendre());
-    m1 = Fq6Config::mul_fp2_by_nonresidue(&m1);
+    Fq6Config::mul_fp2_by_nonresidue_in_place(&mut m1);
     assert_eq!(QuadraticNonResidue, m1.legendre());
 }
 
@@ -1731,7 +1731,7 @@ fn test_fq2_mul_nonresidue() {
     for _ in 0..1000 {
         let mut a = Fq2::rand(&mut rng);
         let mut b = a;
-        a = Fq6Config::mul_fp2_by_nonresidue(&a);
+        Fq6Config::mul_fp2_by_nonresidue_in_place(&mut a);
         b.mul_assign(&nqr);
 
         assert_eq!(a, b);
@@ -1747,7 +1747,7 @@ fn test_fq6_mul_nonresidue() {
     for _ in 0..1000 {
         let mut a = Fq6::rand(&mut rng);
         let mut b = a;
-        a = Fq12Config::mul_fp6_by_nonresidue(&a);
+        Fq12Config::mul_fp6_by_nonresidue_in_place(&mut a);
         b.mul_assign(&nqr);
 
         assert_eq!(a, b);
