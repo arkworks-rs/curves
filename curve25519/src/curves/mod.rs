@@ -8,14 +8,14 @@ use ark_ff::MontFp;
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = Affine<EdwardsParameters>;
-pub type EdwardsProjective = Projective<EdwardsParameters>;
-pub type NonZeroMontgomeryAffine = MontgomeryAffine<EdwardsParameters>;
+pub type EdwardsAffine = Affine<Curve25519Config>;
+pub type EdwardsProjective = Projective<Curve25519Config>;
+pub type NonZeroMontgomeryAffine = MontgomeryAffine<Curve25519Config>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct EdwardsParameters;
+pub struct Curve25519Config;
 
-impl CurveConfig for EdwardsParameters {
+impl CurveConfig for Curve25519Config {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -29,7 +29,7 @@ impl CurveConfig for EdwardsParameters {
 }
 
 // We want to emphasize that this twisted Edwards curve is not ed25519.
-impl TECurveConfig for EdwardsParameters {
+impl TECurveConfig for Curve25519Config {
     /// COEFF_A = 486664
     const COEFF_A: Fq = MontFp!("486664");
 
@@ -39,17 +39,17 @@ impl TECurveConfig for EdwardsParameters {
     /// Generated randomly
     const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
-    type MontCurveConfig = EdwardsParameters;
+    type MontCurveConfig = Curve25519Config;
 }
 
-impl MontCurveConfig for EdwardsParameters {
+impl MontCurveConfig for Curve25519Config {
     /// COEFF_A = 486662
     const COEFF_A: Fq = MontFp!("486662");
 
     /// COEFF_B = 1
     const COEFF_B: Fq = MontFp!("1");
 
-    type TECurveConfig = EdwardsParameters;
+    type TECurveConfig = Curve25519Config;
 }
 
 /// GENERATOR_X =
