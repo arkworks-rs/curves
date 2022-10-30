@@ -29,6 +29,8 @@ members = [
 
     "pallas",
     "vesta",
+
+    "ed25519",
 ]
 resolver = "2"
 
