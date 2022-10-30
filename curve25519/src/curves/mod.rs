@@ -37,7 +37,7 @@ impl TECurveConfig for Curve25519Config {
     /// COEFF_D = 486660
     const COEFF_D: Fq = MontFp!("486660");
 
-    /// Standard generators from https://neuromancer.sk/std/other/Curve25519.
+    /// Standard generators from <https://neuromancer.sk/std/other/Curve25519>.
     /// The Montgomery form is
     ///     x = 0x09,
     ///     y = 0x20ae19a1b8a086b4e01edd2c7748d14c923d4d7e6d7c61b229e9c5a27eced3d9
