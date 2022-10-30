@@ -35,7 +35,7 @@ impl TECurveConfig for EdwardsParameters {
     const COEFF_D: Fq =
         MontFp!("37095705934669439343138083508754565189542113879843219016388785533085940283555");
 
-    /// Standard generators from https://neuromancer.sk/std/other/Ed25519.
+    /// Standard generators from <https://neuromancer.sk/std/other/Ed25519>.
     const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
     type MontCurveConfig = EdwardsParameters;
