@@ -37,7 +37,10 @@ impl TECurveConfig for Curve25519Config {
     /// COEFF_D = 486660
     const COEFF_D: Fq = MontFp!("486660");
 
-    /// Generated randomly
+    /// Standard generators from https://neuromancer.sk/std/other/Curve25519.
+    /// The Montgomery form is (0x09, 0x20ae19a1b8a086b4e01edd2c7748d14c923d4d7e6d7c61b229e9c5a27eced3d9).
+    /// The twisted Edwards form is 
+(38213832894368730265794714087330135568483813637251082400757400312561599933396, 46316835694926478169428394003475163141307993866256225615783033603165251855960)
     const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
     type MontCurveConfig = Curve25519Config;
