@@ -638,7 +638,9 @@ pub mod pairing {
             let prepared_test_g2_gadget_bytes = prepared_test_g2_gadget.to_bytes().unwrap();
             let allocated_test_g2_gadget_bytes = allocated_test_g2_gadget.to_bytes().unwrap();
 
-            prepared_test_g2_gadget_bytes.enforce_equal(&allocated_test_g2_gadget_bytes).unwrap();
+            prepared_test_g2_gadget_bytes
+                .enforce_equal(&allocated_test_g2_gadget_bytes)
+                .unwrap();
 
             assert!(cs.is_satisfied().unwrap(), "cs is not satisfied");
         }
