@@ -12,6 +12,9 @@
  
 ### Features
 
+- [\#121](https://github.com/arkworks-rs/curves/pull/121) Add the ed25519 curve.
+- [\#124](https://github.com/arkworks-rs/curves/pull/124) Add the curve25519 curve.
+
 ### Improvements
 
 - [\#70](https://github.com/arkworks-rs/curves/pull/70) Add prepared G2 pairing consistency test. 
