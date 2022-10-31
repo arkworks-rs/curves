@@ -103,6 +103,7 @@ jobs:
           - dir: scripts/
           - dir: curve-constraint-tests/
           - dir: mnt4_753/
+          - dir: mnt6_753/
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -112,7 +113,7 @@ jobs:
           cargo test --all-features
 
   test-mnt4-753:
-    name: Test (mnt4-753/)
+    name: Test (mnt4_753/)
     runs-on: macos-latest
     needs: [directories] # Waits for the directory listing job
     steps:
@@ -121,6 +122,18 @@ jobs:
       - name: Run tests
         run: |
           cd mnt4_753/
+          cargo test --all-features
+
+  test-mnt6-753:
+    name: Test (mnt6_753/)
+    runs-on: macos-latest
+    needs: [directories] # Waits for the directory listing job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run tests
+        run: |
+          cd mnt6_753/
           cargo test --all-features
 
   docs:
