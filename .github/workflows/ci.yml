@@ -112,7 +112,7 @@ jobs:
           cargo test --all-features
 
   test-mnt6-753:
-    name: Test (mnt6-753)
+    name: Test (mnt6-753/)
     runs-on: macos-latest
     steps:
       - name: Checkout
