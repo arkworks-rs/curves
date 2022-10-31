@@ -7,5 +7,7 @@ pub type PairingVar = ark_r1cs_std::pairing::mnt4::PairingVar<Parameters>;
 #[test]
 fn test() {
     use crate::MNT4_753;
-    ark_curve_constraint_tests::pairing::bilinearity_test::<MNT4_753, PairingVar>().unwrap()
+    ark_curve_constraint_tests::pairing::bilinearity_test::<MNT4_753, PairingVar>().unwrap();
+    ark_curve_constraint_tests::pairing::g2_prepare_consistency_test::<MNT4_753, PairingVar>()
+        .unwrap();
 }
