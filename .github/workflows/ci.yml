@@ -92,7 +92,7 @@ jobs:
         # Define step output named dir base on ls command transformed to JSON thanks to jq
   test:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     needs: [directories] # Depends on previous job
     strategy:
       matrix:
