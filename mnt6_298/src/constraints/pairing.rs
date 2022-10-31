@@ -1,4 +1,3 @@
-use ark_mnt4_298::MNT4_298;
 use crate::Parameters;
 
 /// Specifies the constraints for computing a pairing in the MNT6-298 bilinear
