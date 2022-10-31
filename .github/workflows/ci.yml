@@ -114,6 +114,7 @@ jobs:
   test-mnt6-753:
     name: Test (mnt6-753/)
     runs-on: macos-latest
+    needs: [directories] # Waits for the directory listing job
     steps:
       - name: Checkout
         uses: actions/checkout@v3
