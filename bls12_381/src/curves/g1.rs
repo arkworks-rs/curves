@@ -1,4 +1,3 @@
-use crate::*;
 use ark_ec::{
     bls12,
     bls12::Bls12Parameters,
@@ -179,6 +178,7 @@ pub fn endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
 mod test {
 
     use super::*;
+    use crate::g1;
     use ark_std::{rand::Rng, UniformRand};
 
     fn sample_unchecked() -> Affine<g1::Parameters> {
