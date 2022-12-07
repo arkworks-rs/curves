@@ -14,7 +14,7 @@ jobs:
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
     - name: Install Rust
       uses: actions-rs/toolchain@v1
       with:
@@ -41,7 +41,7 @@ jobs:
           - nightly
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Rust (${{ matrix.rust }})
         uses: actions-rs/toolchain@v1
@@ -78,7 +78,6 @@ jobs:
             args: --all-features --examples --workspace --benches
         if: matrix.rust == 'nightly'
 
-      
 
   directories: # Job that list subdirectories
     name: List directories for parallelizing tests
@@ -86,7 +85,7 @@ jobs:
     outputs:
       dir: ${{ steps.set-dirs.outputs.dir }} # generate output name dir by using inner step output
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - id: set-dirs # Give it an id to handle to get step outputs in the outputs key above
         run: echo "::set-output name=dir::$(ls -d */ | jq -R -s -c 'split("\n")[:-1]')"
         # Define step output named dir base on ls command transformed to JSON thanks to jq
@@ -103,12 +102,38 @@ jobs:
         exclude:
           - dir: scripts/
           - dir: curve-constraint-tests/
+          - dir: mnt4_753/
+          - dir: mnt6_753/
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run tests
         run: |
           cd ${{matrix.dir}}
+          cargo test --all-features
+
+  test-mnt4-753:
+    name: Test (mnt4_753/)
+    runs-on: macos-latest
+    needs: [directories] # Waits for the directory listing job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run tests
+        run: |
+          cd mnt4_753/
+          cargo test --all-features
+
+  test-mnt6-753:
+    name: Test (mnt6_753/)
+    runs-on: macos-latest
+    needs: [directories] # Waits for the directory listing job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run tests
+        run: |
+          cd mnt6_753/
           cargo test --all-features
 
   docs:
@@ -117,7 +142,7 @@ jobs:
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
     - name: Install Rust
       uses: actions-rs/toolchain@v1
       with:
@@ -137,7 +162,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Rust (${{ matrix.rust }})
         uses: actions-rs/toolchain@v1
