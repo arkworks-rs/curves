@@ -11,7 +11,6 @@
 //! This library implements the secp256k1 curve.
 //!
 //! Curve information:
-//! Vesta:
 //! * Base field: q =
 //!   115792089237316195423570985008687907853269984665640564039457584007908834671663
 //! * Scalar field: r =
