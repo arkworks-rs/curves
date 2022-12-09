@@ -321,8 +321,10 @@ pub mod curves {
                 *limb = u64::MAX;
             }
 
-            let modulus_last_limb_bits = <C::ScalarField as PrimeField>::MODULUS_BIT_SIZE % 64;
-            *max.last_mut().unwrap() >>= 64 - modulus_last_limb_bits;
+            let modulus_num_bits_mod_64 = <C::ScalarField as PrimeField>::MODULUS_BIT_SIZE % 64;
+            if modulus_num_bits_mod_64 != 0 {
+                *max.last_mut().unwrap() >>= 64 - modulus_num_bits_mod_64;
+            }
             let scalars = [
                 C::ScalarField::rand(&mut rng)
                     .into_bigint()
