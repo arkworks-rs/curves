@@ -521,7 +521,7 @@ pub mod curves {
 pub mod pairing {
     use ark_ec::{
         pairing::{Pairing, PairingOutput},
-        CurveGroup,
+        AffineRepr, CurveGroup,
     };
     use ark_ff::{BitIteratorLE, Field, PrimeField};
     use ark_r1cs_std::prelude::*;
@@ -614,6 +614,40 @@ pub mod pairing {
                     cs.which_is_unsatisfied().unwrap()
                 );
             }
+
+            assert!(cs.is_satisfied().unwrap(), "cs is not satisfied");
+        }
+        Ok(())
+    }
+
+    #[allow(dead_code)]
+    pub fn g2_prepare_consistency_test<E: Pairing, P: PairingVar<E>>() -> Result<(), SynthesisError>
+    {
+        let test_g2_elem = E::G2Affine::generator();
+        let test_g2_prepared = E::G2Prepared::from(test_g2_elem.clone());
+
+        let modes = [
+            AllocationMode::Input,
+            AllocationMode::Witness,
+            AllocationMode::Constant,
+        ];
+        for &mode in &modes {
+            let cs = ConstraintSystem::new_ref();
+
+            let test_g2_gadget =
+                P::G2Var::new_witness(cs.clone(), || Ok(test_g2_elem.clone())).unwrap();
+
+            let prepared_test_g2_gadget = P::prepare_g2(&test_g2_gadget).unwrap();
+            let allocated_test_g2_gadget =
+                P::G2PreparedVar::new_variable(cs.clone(), || Ok(test_g2_prepared.clone()), mode)
+                    .unwrap();
+
+            let prepared_test_g2_gadget_bytes = prepared_test_g2_gadget.to_bytes().unwrap();
+            let allocated_test_g2_gadget_bytes = allocated_test_g2_gadget.to_bytes().unwrap();
+
+            prepared_test_g2_gadget_bytes
+                .enforce_equal(&allocated_test_g2_gadget_bytes)
+                .unwrap();
 
             assert!(cs.is_satisfied().unwrap(), "cs is not satisfied");
         }

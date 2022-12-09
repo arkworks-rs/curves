@@ -12,13 +12,17 @@
  
 ### Features
 
+- [\#121](https://github.com/arkworks-rs/curves/pull/121) Add the ed25519 curve.
 - [\#122](https://github.com/arkworks-rs/curves/pull/122) Add the secp256k1 curve.
+- [\#124](https://github.com/arkworks-rs/curves/pull/124) Add the curve25519 curve.
 
 ### Improvements
 
+- [\#70](https://github.com/arkworks-rs/curves/pull/70) Add prepared G2 pairing consistency test. 
 - [\#74](https://github.com/arkworks-rs/curves/pull/74) Use Scott's subgroup membership tests for `G1` and `G2` of BLS12-381.
 - [\#103](https://github.com/arkworks-rs/curves/pull/103) Faster cofactor clearing for BLS12-381.
 - [\#107](https://github.com/arkworks-rs/curves/pull/107/) Use 2-NAF of `ATE_LOOP_COUNT` to speed up the Miller loop in MNT curves.
+
 
 ### Bug fixes
 
