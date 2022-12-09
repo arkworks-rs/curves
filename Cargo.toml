@@ -30,6 +30,9 @@ members = [
     "pallas",
     "vesta",
 
+    "secp256k1",
+    "secq256k1",
+    
     "curve25519",
     "ed25519",
 ]
@@ -59,3 +62,8 @@ lto = "thin"
 incremental = true
 debug-assertions = true
 debug = true
+
+[patch.crates-io]
+ark-ff = { git = "https://github.com/arkworks-rs/algebra/", branch = "release-0.4" }
+ark-poly = { git = "https://github.com/arkworks-rs/algebra/", branch = "release-0.4" }
+ark-serialize = { git = "https://github.com/arkworks-rs/algebra/", branch = "release-0.4" }

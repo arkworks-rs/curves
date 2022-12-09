@@ -13,6 +13,7 @@
 ### Features
 
 - [\#121](https://github.com/arkworks-rs/curves/pull/121) Add the ed25519 curve.
+- [\#122](https://github.com/arkworks-rs/curves/pull/122) Add the secp256k1 and secq256k1 curves.
 - [\#124](https://github.com/arkworks-rs/curves/pull/124) Add the curve25519 curve.
 
 ### Improvements
