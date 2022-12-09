@@ -9,7 +9,7 @@
 #![forbid(unsafe_code)]
 
 //! This library implements the secp256k1 curve.
-//! Source: <https://moderncrypto.org/mail-archive/curves/2018/000992.html>
+//! Source: <https://en.bitcoin.it/wiki/Secp256k1>
 //!
 //! Curve information:
 //! * Base field: q =
