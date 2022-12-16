@@ -1,6 +1,6 @@
 use ark_ec::{
     bw6,
-    bw6::{BW6Parameters, TwistType, BW6},
+    bw6::{BW6Config, TwistType, BW6},
 };
 use ark_ff::{biginteger::BigInteger768 as BigInteger, BigInt};
 
@@ -13,9 +13,9 @@ pub mod g2;
 mod tests;
 
 #[derive(PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl BW6Parameters for Parameters {
+impl BW6Config for Config {
     const X: BigInteger = BigInt::new([
         0x8508c00000000001,
         0x0,
@@ -50,13 +50,13 @@ impl BW6Parameters for Parameters {
     type Fp = Fq;
     type Fp3Config = Fq3Config;
     type Fp6Config = Fq6Config;
-    type G1Parameters = g1::Parameters;
-    type G2Parameters = g2::Parameters;
+    type G1Config = g1::Config;
+    type G2Config = g2::Config;
 }
 
-pub type BW6_761 = BW6<Parameters>;
+pub type BW6_761 = BW6<Config>;
 
-pub type G1Affine = bw6::G1Affine<Parameters>;
-pub type G1Projective = bw6::G1Projective<Parameters>;
-pub type G2Affine = bw6::G2Affine<Parameters>;
-pub type G2Projective = bw6::G2Projective<Parameters>;
+pub type G1Affine = bw6::G1Affine<Config>;
+pub type G1Projective = bw6::G1Projective<Config>;
+pub type G2Affine = bw6::G2Affine<Config>;
+pub type G2Projective = bw6::G2Projective<Config>;

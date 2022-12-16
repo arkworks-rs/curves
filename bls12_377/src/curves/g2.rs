@@ -6,11 +6,11 @@ use ark_ff::{Field, MontFp, Zero};
 
 use crate::{g1, Fq, Fq2, Fr};
 
-pub type G2Affine = Affine<Parameters>;
+pub type G2Affine = Affine<Config>;
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl CurveConfig for Parameters {
+impl CurveConfig for Config {
     type BaseField = Fq2;
     type ScalarField = Fr;
 
@@ -34,9 +34,9 @@ impl CurveConfig for Parameters {
         MontFp!("6764900296503390671038341982857278410319949526107311149686707033187604810669");
 }
 
-impl SWCurveConfig for Parameters {
+impl SWCurveConfig for Config {
     /// COEFF_A = [0, 0]
-    const COEFF_A: Fq2 = Fq2::new(g1::Parameters::COEFF_A, g1::Parameters::COEFF_A);
+    const COEFF_A: Fq2 = Fq2::new(g1::Config::COEFF_A, g1::Config::COEFF_A);
 
     // As per https://eprint.iacr.org/2012/072.pdf,
     // this curve has b' = b/i, where b is the COEFF_B of G1, and x^6 -i is

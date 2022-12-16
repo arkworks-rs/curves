@@ -3,10 +3,10 @@ use ark_r1cs_std::groups::curves::{short_weierstrass::ProjectiveVar, twisted_edw
 use crate::{constraints::FqVar, *};
 
 /// A variable that is the R1CS equivalent of `crate::EdwardsAffine`.
-pub type EdwardsVar = AffineVar<JubjubParameters, FqVar>;
+pub type EdwardsVar = AffineVar<JubjubConfig, FqVar>;
 
 /// A variable that is the R1CS equivalent of `crate::SWProjective`
-pub type SWVar = ProjectiveVar<JubjubParameters, FqVar>;
+pub type SWVar = ProjectiveVar<JubjubConfig, FqVar>;
 
 #[test]
 fn test() {

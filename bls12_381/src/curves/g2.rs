@@ -2,7 +2,7 @@ use ark_std::ops::Neg;
 
 use ark_ec::{
     bls12,
-    bls12::Bls12Parameters,
+    bls12::Bls12Config,
     models::CurveConfig,
     short_weierstrass::{Affine, Projective, SWCurveConfig},
     AffineRepr, CurveGroup, Group,
@@ -16,13 +16,13 @@ use crate::{
     *,
 };
 
-pub type G2Affine = bls12::G2Affine<crate::Parameters>;
-pub type G2Projective = bls12::G2Projective<crate::Parameters>;
+pub type G2Affine = bls12::G2Affine<crate::Config>;
+pub type G2Projective = bls12::G2Projective<crate::Config>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl CurveConfig for Parameters {
+impl CurveConfig for Config {
     type BaseField = Fq2;
     type ScalarField = Fr;
 
@@ -47,12 +47,12 @@ impl CurveConfig for Parameters {
         MontFp!("26652489039290660355457965112010883481355318854675681319708643586776743290055");
 }
 
-impl SWCurveConfig for Parameters {
+impl SWCurveConfig for Config {
     /// COEFF_A = [0, 0]
-    const COEFF_A: Fq2 = Fq2::new(g1::Parameters::COEFF_A, g1::Parameters::COEFF_A);
+    const COEFF_A: Fq2 = Fq2::new(g1::Config::COEFF_A, g1::Config::COEFF_A);
 
     /// COEFF_B = [4, 4]
-    const COEFF_B: Fq2 = Fq2::new(g1::Parameters::COEFF_B, g1::Parameters::COEFF_B);
+    const COEFF_B: Fq2 = Fq2::new(g1::Config::COEFF_B, g1::Config::COEFF_B);
 
     /// AFFINE_GENERATOR_COEFFS = (G2_GENERATOR_X, G2_GENERATOR_Y)
     const GENERATOR: G2Affine = G2Affine::new_unchecked(G2_GENERATOR_X, G2_GENERATOR_Y);
@@ -67,8 +67,8 @@ impl SWCurveConfig for Parameters {
         //
         // Checks that [p]P = [X]P
 
-        let mut x_times_point = point.mul_bigint(crate::Parameters::X);
-        if crate::Parameters::X_IS_NEGATIVE {
+        let mut x_times_point = point.mul_bigint(crate::Config::X);
+        if crate::Config::X_IS_NEGATIVE {
             x_times_point = -x_times_point;
         }
 
@@ -86,11 +86,11 @@ impl SWCurveConfig for Parameters {
         // When multiplying, use -c1 instead, and then negate the result. That's much
         // more efficient, since the scalar -c1 has less limbs and a much lower Hamming
         // weight.
-        let x: &'static [u64] = crate::Parameters::X;
+        let x: &'static [u64] = crate::Config::X;
         let p_projective = p.into_group();
 
         // [x]P
-        let x_p = Parameters::mul_affine(p, &x).neg();
+        let x_p = Config::mul_affine(p, &x).neg();
         // ψ(P)
         let psi_p = p_power_endomorphism(&p);
         // (ψ^2)(2P)
@@ -101,7 +101,7 @@ impl SWCurveConfig for Parameters {
         tmp += &psi_p;
 
         // tmp2 = [x^2]P + [x]ψ(P)
-        let mut tmp2: Projective<Parameters> = tmp;
+        let mut tmp2: Projective<Config> = tmp;
         tmp2 = tmp2.mul_bigint(x).neg();
 
         // add up all the terms
@@ -224,7 +224,7 @@ pub const DOUBLE_P_POWER_ENDOMORPHISM: Fq2 = Fq2::new(
     Fq::ZERO
 );
 
-pub fn p_power_endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
+pub fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
     // The p-power endomorphism for G2 is defined as follows:
     // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1).
     //    To map a point (x, y) in E' to (s, t) in E,
@@ -252,7 +252,7 @@ pub fn p_power_endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
 }
 
 /// For a p-power endomorphism psi(P), compute psi(psi(P))
-pub fn double_p_power_endomorphism(p: &Projective<Parameters>) -> Projective<Parameters> {
+pub fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
     let mut res = *p;
 
     res.x *= DOUBLE_P_POWER_ENDOMORPHISM;
@@ -287,9 +287,9 @@ mod test {
         let mut rng = ark_std::test_rng();
         const SAMPLES: usize = 10;
         for _ in 0..SAMPLES {
-            let p = Affine::<g2::Parameters>::rand(&mut rng);
+            let p = Affine::<g2::Config>::rand(&mut rng);
             let optimised = p.clear_cofactor().into_group();
-            let naive = g2::Parameters::mul_affine(&p, h_eff);
+            let naive = g2::Config::mul_affine(&p, h_eff);
             assert_eq!(optimised, naive);
         }
     }

@@ -1,4 +1,4 @@
-use ark_ec::models::mnt4::{MNT4Parameters, MNT4};
+use ark_ec::models::mnt4::{MNT4Config, MNT4};
 use ark_ff::{biginteger::BigInteger320, BigInt, Field, MontFp};
 
 use crate::{Fq, Fq2, Fq2Config, Fq4Config, Fr};
@@ -14,11 +14,11 @@ pub use self::{
     g2::{G2Affine, G2Prepared, G2Projective},
 };
 
-pub type MNT4_298 = MNT4<Parameters>;
+pub type MNT4_298 = MNT4<Config>;
 
-pub struct Parameters;
+pub struct Config;
 
-impl MNT4Parameters for Parameters {
+impl MNT4Config for Config {
     const TWIST: Fq2 = Fq2::new(Fq::ZERO, Fq::ONE);
     // A coefficient of MNT4-298 G2 =
     // ```
@@ -46,8 +46,8 @@ impl MNT4Parameters for Parameters {
     type Fr = Fr;
     type Fp2Config = Fq2Config;
     type Fp4Config = Fq4Config;
-    type G1Parameters = self::g1::Parameters;
-    type G2Parameters = self::g2::Parameters;
+    type G1Config = self::g1::Config;
+    type G2Config = self::g2::Config;
 }
 
 // 34

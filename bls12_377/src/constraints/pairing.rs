@@ -1,8 +1,8 @@
-use crate::Parameters;
+use crate::Config;
 
 /// Specifies the constraints for computing a pairing in the BLS12-377 bilinear
 /// group.
-pub type PairingVar = ark_r1cs_std::pairing::bls12::PairingVar<Parameters>;
+pub type PairingVar = ark_r1cs_std::pairing::bls12::PairingVar<Config>;
 
 #[test]
 fn test() {

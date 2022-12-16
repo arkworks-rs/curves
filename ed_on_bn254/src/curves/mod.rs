@@ -9,8 +9,8 @@ use crate::{Fq, Fr};
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = Affine<EdwardsParameters>;
-pub type EdwardsProjective = Projective<EdwardsParameters>;
+pub type EdwardsAffine = Affine<EdwardsConfig>;
+pub type EdwardsProjective = Projective<EdwardsConfig>;
 
 /// `Baby-JubJub` is a twisted Edwards curve. These curves have equations of the
 /// form: ax² + y² = 1 + dx²y².
@@ -20,9 +20,9 @@ pub type EdwardsProjective = Projective<EdwardsParameters>;
 ///
 /// q = 21888242871839275222246405745257275088548364400416034343698204186575808495617
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct EdwardsParameters;
+pub struct EdwardsConfig;
 
-impl CurveConfig for EdwardsParameters {
+impl CurveConfig for EdwardsConfig {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -35,7 +35,7 @@ impl CurveConfig for EdwardsParameters {
         MontFp!("2394026564107420727433200628387514462817212225638746351800188703329891451411");
 }
 
-impl TECurveConfig for EdwardsParameters {
+impl TECurveConfig for EdwardsConfig {
     /// COEFF_A = 1
     const COEFF_A: Fq = Fq::ONE;
 
@@ -52,16 +52,16 @@ impl TECurveConfig for EdwardsParameters {
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
-    type MontCurveConfig = EdwardsParameters;
+    type MontCurveConfig = EdwardsConfig;
 }
 
-impl MontCurveConfig for EdwardsParameters {
+impl MontCurveConfig for EdwardsConfig {
     /// COEFF_A = 168698
     const COEFF_A: Fq = MontFp!("168698");
     /// COEFF_B = 168700
     const COEFF_B: Fq = MontFp!("168700");
 
-    type TECurveConfig = EdwardsParameters;
+    type TECurveConfig = EdwardsConfig;
 }
 
 const GENERATOR_X: Fq =

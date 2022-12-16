@@ -64,6 +64,7 @@ debug-assertions = true
 debug = true
 
 [patch.crates-io]
-ark-ff = { git = "https://github.com/arkworks-rs/algebra/", branch = "release-0.4" }
-ark-poly = { git = "https://github.com/arkworks-rs/algebra/", branch = "release-0.4" }
-ark-serialize = { git = "https://github.com/arkworks-rs/algebra/", branch = "release-0.4" }
+ark-ff = { git = "https://github.com/arkworks-rs/algebra/", branch = "rename-parameters-to-config" }
+ark-ec = { git = "https://github.com/arkworks-rs/algebra/", branch = "rename-parameters-to-config" }
+ark-poly = { git = "https://github.com/arkworks-rs/algebra/", branch = "rename-parameters-to-config" }
+ark-serialize = { git = "https://github.com/arkworks-rs/algebra/", branch = "rename-parameters-to-config" }

@@ -8,13 +8,13 @@ use ark_ff::MontFp;
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = Affine<EdwardsParameters>;
-pub type EdwardsProjective = Projective<EdwardsParameters>;
+pub type EdwardsAffine = Affine<EdwardsConfig>;
+pub type EdwardsProjective = Projective<EdwardsConfig>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct EdwardsParameters;
+pub struct EdwardsConfig;
 
-impl CurveConfig for EdwardsParameters {
+impl CurveConfig for EdwardsConfig {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -27,7 +27,7 @@ impl CurveConfig for EdwardsParameters {
         MontFp!("2713877091499598330239944961141122840321418634767465352250731601857045344121");
 }
 
-impl TECurveConfig for EdwardsParameters {
+impl TECurveConfig for EdwardsConfig {
     /// COEFF_A = -1
     const COEFF_A: Fq = MontFp!("-1");
 
@@ -38,7 +38,7 @@ impl TECurveConfig for EdwardsParameters {
     /// Standard generators from <https://neuromancer.sk/std/other/Ed25519>.
     const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
-    type MontCurveConfig = EdwardsParameters;
+    type MontCurveConfig = EdwardsConfig;
 
     /// Multiplication by `a` is just negation.
     #[inline(always)]
@@ -48,7 +48,7 @@ impl TECurveConfig for EdwardsParameters {
 }
 
 // We want to emphasize that this Montgomery curve is not Curve25519.
-impl MontCurveConfig for EdwardsParameters {
+impl MontCurveConfig for EdwardsConfig {
     /// COEFF_A = 486662
     const COEFF_A: Fq = MontFp!("486662");
 
@@ -57,7 +57,7 @@ impl MontCurveConfig for EdwardsParameters {
     const COEFF_B: Fq =
         MontFp!("57896044618658097711785492504343953926634992332820282019728792003956564333285");
 
-    type TECurveConfig = EdwardsParameters;
+    type TECurveConfig = EdwardsConfig;
 }
 
 /// GENERATOR_X =

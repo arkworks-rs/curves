@@ -1,20 +1,20 @@
 use ark_ec::{
     mnt6,
-    mnt6::MNT6Parameters,
+    mnt6::MNT6Config,
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
 };
 use ark_ff::{Field, MontFp};
 
 use crate::{g1, Fq, Fq3, Fr};
 
-pub type G2Affine = mnt6::G2Affine<crate::Parameters>;
-pub type G2Projective = mnt6::G2Projective<crate::Parameters>;
-pub type G2Prepared = mnt6::G2Prepared<crate::Parameters>;
+pub type G2Affine = mnt6::G2Affine<crate::Config>;
+pub type G2Projective = mnt6::G2Projective<crate::Config>;
+pub type G2Prepared = mnt6::G2Prepared<crate::Config>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl CurveConfig for Parameters {
+impl CurveConfig for Config {
     type BaseField = Fq3;
     type ScalarField = Fr;
 
@@ -48,10 +48,10 @@ pub const MUL_BY_A_C0: Fq = MontFp!("55");
 pub const MUL_BY_A_C1: Fq = MontFp!("55");
 
 /// MUL_BY_A_C2 = COEFF_A
-pub const MUL_BY_A_C2: Fq = g1::Parameters::COEFF_A;
+pub const MUL_BY_A_C2: Fq = g1::Config::COEFF_A;
 
-impl SWCurveConfig for Parameters {
-    const COEFF_A: Fq3 = crate::Parameters::TWIST_COEFF_A;
+impl SWCurveConfig for Config {
+    const COEFF_A: Fq3 = crate::Config::TWIST_COEFF_A;
     const COEFF_B: Fq3 = Fq3::new(
         // 5 * G1::COEFF_B
         MontFp!("57578116384997352636487348509878309737146377454014423897662211075515354005624851787652233"),

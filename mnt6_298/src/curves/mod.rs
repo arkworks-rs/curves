@@ -1,5 +1,5 @@
 use ark_ec::{
-    models::mnt6::{MNT6Parameters, MNT6},
+    models::mnt6::{MNT6Config, MNT6},
     short_weierstrass::SWCurveConfig,
 };
 use ark_ff::{biginteger::BigInteger320, BigInt, Field, Fp3};
@@ -17,14 +17,14 @@ pub use self::{
     g2::{G2Affine, G2Prepared, G2Projective},
 };
 
-pub type MNT6_298 = MNT6<Parameters>;
+pub type MNT6_298 = MNT6<Config>;
 
-pub struct Parameters;
+pub struct Config;
 
-impl MNT6Parameters for Parameters {
+impl MNT6Config for Config {
     const TWIST: Fp3<Self::Fp3Config> = Fp3::<Self::Fp3Config>::new(Fq::ZERO, Fq::ONE, Fq::ZERO);
     const TWIST_COEFF_A: Fp3<Self::Fp3Config> =
-        Fp3::<Self::Fp3Config>::new(Fq::ZERO, Fq::ZERO, g1::Parameters::COEFF_A);
+        Fp3::<Self::Fp3Config>::new(Fq::ZERO, Fq::ZERO, g1::Config::COEFF_A);
 
     // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt4_80.ml#L88
     const ATE_LOOP_COUNT: &'static [i8] = &[
@@ -44,6 +44,6 @@ impl MNT6Parameters for Parameters {
     type Fr = Fr;
     type Fp3Config = Fq3Config;
     type Fp6Config = Fq6Config;
-    type G1Parameters = self::g1::Parameters;
-    type G2Parameters = self::g2::Parameters;
+    type G1Config = self::g1::Config;
+    type G2Config = self::g2::Config;
 }

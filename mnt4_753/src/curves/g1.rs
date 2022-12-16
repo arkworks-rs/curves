@@ -6,14 +6,14 @@ use ark_ff::{Field, MontFp};
 
 use crate::{Fq, Fr};
 
-pub type G1Affine = mnt4::G1Affine<crate::Parameters>;
-pub type G1Projective = mnt4::G1Projective<crate::Parameters>;
-pub type G1Prepared = mnt4::G1Prepared<crate::Parameters>;
+pub type G1Affine = mnt4::G1Affine<crate::Config>;
+pub type G1Projective = mnt4::G1Projective<crate::Config>;
+pub type G1Prepared = mnt4::G1Prepared<crate::Config>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl CurveConfig for Parameters {
+impl CurveConfig for Config {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -24,7 +24,7 @@ impl CurveConfig for Parameters {
     const COFACTOR_INV: Fr = Fr::ONE;
 }
 
-impl SWCurveConfig for Parameters {
+impl SWCurveConfig for Config {
     /// COEFF_A = 2
     const COEFF_A: Fq = MontFp!("2");
 

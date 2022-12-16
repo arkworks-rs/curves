@@ -10,10 +10,10 @@ use crate::{Fq, Fr};
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = Affine<JubjubParameters>;
-pub type EdwardsProjective = Projective<JubjubParameters>;
-pub type SWAffine = short_weierstrass::Affine<JubjubParameters>;
-pub type SWProjective = short_weierstrass::Projective<JubjubParameters>;
+pub type EdwardsAffine = Affine<JubjubConfig>;
+pub type EdwardsProjective = Projective<JubjubConfig>;
+pub type SWAffine = short_weierstrass::Affine<JubjubConfig>;
+pub type SWProjective = short_weierstrass::Projective<JubjubConfig>;
 
 /// `JubJub` is a twisted Edwards curve. These curves have equations of the
 /// form: ax² + y² = 1 - dx²y².
@@ -49,11 +49,11 @@ pub type SWProjective = short_weierstrass::Projective<JubjubParameters>;
 /// [here](https://github.com/zhenfeizhang/bandersnatch/blob/main/bandersnatch/script/jubjub.sage)
 /// to convert between the different representations.
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct JubjubParameters;
-pub type EdwardsParameters = JubjubParameters;
-pub type SWParameters = JubjubParameters;
+pub struct JubjubConfig;
+pub type EdwardsConfig = JubjubConfig;
+pub type SWConfig = JubjubConfig;
 
-impl CurveConfig for JubjubParameters {
+impl CurveConfig for JubjubConfig {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -66,7 +66,7 @@ impl CurveConfig for JubjubParameters {
         MontFp!("819310549611346726241370945440405716213240158234039660170669895299022906775");
 }
 
-impl TECurveConfig for JubjubParameters {
+impl TECurveConfig for JubjubConfig {
     /// COEFF_A = -1
     const COEFF_A: Fq = MontFp!("-1");
 
@@ -77,7 +77,7 @@ impl TECurveConfig for JubjubParameters {
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
-    type MontCurveConfig = JubjubParameters;
+    type MontCurveConfig = JubjubConfig;
 
     /// Multiplication by `a` is simply negation here.
     #[inline(always)]
@@ -86,14 +86,14 @@ impl TECurveConfig for JubjubParameters {
     }
 }
 
-impl MontCurveConfig for JubjubParameters {
+impl MontCurveConfig for JubjubConfig {
     /// COEFF_A = 40962
     const COEFF_A: Fq = MontFp!("40962");
 
     /// COEFF_B = -40964
     const COEFF_B: Fq = MontFp!("-40964");
 
-    type TECurveConfig = JubjubParameters;
+    type TECurveConfig = JubjubConfig;
 }
 
 const GENERATOR_X: Fq =
@@ -102,7 +102,7 @@ const GENERATOR_X: Fq =
 const GENERATOR_Y: Fq =
     MontFp!("13262374693698910701929044844600465831413122818447359594527400194675274060458");
 
-impl SWCurveConfig for JubjubParameters {
+impl SWCurveConfig for JubjubConfig {
     /// COEFF_A = 52296097456646850916096512823759002727550416093741407922227928430486925478210
     const COEFF_A: Self::BaseField =
         MontFp!("52296097456646850916096512823759002727550416093741407922227928430486925478210");

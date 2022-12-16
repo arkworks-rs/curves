@@ -2,11 +2,11 @@ use ark_r1cs_std::groups::curves::{short_weierstrass::ProjectiveVar, twisted_edw
 
 use crate::{constraints::FqVar, *};
 
-/// A variable that is the R1CS equivalent of `crate::BandersnatchParameters`.
-pub type EdwardsVar = AffineVar<BandersnatchParameters, FqVar>;
+/// A variable that is the R1CS equivalent of `crate::BandersnatchConfig`.
+pub type EdwardsVar = AffineVar<BandersnatchConfig, FqVar>;
 
 /// A variable that is the R1CS equivalent of `crate::SWProjective`
-pub type SWVar = ProjectiveVar<BandersnatchParameters, FqVar>;
+pub type SWVar = ProjectiveVar<BandersnatchConfig, FqVar>;
 
 #[test]
 fn test() {
