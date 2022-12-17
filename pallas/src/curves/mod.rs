@@ -10,9 +10,9 @@ use crate::{fq::Fq, fr::Fr};
 mod tests;
 
 #[derive(Copy, Clone, Default, PartialEq, Eq)]
-pub struct PallasParameters;
+pub struct PallasConfig;
 
-impl CurveConfig for PallasParameters {
+impl CurveConfig for PallasConfig {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -23,10 +23,10 @@ impl CurveConfig for PallasParameters {
     const COFACTOR_INV: Fr = Fr::ONE;
 }
 
-pub type Affine = sw::Affine<PallasParameters>;
-pub type Projective = sw::Projective<PallasParameters>;
+pub type Affine = sw::Affine<PallasConfig>;
+pub type Projective = sw::Projective<PallasConfig>;
 
-impl SWCurveConfig for PallasParameters {
+impl SWCurveConfig for PallasConfig {
     /// COEFF_A = 0
     const COEFF_A: Fq = Fq::ZERO;
 

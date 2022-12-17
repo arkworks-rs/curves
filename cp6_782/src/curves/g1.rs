@@ -9,8 +9,8 @@ use ark_std::vec::Vec;
 
 use crate::{Fq, Fr};
 
-pub type G1Affine = Affine<Parameters>;
-pub type G1Projective = Projective<Parameters>;
+pub type G1Affine = Affine<Config>;
+pub type G1Projective = Projective<Config>;
 
 #[derive(Clone, Debug, PartialEq, Eq, CanonicalSerialize, CanonicalDeserialize)]
 pub struct G1Prepared(pub G1Affine);
@@ -52,9 +52,9 @@ impl Default for G1Prepared {
 }
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl CurveConfig for Parameters {
+impl CurveConfig for Config {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -76,7 +76,7 @@ impl CurveConfig for Parameters {
     const COFACTOR_INV: Fr = MontFp!("163276846538158998893990986356139314746223949404500031940624325017036397274793417940375498603127780919653358641788");
 }
 
-impl SWCurveConfig for Parameters {
+impl SWCurveConfig for Config {
     /// COEFF_A = 5
     const COEFF_A: Fq = MontFp!("5");
 

@@ -1,20 +1,20 @@
 use ark_ec::{
     mnt4,
-    mnt4::MNT4Parameters,
+    mnt4::MNT4Config,
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
 };
 use ark_ff::{Field, MontFp};
 
 use crate::{Fq, Fq2, Fr, G1_COEFF_A_NON_RESIDUE};
 
-pub type G2Affine = mnt4::G2Affine<crate::Parameters>;
-pub type G2Projective = mnt4::G2Projective<crate::Parameters>;
-pub type G2Prepared = mnt4::G2Prepared<crate::Parameters>;
+pub type G2Affine = mnt4::G2Affine<crate::Config>;
+pub type G2Projective = mnt4::G2Projective<crate::Config>;
+pub type G2Prepared = mnt4::G2Prepared<crate::Config>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl CurveConfig for Parameters {
+impl CurveConfig for Config {
     type BaseField = Fq2;
     type ScalarField = Fr;
 
@@ -47,8 +47,8 @@ pub const MUL_BY_A_C0: Fq = G1_COEFF_A_NON_RESIDUE;
 /// MUL_BY_A_C1 = NONRESIDUE * COEFF_A
 pub const MUL_BY_A_C1: Fq = G1_COEFF_A_NON_RESIDUE;
 
-impl SWCurveConfig for Parameters {
-    const COEFF_A: Fq2 = crate::Parameters::TWIST_COEFF_A;
+impl SWCurveConfig for Config {
+    const COEFF_A: Fq2 = crate::Config::TWIST_COEFF_A;
     // B coefficient of MNT4-753 G2 =
     // ```
     // mnt4753_twist_coeff_b = mnt4753_Fq2(mnt4753_Fq::zero(),

@@ -9,13 +9,13 @@ use crate::{fq::Fq, fr::Fr};
 #[cfg(test)]
 mod tests;
 
-pub type Affine = sw::Affine<Parameters>;
-pub type Projective = sw::Projective<Parameters>;
+pub type Affine = sw::Affine<Config>;
+pub type Projective = sw::Projective<Config>;
 
 #[derive(Copy, Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl CurveConfig for Parameters {
+impl CurveConfig for Config {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -27,7 +27,7 @@ impl CurveConfig for Parameters {
     const COFACTOR_INV: Fr =  Fr::ONE;
 }
 
-impl SWCurveConfig for Parameters {
+impl SWCurveConfig for Config {
     /// COEFF_A = 0
     const COEFF_A: Fq = Fq::ZERO;
 
