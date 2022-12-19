@@ -4,6 +4,7 @@
 
 - [\#76](https://github.com/arkworks-rs/curves/pull/76) twisted Edwards parameters for bls12-377
 - Fixed curve benches
+- [\#XXX] (https://github.com/arkworks-rs/curves/pull/XXX) Implement WB Hash-to-Curve for bls12-381 and bls12-377
 
 ### Breaking changes
 

@@ -3,6 +3,7 @@ use ark_std::ops::Neg;
 use ark_ec::{
     bls12,
     bls12::Bls12Parameters,
+    hashing::curve_maps::wb::{IsogenyMap, WBParams},
     models::CurveConfig,
     short_weierstrass::{Affine, Projective, SWCurveConfig},
     AffineRepr, CurveGroup, Group,
@@ -10,7 +11,10 @@ use ark_ec::{
 use ark_ff::{Field, MontFp, Zero};
 use ark_serialize::{Compress, SerializationError};
 
-use super::util::{serialize_fq, EncodingFlags, G2_SERIALIZED_SIZE};
+use super::{
+    g2_swu_iso,
+    util::{serialize_fq, EncodingFlags, G2_SERIALIZED_SIZE},
+};
 use crate::{
     util::{read_g2_compressed, read_g2_uncompressed},
     *,
@@ -216,7 +220,7 @@ pub const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = Fq2::new(
     MontFp!(
                 "2973677408986561043442465346520108879172042883009249989176415018091420807192182638567116318576472649347015917690530"),
     MontFp!(
-                "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
+       "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
 );
 
 pub const DOUBLE_P_POWER_ENDOMORPHISM: Fq2 = Fq2::new(
@@ -259,6 +263,14 @@ pub fn double_p_power_endomorphism(p: &Projective<Parameters>) -> Projective<Par
     res.y = res.y.neg();
 
     res
+}
+
+// Parameters from the [IETF draft v16, section E.3](https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-16.html#name-3-isogeny-map-for-bls12-381).
+impl WBParams for Parameters {
+    type IsogenousCurve = g2_swu_iso::SwuIsoParameters;
+
+    const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> =
+        g2_swu_iso::ISOGENY_MAP_TO_G2;
 }
 
 #[cfg(test)]

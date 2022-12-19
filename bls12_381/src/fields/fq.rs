@@ -5,3 +5,6 @@ use ark_ff::fields::{Fp384, MontBackend, MontConfig};
 #[generator = "2"]
 pub struct FqConfig;
 pub type Fq = Fp384<MontBackend<FqConfig, 6>>;
+
+pub const FQ_ONE: Fq = ark_ff::MontFp!("1");
+pub const FQ_ZERO: Fq = ark_ff::MontFp!("0");
