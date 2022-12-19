@@ -10,11 +10,11 @@ use crate::{Fq, Fr};
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = Affine<BandersnatchParameters>;
-pub type EdwardsProjective = Projective<BandersnatchParameters>;
+pub type EdwardsAffine = Affine<BandersnatchConfig>;
+pub type EdwardsProjective = Projective<BandersnatchConfig>;
 
-pub type SWAffine = short_weierstrass::Affine<BandersnatchParameters>;
-pub type SWProjective = short_weierstrass::Projective<BandersnatchParameters>;
+pub type SWAffine = short_weierstrass::Affine<BandersnatchConfig>;
+pub type SWProjective = short_weierstrass::Projective<BandersnatchConfig>;
 
 /// `bandersnatch` is an incomplete twisted Edwards curve. These curves have
 /// equations of the form: ax² + y² = 1 + dx²y².
@@ -49,12 +49,12 @@ pub type SWProjective = short_weierstrass::Projective<BandersnatchParameters>;
 /// Script to transfer between different curves are available
 /// <https://github.com/zhenfeizhang/bandersnatch/blob/main/bandersnatch/script/bandersnatch.sage>
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct BandersnatchParameters;
+pub struct BandersnatchConfig;
 
-pub type EdwardsParameters = BandersnatchParameters;
-pub type SWParameters = BandersnatchParameters;
+pub type EdwardsConfig = BandersnatchConfig;
+pub type SWConfig = BandersnatchConfig;
 
-impl CurveConfig for BandersnatchParameters {
+impl CurveConfig for BandersnatchConfig {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -67,7 +67,7 @@ impl CurveConfig for BandersnatchParameters {
         MontFp!("9831726595336160714896451345284868594481866920080427688839802480047265754601");
 }
 
-impl TECurveConfig for BandersnatchParameters {
+impl TECurveConfig for BandersnatchConfig {
     /// COEFF_A = -5
     const COEFF_A: Fq = MontFp!("-5");
 
@@ -79,7 +79,7 @@ impl TECurveConfig for BandersnatchParameters {
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(TE_GENERATOR_X, TE_GENERATOR_Y);
 
-    type MontCurveConfig = BandersnatchParameters;
+    type MontCurveConfig = BandersnatchConfig;
 
     /// Multiplication by `a` is multiply by `-5`.
     #[inline(always)]
@@ -88,7 +88,7 @@ impl TECurveConfig for BandersnatchParameters {
     }
 }
 
-impl MontCurveConfig for BandersnatchParameters {
+impl MontCurveConfig for BandersnatchConfig {
     /// COEFF_A = 29978822694968839326280996386011761570173833766074948509196803838190355340952
     const COEFF_A: Fq =
         MontFp!("29978822694968839326280996386011761570173833766074948509196803838190355340952");
@@ -97,7 +97,7 @@ impl MontCurveConfig for BandersnatchParameters {
     const COEFF_B: Fq =
         MontFp!("25465760566081946422412445027709227188579564747101592991722834452325077642517");
 
-    type TECurveConfig = BandersnatchParameters;
+    type TECurveConfig = BandersnatchConfig;
 }
 
 // The TE form generator is generated following Zcash's fashion:
@@ -125,7 +125,7 @@ const SW_GENERATOR_X: Fq =
 const SW_GENERATOR_Y: Fq =
     MontFp!("12663882780877899054958035777720958383845500985908634476792678820121468453298");
 
-impl SWCurveConfig for BandersnatchParameters {
+impl SWCurveConfig for BandersnatchConfig {
     /// COEFF_A = 10773120815616481058602537765553212789256758185246796157495669123169359657269
     const COEFF_A: Self::BaseField =
         MontFp!("10773120815616481058602537765553212789256758185246796157495669123169359657269");

@@ -9,9 +9,9 @@ use ark_ff::{Field, MontFp, Zero};
 mod tests;
 
 #[derive(Copy, Clone, Default, PartialEq, Eq)]
-pub struct VestaParameters;
+pub struct VestaConfig;
 
-impl CurveConfig for VestaParameters {
+impl CurveConfig for VestaConfig {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -22,10 +22,10 @@ impl CurveConfig for VestaParameters {
     const COFACTOR_INV: Fr = Fr::ONE;
 }
 
-pub type Affine = sw::Affine<VestaParameters>;
-pub type Projective = sw::Projective<VestaParameters>;
+pub type Affine = sw::Affine<VestaConfig>;
+pub type Projective = sw::Projective<VestaConfig>;
 
-impl SWCurveConfig for VestaParameters {
+impl SWCurveConfig for VestaConfig {
     /// COEFF_A = 0
     const COEFF_A: Fq = Fq::ZERO;
 

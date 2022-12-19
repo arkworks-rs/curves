@@ -11,13 +11,13 @@ use crate::{g1, Fq, Fq2, Fr};
 
 use super::g2_swu_iso::{SwuIsoParameters, ISOGENY_MAP_TO_G2};
 
-pub type G2Affine = bls12::G2Affine<crate::Parameters>;
-pub type G2Projective = bls12::G2Projective<crate::Parameters>;
+pub type G2Affine = bls12::G2Affine<crate::Config>;
+pub type G2Projective = bls12::G2Projective<crate::Config>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl CurveConfig for Parameters {
+impl CurveConfig for Config {
     type BaseField = Fq2;
     type ScalarField = Fr;
 
@@ -41,9 +41,9 @@ impl CurveConfig for Parameters {
         MontFp!("6764900296503390671038341982857278410319949526107311149686707033187604810669");
 }
 
-impl SWCurveConfig for Parameters {
+impl SWCurveConfig for Config {
     /// COEFF_A = [0, 0]
-    const COEFF_A: Fq2 = Fq2::new(g1::Parameters::COEFF_A, g1::Parameters::COEFF_A);
+    const COEFF_A: Fq2 = Fq2::new(g1::Config::COEFF_A, g1::Config::COEFF_A);
 
     // As per https://eprint.iacr.org/2012/072.pdf,
     // this curve has b' = b/i, where b is the COEFF_B of G1, and x^6 -i is

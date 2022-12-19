@@ -1,6 +1,6 @@
 use ark_ec::{
     bls12,
-    bls12::Bls12Parameters,
+    bls12::Bls12Config,
     hashing::curve_maps::wb::{IsogenyMap, WBParams},
     models::CurveConfig,
     short_weierstrass::{Affine, SWCurveConfig},
@@ -18,13 +18,13 @@ use crate::{
     Fq, Fr,
 };
 
-pub type G1Affine = bls12::G1Affine<crate::Parameters>;
-pub type G1Projective = bls12::G1Projective<crate::Parameters>;
+pub type G1Affine = bls12::G1Affine<crate::Config>;
+pub type G1Projective = bls12::G1Projective<crate::Config>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl CurveConfig for Parameters {
+impl CurveConfig for Config {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -37,7 +37,7 @@ impl CurveConfig for Parameters {
         MontFp!("52435875175126190458656871551744051925719901746859129887267498875565241663483");
 }
 
-impl SWCurveConfig for Parameters {
+impl SWCurveConfig for Config {
     /// COEFF_A = 0
     const COEFF_A: Fq = Fq::ZERO;
 
@@ -61,11 +61,12 @@ impl SWCurveConfig for Parameters {
         // An early-out optimization described in Section 6.
         // If uP == P but P != point of infinity, then the point is not in the right
         // subgroup.
-        let x_times_p = p.mul_bigint(crate::Parameters::X);
+        let x_times_p = p.mul_bigint(crate::Config::X);
         if x_times_p.eq(p) && !p.infinity {
             return false;
         }
-        let minus_x_squared_times_p = x_times_p.mul_bigint(crate::Parameters::X).neg();
+
+        let minus_x_squared_times_p = x_times_p.mul_bigint(crate::Config::X).neg();
         let endomorphism_p = endomorphism(p);
         minus_x_squared_times_p.eq(&endomorphism_p)
     }
@@ -77,7 +78,7 @@ impl SWCurveConfig for Parameters {
         //
         // It is enough to multiply by (1 - x), instead of (x - 1)^2 / 3
         let h_eff = one_minus_x().into_bigint();
-        Parameters::mul_affine(&p, h_eff.as_ref()).into()
+        Config::mul_affine(&p, h_eff.as_ref()).into()
     }
 
     fn deserialize_with_mode<R: ark_serialize::Read>(
@@ -142,7 +143,7 @@ impl SWCurveConfig for Parameters {
 }
 
 fn one_minus_x() -> Fr {
-    const X: Fr = Fr::from_sign_and_limbs(!crate::Parameters::X_IS_NEGATIVE, crate::Parameters::X);
+    const X: Fr = Fr::from_sign_and_limbs(!crate::Config::X_IS_NEGATIVE, crate::Config::X);
     Fr::one() - X
 }
 
@@ -165,7 +166,7 @@ pub const G1_GENERATOR_Y: Fq = MontFp!("1339506544944476473020471379941921221584
 /// BETA is a non-trivial cubic root of unity in Fq.
 pub const BETA: Fq = MontFp!("793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350");
 
-pub fn endomorphism(p: &Affine<Parameters>) -> Affine<Parameters> {
+pub fn endomorphism(p: &Affine<Config>) -> Affine<Config> {
     // Endomorphism of the points on the curve.
     // endomorphism_p(x,y) = (BETA * x, y)
     // where BETA is a non-trivial cubic root of unity in Fq.
@@ -181,7 +182,7 @@ mod test {
     use crate::g1;
     use ark_std::{rand::Rng, UniformRand};
 
-    fn sample_unchecked() -> Affine<g1::Parameters> {
+    fn sample_unchecked() -> Affine<g1::Config> {
         let mut rng = ark_std::test_rng();
         loop {
             let x = Fq::rand(&mut rng);
@@ -197,7 +198,7 @@ mod test {
     fn test_cofactor_clearing() {
         const SAMPLES: usize = 100;
         for _ in 0..SAMPLES {
-            let p: Affine<g1::Parameters> = sample_unchecked();
+            let p: Affine<g1::Config> = sample_unchecked();
             let p = p.clear_cofactor();
             assert!(p.is_on_curve());
             assert!(p.is_in_correct_subgroup_assuming_on_curve());

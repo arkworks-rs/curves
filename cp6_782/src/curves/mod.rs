@@ -78,7 +78,7 @@ impl CP6_782 {
 
             let old_rx_square = old_rx.square();
             let old_rx_square_3 = old_rx_square.double() + &old_rx_square;
-            let old_rx_square_3_a = old_rx_square_3 + &g2::Parameters::COEFF_A;
+            let old_rx_square_3_a = old_rx_square_3 + &g2::Config::COEFF_A;
             let old_ry_double_inverse = old_ry.double().inverse().unwrap();
 
             let gamma = old_rx_square_3_a * &old_ry_double_inverse;

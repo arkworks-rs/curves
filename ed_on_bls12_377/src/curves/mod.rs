@@ -9,13 +9,13 @@ use crate::{fq::Fq, fr::Fr};
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = Affine<EdwardsParameters>;
-pub type EdwardsProjective = Projective<EdwardsParameters>;
+pub type EdwardsAffine = Affine<EdwardsConfig>;
+pub type EdwardsProjective = Projective<EdwardsConfig>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct EdwardsParameters;
+pub struct EdwardsConfig;
 
-impl CurveConfig for EdwardsParameters {
+impl CurveConfig for EdwardsConfig {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -28,7 +28,7 @@ impl CurveConfig for EdwardsParameters {
         MontFp!("527778859339273151515551558673846658209717731602102048798421311598680340096");
 }
 
-impl TECurveConfig for EdwardsParameters {
+impl TECurveConfig for EdwardsConfig {
     /// COEFF_A = -1
     const COEFF_A: Fq = MontFp!("-1");
 
@@ -38,7 +38,7 @@ impl TECurveConfig for EdwardsParameters {
     /// Generated randomly
     const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
-    type MontCurveConfig = EdwardsParameters;
+    type MontCurveConfig = EdwardsConfig;
 
     /// Multiplication by `a` is just negation.
     /// Is `a` 1 or -1?
@@ -48,7 +48,7 @@ impl TECurveConfig for EdwardsParameters {
     }
 }
 
-impl MontCurveConfig for EdwardsParameters {
+impl MontCurveConfig for EdwardsConfig {
     /// COEFF_A = 0x8D26E3FADA9010A26949031ECE3971B93952AD84D4753DDEDB748DA37E8F552
     ///         = 3990301581132929505568273333084066329187552697088022219156688740916631500114
     const COEFF_A: Fq =
@@ -59,7 +59,7 @@ impl MontCurveConfig for EdwardsParameters {
     const COEFF_B: Fq =
         MontFp!("4454160168295440918680551605697480202188346638066041608778544715000777738925");
 
-    type TECurveConfig = EdwardsParameters;
+    type TECurveConfig = EdwardsConfig;
 }
 
 /// GENERATOR_X =

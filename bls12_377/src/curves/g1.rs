@@ -19,9 +19,9 @@ pub type G1Affine = bls12::G1Affine<crate::Parameters>;
 pub type G1Projective = bls12::G1Projective<crate::Parameters>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl CurveConfig for Parameters {
+impl CurveConfig for Config {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -33,7 +33,7 @@ impl CurveConfig for Parameters {
     const COFACTOR_INV: Fr = MontFp!("5285428838741532253824584287042945485047145357130994810877");
 }
 
-impl SWCurveConfig for Parameters {
+impl SWCurveConfig for Config {
     /// COEFF_A = 0
     const COEFF_A: Fq = Fq::ZERO;
 
@@ -49,9 +49,9 @@ impl SWCurveConfig for Parameters {
     }
 }
 
-pub type G1SWAffine = SWAffine<Parameters>;
-pub type G1TEAffine = TEAffine<Parameters>;
-pub type G1TEProjective = TEProjective<Parameters>;
+pub type G1SWAffine = SWAffine<Config>;
+pub type G1TEAffine = TEAffine<Config>;
+pub type G1TEProjective = TEProjective<Config>;
 
 /// Bls12_377::G1 also has a twisted Edwards form.
 /// It can be obtained via the following script, implementing
@@ -100,7 +100,7 @@ pub type G1TEProjective = TEProjective<Parameters>;
 /// # b = -TE1d/TE1a
 /// TE2d = Fp(122268283598675559488486339158635529096981886914877139579534153582033676785385790730042363341236035746924960903179)
 /// ```
-impl TECurveConfig for Parameters {
+impl TECurveConfig for Config {
     /// COEFF_A = -1
     const COEFF_A: Fq = MontFp!("-1");
 
@@ -110,7 +110,7 @@ impl TECurveConfig for Parameters {
     /// AFFINE_GENERATOR_COEFFS = (GENERATOR_X, GENERATOR_Y)
     const GENERATOR: G1TEAffine = G1TEAffine::new_unchecked(TE_GENERATOR_X, TE_GENERATOR_Y);
 
-    type MontCurveConfig = Parameters;
+    type MontCurveConfig = Config;
 
     /// Multiplication by `a` is multiply by `-1`.
     #[inline(always)]
@@ -148,14 +148,14 @@ impl TECurveConfig for Parameters {
 // # MB = s
 // MB=Fp(10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931)
 // ```
-impl MontCurveConfig for Parameters {
+impl MontCurveConfig for Config {
     /// COEFF_A = 228097355113300204138531148905234651262148041026195375645000724271212049151994375092458297304264351187709081232384
     const COEFF_A: Fq = MontFp!("228097355113300204138531148905234651262148041026195375645000724271212049151994375092458297304264351187709081232384");
 
     /// COEFF_B = 10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931
     const COEFF_B: Fq = MontFp!("10189023633222963290707194929886294091415157242906428298294512798502806398782149227503530278436336312243746741931");
 
-    type TECurveConfig = Parameters;
+    type TECurveConfig = Config;
 }
 
 /// G1_GENERATOR_X =
