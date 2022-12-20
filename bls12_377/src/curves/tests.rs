@@ -10,7 +10,7 @@ test_pairing!(pairing; crate::Bls12_377);
 mod test {
     use ark_ec::{
         hashing::{
-            curve_maps::wb::{WBMap, WBConfig},
+            curve_maps::wb::{WBConfig, WBMap},
             map_to_curve_hasher::MapToCurveBasedHasher,
             HashToCurve,
         },
