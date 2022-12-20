@@ -9,12 +9,12 @@ use ark_ec::{
 };
 use ark_ff::MontFp;
 
-type G2Affine = Affine<SwuIsoParameters>;
+type G2Affine = Affine<SwuIsoConfig>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct SwuIsoParameters;
+pub struct SwuIsoConfig;
 
-impl CurveConfig for SwuIsoParameters {
+impl CurveConfig for SwuIsoConfig {
     type BaseField = Fq2;
     type ScalarField = Fr;
 
@@ -50,7 +50,7 @@ impl CurveConfig for SwuIsoParameters {
 //      - B' = 1012 * (1 + I)
 //
 //   * Z: -(2 + I)
-impl SWCurveConfig for SwuIsoParameters {
+impl SWCurveConfig for SwuIsoConfig {
     /// COEFF_A = 240 * I
     const COEFF_A: Fq2 = Fq2::new(MontFp!("0"), MontFp!("240"));
 
@@ -74,12 +74,12 @@ const G2_GENERATOR_Y: Fq2 = Fq2::new(
     MontFp!("3300326318345570015758639333209189167876318321385223785506096497597561910823001330832964776707374262378602791224889")
 );
 
-impl SWUConfig for SwuIsoParameters {
+impl SWUConfig for SwuIsoConfig {
     // ZETA = -(2 + u) as per IETF draft.
     const ZETA: Fq2 = Fq2::new(MontFp!("-2"), MontFp!("-1"));
 }
 
-pub const ISOGENY_MAP_TO_G2  : IsogenyMap<'_, SwuIsoParameters, g2::Config> = IsogenyMap {
+pub const ISOGENY_MAP_TO_G2  : IsogenyMap<'_, SwuIsoConfig, g2::Config> = IsogenyMap {
     x_map_numerator: &[
         Fq2::new(
                    MontFp!("889424345604814976315064405719089812568196182208668418962679585805340366775741747653930584250892369786198727235542"),
@@ -144,7 +144,7 @@ mod test {
 
     #[test]
     fn test_gen() {
-        let gen: G2Affine = curves::g2_swu_iso::SwuIsoParameters::GENERATOR;
+        let gen: G2Affine = curves::g2_swu_iso::SwuIsoConfig::GENERATOR;
         assert!(gen.is_on_curve());
         assert!(gen.is_in_correct_subgroup_assuming_on_curve());
     }

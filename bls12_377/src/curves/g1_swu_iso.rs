@@ -10,12 +10,12 @@ use ark_ff::MontFp;
 
 use crate::{g1, Fq, Fr};
 
-type G1Affine = Affine<SwuIsoParameters>;
+type G1Affine = Affine<SwuIsoConfig>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct SwuIsoParameters;
+pub struct SwuIsoConfig;
 
-impl CurveConfig for SwuIsoParameters {
+impl CurveConfig for SwuIsoConfig {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -37,7 +37,7 @@ impl CurveConfig for SwuIsoParameters {
 // to Elliptic Curve defined by y^2 = x^3 + 1 over Finite Field of size
 // 258664426012969094010652733694893533536393512754914660539884262666720468348340822774968888139573360124440321458177
 
-impl SWCurveConfig for SwuIsoParameters {
+impl SWCurveConfig for SwuIsoConfig {
     /// COEFF_A
     const COEFF_A: Fq = MontFp!("258664426012969092796408009721202742408018065645352501567204841856062976176281513834280849065051431927238430294002");
 
@@ -63,11 +63,11 @@ pub const G1_GENERATOR_X: Fq = MontFp!("1838986401365805123165300454709988316917
 /// 69018534046895515891776145953191511526693172354818719412306559690461416836925400134233128432719372819569406562974
 pub const G1_GENERATOR_Y: Fq = MontFp!("69018534046895515891776145953191511526693172354818719412306559690461416836925400134233128432719372819569406562974");
 
-impl SWUConfig for SwuIsoParameters {
+impl SWUConfig for SwuIsoConfig {
     const ZETA: Fq = MontFp!("15"); // arbitatry primitive root of unity (element)
 }
 
-pub const ISOGENY_MAP_TO_G1 : IsogenyMap<'_, SwuIsoParameters, g1::Config, > = IsogenyMap {
+pub const ISOGENY_MAP_TO_G1 : IsogenyMap<'_, SwuIsoConfig, g1::Config, > = IsogenyMap {
     x_map_numerator : &[
         MontFp!("193998319509726820447277314072485610595876362210707887456279225959507476652652651634192264150953923683470146535424"), 
         MontFp!("40474824132456359704279181570318738632422647360355249739068643631356267969150730939906729705473"), 
@@ -100,7 +100,7 @@ mod test {
 
     #[test]
     fn test_gen() {
-        let gen: G1Affine = SwuIsoParameters::GENERATOR;
+        let gen: G1Affine = SwuIsoConfig::GENERATOR;
         assert!(gen.is_on_curve());
         assert!(gen.is_in_correct_subgroup_assuming_on_curve());
     }

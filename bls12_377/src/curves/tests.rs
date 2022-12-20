@@ -45,11 +45,11 @@ mod test {
 
     #[test]
     fn wb_hash_arbitrary_string_to_g1() {
-        wb_hash_arbitrary_string_to_curve::<crate::g1::Parameters>();
+        wb_hash_arbitrary_string_to_curve::<crate::g1::Config>();
     }
 
     #[test]
     fn wb_hash_arbitrary_string_to_g2() {
-        wb_hash_arbitrary_string_to_curve::<crate::g2::Parameters>();
+        wb_hash_arbitrary_string_to_curve::<crate::g2::Config>();
     }
 }

@@ -9,12 +9,12 @@ use ark_ff::MontFp;
 
 use crate::{g2, Fq2, Fr};
 
-type G2Affine = Affine<SwuIsoParameters>;
+type G2Affine = Affine<SwuIsoConfig>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct SwuIsoParameters;
+pub struct SwuIsoConfig;
 
-impl CurveConfig for SwuIsoParameters {
+impl CurveConfig for SwuIsoConfig {
     type BaseField = Fq2;
     type ScalarField = Fr;
 
@@ -53,7 +53,7 @@ impl CurveConfig for SwuIsoParameters {
 // X2+249039961697346248294162904170316935273494032138504221215795383014884687447192317932476994472315647695087734549420)
 // over Finite Field in X2 of size
 // 258664426012969094010652733694893533536393512754914660539884262666720468348340822774968888139573360124440321458177^2
-impl SWCurveConfig for SwuIsoParameters {
+impl SWCurveConfig for SwuIsoConfig {
     /// COEFF_A =
     #[rustfmt::skip]
     const COEFF_A: Fq2 = Fq2::new(
@@ -80,12 +80,12 @@ const G2_GENERATOR_Y: Fq2 = Fq2::new(
 MontFp!("191377956145194479040228903677940355038998863371661730030204479850936075480341608934735952709786495341106477933498"),
 );
 
-impl SWUConfig for SwuIsoParameters {
+impl SWUConfig for SwuIsoConfig {
     // sage: F2.primitive_element()
     // X2 + 12
     const ZETA: Fq2 = Fq2::new(MontFp!("12"), MontFp!("1")); // arbitatry primitive root of unity (element)
 }
-pub const ISOGENY_MAP_TO_G2  : IsogenyMap<'_, SwuIsoParameters, g2::Config> = IsogenyMap {
+pub const ISOGENY_MAP_TO_G2  : IsogenyMap<'_, SwuIsoConfig, g2::Config> = IsogenyMap {
     x_map_numerator : &[
         Fq2::new(
                    MontFp!("165752316658948679552567650341600213993620343632797226373648182250196112194084163699689918190990441453209217107673"), 
@@ -450,7 +450,7 @@ mod test {
 
     #[test]
     fn test_gen() {
-        let gen: G2Affine = SwuIsoParameters::GENERATOR;
+        let gen: G2Affine = SwuIsoConfig::GENERATOR;
         assert!(gen.is_on_curve());
         assert!(gen.is_in_correct_subgroup_assuming_on_curve());
     }

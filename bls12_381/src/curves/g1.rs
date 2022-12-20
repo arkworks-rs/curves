@@ -149,7 +149,7 @@ fn one_minus_x() -> Fr {
 
 // Parameters from the [IETF draft v16, section E.2](https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-16.html#name-11-isogeny-map-for-bls12-381).
 impl WBConfig for Config {
-    type IsogenousCurve = g1_swu_iso::SwuIsoParameters;
+    type IsogenousCurve = g1_swu_iso::SwuIsoConfig;
 
     const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> =
         g1_swu_iso::ISOGENY_MAP_TO_G1;

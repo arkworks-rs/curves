@@ -265,9 +265,9 @@ pub fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config>
     res
 }
 
-// Parameters from the [IETF draft v16, section E.3](https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-16.html#name-3-isogeny-map-for-bls12-381).
+// Parametres from the [IETF draft v16, section E.3](https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-16.html#name-3-isogeny-map-for-bls12-381).
 impl WBConfig for Config {
-    type IsogenousCurve = g2_swu_iso::SwuIsoParameters;
+    type IsogenousCurve = g2_swu_iso::SwuIsoConfig;
 
     const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> =
         g2_swu_iso::ISOGENY_MAP_TO_G2;

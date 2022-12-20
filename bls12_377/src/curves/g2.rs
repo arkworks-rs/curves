@@ -9,7 +9,7 @@ use ark_ff::{Field, MontFp, Zero};
 
 use crate::{g1, Fq, Fq2, Fr};
 
-use super::g2_swu_iso::{SwuIsoParameters, ISOGENY_MAP_TO_G2};
+use super::g2_swu_iso::{SwuIsoConfig, ISOGENY_MAP_TO_G2};
 
 pub type G2Affine = bls12::G2Affine<crate::Config>;
 pub type G2Projective = bls12::G2Projective<crate::Config>;
@@ -85,7 +85,7 @@ pub const G2_GENERATOR_Y_C0: Fq = MontFp!("6316029476829207320938136194393519890
 pub const G2_GENERATOR_Y_C1: Fq = MontFp!("149157405641012693445398062341192467754805999074082136895788947234480009303640899064710353187729182149407503257491");
 
 impl WBConfig for Config {
-    type IsogenousCurve = SwuIsoParameters;
+    type IsogenousCurve = SwuIsoConfig;
 
     const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> = ISOGENY_MAP_TO_G2;
 }
