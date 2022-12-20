@@ -1,5 +1,5 @@
 use ark_ec::{
-    hashing::curve_maps::{swu::SWUParams, wb::IsogenyMap},
+    hashing::curve_maps::{swu::SWUConfig, wb::IsogenyMap},
     models::{
         short_weierstrass::{Affine, SWCurveConfig},
         CurveConfig,
@@ -63,11 +63,11 @@ pub const G1_GENERATOR_X: Fq = MontFp!("1838986401365805123165300454709988316917
 /// 69018534046895515891776145953191511526693172354818719412306559690461416836925400134233128432719372819569406562974
 pub const G1_GENERATOR_Y: Fq = MontFp!("69018534046895515891776145953191511526693172354818719412306559690461416836925400134233128432719372819569406562974");
 
-impl SWUParams for SwuIsoParameters {
+impl SWUConfig for SwuIsoParameters {
     const ZETA: Fq = MontFp!("15"); // arbitatry primitive root of unity (element)
 }
 
-pub const ISOGENY_MAP_TO_G1 : IsogenyMap<'_, SwuIsoParameters, g1::Parameters, > = IsogenyMap {
+pub const ISOGENY_MAP_TO_G1 : IsogenyMap<'_, SwuIsoParameters, g1::Config, > = IsogenyMap {
     x_map_numerator : &[
         MontFp!("193998319509726820447277314072485610595876362210707887456279225959507476652652651634192264150953923683470146535424"), 
         MontFp!("40474824132456359704279181570318738632422647360355249739068643631356267969150730939906729705473"), 

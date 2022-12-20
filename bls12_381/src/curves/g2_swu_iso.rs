@@ -1,7 +1,7 @@
 use crate::*;
 
 use ark_ec::{
-    hashing::curve_maps::{swu::SWUParams, wb::IsogenyMap},
+    hashing::curve_maps::{swu::SWUConfig, wb::IsogenyMap},
     models::{
         short_weierstrass::{Affine, SWCurveConfig},
         CurveConfig,
@@ -74,12 +74,12 @@ const G2_GENERATOR_Y: Fq2 = Fq2::new(
     MontFp!("3300326318345570015758639333209189167876318321385223785506096497597561910823001330832964776707374262378602791224889")
 );
 
-impl SWUParams for SwuIsoParameters {
+impl SWUConfig for SwuIsoParameters {
     // ZETA = -(2 + u) as per IETF draft.
     const ZETA: Fq2 = Fq2::new(MontFp!("-2"), MontFp!("-1"));
 }
 
-pub const ISOGENY_MAP_TO_G2  : IsogenyMap<'_, SwuIsoParameters, g2::Parameters> = IsogenyMap {
+pub const ISOGENY_MAP_TO_G2  : IsogenyMap<'_, SwuIsoParameters, g2::Config> = IsogenyMap {
     x_map_numerator: &[
         Fq2::new(
                    MontFp!("889424345604814976315064405719089812568196182208668418962679585805340366775741747653930584250892369786198727235542"),

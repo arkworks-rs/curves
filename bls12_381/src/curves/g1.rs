@@ -1,7 +1,7 @@
 use ark_ec::{
     bls12,
     bls12::Bls12Config,
-    hashing::curve_maps::wb::{IsogenyMap, WBParams},
+    hashing::curve_maps::wb::{IsogenyMap, WBConfig},
     models::CurveConfig,
     short_weierstrass::{Affine, SWCurveConfig},
     AffineRepr, Group,
@@ -148,7 +148,7 @@ fn one_minus_x() -> Fr {
 }
 
 // Parameters from the [IETF draft v16, section E.2](https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-16.html#name-11-isogeny-map-for-bls12-381).
-impl WBParams for Parameters {
+impl WBConfig for Config {
     type IsogenousCurve = g1_swu_iso::SwuIsoParameters;
 
     const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> =

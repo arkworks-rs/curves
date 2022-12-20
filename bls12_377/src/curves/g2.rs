@@ -1,6 +1,6 @@
 use ark_ec::{
     bls12,
-    hashing::curve_maps::wb::{IsogenyMap, WBParams},
+    hashing::curve_maps::wb::{IsogenyMap, WBConfig},
     models::CurveConfig,
     short_weierstrass::SWCurveConfig,
 };
@@ -84,7 +84,7 @@ pub const G2_GENERATOR_Y_C0: Fq = MontFp!("6316029476829207320938136194393519890
 /// 149157405641012693445398062341192467754805999074082136895788947234480009303640899064710353187729182149407503257491
 pub const G2_GENERATOR_Y_C1: Fq = MontFp!("149157405641012693445398062341192467754805999074082136895788947234480009303640899064710353187729182149407503257491");
 
-impl WBParams for Parameters {
+impl WBConfig for Config {
     type IsogenousCurve = SwuIsoParameters;
 
     const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> = ISOGENY_MAP_TO_G2;

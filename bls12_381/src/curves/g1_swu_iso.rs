@@ -1,6 +1,6 @@
 use crate::{g1, Fq, Fr};
 use ark_ec::{
-    hashing::curve_maps::{swu::SWUParams, wb::IsogenyMap},
+    hashing::curve_maps::{swu::SWUConfig, wb::IsogenyMap},
     models::{
         short_weierstrass::{Affine, SWCurveConfig},
         CurveConfig,
@@ -53,12 +53,12 @@ impl SWCurveConfig for SwuIsoParameters {
 const G1_GENERATOR_X: Fq = MontFp!("1677416608493238977774703213729589714082762656433187746258164626835771660734158898989765932111853529350617333597651");
 const G1_GENERATOR_Y: Fq = MontFp!("1405098061573104639413728190240719229571583960971553962991897960445246185035342568402755187331334546673157015627211");
 
-impl SWUParams for SwuIsoParameters {
+impl SWUConfig for SwuIsoParameters {
     // ZETA = 0xb as per the IETF draft.
     const ZETA: Fq = MontFp!("11");
 }
 
-pub const ISOGENY_MAP_TO_G1 : IsogenyMap<'_, SwuIsoParameters, g1::Parameters, > = IsogenyMap {
+pub const ISOGENY_MAP_TO_G1 : IsogenyMap<'_, SwuIsoParameters, g1::Config, > = IsogenyMap {
     x_map_numerator : &[
         MontFp!("2712959285290305970661081772124144179193819192423276218370281158706191519995889425075952244140278856085036081760695"),
         MontFp!("3564859427549639835253027846704205725951033235539816243131874237388832081954622352624080767121604606753339903542203"),

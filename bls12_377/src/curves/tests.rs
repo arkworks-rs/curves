@@ -10,7 +10,7 @@ test_pairing!(pairing; crate::Bls12_377);
 mod test {
     use ark_ec::{
         hashing::{
-            curve_maps::wb::{WBMap, WBParams},
+            curve_maps::wb::{WBMap, WBConfig},
             map_to_curve_hasher::MapToCurveBasedHasher,
             HashToCurve,
         },
@@ -20,7 +20,7 @@ mod test {
     use ark_std::Zero;
 
     /// make a simple hash
-    fn wb_hash_arbitrary_string_to_curve<WBCurve: WBParams>() {
+    fn wb_hash_arbitrary_string_to_curve<WBCurve: WBConfig>() {
         use sha2::Sha256;
         let test_wb_to_curve_hasher = MapToCurveBasedHasher::<
             Projective<WBCurve>,
