@@ -32,6 +32,7 @@ members = [
 
     "secp256k1",
     "secp256r1",
+    "secp384r1",
     "secq256k1",
     
     "curve25519",
