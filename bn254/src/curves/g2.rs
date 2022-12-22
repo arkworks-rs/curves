@@ -6,12 +6,12 @@ use ark_ff::{Field, MontFp, Zero};
 
 use crate::{Fq, Fq2, Fr};
 
-pub type G2Affine = Affine<Parameters>;
+pub type G2Affine = Affine<Config>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct Parameters;
+pub struct Config;
 
-impl CurveConfig for Parameters {
+impl CurveConfig for Config {
     type BaseField = Fq2;
     type ScalarField = Fr;
 
@@ -30,7 +30,7 @@ impl CurveConfig for Parameters {
         MontFp!("10944121435919637613327163357776759465618812564592884533313067514031822496649");
 }
 
-impl SWCurveConfig for Parameters {
+impl SWCurveConfig for Config {
     /// COEFF_A = [0, 0]
     const COEFF_A: Fq2 = Fq2::ZERO;
 

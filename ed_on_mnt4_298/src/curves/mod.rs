@@ -9,13 +9,13 @@ use crate::{fq::Fq, fr::Fr};
 #[cfg(test)]
 mod tests;
 
-pub type EdwardsAffine = Affine<EdwardsParameters>;
-pub type EdwardsProjective = Projective<EdwardsParameters>;
+pub type EdwardsAffine = Affine<EdwardsConfig>;
+pub type EdwardsProjective = Projective<EdwardsConfig>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
-pub struct EdwardsParameters;
+pub struct EdwardsConfig;
 
-impl CurveConfig for EdwardsParameters {
+impl CurveConfig for EdwardsConfig {
     type BaseField = Fq;
     type ScalarField = Fr;
 
@@ -34,7 +34,7 @@ impl CurveConfig for EdwardsParameters {
 // R for Fq: 223364648326281414938801705359223029554923725549792420683051274872200260503540791531766876
 // R for Fr: 104384076783966083500464392945960916666734135485183910065100558776489954102951241798239545
 
-impl TECurveConfig for EdwardsParameters {
+impl TECurveConfig for EdwardsConfig {
     /// COEFF_A = -1
     /// Needs to be in the Montgomery residue form in Fq
     /// I.e., -1 * R for Fq
@@ -50,7 +50,7 @@ impl TECurveConfig for EdwardsParameters {
     /// Generated randomly
     const GENERATOR: EdwardsAffine = EdwardsAffine::new_unchecked(GENERATOR_X, GENERATOR_Y);
 
-    type MontCurveConfig = EdwardsParameters;
+    type MontCurveConfig = EdwardsConfig;
 
     /// Multiplication by `a` is just negation.
     #[inline(always)]
@@ -59,14 +59,14 @@ impl TECurveConfig for EdwardsParameters {
     }
 }
 
-impl MontCurveConfig for EdwardsParameters {
+impl MontCurveConfig for EdwardsConfig {
     /// COEFF_A = 203563247015667910991582090642011229452721346107806307863040223071914240315202967004285204
     const COEFF_A: Fq = MontFp!("203563247015667910991582090642011229452721346107806307863040223071914240315202967004285204");
 
     /// COEFF_B = 272359039153593414761767159011037222092403532445017207690227512667250406992205523555677931
     const COEFF_B: Fq = MontFp!("272359039153593414761767159011037222092403532445017207690227512667250406992205523555677931");
 
-    type TECurveConfig = EdwardsParameters;
+    type TECurveConfig = EdwardsConfig;
 }
 
 /// GENERATOR_X =
