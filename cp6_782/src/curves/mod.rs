@@ -129,19 +129,19 @@ impl CP6_782 {
 
         // elt_q3 = elt^(q^3)
         let mut elt_q3 = elt.clone();
-        elt_q3.frobenius_map(3);
+        elt_q3.frobenius_map_in_place(3);
         // elt_q3_over_elt = elt^(q^3-1)
         let elt_q3_over_elt = elt_q3 * elt_inv;
         // alpha = elt^((q^3-1) * q)
         let mut alpha = elt_q3_over_elt.clone();
-        alpha.frobenius_map(1);
+        alpha.frobenius_map_in_place(1);
         // beta = elt^((q^3-1)*(q+1)
         alpha * &elt_q3_over_elt
     }
 
     fn final_exponentiation_last(elt: &Fq6, elt_inv: &Fq6) -> Fq6 {
         let mut elt_q = elt.clone();
-        elt_q.frobenius_map(1);
+        elt_q.frobenius_map_in_place(1);
 
         let w1_part = elt_q.cyclotomic_exp(&FINAL_EXPONENT_LAST_CHUNK_W1);
         let w0_part = if FINAL_EXPONENT_LAST_CHUNK_W0_IS_NEG {
