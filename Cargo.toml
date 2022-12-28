@@ -62,11 +62,3 @@ lto = "thin"
 incremental = true
 debug-assertions = true
 debug = true
-
-[patch.crates-io]
-ark-ff = { git = "https://github.com/arkworks-rs/algebra/", branch = "release-0.4" }
-ark-ec = { git = "https://github.com/arkworks-rs/algebra/", branch = "release-0.4" }
-ark-poly = { git = "https://github.com/arkworks-rs/algebra/", branch = "release-0.4" }
-ark-serialize = { git = "https://github.com/arkworks-rs/algebra/", branch = "release-0.4" }
-ark-algebra-test-templates = { git = "https://github.com/arkworks-rs/algebra/", branch = "release-0.4" }
-ark-r1cs-std = { git = "https://github.com/arkworks-rs/r1cs-std/", branch = "release-0.4" }
