@@ -1,6 +1,6 @@
 [package]
 name = "ark-cp6-782"
-version = "0.4.0-alpha.1"
+version = "0.4.0-alpha.2"
 authors = [ "arkworks contributors" ]
 description = "The CP6-782 pairing-friendly elliptic curve"
 homepage = "https://arkworks.rs"

@@ -1,6 +1,6 @@
 [package]
 name = "ark-ed-on-bw6-761"
-version = "0.4.0-alpha.1"
+version = "0.4.0-alpha.2"
 authors = [ "arkworks contributors" ]
 description = "A Twisted Edwards curve defined over the scalar field of the BW6-761 curve"
 homepage = "https://arkworks.rs"

@@ -1,6 +1,6 @@
 [package]
 name = "ark-mnt6-753"
-version = "0.4.0-alpha.1"
+version = "0.4.0-alpha.2"
 authors = [ "arkworks contributors" ]
 description = "The MNT6-753 pairing-friendly elliptic curve"
 homepage = "https://arkworks.rs"
