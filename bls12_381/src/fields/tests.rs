@@ -1601,7 +1601,7 @@ fn test_fq2_doubling() {
 }
 
 #[test]
-fn test_fq2_frobenius_map() {
+fn test_fq2_frobenius_map_in_place() {
     let mut a = Fq2::new(
         Fq::from(BigInt::new([
             0x2d0078036923ffc7,
@@ -1620,7 +1620,7 @@ fn test_fq2_frobenius_map() {
             0x12d1137b8a6a837,
         ])),
     );
-    a.frobenius_map(0);
+    a.frobenius_map_in_place(0);
     assert_eq!(
         a,
         Fq2::new(
@@ -1642,7 +1642,7 @@ fn test_fq2_frobenius_map() {
             ])),
         )
     );
-    a.frobenius_map(1);
+    a.frobenius_map_in_place(1);
     assert_eq!(
         a,
         Fq2::new(
@@ -1664,7 +1664,7 @@ fn test_fq2_frobenius_map() {
             ])),
         )
     );
-    a.frobenius_map(1);
+    a.frobenius_map_in_place(1);
     assert_eq!(
         a,
         Fq2::new(
@@ -1686,7 +1686,7 @@ fn test_fq2_frobenius_map() {
             ])),
         )
     );
-    a.frobenius_map(2);
+    a.frobenius_map_in_place(2);
     assert_eq!(
         a,
         Fq2::new(
