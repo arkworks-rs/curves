@@ -1,10 +1,13 @@
 use ark_ec::{
+    bls12::Bls12Config,
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
-    short_weierstrass::Affine,
+    short_weierstrass::{Affine, Projective},
+    AffineRepr, CurveGroup, Group,
 };
 use ark_ff::{Field, MontFp, Zero};
+use ark_std::ops::Neg;
 
-use crate::{g1, Fq, Fq2, Fr};
+use crate::*;
 
 pub type G2Affine = Affine<Config>;
 #[derive(Clone, Default, PartialEq, Eq)]
@@ -56,6 +59,40 @@ impl SWCurveConfig for Config {
     fn mul_by_a(_: Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
     }
+
+    #[inline]
+    fn clear_cofactor(p: &G2Affine) -> G2Affine {
+        // Based on Section 4.1 of https://eprint.iacr.org/2017/419.pdf
+        // [h(ψ)]P = [x^2 − x − 1]P + [x − 1]ψ(P) + (ψ^2)(2P)
+
+        // x = -15132376222941642752
+        // When multiplying, use -c1 instead, and then negate the result. That's much
+        // more efficient, since the scalar -c1 has less limbs and a much lower Hamming
+        // weight.
+        let x: &'static [u64] = crate::Config::X;
+        let p_projective = p.into_group();
+
+        // [x]P
+        let x_p = Config::mul_affine(p, &x);
+        // ψ(P)
+        let psi_p = p_power_endomorphism(&p);
+        // (ψ^2)(2P)
+        let mut psi2_p2 = double_p_power_endomorphism(&p_projective.double());
+
+        // tmp = [x]P + ψ(P)
+        let mut tmp = x_p.clone();
+        tmp += &psi_p;
+
+        // tmp2 = [x^2]P + [x]ψ(P)
+        let mut tmp2: Projective<Config> = tmp;
+        tmp2 = tmp2.mul_bigint(x);
+
+        // add up all the terms
+        psi2_p2 += tmp2;
+        psi2_p2 -= x_p;
+        psi2_p2 += &-psi_p;
+        (psi2_p2 - p_projective).into_affine()
+    }
 }
 
 pub const G2_GENERATOR_X: Fq2 = Fq2::new(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
@@ -76,3 +113,96 @@ pub const G2_GENERATOR_Y_C0: Fq = MontFp!("6316029476829207320938136194393519890
 /// G2_GENERATOR_Y_C1 =
 /// 149157405641012693445398062341192467754805999074082136895788947234480009303640899064710353187729182149407503257491
 pub const G2_GENERATOR_Y_C1: Fq = MontFp!("149157405641012693445398062341192467754805999074082136895788947234480009303640899064710353187729182149407503257491");
+
+// psi(x,y) = (x**p * PSI_X, y**p * PSI_Y) is the Frobenius composed
+// with the quadratic twist and its inverse
+
+// PSI_X = 1/(u+1)^((p-1)/3)
+pub const P_POWER_ENDOMORPHISM_COEFF_0 : Fq2 = Fq2::new(
+    Fq::ZERO,
+    MontFp!(
+                "4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939437"
+    )
+);
+
+// PSI_Y = 1/(u+1)^((p-1)/2)
+pub const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = Fq2::new(
+    MontFp!(
+                "2973677408986561043442465346520108879172042883009249989176415018091420807192182638567116318576472649347015917690530"),
+    MontFp!(
+                "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
+);
+
+pub const DOUBLE_P_POWER_ENDOMORPHISM: Fq2 = Fq2::new(
+    MontFp!("4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436"),
+    Fq::ZERO
+);
+
+pub fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
+    // The p-power endomorphism for G2 is defined as follows:
+    // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1).
+    //    To map a point (x, y) in E' to (s, t) in E,
+    //    one set s = x / ((u+1) ^ (1/3)), t = y / ((u+1) ^ (1/2)),
+    //    because E: y^2 = x^3 + 4.
+    // 2. Apply the Frobenius endomorphism (s, t) => (s', t'),
+    //    another point on curve E, where s' = s^p, t' = t^p.
+    // 3. Map the point from E back to E'; that is,
+    //    one set x' = s' * ((u+1) ^ (1/3)), y' = t' * ((u+1) ^ (1/2)).
+    //
+    // To sum up, it maps
+    // (x,y) -> (x^p / ((u+1)^((p-1)/3)), y^p / ((u+1)^((p-1)/2)))
+    // as implemented in the code as follows.
+
+    let mut res = *p;
+    res.x.frobenius_map_in_place(1);
+    res.y.frobenius_map_in_place(1);
+
+    let tmp_x = res.x.clone();
+    res.x.c0 = -P_POWER_ENDOMORPHISM_COEFF_0.c1 * &tmp_x.c1;
+    res.x.c1 = P_POWER_ENDOMORPHISM_COEFF_0.c1 * &tmp_x.c0;
+    res.y *= P_POWER_ENDOMORPHISM_COEFF_1;
+
+    res
+}
+
+/// For a p-power endomorphism psi(P), compute psi(psi(P))
+pub fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
+    let mut res = *p;
+
+    res.x *= DOUBLE_P_POWER_ENDOMORPHISM;
+    res.y = res.y.neg();
+
+    res
+}
+
+#[cfg(test)]
+mod test {
+
+    use super::*;
+    use ark_std::{rand::Rng, UniformRand};
+
+    fn sample_unchecked() -> Affine<g2::Config> {
+        let mut rng = ark_std::test_rng();
+        loop {
+            let x1 = Fq::rand(&mut rng);
+            let x2 = Fq::rand(&mut rng);
+            let greatest = rng.gen();
+            let x = Fq2::new(x1, x2);
+
+            if let Some(p) = Affine::get_point_from_x_unchecked(x, greatest) {
+                return p;
+            }
+        }
+    }
+
+    #[test]
+    fn test_cofactor_clearing() {
+        const SAMPLES: usize = 10;
+        for _ in 0..SAMPLES {
+            let p: Affine<g2::Config> = sample_unchecked();
+            let p = p.clear_cofactor();
+            assert!(p.is_on_curve());
+            assert!(p.is_in_correct_subgroup_assuming_on_curve());
+        }
+    }
+}
