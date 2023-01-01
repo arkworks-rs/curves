@@ -196,6 +196,16 @@ mod test {
     }
 
     #[test]
+    fn test_psi_2() {
+        let p = sample_unchecked();
+        let psi_p = p_power_endomorphism(&p);
+        let psi2_p_composed = p_power_endomorphism(&psi_p);
+        let psi2_p_optimised = double_p_power_endomorphism(&p.into());
+
+        assert_eq!(psi2_p_composed, psi2_p_optimised);
+    }
+
+    #[test]
     fn test_cofactor_clearing() {
         let h_eff = &[
             0x1e34800000000000,
