@@ -73,14 +73,14 @@ impl SWCurveConfig for Config {
         let p_projective = p.into_group();
 
         // [x]P
-        let x_p = Config::mul_affine(p, &x);
+        let x_p = Config::mul_affine(p, x);
         // ψ(P)
-        let psi_p = p_power_endomorphism(&p);
+        let psi_p = p_power_endomorphism(p);
         // (ψ^2)(2P)
         let mut psi2_p2 = double_p_power_endomorphism(&p_projective.double());
 
         // tmp = [x]P + ψ(P)
-        let mut tmp = x_p.clone();
+        let mut tmp = x_p;
         tmp += &psi_p;
 
         // tmp2 = [x^2]P + [x]ψ(P)
