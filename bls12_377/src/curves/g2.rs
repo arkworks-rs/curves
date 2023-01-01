@@ -131,9 +131,8 @@ const DOUBLE_P_POWER_ENDOMORPHISM_COEFF_0: Fq2 = Fq2::new(
         Fq::ZERO
     );
 
-/// psi(x,y) = (x**p * PSI_X, y**p * PSI_Y) is the Frobenius composed
-/// with the quadratic twist and its inverse
-pub fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
+/// psi(x,y) is the untwist-Frobenius-twist endomorhism on E'(Fq2)
+fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
     // The p-power endomorphism for G2 is defined as follows:
     // 1. Note that G2 is defined on curve E': y^2 = x^3 + 1/u.
     //    To map a point (x, y) in E' to (s, t) in E,
@@ -159,7 +158,7 @@ pub fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
 }
 
 /// For a p-power endomorphism psi(P), compute psi(psi(P))
-pub fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
+fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
     // p_power_endomorphism(&p_power_endomorphism(&p.into_affine())).into()
     let mut res = *p;
 
