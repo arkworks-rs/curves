@@ -204,9 +204,6 @@ pub const G2_GENERATOR_Y_C0: Fq = MontFp!("1985150602287291935568054521177171638
 /// 927553665492332455747201965776037880757740193453592970025027978793976877002675564980949289727957565575433344219582
 pub const G2_GENERATOR_Y_C1: Fq = MontFp!("927553665492332455747201965776037880757740193453592970025027978793976877002675564980949289727957565575433344219582");
 
-// psi(x,y) = (x**p * PSI_X, y**p * PSI_Y) is the Frobenius composed
-// with the quadratic twist and its inverse
-
 // PSI_X = 1/(u+1)^((p-1)/3)
 const P_POWER_ENDOMORPHISM_COEFF_0 : Fq2 = Fq2::new(
     Fq::ZERO,
@@ -229,16 +226,17 @@ const DOUBLE_P_POWER_ENDOMORPHISM_COEFF_0: Fq2 = Fq2::new(
     Fq::ZERO
 );
 
-pub fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
+/// psi(P) is the untwist-Frobenius-twist endomorhism on E'(Fq2)
+fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
     // The p-power endomorphism for G2 is defined as follows:
     // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1).
     //    To map a point (x, y) in E' to (s, t) in E,
-    //    one set s = x / ((u+1) ^ (1/3)), t = y / ((u+1) ^ (1/2)),
+    //    set s = x / ((u+1) ^ (1/3)), t = y / ((u+1) ^ (1/2)),
     //    because E: y^2 = x^3 + 4.
     // 2. Apply the Frobenius endomorphism (s, t) => (s', t'),
     //    another point on curve E, where s' = s^p, t' = t^p.
     // 3. Map the point from E back to E'; that is,
-    //    one set x' = s' * ((u+1) ^ (1/3)), y' = t' * ((u+1) ^ (1/2)).
+    //    set x' = s' * ((u+1) ^ (1/3)), y' = t' * ((u+1) ^ (1/2)).
     //
     // To sum up, it maps
     // (x,y) -> (x^p / ((u+1)^((p-1)/3)), y^p / ((u+1)^((p-1)/2)))
@@ -257,7 +255,7 @@ pub fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
 }
 
 /// For a p-power endomorphism psi(P), compute psi(psi(P))
-pub fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
+fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
     let mut res = *p;
 
     res.x *= DOUBLE_P_POWER_ENDOMORPHISM_COEFF_0;
