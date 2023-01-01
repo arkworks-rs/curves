@@ -114,52 +114,49 @@ pub const G2_GENERATOR_Y_C0: Fq = MontFp!("6316029476829207320938136194393519890
 /// 149157405641012693445398062341192467754805999074082136895788947234480009303640899064710353187729182149407503257491
 pub const G2_GENERATOR_Y_C1: Fq = MontFp!("149157405641012693445398062341192467754805999074082136895788947234480009303640899064710353187729182149407503257491");
 
-// psi(x,y) = (x**p * PSI_X, y**p * PSI_Y) is the Frobenius composed
-// with the quadratic twist and its inverse
-
-// PSI_X = 1/(u+1)^((p-1)/3)
-pub const P_POWER_ENDOMORPHISM_COEFF_0 : Fq2 = Fq2::new(
+// PSI_X = u^((p-1)/3)
+const P_POWER_ENDOMORPHISM_COEFF_0 : Fq2 = Fq2::new(
+    MontFp!(
+        "80949648264912719408558363140637477264845294720710499478137287262712535938301461879813459410946"
+    ),
     Fq::ZERO,
-    MontFp!(
-                "4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939437"
-    )
 );
 
-// PSI_Y = 1/(u+1)^((p-1)/2)
-pub const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = Fq2::new(
+// PSI_Y = u^((p-1)/2)
+const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = Fq2::new(
     MontFp!(
-                "2973677408986561043442465346520108879172042883009249989176415018091420807192182638567116318576472649347015917690530"),
-    MontFp!(
-                "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
-);
+        "216465761340224619389371505802605247630151569547285782856803747159100223055385581585702401816380679166954762214499"),
+        Fq::ZERO,
+    );
 
-pub const DOUBLE_P_POWER_ENDOMORPHISM: Fq2 = Fq2::new(
-    MontFp!("4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436"),
-    Fq::ZERO
-);
+// PSI_2_X = u^((p^2 - 1)/3)
+const DOUBLE_P_POWER_ENDOMORPHISM_COEFF_0: Fq2 = Fq2::new(
+        MontFp!("80949648264912719408558363140637477264845294720710499478137287262712535938301461879813459410945"),
+        Fq::ZERO
+    );
 
+/// psi(x,y) = (x**p * PSI_X, y**p * PSI_Y) is the Frobenius composed
+/// with the quadratic twist and its inverse
 pub fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
     // The p-power endomorphism for G2 is defined as follows:
-    // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1).
+    // 1. Note that G2 is defined on curve E': y^2 = x^3 + 1/u.
     //    To map a point (x, y) in E' to (s, t) in E,
-    //    one set s = x / ((u+1) ^ (1/3)), t = y / ((u+1) ^ (1/2)),
-    //    because E: y^2 = x^3 + 4.
+    //    one set s = x * (u ^ (1/3)), t = y * (u ^ (1/2)),
+    //    because E: y^2 = x^3 + 1.
     // 2. Apply the Frobenius endomorphism (s, t) => (s', t'),
     //    another point on curve E, where s' = s^p, t' = t^p.
     // 3. Map the point from E back to E'; that is,
-    //    one set x' = s' * ((u+1) ^ (1/3)), y' = t' * ((u+1) ^ (1/2)).
+    //    one set x' = s' / ((u) ^ (1/3)), y' = t' / ((u) ^ (1/2)).
     //
     // To sum up, it maps
-    // (x,y) -> (x^p / ((u+1)^((p-1)/3)), y^p / ((u+1)^((p-1)/2)))
+    // (x,y) -> (x^p * (u ^ ((p-1)/3)), y^p * (u ^ ((p-1)/2)))
     // as implemented in the code as follows.
 
     let mut res = *p;
     res.x.frobenius_map_in_place(1);
     res.y.frobenius_map_in_place(1);
 
-    let tmp_x = res.x.clone();
-    res.x.c0 = -P_POWER_ENDOMORPHISM_COEFF_0.c1 * &tmp_x.c1;
-    res.x.c1 = P_POWER_ENDOMORPHISM_COEFF_0.c1 * &tmp_x.c0;
+    res.x *= P_POWER_ENDOMORPHISM_COEFF_0;
     res.y *= P_POWER_ENDOMORPHISM_COEFF_1;
 
     res
@@ -167,9 +164,11 @@ pub fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
 
 /// For a p-power endomorphism psi(P), compute psi(psi(P))
 pub fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
+    // p_power_endomorphism(&p_power_endomorphism(&p.into_affine())).into()
     let mut res = *p;
 
-    res.x *= DOUBLE_P_POWER_ENDOMORPHISM;
+    res.x *= DOUBLE_P_POWER_ENDOMORPHISM_COEFF_0;
+    // u^((p^2 - 1)/2) == -1
     res.y = res.y.neg();
 
     res
