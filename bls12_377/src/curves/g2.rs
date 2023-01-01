@@ -197,12 +197,26 @@ mod test {
 
     #[test]
     fn test_cofactor_clearing() {
+        let h_eff = &[
+            0x1e34800000000000,
+            0xcf664765b0000003,
+            0x8e8e73ad8a538800,
+            0x78ba279637388559,
+            0xb85860aaaad29276,
+            0xf7ee7c4b03103b45,
+            0x8f6ade35a5c7d769,
+            0xa951764c46f4edd2,
+            0x53648d3d9502abfb,
+            0x1f60243677e306,
+        ];
         const SAMPLES: usize = 10;
         for _ in 0..SAMPLES {
             let p: Affine<g2::Config> = sample_unchecked();
-            let p = p.clear_cofactor();
-            assert!(p.is_on_curve());
-            assert!(p.is_in_correct_subgroup_assuming_on_curve());
+            let optimised = p.clear_cofactor();
+            let naive = g2::Config::mul_affine(&p, h_eff);
+            assert_eq!(optimised.into_group(), naive);
+            assert!(optimised.is_on_curve());
+            assert!(optimised.is_in_correct_subgroup_assuming_on_curve());
         }
     }
 }
