@@ -65,10 +65,6 @@ impl SWCurveConfig for Config {
         // Based on Section 4.1 of https://eprint.iacr.org/2017/419.pdf
         // [h(ψ)]P = [x^2 − x − 1]P + [x − 1]ψ(P) + (ψ^2)(2P)
 
-        // x = -15132376222941642752
-        // When multiplying, use -c1 instead, and then negate the result. That's much
-        // more efficient, since the scalar -c1 has less limbs and a much lower Hamming
-        // weight.
         let x: &'static [u64] = crate::Config::X;
         let p_projective = p.into_group();
 
