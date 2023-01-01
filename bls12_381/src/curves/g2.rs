@@ -265,7 +265,21 @@ pub fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config>
 mod test {
 
     use super::*;
-    use ark_std::UniformRand;
+    use ark_std::{rand::Rng, UniformRand};
+
+    fn sample_unchecked() -> Affine<g2::Config> {
+        let mut rng = ark_std::test_rng();
+        loop {
+            let x1 = Fq::rand(&mut rng);
+            let x2 = Fq::rand(&mut rng);
+            let greatest = rng.gen();
+            let x = Fq2::new(x1, x2);
+
+            if let Some(p) = Affine::get_point_from_x_unchecked(x, greatest) {
+                return p;
+            }
+        }
+    }
 
     #[test]
     fn test_cofactor_clearing() {
@@ -284,13 +298,14 @@ mod test {
             0xbc69f08f2ee75b3,
         ];
 
-        let mut rng = ark_std::test_rng();
         const SAMPLES: usize = 10;
         for _ in 0..SAMPLES {
-            let p = Affine::<g2::Config>::rand(&mut rng);
-            let optimised = p.clear_cofactor().into_group();
+            let p: Affine<g2::Config> = sample_unchecked();
+            let optimised = p.clear_cofactor();
             let naive = g2::Config::mul_affine(&p, h_eff);
-            assert_eq!(optimised, naive);
+            assert_eq!(optimised.into_group(), naive);
+            assert!(optimised.is_on_curve());
+            assert!(optimised.is_in_correct_subgroup_assuming_on_curve());
         }
     }
 }
