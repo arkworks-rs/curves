@@ -1,12 +1,15 @@
-use ark_ec::models::{
-    short_weierstrass::{Affine as SWAffine, SWCurveConfig},
-    twisted_edwards::{
-        Affine as TEAffine, MontCurveConfig, Projective as TEProjective, TECurveConfig,
+use ark_ec::{
+    bls12::Bls12Config,
+    models::{
+        short_weierstrass::{Affine as SWAffine, SWCurveConfig},
+        twisted_edwards::{
+            Affine as TEAffine, MontCurveConfig, Projective as TEProjective, TECurveConfig,
+        },
     },
     CurveConfig,
 };
-use ark_ff::{Field, MontFp, Zero};
-use core::ops::Neg;
+use ark_ff::{Field, MontFp, PrimeField, Zero};
+use ark_std::{ops::Neg, One};
 
 use crate::{Fq, Fr};
 
@@ -39,6 +42,20 @@ impl SWCurveConfig for Config {
     fn mul_by_a(_: Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
     }
+
+    #[inline]
+    fn clear_cofactor(p: &G1SWAffine) -> G1SWAffine {
+        // Using the effective cofactor.
+        //
+        // It is enough to multiply by (x - 1), instead of (x - 1)^2 / 3
+        let h_eff = x_minus_one().into_bigint();
+        <Config as SWCurveConfig>::mul_affine(p, h_eff.as_ref()).into()
+    }
+}
+
+fn x_minus_one() -> Fr {
+    const X: Fr = Fr::from_sign_and_limbs(!crate::Config::X_IS_NEGATIVE, crate::Config::X);
+    X - Fr::one()
 }
 
 pub type G1SWAffine = SWAffine<Config>;
@@ -209,3 +226,34 @@ pub const TE_GENERATOR_X: Fq = MontFp!("7122256953170913722937026889632370569028
 /// TE_GENERATOR_Y =
 /// 6177051365529633638563236407038680211609544222665285371549726196884440490905471891908272386851767077598415378235
 pub const TE_GENERATOR_Y: Fq = MontFp!("6177051365529633638563236407038680211609544222665285371549726196884440490905471891908272386851767077598415378235");
+
+#[cfg(test)]
+mod test {
+
+    use super::*;
+    use crate::g1;
+    use ark_std::{rand::Rng, UniformRand};
+
+    fn sample_unchecked() -> SWAffine<g1::Config> {
+        let mut rng = ark_std::test_rng();
+        loop {
+            let x = Fq::rand(&mut rng);
+            let greatest = rng.gen();
+
+            if let Some(p) = SWAffine::get_point_from_x_unchecked(x, greatest) {
+                return p;
+            }
+        }
+    }
+
+    #[test]
+    fn test_cofactor_clearing() {
+        const SAMPLES: usize = 100;
+        for _ in 0..SAMPLES {
+            let p: SWAffine<g1::Config> = sample_unchecked();
+            let p = <Config as SWCurveConfig>::clear_cofactor(&p);
+            assert!(p.is_on_curve());
+            assert!(p.is_in_correct_subgroup_assuming_on_curve());
+        }
+    }
+}
