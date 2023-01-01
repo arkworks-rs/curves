@@ -64,7 +64,7 @@ pub const G1_GENERATOR_X: Fq = MontFp!("1838986401365805123165300454709988316917
 pub const G1_GENERATOR_Y: Fq = MontFp!("69018534046895515891776145953191511526693172354818719412306559690461416836925400134233128432719372819569406562974");
 
 impl SWUConfig for SwuIsoConfig {
-    const ZETA: Fq = MontFp!("15"); // arbitatry primitive root of unity (element)
+    const ZETA: Fq = MontFp!("-11"); // arbitatry primitive root of unity (element)
 }
 
 pub const ISOGENY_MAP_TO_G1 : IsogenyMap<'_, SwuIsoConfig, g1::Config, > = IsogenyMap {
