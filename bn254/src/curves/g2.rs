@@ -1,5 +1,6 @@
 use ark_ec::{
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
+    scalar_mul::glv::GLVConfig,
     short_weierstrass::Affine,
 };
 use ark_ff::{Field, MontFp, Zero};
@@ -50,6 +51,30 @@ impl SWCurveConfig for Config {
     }
 }
 
+impl GLVConfig for Config {
+    const COEFFS_ENDOMORPHISM: &'static [Self::BaseField] = &[Fq2::new(
+        MontFp!("21888242871839275220042445260109153167277707414472061641714758635765020556616"),
+        Fq::ZERO,
+    )];
+
+    const LAMBDA: Self::ScalarField =
+        MontFp!("4407920970296243842393367215006156084916469457145843978461");
+
+    const COEFF_N: [<Self as CurveConfig>::ScalarField; 4] = [
+        MontFp!("147946756881789319010696353538189108491"),
+        MontFp!("9931322734385697763"),
+        MontFp!("9931322734385697763"),
+        MontFp!("147946756881789319000765030803803410728"),
+    ];
+    const SGN_N: [bool; 4] = [false, false, true, false];
+
+    fn endomorphism(p: &Affine<Self>) -> Affine<Self> {
+        let mut res = (*p).clone();
+        res.x *= Self::COEFFS_ENDOMORPHISM[0];
+        res
+    }
+}
+
 pub const G2_GENERATOR_X: Fq2 = Fq2::new(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
 pub const G2_GENERATOR_Y: Fq2 = Fq2::new(G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
 
@@ -72,3 +97,36 @@ pub const G2_GENERATOR_Y_C0: Fq =
 /// 4082367875863433681332203403145435568316851327593401208105741076214120093531
 pub const G2_GENERATOR_Y_C1: Fq =
     MontFp!("4082367875863433681332203403145435568316851327593401208105741076214120093531");
+
+#[cfg(test)]
+mod test {
+
+    use std::time::Instant;
+
+    use crate::g2;
+
+    use super::*;
+    use ark_std::{test_rng, UniformRand};
+
+    #[test]
+    fn test_bench_glv() {
+        let mut rng = test_rng();
+        let p = Affine::<g2::Config>::rand(&mut rng);
+        let s = Fr::rand(&mut rng);
+        // test
+        let q = p * s;
+        let r = g2::Config::glv_mul(p, s);
+        assert_eq!(q, r);
+        // bench
+        let now = Instant::now();
+        for _ in 1..100 {
+            let _ = p * s;
+        }
+        println!("SM: {:?}", now.elapsed());
+        let now = Instant::now();
+        for _ in 1..100 {
+            let _ = g2::Config::glv_mul(p, s);
+        }
+        println!("GLV: {:?}", now.elapsed());
+    }
+}
