@@ -3,6 +3,7 @@ use ark_ec::{
     bls12,
     bls12::Bls12Config,
     models::CurveConfig,
+    scalar_mul::glv::GLVConfig,
     short_weierstrass::{Affine, SWCurveConfig},
     AffineRepr, Group,
 };
@@ -138,6 +139,29 @@ impl SWCurveConfig for Config {
     }
 }
 
+impl GLVConfig for Config {
+    const COEFFS_ENDOMORPHISM: &'static[Self::BaseField] = &[
+        MontFp!("793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350")
+    ];
+
+    const LAMBDA: Self::ScalarField =
+        MontFp!("52435875175126190479447740508185965837461563690374988244538805122978187051009");
+
+    const COEFF_N: [<Self as CurveConfig>::ScalarField; 4] = [
+        MontFp!("228988810152649578064853576960394133504"),
+        MontFp!("1"),
+        MontFp!("1"),
+        MontFp!("228988810152649578064853576960394133503"),
+    ];
+    const SGN_N: [bool; 4] = [true, true, false, true];
+
+    fn endomorphism(p: &Affine<Self>) -> Affine<Self> {
+        let mut res = (*p).clone();
+        res.x *= Self::COEFFS_ENDOMORPHISM[0];
+        res
+    }
+}
+
 fn one_minus_x() -> Fr {
     const X: Fr = Fr::from_sign_and_limbs(!crate::Config::X_IS_NEGATIVE, crate::Config::X);
     Fr::one() - X
@@ -166,8 +190,10 @@ pub fn endomorphism(p: &Affine<Config>) -> Affine<Config> {
 #[cfg(test)]
 mod test {
 
+    use std::time::Instant;
+
     use super::*;
-    use ark_std::{rand::Rng, UniformRand};
+    use ark_std::{rand::Rng, test_rng, UniformRand};
 
     fn sample_unchecked() -> Affine<g1::Config> {
         let mut rng = ark_std::test_rng();
@@ -190,5 +216,27 @@ mod test {
             assert!(p.is_on_curve());
             assert!(p.is_in_correct_subgroup_assuming_on_curve());
         }
+    }
+
+    #[test]
+    fn test_bench_glv() {
+        let mut rng = test_rng();
+        let p = Affine::<g1::Config>::rand(&mut rng);
+        let s = Fr::rand(&mut rng);
+        // test
+        let q = p * s;
+        let r = g1::Config::glv_mul(p, s);
+        assert_eq!(q, r);
+        // bench
+        let now = Instant::now();
+        for _ in 1..100 {
+            let _ = p * s;
+        }
+        println!("SM: {:?}", now.elapsed());
+        let now = Instant::now();
+        for _ in 1..100 {
+            let _ = g1::Config::glv_mul(p, s);
+        }
+        println!("GLV: {:?}", now.elapsed());
     }
 }
