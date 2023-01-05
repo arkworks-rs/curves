@@ -6,6 +6,7 @@ use ark_ec::{
             Affine as TEAffine, MontCurveConfig, Projective as TEProjective, TECurveConfig,
         },
     },
+    scalar_mul::glv::GLVConfig,
     CurveConfig,
 };
 use ark_ff::{Field, MontFp, PrimeField, Zero};
@@ -50,6 +51,29 @@ impl SWCurveConfig for Config {
         // It is enough to multiply by (x - 1), instead of (x - 1)^2 / 3
         let h_eff = x_minus_one().into_bigint();
         <Config as SWCurveConfig>::mul_affine(p, h_eff.as_ref()).into()
+    }
+}
+
+impl GLVConfig for Config {
+    const COEFFS_ENDOMORPHISM: &'static[Self::BaseField] = &[
+        MontFp!("258664426012969093929703085429980814127835149614277183275038967946009968870203535512256352201271898244626862047231")
+    ];
+
+    const LAMBDA: Self::ScalarField =
+        MontFp!("8444461749428370424248824938781546531284005582649182570233710176290576793600");
+
+    const COEFF_N: [<Self as CurveConfig>::ScalarField; 4] = [
+        MontFp!("91893752504881257701523279626832445441"),
+        MontFp!("1"),
+        MontFp!("1"),
+        MontFp!("91893752504881257701523279626832445440"),
+    ];
+    const SGN_N: [bool; 4] = [true, true, false, true];
+
+    fn endomorphism(p: &SWAffine<Self>) -> SWAffine<Self> {
+        let mut res = (*p).clone();
+        res.x *= Self::COEFFS_ENDOMORPHISM[0];
+        res
     }
 }
 
@@ -230,9 +254,11 @@ pub const TE_GENERATOR_Y: Fq = MontFp!("6177051365529633638563236407038680211609
 #[cfg(test)]
 mod test {
 
+    use std::time::Instant;
+
     use super::*;
     use crate::g1;
-    use ark_std::{rand::Rng, UniformRand};
+    use ark_std::{rand::Rng, test_rng, UniformRand};
 
     fn sample_unchecked() -> SWAffine<g1::Config> {
         let mut rng = ark_std::test_rng();
@@ -255,5 +281,27 @@ mod test {
             assert!(p.is_on_curve());
             assert!(p.is_in_correct_subgroup_assuming_on_curve());
         }
+    }
+
+    #[test]
+    fn test_bench_glv() {
+        let mut rng = test_rng();
+        let p = SWAffine::<g1::Config>::rand(&mut rng);
+        let s = Fr::rand(&mut rng);
+        // test
+        let q = p * s;
+        let r = g1::Config::glv_mul(p, s);
+        assert_eq!(q, r);
+        // bench
+        let now = Instant::now();
+        for _ in 1..100 {
+            let _ = p * s;
+        }
+        println!("SM: {:?}", now.elapsed());
+        let now = Instant::now();
+        for _ in 1..100 {
+            let _ = g1::Config::glv_mul(p, s);
+        }
+        println!("GLV: {:?}", now.elapsed());
     }
 }

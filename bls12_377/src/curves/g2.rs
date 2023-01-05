@@ -1,6 +1,7 @@
 use ark_ec::{
     bls12::Bls12Config,
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
+    scalar_mul::glv::GLVConfig,
     short_weierstrass::{Affine, Projective},
     AffineRepr, CurveGroup, Group,
 };
@@ -91,6 +92,31 @@ impl SWCurveConfig for Config {
     }
 }
 
+impl GLVConfig for Config {
+    const COEFFS_ENDOMORPHISM: &'static[Self::BaseField] = &[
+        Fq2::new(
+            MontFp!("258664426012969093929703085429980814127835149614277183275038967946009968870203535512256352201271898244626862047231"),
+            Fq::ZERO
+        )
+    ];
+
+    const LAMBDA: Self::ScalarField = MontFp!("91893752504881257701523279626832445440");
+
+    const COEFF_N: [<Self as CurveConfig>::ScalarField; 4] = [
+        MontFp!("91893752504881257701523279626832445440"),
+        MontFp!("1"),
+        MontFp!("1"),
+        MontFp!("91893752504881257701523279626832445441"),
+    ];
+    const SGN_N: [bool; 4] = [false, true, false, false];
+
+    fn endomorphism(p: &Affine<Self>) -> Affine<Self> {
+        let mut res = (*p).clone();
+        res.x *= Self::COEFFS_ENDOMORPHISM[0];
+        res
+    }
+}
+
 pub const G2_GENERATOR_X: Fq2 = Fq2::new(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);
 pub const G2_GENERATOR_Y: Fq2 = Fq2::new(G2_GENERATOR_Y_C0, G2_GENERATOR_Y_C1);
 
@@ -172,8 +198,10 @@ fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
 #[cfg(test)]
 mod test {
 
+    use std::time::Instant;
+
     use super::*;
-    use ark_std::{rand::Rng, UniformRand};
+    use ark_std::{rand::Rng, test_rng, UniformRand};
 
     fn sample_unchecked() -> Affine<g2::Config> {
         let mut rng = ark_std::test_rng();
@@ -222,5 +250,27 @@ mod test {
             assert!(optimised.is_on_curve());
             assert!(optimised.is_in_correct_subgroup_assuming_on_curve());
         }
+    }
+
+    #[test]
+    fn test_bench_glv() {
+        let mut rng = test_rng();
+        let p = Affine::<g2::Config>::rand(&mut rng);
+        let s = Fr::rand(&mut rng);
+        // test
+        let q = p * s;
+        let r = g2::Config::glv_mul(p, s);
+        assert_eq!(q, r);
+        // bench
+        let now = Instant::now();
+        for _ in 1..100 {
+            let _ = p * s;
+        }
+        println!("SM: {:?}", now.elapsed());
+        let now = Instant::now();
+        for _ in 1..100 {
+            let _ = g2::Config::glv_mul(p, s);
+        }
+        println!("GLV: {:?}", now.elapsed());
     }
 }
