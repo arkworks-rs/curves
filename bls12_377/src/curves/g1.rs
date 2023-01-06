@@ -1,7 +1,7 @@
 use ark_ec::{
     bls12::Bls12Config,
     models::{
-        short_weierstrass::{Affine as SWAffine, SWCurveConfig},
+        short_weierstrass::{Affine as SWAffine, Projective as SWProjective, SWCurveConfig},
         twisted_edwards::{
             Affine as TEAffine, MontCurveConfig, Projective as TEProjective, TECurveConfig,
         },
@@ -70,7 +70,7 @@ impl GLVConfig for Config {
     ];
     const SGN_N: [bool; 4] = [true, true, false, true];
 
-    fn endomorphism(p: &SWAffine<Self>) -> SWAffine<Self> {
+    fn endomorphism(p: &SWProjective<Self>) -> SWProjective<Self> {
         let mut res = (*p).clone();
         res.x *= Self::COEFFS_ENDOMORPHISM[0];
         res
@@ -286,7 +286,7 @@ mod test {
     #[test]
     fn test_bench_glv() {
         let mut rng = test_rng();
-        let p = SWAffine::<g1::Config>::rand(&mut rng);
+        let p = SWProjective::<g1::Config>::rand(&mut rng);
         let s = Fr::rand(&mut rng);
         // test
         let q = p * s;

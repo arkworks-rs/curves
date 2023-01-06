@@ -1,7 +1,7 @@
 use ark_ec::{
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
     scalar_mul::glv::GLVConfig,
-    short_weierstrass::Affine,
+    short_weierstrass::{Affine, Projective},
 };
 use ark_ff::{Field, MontFp, Zero};
 
@@ -55,7 +55,7 @@ impl GLVConfig for Config {
     ];
     const SGN_N: [bool; 4] = [false, true, false, false];
 
-    fn endomorphism(p: &Affine<Self>) -> Affine<Self> {
+    fn endomorphism(p: &Projective<Self>) -> Projective<Self> {
         let mut res = (*p).clone();
         res.x *= Self::COEFFS_ENDOMORPHISM[0];
         res
@@ -81,7 +81,7 @@ mod test {
     #[test]
     fn test_bench_glv() {
         let mut rng = test_rng();
-        let p = Affine::<g1::Config>::rand(&mut rng);
+        let p = Projective::<g1::Config>::rand(&mut rng);
         let s = Fr::rand(&mut rng);
         // test
         let q = p * s;
