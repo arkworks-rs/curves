@@ -1,10 +1,10 @@
 use ark_ec::{
     bls12,
     bls12::Bls12Config,
-    models::{short_weierstrass::SWCurveConfig, CurveConfig},
-    short_weierstrass::{Affine, Projective},
-    AffineRepr, CurveGroup, Group,
     hashing::curve_maps::wb::{IsogenyMap, WBConfig},
+    models::CurveConfig,
+    short_weierstrass::{Affine, Projective, SWCurveConfig},
+    AffineRepr, CurveGroup, Group,
 };
 
 use ark_ff::{Field, MontFp, Zero};
@@ -181,7 +181,6 @@ impl WBConfig for Config {
 
     const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> = ISOGENY_MAP_TO_G2;
 }
-
 
 #[cfg(test)]
 mod test {
