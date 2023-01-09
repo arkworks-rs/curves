@@ -211,7 +211,7 @@ pub mod fields {
                 let mut a = F::rand(&mut rng);
                 let mut a_gadget = AF::new_variable(ark_relations::ns!(cs, "a"), || Ok(a), mode)?;
                 a_gadget.frobenius_map_in_place(i)?;
-                a.frobenius_map(i);
+                a.frobenius_map_in_place(i);
 
                 assert_eq!(a_gadget.value()?, a);
             }
