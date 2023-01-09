@@ -182,11 +182,10 @@ impl GLVConfig for BandersnatchConfig {
         let t0 = Self::COEFFS_ENDOMORPHISM[4];
 
         // 44800xz²
-        let tmp1 = x * z2 * Self::COEFFS_ENDOMORPHISM[0];
-        // x²
-        let tmp2 = x2;
+        let tmp0 = z2 * Self::COEFFS_ENDOMORPHISM[0];
+        let tmp1 = x * tmp0;
         // (x² + 44800xz²)
-        let tmp3 = tmp2 + tmp1;
+        let tmp3 = x2 + tmp1;
         // (x² + 2 * 44800xz²)
         let tmp4 = tmp3 + tmp1;
 
@@ -194,9 +193,9 @@ impl GLVConfig for BandersnatchConfig {
         let num_x = u2 * (tmp3 + Self::COEFFS_ENDOMORPHISM[1] * z4);
         // num_y = u³ y * (x² + 2 * 44800xz² + t0 z⁴)
         let num_y = u3 * y * (tmp4 + t0 * z4);
-        let den = x + Self::COEFFS_ENDOMORPHISM[0] * z2;
+        let den = x + tmp0;
 
-        SWProjective::new(num_x * den, num_y * den, den * z)
+        SWProjective::new_unchecked(num_x * den, num_y * den, den * z)
     }
 }
 
@@ -210,12 +209,8 @@ mod test {
 
     #[test]
     fn test_bench_glv() {
-        // TODO THIS IS STILL SLOW. Look at the scalar decomposition?
-        println!("STILL SLOW HERE");
-
         let mut rng = test_rng();
         let p = SWProjective::rand(&mut rng);
-        println!("{:?}", p);
         let s = Fr::rand(&mut rng);
         // test
         let q = p * s;
