@@ -117,12 +117,6 @@ pub const G2_GENERATOR_Y_C0: Fq = MontFp!("6316029476829207320938136194393519890
 /// 149157405641012693445398062341192467754805999074082136895788947234480009303640899064710353187729182149407503257491
 pub const G2_GENERATOR_Y_C1: Fq = MontFp!("149157405641012693445398062341192467754805999074082136895788947234480009303640899064710353187729182149407503257491");
 
-impl WBConfig for Config {
-    type IsogenousCurve = SwuIsoConfig;
-
-    const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> = ISOGENY_MAP_TO_G2;
-}
-
 // PSI_X = u^((p-1)/3)
 const P_POWER_ENDOMORPHISM_COEFF_0 : Fq2 = Fq2::new(
     MontFp!(
@@ -180,6 +174,12 @@ fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
     res.y = res.y.neg();
 
     res
+}
+
+impl WBConfig for Config {
+    type IsogenousCurve = SwuIsoConfig;
+
+    const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> = ISOGENY_MAP_TO_G2;
 }
 
 #[cfg(test)]
