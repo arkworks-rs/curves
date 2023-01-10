@@ -16,7 +16,7 @@
 //!   0xffffffff00000001000000000000000000000000ffffffffffffffffffffffff
 //! * Scalar field: r =
 //!   0xffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551
-//! * a = 0xffffffff00000001000000000000000000000000fffffffffffffffffffffffc
+//! * a = -3
 //! * b = 0x5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b
 //! * Curve equation: y^2 = x^3 + ax + b
 
