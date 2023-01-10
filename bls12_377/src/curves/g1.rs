@@ -1,5 +1,7 @@
 use ark_ec::{
+    bls12,
     bls12::Bls12Config,
+    hashing::curve_maps::wb::{IsogenyMap, WBConfig},
     models::{
         short_weierstrass::{Affine as SWAffine, SWCurveConfig},
         twisted_edwards::{
@@ -11,7 +13,11 @@ use ark_ec::{
 use ark_ff::{Field, MontFp, PrimeField, Zero};
 use ark_std::{ops::Neg, One};
 
+use super::g1_swu_iso::{SwuIsoConfig, ISOGENY_MAP_TO_G1};
 use crate::{Fq, Fr};
+
+pub type G1Affine = bls12::G1Affine<crate::Config>;
+pub type G1Projective = bls12::G1Projective<crate::Config>;
 
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Config;
@@ -174,6 +180,12 @@ pub const G1_GENERATOR_X: Fq = MontFp!("8193799937315096423993825557346594823998
 /// G1_GENERATOR_Y =
 /// 241266749859715473739788878240585681733927191168601896383759122102112907357779751001206799952863815012735208165030
 pub const G1_GENERATOR_Y: Fq = MontFp!("241266749859715473739788878240585681733927191168601896383759122102112907357779751001206799952863815012735208165030");
+
+impl WBConfig for Config {
+    type IsogenousCurve = SwuIsoConfig;
+
+    const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> = ISOGENY_MAP_TO_G1;
+}
 
 // The generator for twisted Edward form is the same SW generator converted into
 // the normalized TE form (TE2).
