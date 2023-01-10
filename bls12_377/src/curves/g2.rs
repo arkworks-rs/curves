@@ -1,15 +1,22 @@
 use ark_ec::{
+    bls12,
     bls12::Bls12Config,
-    models::{short_weierstrass::SWCurveConfig, CurveConfig},
-    short_weierstrass::{Affine, Projective},
+    hashing::curve_maps::wb::{IsogenyMap, WBConfig},
+    models::CurveConfig,
+    short_weierstrass::{Affine, Projective, SWCurveConfig},
     AffineRepr, CurveGroup, Group,
 };
+
 use ark_ff::{Field, MontFp, Zero};
 use ark_std::ops::Neg;
 
 use crate::*;
 
-pub type G2Affine = Affine<Config>;
+use super::g2_swu_iso::{SwuIsoConfig, ISOGENY_MAP_TO_G2};
+
+pub type G2Affine = bls12::G2Affine<crate::Config>;
+pub type G2Projective = bls12::G2Projective<crate::Config>;
+
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Config;
 
@@ -167,6 +174,12 @@ fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
     res.y = res.y.neg();
 
     res
+}
+
+impl WBConfig for Config {
+    type IsogenousCurve = SwuIsoConfig;
+
+    const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> = ISOGENY_MAP_TO_G2;
 }
 
 #[cfg(test)]
