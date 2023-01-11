@@ -8,6 +8,8 @@ use crate::{Bls12_381, Fq, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projecti
 
 test_group!(g1; G1Projective; sw);
 test_group!(g2; G2Projective; sw);
+test_group!(g1_glv; G1Projective; glv);
+test_group!(g2_glv; G2Projective; glv);
 test_group!(pairing_output; ark_ec::pairing::PairingOutput<Bls12_381>; msm);
 test_pairing!(pairing; crate::Bls12_381);
 

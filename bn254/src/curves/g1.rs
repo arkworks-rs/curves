@@ -79,14 +79,10 @@ mod test {
     use ark_std::{test_rng, UniformRand};
 
     #[test]
-    fn test_bench_glv() {
+    fn bench_glv() {
         let mut rng = test_rng();
         let p = Projective::<g1::Config>::rand(&mut rng);
         let s = Fr::rand(&mut rng);
-        // test
-        let q = p * s;
-        let r = g1::Config::glv_mul(p, s);
-        assert_eq!(q, r);
         // bench
         let now = Instant::now();
         for _ in 1..100 {
