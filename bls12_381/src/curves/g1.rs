@@ -1,7 +1,7 @@
-use crate::*;
 use ark_ec::{
     bls12,
     bls12::Bls12Config,
+    hashing::curve_maps::wb::{IsogenyMap, WBConfig},
     models::CurveConfig,
     short_weierstrass::{Affine, SWCurveConfig},
     AffineRepr, Group,
@@ -10,8 +10,12 @@ use ark_ff::{Field, MontFp, PrimeField, Zero};
 use ark_serialize::{Compress, SerializationError};
 use ark_std::{ops::Neg, One};
 
-use crate::util::{
-    read_g1_compressed, read_g1_uncompressed, serialize_fq, EncodingFlags, G1_SERIALIZED_SIZE,
+use super::g1_swu_iso;
+use crate::{
+    util::{
+        read_g1_compressed, read_g1_uncompressed, serialize_fq, EncodingFlags, G1_SERIALIZED_SIZE,
+    },
+    Fq, Fr,
 };
 
 pub type G1Affine = bls12::G1Affine<crate::Config>;
@@ -143,6 +147,14 @@ fn one_minus_x() -> Fr {
     Fr::one() - X
 }
 
+// Parameters from the [IETF draft v16, section E.2](https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-16.html#name-11-isogeny-map-for-bls12-381).
+impl WBConfig for Config {
+    type IsogenousCurve = g1_swu_iso::SwuIsoConfig;
+
+    const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> =
+        g1_swu_iso::ISOGENY_MAP_TO_G1;
+}
+
 /// G1_GENERATOR_X =
 /// 3685416753713387016781088315183077757961620795782546409894578378688607592378376318836054947676345821548104185464507
 pub const G1_GENERATOR_X: Fq = MontFp!("3685416753713387016781088315183077757961620795782546409894578378688607592378376318836054947676345821548104185464507");
@@ -167,6 +179,7 @@ pub fn endomorphism(p: &Affine<Config>) -> Affine<Config> {
 mod test {
 
     use super::*;
+    use crate::g1;
     use ark_std::{rand::Rng, UniformRand};
 
     fn sample_unchecked() -> Affine<g1::Config> {

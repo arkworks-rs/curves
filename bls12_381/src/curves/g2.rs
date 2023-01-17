@@ -3,6 +3,7 @@ use ark_std::ops::Neg;
 use ark_ec::{
     bls12,
     bls12::Bls12Config,
+    hashing::curve_maps::wb::{IsogenyMap, WBConfig},
     models::CurveConfig,
     short_weierstrass::{Affine, Projective, SWCurveConfig},
     AffineRepr, CurveGroup, Group,
@@ -10,7 +11,10 @@ use ark_ec::{
 use ark_ff::{Field, MontFp, Zero};
 use ark_serialize::{Compress, SerializationError};
 
-use super::util::{serialize_fq, EncodingFlags, G2_SERIALIZED_SIZE};
+use super::{
+    g2_swu_iso,
+    util::{serialize_fq, EncodingFlags, G2_SERIALIZED_SIZE},
+};
 use crate::{
     util::{read_g2_compressed, read_g2_uncompressed},
     *,
@@ -200,11 +204,8 @@ pub const G2_GENERATOR_Y_C0: Fq = MontFp!("1985150602287291935568054521177171638
 /// 927553665492332455747201965776037880757740193453592970025027978793976877002675564980949289727957565575433344219582
 pub const G2_GENERATOR_Y_C1: Fq = MontFp!("927553665492332455747201965776037880757740193453592970025027978793976877002675564980949289727957565575433344219582");
 
-// psi(x,y) = (x**p * PSI_X, y**p * PSI_Y) is the Frobenius composed
-// with the quadratic twist and its inverse
-
 // PSI_X = 1/(u+1)^((p-1)/3)
-pub const P_POWER_ENDOMORPHISM_COEFF_0 : Fq2 = Fq2::new(
+const P_POWER_ENDOMORPHISM_COEFF_0 : Fq2 = Fq2::new(
     Fq::ZERO,
     MontFp!(
                 "4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939437"
@@ -212,28 +213,30 @@ pub const P_POWER_ENDOMORPHISM_COEFF_0 : Fq2 = Fq2::new(
 );
 
 // PSI_Y = 1/(u+1)^((p-1)/2)
-pub const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = Fq2::new(
+const P_POWER_ENDOMORPHISM_COEFF_1: Fq2 = Fq2::new(
     MontFp!(
                 "2973677408986561043442465346520108879172042883009249989176415018091420807192182638567116318576472649347015917690530"),
     MontFp!(
-                "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
+       "1028732146235106349975324479215795277384839936929757896155643118032610843298655225875571310552543014690878354869257")
 );
 
-pub const DOUBLE_P_POWER_ENDOMORPHISM: Fq2 = Fq2::new(
+// PSI_2_X = (u+1)^((1-p^2)/3)
+const DOUBLE_P_POWER_ENDOMORPHISM_COEFF_0: Fq2 = Fq2::new(
     MontFp!("4002409555221667392624310435006688643935503118305586438271171395842971157480381377015405980053539358417135540939436"),
     Fq::ZERO
 );
 
-pub fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
+/// psi(P) is the untwist-Frobenius-twist endomorhism on E'(Fq2)
+fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
     // The p-power endomorphism for G2 is defined as follows:
     // 1. Note that G2 is defined on curve E': y^2 = x^3 + 4(u+1).
     //    To map a point (x, y) in E' to (s, t) in E,
-    //    one set s = x / ((u+1) ^ (1/3)), t = y / ((u+1) ^ (1/2)),
+    //    set s = x / ((u+1) ^ (1/3)), t = y / ((u+1) ^ (1/2)),
     //    because E: y^2 = x^3 + 4.
     // 2. Apply the Frobenius endomorphism (s, t) => (s', t'),
     //    another point on curve E, where s' = s^p, t' = t^p.
     // 3. Map the point from E back to E'; that is,
-    //    one set x' = s' * ((u+1) ^ (1/3)), y' = t' * ((u+1) ^ (1/2)).
+    //    set x' = s' * ((u+1) ^ (1/3)), y' = t' * ((u+1) ^ (1/2)).
     //
     // To sum up, it maps
     // (x,y) -> (x^p / ((u+1)^((p-1)/3)), y^p / ((u+1)^((p-1)/2)))
@@ -252,20 +255,52 @@ pub fn p_power_endomorphism(p: &Affine<Config>) -> Affine<Config> {
 }
 
 /// For a p-power endomorphism psi(P), compute psi(psi(P))
-pub fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
+fn double_p_power_endomorphism(p: &Projective<Config>) -> Projective<Config> {
     let mut res = *p;
 
-    res.x *= DOUBLE_P_POWER_ENDOMORPHISM;
+    res.x *= DOUBLE_P_POWER_ENDOMORPHISM_COEFF_0;
     res.y = res.y.neg();
 
     res
+}
+
+// Parametres from the [IETF draft v16, section E.3](https://www.ietf.org/archive/id/draft-irtf-cfrg-hash-to-curve-16.html#name-3-isogeny-map-for-bls12-381).
+impl WBConfig for Config {
+    type IsogenousCurve = g2_swu_iso::SwuIsoConfig;
+
+    const ISOGENY_MAP: IsogenyMap<'static, Self::IsogenousCurve, Self> =
+        g2_swu_iso::ISOGENY_MAP_TO_G2;
 }
 
 #[cfg(test)]
 mod test {
 
     use super::*;
-    use ark_std::UniformRand;
+    use ark_std::{rand::Rng, UniformRand};
+
+    fn sample_unchecked() -> Affine<g2::Config> {
+        let mut rng = ark_std::test_rng();
+        loop {
+            let x1 = Fq::rand(&mut rng);
+            let x2 = Fq::rand(&mut rng);
+            let greatest = rng.gen();
+            let x = Fq2::new(x1, x2);
+
+            if let Some(p) = Affine::get_point_from_x_unchecked(x, greatest) {
+                return p;
+            }
+        }
+    }
+
+    #[test]
+    fn test_psi_2() {
+        let p = sample_unchecked();
+        let psi_p = p_power_endomorphism(&p);
+        let psi2_p_composed = p_power_endomorphism(&psi_p);
+        let psi2_p_optimised = double_p_power_endomorphism(&p.into());
+
+        assert_eq!(psi2_p_composed, psi2_p_optimised);
+    }
 
     #[test]
     fn test_cofactor_clearing() {
@@ -284,13 +319,14 @@ mod test {
             0xbc69f08f2ee75b3,
         ];
 
-        let mut rng = ark_std::test_rng();
         const SAMPLES: usize = 10;
         for _ in 0..SAMPLES {
-            let p = Affine::<g2::Config>::rand(&mut rng);
-            let optimised = p.clear_cofactor().into_group();
+            let p: Affine<g2::Config> = sample_unchecked();
+            let optimised = p.clear_cofactor();
             let naive = g2::Config::mul_affine(&p, h_eff);
-            assert_eq!(optimised, naive);
+            assert_eq!(optimised.into_group(), naive);
+            assert!(optimised.is_on_curve());
+            assert!(optimised.is_in_correct_subgroup_assuming_on_curve());
         }
     }
 }
