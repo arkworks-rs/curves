@@ -1,6 +1,6 @@
 [package]
 name = "ark-bn254"
-version = "0.4.0-alpha.2"
+version = "0.4.0"
 authors = [ "arkworks contributors" ]
 description = "The BN254 pairing-friendly elliptic curve"
 homepage = "https://arkworks.rs"

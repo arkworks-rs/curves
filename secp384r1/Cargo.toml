@@ -1,6 +1,6 @@
 [package]
 name = "ark-secp384r1"
-version = "0.4.0-alpha"
+version = "0.4.0"
 authors = [ "arkworks contributors" ]
 description = "The secp384r1 curve"
 homepage = "https://arkworks.rs"
