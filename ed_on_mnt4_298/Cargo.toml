@@ -1,6 +1,6 @@
 [package]
 name = "ark-ed-on-mnt4-298"
-version = "0.4.0-alpha.1"
+version = "0.4.0"
 authors = [ "arkworks contributors" ]
 description = "A Twisted Edwards curve defined over the scalar field of the MNT4-298 curve"
 homepage = "https://arkworks.rs"
@@ -13,16 +13,16 @@ license = "MIT/Apache-2.0"
 edition = "2021"
 
 [dependencies]
-ark-ff = { version = "0.4.0-alpha", default-features = false }
-ark-ec = { version = "0.4.0-alpha", default-features = false }
-ark-std = { version = "0.4.0-alpha", default-features = false }
-ark-r1cs-std = { version = "0.4.0-alpha", default-features = false, optional = true }
-ark-mnt4-298 = { version = "0.4.0-alpha", path = "../mnt4_298", default-features = false, features = [ "scalar_field" ] }
+ark-ff = { version = "0.4.0", default-features = false }
+ark-ec = { version = "0.4.0", default-features = false }
+ark-std = { version = "0.4.0", default-features = false }
+ark-r1cs-std = { version = "0.4.0", default-features = false, optional = true }
+ark-mnt4-298 = { version = "0.4.0", path = "../mnt4_298", default-features = false, features = [ "scalar_field" ] }
 
 [dev-dependencies]
-ark-relations = { version = "0.4.0-alpha", default-features = false }
-ark-serialize = { version = "0.4.0-alpha", default-features = false }
-ark-algebra-test-templates = { version = "0.4.0-alpha", default-features = false }
+ark-relations = { version = "0.4.0", default-features = false }
+ark-serialize = { version = "0.4.0", default-features = false }
+ark-algebra-test-templates = { version = "0.4.0", default-features = false }
 ark-curve-constraint-tests = { path = "../curve-constraint-tests", default-features = false }
 
 [features]
