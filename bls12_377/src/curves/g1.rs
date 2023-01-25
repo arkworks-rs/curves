@@ -55,24 +55,34 @@ impl SWCurveConfig for Config {
 }
 
 impl GLVConfig for Config {
-    const COEFFS_ENDOMORPHISM: &'static[Self::BaseField] = &[
+    const ENDO_COEFFS: &'static[Self::BaseField] = &[
         MontFp!("258664426012969093929703085429980814127835149614277183275038967946009968870203535512256352201271898244626862047231")
     ];
 
     const LAMBDA: Self::ScalarField =
         MontFp!("8444461749428370424248824938781546531284005582649182570233710176290576793600");
 
-    const COEFF_N: [<Self as CurveConfig>::ScalarField; 4] = [
-        MontFp!("91893752504881257701523279626832445441"),
-        MontFp!("1"),
-        MontFp!("1"),
-        MontFp!("91893752504881257701523279626832445440"),
+    const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
+        [
+            MontFp!("91893752504881257701523279626832445441"),
+            MontFp!("1"),
+        ],
+        [
+            MontFp!("1"),
+            MontFp!("91893752504881257701523279626832445440"),
+        ],
     ];
     const SGN_N: [bool; 4] = [true, true, false, true];
 
     fn endomorphism(p: &SWProjective<Self>) -> SWProjective<Self> {
         let mut res = (*p).clone();
-        res.x *= Self::COEFFS_ENDOMORPHISM[0];
+        res.x *= Self::ENDO_COEFFS[0];
+        res
+    }
+
+    fn endomorphism_affine(p: &SWAffine<Self>) -> SWAffine<Self> {
+        let mut res = (*p).clone();
+        res.x *= Self::ENDO_COEFFS[0];
         res
     }
 }
@@ -297,7 +307,7 @@ mod test {
         println!("SM: {:?}", now.elapsed());
         let now = Instant::now();
         for _ in 1..100 {
-            let _ = g1::Config::glv_mul(p, s);
+            let _ = g1::Config::glv_mul_projective(p, s);
         }
         println!("GLV: {:?}", now.elapsed());
     }
