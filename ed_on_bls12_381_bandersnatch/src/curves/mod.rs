@@ -4,7 +4,7 @@ use ark_ec::{
     short_weierstrass::{self, SWCurveConfig},
     twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
-use ark_ff::{Field, MontFp};
+use ark_ff::{Field, FpConfig, MontFp};
 
 use crate::{Fq, Fr};
 
@@ -141,7 +141,7 @@ impl SWCurveConfig for BandersnatchConfig {
 }
 
 impl GLVConfig for BandersnatchConfig {
-    const COEFFS_ENDOMORPHISM: &'static [Self::BaseField] = &[
+    const ENDO_COEFFS: &'static [Self::BaseField] = &[
         MontFp!("44800"),
         MontFp!("2257920000"),
         MontFp!("26217937587563095239723870254092982918845276250263818911301829349969290592256"), // u² in eprint/2021/1152 page 5
@@ -152,11 +152,15 @@ impl GLVConfig for BandersnatchConfig {
     const LAMBDA: Self::ScalarField =
         MontFp!("8913659658109529928382530854484400854125314752504019737736543920008458395397");
 
-    const COEFF_N: [<Self as CurveConfig>::ScalarField; 4] = [
-        MontFp!("113482231691339203864511368254957623327"),
-        MontFp!("10741319382058138887739339959866629956"),
-        MontFp!("21482638764116277775478679919733259912"),
-        MontFp!("113482231691339203864511368254957623327"),
+    const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
+        [
+            MontFp!("113482231691339203864511368254957623327"),
+            MontFp!("10741319382058138887739339959866629956"),
+        ],
+        [
+            MontFp!("21482638764116277775478679919733259912"),
+            MontFp!("113482231691339203864511368254957623327"),
+        ],
     ];
     const SGN_N: [bool; 4] = [true, true, false, true];
 
@@ -177,25 +181,51 @@ impl GLVConfig for BandersnatchConfig {
         let z3 = z2 * z;
         let z4 = z3 * z;
 
-        let u2 = Self::COEFFS_ENDOMORPHISM[2];
-        let u3 = Self::COEFFS_ENDOMORPHISM[3];
-        let t0 = Self::COEFFS_ENDOMORPHISM[4];
+        let u2 = Self::ENDO_COEFFS[2];
+        let u3 = Self::ENDO_COEFFS[3];
+        let t0 = Self::ENDO_COEFFS[4];
 
         // 44800xz²
-        let tmp0 = z2 * Self::COEFFS_ENDOMORPHISM[0];
+        let tmp0 = z2 * Self::ENDO_COEFFS[0];
         let tmp1 = x * tmp0;
         // (x² + 44800xz²)
         let tmp3 = x2 + tmp1;
         // (x² + 2 * 44800xz²)
         let tmp4 = tmp3 + tmp1;
 
-        // num_x = u² (x² + 44800xz² + t0z⁴)
-        let num_x = u2 * (tmp3 + Self::COEFFS_ENDOMORPHISM[1] * z4);
+        // num_x = u² (x² + 44800xz² + t0?????z⁴)
+        let num_x = u2 * (tmp3 + Self::ENDO_COEFFS[1] * z4);
         // num_y = u³ y * (x² + 2 * 44800xz² + t0 z⁴)
         let num_y = u3 * y * (tmp4 + t0 * z4);
         let den = x + tmp0;
 
         SWProjective::new_unchecked(num_x * den, num_y * den, den * z)
+    }
+
+    fn endomorphism_affine(p: &short_weierstrass::Affine<Self>) -> short_weierstrass::Affine<Self> {
+        // can be optimized
+
+        let var44800 = Self::ENDO_COEFFS[0];
+        let var2257920000 = Self::ENDO_COEFFS[1];
+        let u2 = Self::ENDO_COEFFS[2];
+        let u3 = Self::ENDO_COEFFS[3];
+        let t0 = Self::ENDO_COEFFS[4];
+        let x = p.x;
+        let y = p.y;
+
+        // 1/(x + 44800)
+        let tmp1 = FpConfig::inverse(&(x + var44800)).unwrap();
+        // 1/(x+44800)²
+        let tmp2 = tmp1 * tmp1;
+        // x * 44800
+        let tmp3 = x * var44800;
+        // x²
+        let x2 = x * x;
+        // numerator endo_x
+        let num_x = x2 + tmp3 + var2257920000;
+        // numerator endo_y
+        let num_y = x2 + tmp3 + tmp3 + t0;
+        SWAffine::new_unchecked(u2 * num_x * tmp1, u3 * y * num_y * tmp2)
     }
 }
 
@@ -220,7 +250,7 @@ mod test {
         println!("SM: {:?}", now.elapsed());
         let now = Instant::now();
         for _ in 1..100 {
-            let _ = BandersnatchConfig::glv_mul(p, s);
+            let _ = BandersnatchConfig::glv_mul_projective(p, s);
         }
         println!("GLV: {:?}", now.elapsed());
     }
