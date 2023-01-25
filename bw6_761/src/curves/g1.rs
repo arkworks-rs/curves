@@ -51,24 +51,34 @@ impl SWCurveConfig for Config {
 }
 
 impl GLVConfig for Config {
-    const COEFFS_ENDOMORPHISM: &'static [Self::BaseField] = &[MontFp!(
+    const ENDO_COEFFS: &'static [Self::BaseField] = &[MontFp!(
         "4922464560225523242118178942575080391082002530232324381063048548642823052024664478336818169867474395270858391911405337707247735739826664939444490469542109391530482826728203582549674992333383150446779312029624171857054392282775648"
     )];
 
     const LAMBDA: Self::ScalarField =
         MontFp!("258664426012969093929703085429980814127835149614277183275038967946009968870203535512256352201271898244626862047231");
 
-    const COEFF_N: [<Self as CurveConfig>::ScalarField; 4] = [
-        MontFp!("293634935485640680722085584138834120324914961969255022593"),
-        MontFp!("293634935485640680722085584138834120315328839056164388863"),
-        MontFp!("293634935485640680722085584138834120315328839056164388863"),
-        MontFp!("587269870971281361444171168277668240640243801025419411456"),
+    const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
+        [
+            MontFp!("293634935485640680722085584138834120324914961969255022593"),
+            MontFp!("293634935485640680722085584138834120315328839056164388863"),
+        ],
+        [
+            MontFp!("293634935485640680722085584138834120315328839056164388863"),
+            MontFp!("587269870971281361444171168277668240640243801025419411456"),
+        ],
     ];
     const SGN_N: [bool; 4] = [true, false, true, true];
 
     fn endomorphism(p: &Projective<Self>) -> Projective<Self> {
         let mut res = (*p).clone();
-        res.x *= Self::COEFFS_ENDOMORPHISM[0];
+        res.x *= Self::ENDO_COEFFS[0];
+        res
+    }
+
+    fn endomorphism_affine(p: &Affine<Self>) -> Affine<Self> {
+        let mut res = (*p).clone();
+        res.x *= Self::ENDO_COEFFS[0];
         res
     }
 }
@@ -104,7 +114,7 @@ mod test {
         println!("SM: {:?}", now.elapsed());
         let now = Instant::now();
         for _ in 1..100 {
-            let _ = g1::Config::glv_mul(p, s);
+            let _ = g1::Config::glv_mul_projective(p, s);
         }
         println!("GLV: {:?}", now.elapsed());
     }
