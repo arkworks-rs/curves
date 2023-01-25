@@ -12,7 +12,6 @@ This repository contains implementations of some popular elliptic curves. The cu
 * [`ark-ed-on-bls12-377`](ed_on_bls12_377): Implements a Twisted Edwards curve atop the scalar field of BLS12-377
 
 * [`ark-bw6-761`](bw6_761): Implements the BW6-761 pairing-friendly curve, which is a curve whose scalar field equals the base field of BLS12-377
-* [`ark-ed-on-bw6-761`](ed_on_bw6_761): Implements a Twisted Edwards curve atop the scalar field of BW6-761
 
 * [`ark-cp6-782`](cp6_782): Implements the CP6-782 pairing-friendly curve, which is a curve whose scalar field equals the base field of BLS12-377
 * [`ark-ed-on-cp6-782`](ed_on_cp6_782): Implements a Twisted Edwards curve atop the scalar field of CP6-782. This is the same curve as in `ark-ed-on-bw6-761`
