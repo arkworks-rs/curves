@@ -44,18 +44,22 @@ impl SWCurveConfig for PallasConfig {
 }
 
 impl GLVConfig for PallasConfig {
-    const COEFFS_ENDOMORPHISM: &'static [Self::BaseField] = &[MontFp!(
+    const ENDO_COEFFS: &'static [Self::BaseField] = &[MontFp!(
         "20444556541222657078399132219657928148671392403212669005631716460534733845831"
     )];
 
     const LAMBDA: Self::ScalarField =
         MontFp!("26005156700822196841419187675678338661165322343552424574062261873906994770353");
 
-    const COEFF_N: [<Self as CurveConfig>::ScalarField; 4] = [
-        MontFp!("98231058071100081932162823354453065728"),
-        MontFp!("98231058071186745657228807397848383489"),
-        MontFp!("196462116142286827589391630752301449217"),
-        MontFp!("98231058071100081932162823354453065728"),
+    const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
+        [
+            MontFp!("98231058071100081932162823354453065728"),
+            MontFp!("98231058071186745657228807397848383489"),
+        ],
+        [
+            MontFp!("196462116142286827589391630752301449217"),
+            MontFp!("98231058071100081932162823354453065728"),
+        ],
     ];
     const SGN_N: [bool; 4] = [false, true, false, false];
 
@@ -64,7 +68,16 @@ impl GLVConfig for PallasConfig {
         // endomorphism_p(x,y) = (BETA * x, y)
         // where BETA is a non-trivial cubic root of unity in Fq.
         let mut res = (*p).clone();
-        res.x *= Self::COEFFS_ENDOMORPHISM[0];
+        res.x *= Self::ENDO_COEFFS[0];
+        res
+    }
+
+    fn endomorphism_affine(p: &Affine) -> Affine {
+        // Endomorphism of the points on the curve.
+        // endomorphism_p(x,y) = (BETA * x, y)
+        // where BETA is a non-trivial cubic root of unity in Fq.
+        let mut res = (*p).clone();
+        res.x *= Self::ENDO_COEFFS[0];
         res
     }
 }
@@ -96,7 +109,7 @@ mod test {
         println!("SM: {:?}", now.elapsed());
         let now = Instant::now();
         for _ in 1..100 {
-            let _ = PallasConfig::glv_mul(p, s);
+            let _ = PallasConfig::glv_mul_projective(p, s);
         }
         println!("GLV: {:?}", now.elapsed());
     }
