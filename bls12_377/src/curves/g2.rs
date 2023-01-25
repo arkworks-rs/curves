@@ -5,6 +5,7 @@ use ark_ec::{
     scalar_mul::glv::GLVConfig,
     short_weierstrass::{Affine, Projective},
     AffineRepr, CurveGroup, Group,
+    hashing::curve_maps::wb::{WBConfig, IsogenyMap},
 };
 
 use ark_ff::{Field, MontFp, Zero};

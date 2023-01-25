@@ -243,7 +243,7 @@ mod test {
 
     #[test]
     fn bench_glv() {
-        let mut rng = test_rng();
+        let mut rng = ark_std::test_rng();
         let p = Projective::<g1::Config>::rand(&mut rng);
         let s = Fr::rand(&mut rng);
         // bench
