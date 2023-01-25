@@ -2,6 +2,15 @@
 
 ## Pending
 
+### Breaking changes
+
+### Features
+
+### Improvements
+
+### Bugfixes
+
+## v0.4.0
 - [\#76](https://github.com/arkworks-rs/curves/pull/76) twisted Edwards parameters for bls12-377
 - Fixed curve benches
 
@@ -23,6 +32,7 @@
 - [\#103](https://github.com/arkworks-rs/curves/pull/103) Faster cofactor clearing for BLS12-381.
 - [\#107](https://github.com/arkworks-rs/curves/pull/107/) Use 2-NAF of `ATE_LOOP_COUNT` to speed up the Miller loop in MNT curves.
 - [\#141](https://github.com/arkworks-rs/curves/pull/103) Faster cofactor clearing for BLS12-377.
+- [\#138](https://github.com/arkworks-rs/curves/pull/138) Implement WB Hash-to-Curve for bls12-381 and bls12-377
 
 ### Bug fixes
 
