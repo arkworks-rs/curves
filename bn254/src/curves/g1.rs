@@ -64,7 +64,6 @@ impl GLVConfig for Config {
         res.x *= Self::ENDO_COEFFS[0];
         res
     }
-
     fn endomorphism_affine(p: &Affine<Self>) -> Affine<Self> {
         let mut res = (*p).clone();
         res.x *= Self::ENDO_COEFFS[0];
