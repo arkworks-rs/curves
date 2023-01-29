@@ -1,8 +1,8 @@
 use ark_algebra_bench_templates::*;
-use ark_secp256k1::{fq::Fq, fr::Fr, Projective as G};
+use ark_curve25519::{EdwardsProjective as G, Fq, Fr};
 
 bench!(
-    Name = "Secp256k1",
+    Name = "Curve25519",
     Group = G,
     ScalarField = Fr,
     PrimeBaseField = Fq,
