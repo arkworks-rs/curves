@@ -212,8 +212,6 @@ pub fn endomorphism(p: &Affine<Config>) -> Affine<Config> {
 #[cfg(test)]
 mod test {
 
-    use std::time::Instant;
-
     use super::*;
     use crate::g1;
     use ark_std::{rand::Rng, UniformRand};
@@ -239,23 +237,5 @@ mod test {
             assert!(p.is_on_curve());
             assert!(p.is_in_correct_subgroup_assuming_on_curve());
         }
-    }
-
-    #[test]
-    fn bench_glv() {
-        let mut rng = ark_std::test_rng();
-        let p = Projective::<g1::Config>::rand(&mut rng);
-        let s = Fr::rand(&mut rng);
-        // bench
-        let now = Instant::now();
-        for _ in 1..100 {
-            let _ = p * s;
-        }
-        println!("SM: {:?}", now.elapsed());
-        let now = Instant::now();
-        for _ in 1..100 {
-            let _ = g1::Config::glv_mul_projective(p, s);
-        }
-        println!("GLV: {:?}", now.elapsed());
     }
 }
