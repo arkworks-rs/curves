@@ -90,32 +90,3 @@ pub const G1_GENERATOR_X: Fq = MontFp!("6238772257594679368032145693622812838779
 /// G1_GENERATOR_Y =
 /// 2101735126520897423911504562215834951148127555913367997162789335052900271653517958562461315794228241561913734371411178226936527683203879553093934185950470971848972085321797958124416462268292467002957525517188485984766314758624099
 pub const G1_GENERATOR_Y: Fq = MontFp!("2101735126520897423911504562215834951148127555913367997162789335052900271653517958562461315794228241561913734371411178226936527683203879553093934185950470971848972085321797958124416462268292467002957525517188485984766314758624099");
-
-#[cfg(test)]
-mod test {
-
-    use std::time::Instant;
-
-    use crate::g1;
-
-    use super::*;
-    use ark_std::{test_rng, UniformRand};
-
-    #[test]
-    fn bench_glv() {
-        let mut rng = test_rng();
-        let p = Projective::<g1::Config>::rand(&mut rng);
-        let s = Fr::rand(&mut rng);
-        // bench
-        let now = Instant::now();
-        for _ in 1..100 {
-            let _ = p * s;
-        }
-        println!("SM: {:?}", now.elapsed());
-        let now = Instant::now();
-        for _ in 1..100 {
-            let _ = g1::Config::glv_mul_projective(p, s);
-        }
-        println!("GLV: {:?}", now.elapsed());
-    }
-}
