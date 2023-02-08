@@ -107,32 +107,3 @@ pub const G2_GENERATOR_Y_C0: Fq =
 /// 4082367875863433681332203403145435568316851327593401208105741076214120093531
 pub const G2_GENERATOR_Y_C1: Fq =
     MontFp!("4082367875863433681332203403145435568316851327593401208105741076214120093531");
-
-#[cfg(test)]
-mod test {
-
-    use std::time::Instant;
-
-    use crate::g2;
-
-    use super::*;
-    use ark_std::{test_rng, UniformRand};
-
-    #[test]
-    fn bench_glv() {
-        let mut rng = test_rng();
-        let p = Projective::<g2::Config>::rand(&mut rng);
-        let s = Fr::rand(&mut rng);
-        // bench
-        let now = Instant::now();
-        for _ in 1..100 {
-            let _ = p * s;
-        }
-        println!("SM: {:?}", now.elapsed());
-        let now = Instant::now();
-        for _ in 1..100 {
-            let _ = g2::Config::glv_mul_projective(p, s);
-        }
-        println!("GLV: {:?}", now.elapsed());
-    }
-}

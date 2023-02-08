@@ -76,32 +76,3 @@ pub const G1_GENERATOR_X: Fq = Fq::ONE;
 
 /// G1_GENERATOR_Y = 2
 pub const G1_GENERATOR_Y: Fq = MontFp!("2");
-
-#[cfg(test)]
-mod test {
-
-    use std::time::Instant;
-
-    use crate::g1;
-
-    use super::*;
-    use ark_std::{test_rng, UniformRand};
-
-    #[test]
-    fn bench_glv() {
-        let mut rng = test_rng();
-        let p = Projective::<g1::Config>::rand(&mut rng);
-        let s = Fr::rand(&mut rng);
-        // bench
-        let now = Instant::now();
-        for _ in 1..100 {
-            let _ = p * s;
-        }
-        println!("SM: {:?}", now.elapsed());
-        let now = Instant::now();
-        for _ in 1..100 {
-            let _ = g1::Config::glv_mul_projective(p, s);
-        }
-        println!("GLV: {:?}", now.elapsed());
-    }
-}
