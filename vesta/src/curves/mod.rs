@@ -88,30 +88,3 @@ pub const G_GENERATOR_X: Fq = MontFp!("-1");
 /// G_GENERATOR_Y = 2
 /// Encoded in Montgomery form, so the value here is 2R mod p.
 pub const G_GENERATOR_Y: Fq = MontFp!("2");
-
-#[cfg(test)]
-mod test {
-
-    use std::time::Instant;
-
-    use super::*;
-    use ark_std::{test_rng, UniformRand};
-
-    #[test]
-    fn bench_glv() {
-        let mut rng = test_rng();
-        let p = Projective::rand(&mut rng);
-        let s = Fr::rand(&mut rng);
-        // bench
-        let now = Instant::now();
-        for _ in 1..100 {
-            let _ = p * s;
-        }
-        println!("SM: {:?}", now.elapsed());
-        let now = Instant::now();
-        for _ in 1..100 {
-            let _ = VestaConfig::glv_mul_projective(p, s);
-        }
-        println!("GLV: {:?}", now.elapsed());
-    }
-}
