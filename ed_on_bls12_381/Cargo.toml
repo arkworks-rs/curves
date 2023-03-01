@@ -35,4 +35,3 @@ r1cs = ["ark-r1cs-std"]
 name = "ed_on_bls12_381"
 path = "benches/ed_on_bls12_381.rs"
 harness = false
-
