@@ -6,6 +6,8 @@
 
 ### Features
 
+- [\#154](https://github.com/arkworks-rs/curves/pull/154) Add the bw6-767 curve.
+
 ### Improvements
 
 ### Bugfixes
