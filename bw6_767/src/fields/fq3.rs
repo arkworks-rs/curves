@@ -12,7 +12,7 @@ pub struct Fq3Config;
 impl Fp3Config for Fq3Config {
     type Fp = Fq;
 
-    /// NONRESIDUE = 2
+    /// NONRESIDUE = 3
     // Fq3 = Fq\[u\]/u^3-3
     const NONRESIDUE: Fq = MontFp!("3");
 
