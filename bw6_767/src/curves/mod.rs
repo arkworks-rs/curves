@@ -44,7 +44,6 @@ impl BW6Config for Config {
         0, 0, 0, -1, 0, -1, 0, -1, 0, 1,
     ];
     const ATE_LOOP_COUNT_2_IS_NEGATIVE: bool = false;
-    // TODO check twist type
     const TWIST_TYPE: TwistType = TwistType::M;
     type Fp = Fq;
     type Fp3Config = Fq3Config;
