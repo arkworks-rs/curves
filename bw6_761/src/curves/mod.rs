@@ -32,8 +32,8 @@ impl BW6Config for Config {
     ]);
     /// `x` is positive.
     const X_IS_NEGATIVE: bool = false;
-    // X+1
-    const ATE_LOOP_COUNT_1: &'static [u64] = &[0x8508c00000000002];
+    // X
+    const ATE_LOOP_COUNT_1: &'static [u64] = &[0x8508c00000000001];
     const ATE_LOOP_COUNT_1_IS_NEGATIVE: bool = false;
     // X^3-X^2-X
     const ATE_LOOP_COUNT_2: &'static [i8] = &[
