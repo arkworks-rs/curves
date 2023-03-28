@@ -2,8 +2,9 @@ use ark_ec::{
     bw6,
     bw6::{BW6Config, TwistType, BW6},
 };
-use ark_ff::{biginteger::BigInteger768 as BigInteger, BigInt, CyclotomicMultSubgroup, Field};
-use ark_ff::fp6_2over3::Fp6;
+use ark_ff::{
+    biginteger::BigInteger768 as BigInteger, fp6_2over3::Fp6, BigInt, CyclotomicMultSubgroup, Field,
+};
 
 use crate::*;
 
