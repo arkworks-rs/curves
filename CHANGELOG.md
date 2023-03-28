@@ -6,9 +6,11 @@
 
 ### Features
 
-- [\#154](https://github.com/arkworks-rs/curves/pull/154) Add the bw6-767 curve.
+- [\#156](https://github.com/arkworks-rs/curves/pull/156) Add the bw6-767 curve.
 
 ### Improvements
+
+- [\#156](https://github.com/arkworks-rs/curves/pull/156) The hard part of the final exponentiation for bw6-761 relocated from arkworks/algebra.
 
 ### Bugfixes
 
