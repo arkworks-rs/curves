@@ -180,6 +180,7 @@ mod test {
 
     use super::*;
     use crate::g1;
+    use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
     use ark_std::{rand::Rng, UniformRand};
 
     fn sample_unchecked() -> Affine<g1::Config> {
@@ -203,5 +204,25 @@ mod test {
             assert!(p.is_on_curve());
             assert!(p.is_in_correct_subgroup_assuming_on_curve());
         }
+    }
+
+    #[test]
+    fn non_canonical_identity_point() {
+        let non_canonical_hex = "c01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        let non_canonical_bytes = hex::decode(non_canonical_hex).unwrap();
+        assert_eq!(non_canonical_bytes.len(), 48);
+
+        let affine_point: G1Affine =
+            CanonicalDeserialize::deserialize_compressed(&non_canonical_bytes[..]).unwrap();
+
+        let mut canonical_bytes = ark_std::vec![0u8; 48];
+        affine_point
+            .serialize_compressed(&mut canonical_bytes[..])
+            .unwrap();
+
+        assert_eq!(
+        non_canonical_bytes, canonical_bytes,
+        "if a point has been successfully deserialized, then it should equal the serialized point. ie serialization is canonical."
+    )
     }
 }
