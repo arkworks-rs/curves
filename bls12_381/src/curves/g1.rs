@@ -180,7 +180,7 @@ mod test {
 
     use super::*;
     use crate::g1;
-    use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
+    use ark_serialize::CanonicalDeserialize;
     use ark_std::{rand::Rng, UniformRand};
 
     fn sample_unchecked() -> Affine<g1::Config> {
@@ -212,17 +212,9 @@ mod test {
         let non_canonical_bytes = hex::decode(non_canonical_hex).unwrap();
         assert_eq!(non_canonical_bytes.len(), 48);
 
-        let affine_point: G1Affine =
-            CanonicalDeserialize::deserialize_compressed(&non_canonical_bytes[..]).unwrap();
+        let maybe_affine_point: Result<G1Affine, ark_serialize::SerializationError> =
+            CanonicalDeserialize::deserialize_compressed(&non_canonical_bytes[..]);
 
-        let mut canonical_bytes = ark_std::vec![0u8; 48];
-        affine_point
-            .serialize_compressed(&mut canonical_bytes[..])
-            .unwrap();
-
-        assert_eq!(
-        non_canonical_bytes, canonical_bytes,
-        "if a point has been successfully deserialized, then it should equal the serialized point. ie serialization is canonical."
-    )
+        assert!(maybe_affine_point.is_err())
     }
 }
