@@ -1,6 +1,7 @@
 use ark_ec::{short_weierstrass::Affine, AffineRepr};
 use ark_ff::{BigInteger384, PrimeField};
 use ark_serialize::SerializationError;
+use ark_std::Zero;
 
 use crate::{g1::Config as G1Config, g2::Config as G2Config, Fq, Fq2, G1Affine, G2Affine};
 
@@ -14,6 +15,7 @@ pub struct EncodingFlags {
 }
 
 impl EncodingFlags {
+    /// Fetches the flags from the byte-string
     pub fn get_flags(bytes: &[u8]) -> Self {
         let compression_flag_set = (bytes[0] >> 7) & 1;
         let infinity_flag_set = (bytes[0] >> 6) & 1;
@@ -25,6 +27,8 @@ impl EncodingFlags {
             is_lexographically_largest: sort_flag_set == 1,
         }
     }
+
+    /// Encodes the flags into the byte-string
     pub fn encode_flags(&self, bytes: &mut [u8]) {
         if self.is_compressed {
             bytes[0] |= 1 << 7;
@@ -37,6 +41,13 @@ impl EncodingFlags {
         if self.is_compressed && !self.is_infinity && self.is_lexographically_largest {
             bytes[0] |= 1 << 5;
         }
+    }
+
+    /// Removes the flags from the byte-string.
+    ///
+    /// This reverses the effects of `encode_flags`.
+    pub fn remove_flags(bytes: &mut [u8]) {
+        bytes[0] &= 0b0001_1111;
     }
 }
 
@@ -81,8 +92,7 @@ pub(crate) fn read_fq_with_offset(
     tmp.copy_from_slice(&bytes[offset * G1_SERIALIZED_SIZE..G1_SERIALIZED_SIZE * (offset + 1)]);
 
     if mask {
-        // Mask away the flag bits
-        tmp[0] &= 0b0001_1111;
+        EncodingFlags::remove_flags(&mut tmp);
     }
     deserialize_fq(tmp).ok_or(SerializationError::InvalidData)
 }
@@ -99,17 +109,22 @@ pub(crate) fn read_g1_compressed<R: ark_serialize::Read>(
     // Obtain the three flags from the start of the byte sequence
     let flags = EncodingFlags::get_flags(&bytes[..]);
 
-    // we expect to be deserializing a compressed point
+    // We expect to be deserializing a compressed point
     if !flags.is_compressed {
         return Err(SerializationError::UnexpectedFlags);
     }
 
-    if flags.is_infinity {
-        return Ok(G1Affine::zero());
-    }
-
     // Attempt to obtain the x-coordinate
     let x = read_fq_with_offset(&bytes, 0, true)?;
+
+    if flags.is_infinity {
+        // Check that the `x` co-ordinate was `0`
+        if !x.is_zero() {
+            return Err(SerializationError::InvalidData);
+        }
+
+        return Ok(G1Affine::zero());
+    }
 
     let p = G1Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
         .ok_or(SerializationError::InvalidData)?;
