@@ -32,6 +32,21 @@ impl BW6Config for Config {
         0x0,
     ]);
     const X_IS_NEGATIVE: bool = true;
+    // [(-X)+1]/3, since X < 0
+    const X_MINUS_1_DIV_3: BigInteger = BigInt::new([
+        0x460055555555aaab,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+    ]);
     // -[(-X)+1]
     const ATE_LOOP_COUNT_1: &'static [u64] = &[0xd20100000000ffff];
     const ATE_LOOP_COUNT_1_IS_NEGATIVE: bool = true;
