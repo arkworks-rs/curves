@@ -8,7 +8,7 @@ use ark_ec::{
     AffineRepr, CurveGroup, Group,
 };
 
-use ark_ff::{Field, MontFp, Zero};
+use ark_ff::{Field, MontFp, Zero, BigInt};
 use ark_std::ops::Neg;
 
 use crate::*;
@@ -111,12 +111,12 @@ impl GLVConfig for Config {
 
     const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
         [
-            MontFp!("91893752504881257701523279626832445440"),
-            MontFp!("1"),
+            BigInt!("91893752504881257701523279626832445440"),
+            BigInt!("1"),
         ],
         [
-            MontFp!("1"),
-            MontFp!("91893752504881257701523279626832445441"),
+            BigInt!("1"),
+            BigInt!("91893752504881257701523279626832445441"),
         ],
     ];
     const SGN_N: [bool; 4] = [false, true, false, false];

@@ -7,7 +7,7 @@ use ark_ec::{
     short_weierstrass::{Affine, Projective, SWCurveConfig},
     AffineRepr, Group,
 };
-use ark_ff::{Field, MontFp, PrimeField, Zero};
+use ark_ff::{Field, MontFp, PrimeField, Zero, BigInt};
 use ark_serialize::{Compress, SerializationError};
 use ark_std::{ops::Neg, One};
 
@@ -153,12 +153,12 @@ impl GLVConfig for Config {
 
     const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
         [
-            MontFp!("228988810152649578064853576960394133504"),
-            MontFp!("1"),
+            BigInt!("228988810152649578064853576960394133504"),
+            BigInt!("1"),
         ],
         [
-            MontFp!("1"),
-            MontFp!("228988810152649578064853576960394133503"),
+            BigInt!("1"),
+            BigInt!("228988810152649578064853576960394133503"),
         ],
     ];
     const SGN_N: [bool; 4] = [true, true, false, true];

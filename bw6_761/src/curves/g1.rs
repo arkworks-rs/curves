@@ -3,7 +3,7 @@ use ark_ec::{
     scalar_mul::glv::GLVConfig,
     short_weierstrass::{Affine, Projective},
 };
-use ark_ff::{Field, MontFp};
+use ark_ff::{Field, MontFp, BigInt};
 
 use crate::{Fq, Fr};
 
@@ -60,12 +60,12 @@ impl GLVConfig for Config {
 
     const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
         [
-            MontFp!("293634935485640680722085584138834120324914961969255022593"),
-            MontFp!("293634935485640680722085584138834120315328839056164388863"),
+            BigInt!("293634935485640680722085584138834120324914961969255022593"),
+            BigInt!("293634935485640680722085584138834120315328839056164388863"),
         ],
         [
-            MontFp!("293634935485640680722085584138834120315328839056164388863"),
-            MontFp!("587269870971281361444171168277668240640243801025419411456"),
+            BigInt!("293634935485640680722085584138834120315328839056164388863"),
+            BigInt!("587269870971281361444171168277668240640243801025419411456"),
         ],
     ];
     const SGN_N: [bool; 4] = [true, false, true, true];

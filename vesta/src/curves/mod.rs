@@ -4,7 +4,7 @@ use ark_ec::{
     scalar_mul::glv::GLVConfig,
     short_weierstrass::{self as sw, SWCurveConfig},
 };
-use ark_ff::{Field, MontFp, Zero};
+use ark_ff::{Field, MontFp, Zero, BigInt};
 
 #[cfg(test)]
 mod tests;
@@ -52,12 +52,12 @@ impl GLVConfig for VestaConfig {
 
     const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
         [
-            MontFp!("98231058071100081932162823354453065729"),
-            MontFp!("98231058071186745657228807397848383488"),
+            BigInt!("98231058071100081932162823354453065729"),
+            BigInt!("98231058071186745657228807397848383488"),
         ],
         [
-            MontFp!("196462116142286827589391630752301449217"),
-            MontFp!("98231058071100081932162823354453065729"),
+            BigInt!("196462116142286827589391630752301449217"),
+            BigInt!("98231058071100081932162823354453065729"),
         ],
     ];
     const SGN_N: [bool; 4] = [false, true, false, false];

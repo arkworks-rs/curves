@@ -4,7 +4,7 @@ use ark_ec::{
     short_weierstrass::{self, SWCurveConfig},
     twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
-use ark_ff::{Field, FpConfig, MontFp};
+use ark_ff::{Field, FpConfig, MontFp, BigInt};
 
 use crate::{Fq, Fr};
 
@@ -154,12 +154,12 @@ impl GLVConfig for BandersnatchConfig {
 
     const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
         [
-            MontFp!("113482231691339203864511368254957623327"),
-            MontFp!("10741319382058138887739339959866629956"),
+            BigInt!("113482231691339203864511368254957623327"),
+            BigInt!("10741319382058138887739339959866629956"),
         ],
         [
-            MontFp!("21482638764116277775478679919733259912"),
-            MontFp!("113482231691339203864511368254957623327"),
+            BigInt!("21482638764116277775478679919733259912"),
+            BigInt!("113482231691339203864511368254957623327"),
         ],
     ];
     const SGN_N: [bool; 4] = [true, true, false, true];

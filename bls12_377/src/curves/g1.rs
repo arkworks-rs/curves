@@ -11,7 +11,7 @@ use ark_ec::{
     scalar_mul::glv::GLVConfig,
     CurveConfig,
 };
-use ark_ff::{Field, MontFp, PrimeField, Zero};
+use ark_ff::{Field, MontFp, PrimeField, Zero, BigInt};
 use ark_std::{ops::Neg, One};
 
 use super::g1_swu_iso::{SwuIsoConfig, ISOGENY_MAP_TO_G1};
@@ -70,12 +70,12 @@ impl GLVConfig for Config {
 
     const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
         [
-            MontFp!("91893752504881257701523279626832445441"),
-            MontFp!("1"),
+            BigInt!("91893752504881257701523279626832445441"),
+            BigInt!("1"),
         ],
         [
-            MontFp!("1"),
-            MontFp!("91893752504881257701523279626832445440"),
+            BigInt!("1"),
+            BigInt!("91893752504881257701523279626832445440"),
         ],
     ];
     const SGN_N: [bool; 4] = [true, true, false, true];
