@@ -4,7 +4,7 @@ use ark_ec::{
     short_weierstrass::{self, SWCurveConfig},
     twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
-use ark_ff::{Field, FpConfig, MontFp, BigInt};
+use ark_ff::{BigInt, Field, FpConfig, MontFp, PrimeField};
 
 use crate::{Fq, Fr};
 
@@ -152,17 +152,12 @@ impl GLVConfig for BandersnatchConfig {
     const LAMBDA: Self::ScalarField =
         MontFp!("8913659658109529928382530854484400854125314752504019737736543920008458395397");
 
-    const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
-        [
-            BigInt!("113482231691339203864511368254957623327"),
-            BigInt!("10741319382058138887739339959866629956"),
-        ],
-        [
-            BigInt!("21482638764116277775478679919733259912"),
-            BigInt!("113482231691339203864511368254957623327"),
-        ],
+    const SCALAR_DECOMP_COEFFS: [(bool, <Self::ScalarField as PrimeField>::BigInt); 4] = [
+        (true, BigInt!("113482231691339203864511368254957623327")),
+        (true, BigInt!("10741319382058138887739339959866629956")),
+        (false, BigInt!("21482638764116277775478679919733259912")),
+        (true, BigInt!("113482231691339203864511368254957623327")),
     ];
-    const SGN_N: [bool; 4] = [true, true, false, true];
 
     fn endomorphism(base: &SWProjective) -> SWProjective {
         /*

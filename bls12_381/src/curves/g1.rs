@@ -7,7 +7,7 @@ use ark_ec::{
     short_weierstrass::{Affine, Projective, SWCurveConfig},
     AffineRepr, Group,
 };
-use ark_ff::{Field, MontFp, PrimeField, Zero, BigInt};
+use ark_ff::{BigInt, Field, MontFp, PrimeField, Zero};
 use ark_serialize::{Compress, SerializationError};
 use ark_std::{ops::Neg, One};
 
@@ -151,17 +151,12 @@ impl GLVConfig for Config {
     const LAMBDA: Self::ScalarField =
         MontFp!("52435875175126190479447740508185965837461563690374988244538805122978187051009");
 
-    const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
-        [
-            BigInt!("228988810152649578064853576960394133504"),
-            BigInt!("1"),
-        ],
-        [
-            BigInt!("1"),
-            BigInt!("228988810152649578064853576960394133503"),
-        ],
+    const SCALAR_DECOMP_COEFFS: [(bool, <Self::ScalarField as PrimeField>::BigInt); 4] = [
+        (true, BigInt!("228988810152649578064853576960394133504")),
+        (true, BigInt!("1")),
+        (false, BigInt!("1")),
+        (true, BigInt!("228988810152649578064853576960394133503")),
     ];
-    const SGN_N: [bool; 4] = [true, true, false, true];
 
     fn endomorphism(p: &Projective<Self>) -> Projective<Self> {
         let mut res = (*p).clone();

@@ -4,7 +4,7 @@ use ark_ec::{
     scalar_mul::glv::GLVConfig,
     short_weierstrass::{self as sw, SWCurveConfig},
 };
-use ark_ff::{Field, MontFp, Zero, BigInt};
+use ark_ff::{BigInt, Field, MontFp, PrimeField, Zero};
 
 #[cfg(test)]
 mod tests;
@@ -50,17 +50,12 @@ impl GLVConfig for VestaConfig {
     const LAMBDA: Self::ScalarField =
         MontFp!("20444556541222657078399132219657928148671392403212669005631716460534733845831");
 
-    const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
-        [
-            BigInt!("98231058071100081932162823354453065729"),
-            BigInt!("98231058071186745657228807397848383488"),
-        ],
-        [
-            BigInt!("196462116142286827589391630752301449217"),
-            BigInt!("98231058071100081932162823354453065729"),
-        ],
+    const SCALAR_DECOMP_COEFFS: [(bool, <Self::ScalarField as PrimeField>::BigInt); 4] = [
+        (false, BigInt!("98231058071100081932162823354453065729")),
+        (true, BigInt!("98231058071186745657228807397848383488")),
+        (false, BigInt!("196462116142286827589391630752301449217")),
+        (false, BigInt!("98231058071100081932162823354453065729")),
     ];
-    const SGN_N: [bool; 4] = [false, true, false, false];
 
     fn endomorphism(p: &Projective) -> Projective {
         // Endomorphism of the points on the curve.

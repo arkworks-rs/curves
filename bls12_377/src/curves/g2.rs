@@ -8,7 +8,7 @@ use ark_ec::{
     AffineRepr, CurveGroup, Group,
 };
 
-use ark_ff::{Field, MontFp, Zero, BigInt};
+use ark_ff::{BigInt, Field, MontFp, PrimeField, Zero};
 use ark_std::ops::Neg;
 
 use crate::*;
@@ -109,17 +109,12 @@ impl GLVConfig for Config {
 
     const LAMBDA: Self::ScalarField = MontFp!("91893752504881257701523279626832445440");
 
-    const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
-        [
-            BigInt!("91893752504881257701523279626832445440"),
-            BigInt!("1"),
-        ],
-        [
-            BigInt!("1"),
-            BigInt!("91893752504881257701523279626832445441"),
-        ],
+    const SCALAR_DECOMP_COEFFS: [(bool, <Self::ScalarField as PrimeField>::BigInt); 4] = [
+        (false, BigInt!("91893752504881257701523279626832445440")),
+        (true, BigInt!("1")),
+        (false, BigInt!("1")),
+        (false, BigInt!("91893752504881257701523279626832445441")),
     ];
-    const SGN_N: [bool; 4] = [false, true, false, false];
 
     fn endomorphism(p: &Projective<Self>) -> Projective<Self> {
         let mut res = (*p).clone();

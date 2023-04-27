@@ -11,7 +11,7 @@ use ark_ec::{
     scalar_mul::glv::GLVConfig,
     CurveConfig,
 };
-use ark_ff::{Field, MontFp, PrimeField, Zero, BigInt};
+use ark_ff::{BigInt, Field, MontFp, PrimeField, Zero};
 use ark_std::{ops::Neg, One};
 
 use super::g1_swu_iso::{SwuIsoConfig, ISOGENY_MAP_TO_G1};
@@ -68,17 +68,12 @@ impl GLVConfig for Config {
     const LAMBDA: Self::ScalarField =
         MontFp!("8444461749428370424248824938781546531284005582649182570233710176290576793600");
 
-    const SCALAR_DECOMP_COEFFS: [[<Self as CurveConfig>::ScalarField; 2]; 2] = [
-        [
-            BigInt!("91893752504881257701523279626832445441"),
-            BigInt!("1"),
-        ],
-        [
-            BigInt!("1"),
-            BigInt!("91893752504881257701523279626832445440"),
-        ],
+    const SCALAR_DECOMP_COEFFS: [(bool, <Self::ScalarField as PrimeField>::BigInt); 4] = [
+        (true, BigInt!("91893752504881257701523279626832445441")),
+        (true, BigInt!("1")),
+        (false, BigInt!("1")),
+        (true, BigInt!("91893752504881257701523279626832445440")),
     ];
-    const SGN_N: [bool; 4] = [true, true, false, true];
 
     fn endomorphism(p: &SWProjective<Self>) -> SWProjective<Self> {
         let mut res = (*p).clone();
