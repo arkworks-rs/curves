@@ -4,9 +4,9 @@ use ark_ec::{
     hashing::curve_maps::wb::{IsogenyMap, WBConfig},
     models::CurveConfig,
     short_weierstrass::{Affine, SWCurveConfig},
-    AffineRepr, AdditiveGroup, PrimeGroup,
+    AffineRepr, PrimeGroup,
 };
-use ark_ff::{Field, MontFp, PrimeField, Zero};
+use ark_ff::{AdditiveGroup, MontFp, PrimeField, Zero};
 use ark_serialize::{Compress, SerializationError};
 use ark_std::{ops::Neg, One};
 

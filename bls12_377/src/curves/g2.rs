@@ -4,10 +4,10 @@ use ark_ec::{
     hashing::curve_maps::wb::{IsogenyMap, WBConfig},
     models::CurveConfig,
     short_weierstrass::{Affine, Projective, SWCurveConfig},
-    AffineRepr, CurveGroup, AdditiveGroup, PrimeGroup,
+    AffineRepr, CurveGroup, PrimeGroup,
 };
 
-use ark_ff::{Field, MontFp, Zero};
+use ark_ff::{AdditiveGroup, Field, MontFp, Zero};
 use ark_std::ops::Neg;
 
 use crate::*;
