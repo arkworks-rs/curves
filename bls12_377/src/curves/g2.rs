@@ -4,7 +4,7 @@ use ark_ec::{
     hashing::curve_maps::wb::{IsogenyMap, WBConfig},
     models::CurveConfig,
     short_weierstrass::{Affine, Projective, SWCurveConfig},
-    AffineRepr, CurveGroup, Group,
+    AffineRepr, CurveGroup, AdditiveGroup, PrimeGroup,
 };
 
 use ark_ff::{Field, MontFp, Zero};
