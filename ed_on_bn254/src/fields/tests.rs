@@ -1,9 +1,8 @@
 use ark_algebra_test_templates::*;
-use ark_ec::AdditiveGroup;
 use ark_ff::{
     biginteger::BigInteger256 as BigInteger,
     fields::{Field, LegendreSymbol::*},
-    One, Zero,
+    AdditiveGroup, One, Zero,
 };
 use ark_std::str::FromStr;
 

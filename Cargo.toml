@@ -72,4 +72,4 @@ ark-poly = { git = "https://github.com/arkworks-rs/algebra/" }
 ark-serialize = { git = "https://github.com/arkworks-rs/algebra/" }
 ark-algebra-test-templates = { git = "https://github.com/arkworks-rs/algebra/" }
 ark-algebra-bench-templates = { git = "https://github.com/arkworks-rs/algebra/" }
-ark-r1cs-std = { git = "https://github.com/mmaker/ark-r1cs-std/", branch = "feature/additive-groups" }
+ark-r1cs-std = { git = "https://github.com/arkworks-rs/r1cs-std/" }
