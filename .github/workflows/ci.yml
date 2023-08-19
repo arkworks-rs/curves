@@ -168,7 +168,7 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: aarch64-unknown-none
+          target: thumbv6m-none-eabi
           override: true
 
       - uses: actions/cache@v2
@@ -183,10 +183,10 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
             command: check
-            args: --examples --workspace --exclude ark-curve-constraint-tests --target aarch64-unknown-none
+            args: --examples --workspace --exclude ark-curve-constraint-tests --target thumbv6m-none-eabi
 
       - name: build
         uses: actions-rs/cargo@v1
         with:
             command: build
-            args: --workspace --exclude ark-curve-constraint-tests --target aarch64-unknown-none
+            args: --workspace --exclude ark-curve-constraint-tests --target thumbv6m-none-eabi
