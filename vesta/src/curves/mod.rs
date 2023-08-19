@@ -3,7 +3,7 @@ use ark_ec::{
     models::CurveConfig,
     short_weierstrass::{self as sw, SWCurveConfig},
 };
-use ark_ff::{Field, MontFp, Zero};
+use ark_ff::{AdditiveGroup, Field, MontFp, Zero};
 
 #[cfg(test)]
 mod tests;
