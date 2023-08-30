@@ -1,6 +1,6 @@
 use ark_ff::{
     fields::fp6_2over3::{Fp6, Fp6Config},
-    Field, MontFp,
+    AdditiveGroup, Field, MontFp,
 };
 
 use crate::{Fq, Fq3, Fq3Config};
