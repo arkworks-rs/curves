@@ -1,7 +1,7 @@
 use ark_ec::models::mnt4::{MNT4Config, MNT4};
 use ark_ff::{
     biginteger::{BigInt, BigInteger768},
-    Field, Fp2, MontFp,
+    AdditiveGroup, Field, Fp2, MontFp,
 };
 
 use crate::{Fq, Fq2Config, Fq4Config, Fr};
