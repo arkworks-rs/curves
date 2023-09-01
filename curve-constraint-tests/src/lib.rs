@@ -225,7 +225,7 @@ pub mod fields {
 pub mod curves {
     use ark_ec::{
         short_weierstrass::Projective as SWProjective, twisted_edwards::Projective as TEProjective,
-        CurveGroup, Group,
+        AdditiveGroup, CurveGroup,
     };
     use ark_ff::{BitIteratorLE, Field, One, PrimeField};
     use ark_relations::r1cs::{ConstraintSystem, SynthesisError};

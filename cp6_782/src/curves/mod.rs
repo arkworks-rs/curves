@@ -3,7 +3,8 @@ use ark_ec::{
     pairing::{MillerLoopOutput, Pairing, PairingOutput},
 };
 use ark_ff::{
-    biginteger::BigInteger832, BigInt, BitIteratorBE, CyclotomicMultSubgroup, Field, One,
+    biginteger::BigInteger832, AdditiveGroup, BigInt, BitIteratorBE, CyclotomicMultSubgroup, Field,
+    One,
 };
 use itertools::Itertools;
 

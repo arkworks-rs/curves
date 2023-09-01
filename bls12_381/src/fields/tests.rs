@@ -2,7 +2,7 @@ use ark_algebra_test_templates::*;
 use ark_ff::{
     biginteger::{BigInt, BigInteger, BigInteger384},
     fields::{FftField, Field, Fp12Config, Fp2Config, Fp6Config, PrimeField},
-    One, UniformRand, Zero,
+    AdditiveGroup, One, UniformRand, Zero,
 };
 use ark_std::{
     cmp::Ordering,
