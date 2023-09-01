@@ -49,23 +49,10 @@ impl MNT6Config for Config {
         0, 0, 0,
     ];
     const ATE_IS_LOOP_COUNT_NEG: bool = false;
-    const FINAL_EXPONENT_LAST_CHUNK_1: BigInteger768 =
-        BigInt::new([0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
+    const FINAL_EXPONENT_LAST_CHUNK_1: BigInteger768 = BigInt!("0x1");
     const FINAL_EXPONENT_LAST_CHUNK_W0_IS_NEG: bool = false;
-    const FINAL_EXPONENT_LAST_CHUNK_ABS_OF_W0: BigInteger768 = BigInt::new([
-        8824542903220142080,
-        7711082599397206192,
-        8303354903384568230,
-        5874150271971943936,
-        9717849827920685054,
-        95829799234282493,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-    ]);
+    // https://github.com/o1-labs/snarky/blob/9c21ab2bb23874604640740d646a932e813432c3/snarkette/mnt6753.ml#L130C1-L130C1
+    const FINAL_EXPONENT_LAST_CHUNK_ABS_OF_W0: BigInteger768 = BigInt!("204691208819330962009469868104636132783269696790011977400223898462431810102935615891307667367766898917669754470400");
     type Fp = Fq;
     type Fr = Fr;
     type Fp3Config = Fq3Config;
