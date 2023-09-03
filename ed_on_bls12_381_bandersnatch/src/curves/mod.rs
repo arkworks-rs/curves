@@ -138,6 +138,12 @@ impl SWCurveConfig for BandersnatchConfig {
 
     /// generators
     const GENERATOR: SWAffine = SWAffine::new_unchecked(SW_GENERATOR_X, SW_GENERATOR_Y);
+
+    #[inline]
+    fn mul_projective(p: &SWProjective, scalar: &[u64]) -> SWProjective {
+        let s = Self::ScalarField::from_sign_and_limbs(true, scalar);
+        GLVConfig::glv_mul_projective(*p, s)
+    }
 }
 
 impl GLVConfig for BandersnatchConfig {
