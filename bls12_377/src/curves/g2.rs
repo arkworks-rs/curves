@@ -2,13 +2,12 @@ use ark_ec::{
     bls12,
     bls12::Bls12Config,
     hashing::curve_maps::wb::{IsogenyMap, WBConfig},
-    models::{short_weierstrass::SWCurveConfig, CurveConfig},
     scalar_mul::glv::GLVConfig,
-    short_weierstrass::{Affine, Projective},
-    AffineRepr, CurveGroup, Group,
+    short_weierstrass::{Affine, Projective, SWCurveConfig},
+    AffineRepr, CurveConfig, CurveGroup, PrimeGroup,
 };
 
-use ark_ff::{BigInt, Field, MontFp, PrimeField, Zero};
+use ark_ff::{AdditiveGroup, BigInt, Field, MontFp, PrimeField, Zero};
 use ark_std::ops::Neg;
 
 use crate::*;

@@ -4,7 +4,7 @@ use ark_ec::{
     short_weierstrass::{self, SWCurveConfig},
     twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
-use ark_ff::{BigInt, Field, FpConfig, MontFp, PrimeField};
+use ark_ff::{AdditiveGroup, BigInt, FpConfig, MontFp, PrimeField};
 
 use crate::{Fq, Fr};
 

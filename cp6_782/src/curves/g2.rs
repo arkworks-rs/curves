@@ -3,7 +3,7 @@ use ark_ec::{
     short_weierstrass::{Affine, Projective, SWCurveConfig},
     AffineRepr, CurveGroup,
 };
-use ark_ff::{Field, MontFp};
+use ark_ff::{AdditiveGroup, MontFp};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use ark_std::vec::Vec;
 

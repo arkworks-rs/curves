@@ -7,9 +7,9 @@ use ark_ec::{
     models::CurveConfig,
     scalar_mul::glv::GLVConfig,
     short_weierstrass::{Affine, Projective, SWCurveConfig},
-    AffineRepr, CurveGroup, Group,
+    AffineRepr, CurveGroup, PrimeGroup,
 };
-use ark_ff::{BigInt, Field, MontFp, PrimeField, Zero};
+use ark_ff::{AdditiveGroup, BigInt, Field, MontFp, PrimeField, Zero};
 use ark_serialize::{Compress, SerializationError};
 
 use super::{

@@ -4,10 +4,10 @@ use ark_ec::{
     hashing::curve_maps::wb::{IsogenyMap, WBConfig},
     models::CurveConfig,
     scalar_mul::glv::GLVConfig,
-    short_weierstrass::{Affine, Projective, SWCurveConfig},
-    AffineRepr, Group,
+    short_weierstrass::{Affine, SWCurveConfig},
+    AffineRepr, PrimeGroup,
 };
-use ark_ff::{BigInt, Field, MontFp, PrimeField, Zero};
+use ark_ff::{AdditiveGroup, BigInt, MontFp, PrimeField, Zero};
 use ark_serialize::{Compress, SerializationError};
 use ark_std::{ops::Neg, One};
 
@@ -158,7 +158,7 @@ impl GLVConfig for Config {
         (true, BigInt!("228988810152649578064853576960394133503")),
     ];
 
-    fn endomorphism(p: &Projective<Self>) -> Projective<Self> {
+    fn endomorphism(p: &G1Projective) -> G1Projective {
         let mut res = (*p).clone();
         res.x *= Self::ENDO_COEFFS[0];
         res
