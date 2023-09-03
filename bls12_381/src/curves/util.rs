@@ -1,7 +1,6 @@
 use ark_ec::{short_weierstrass::Affine, AffineRepr};
 use ark_ff::{BigInteger384, PrimeField};
 use ark_serialize::SerializationError;
-use ark_std::Zero;
 
 use crate::{g1::Config as G1Config, g2::Config as G2Config, Fq, Fq2, G1Affine, G2Affine};
 
@@ -82,11 +81,7 @@ pub(crate) fn serialize_fq(field: Fq) -> [u8; 48] {
     result
 }
 
-pub(crate) fn read_fq_with_offset(
-    bytes: &[u8],
-    offset: usize,
-    mask: bool,
-) -> Result<Fq, ark_serialize::SerializationError> {
+fn read_bytes_with_offset(bytes: &[u8], offset: usize, mask: bool) -> [u8; G1_SERIALIZED_SIZE] {
     let mut tmp = [0; G1_SERIALIZED_SIZE];
     // read `G1_SERIALIZED_SIZE` bytes
     tmp.copy_from_slice(&bytes[offset * G1_SERIALIZED_SIZE..G1_SERIALIZED_SIZE * (offset + 1)]);
@@ -94,6 +89,15 @@ pub(crate) fn read_fq_with_offset(
     if mask {
         EncodingFlags::remove_flags(&mut tmp);
     }
+    tmp
+}
+
+pub(crate) fn read_fq_with_offset(
+    bytes: &[u8],
+    offset: usize,
+    mask: bool,
+) -> Result<Fq, ark_serialize::SerializationError> {
+    let tmp = read_bytes_with_offset(bytes, offset, mask);
     deserialize_fq(tmp).ok_or(SerializationError::InvalidData)
 }
 
@@ -115,17 +119,18 @@ pub(crate) fn read_g1_compressed<R: ark_serialize::Read>(
     }
 
     // Attempt to obtain the x-coordinate
-    let x = read_fq_with_offset(&bytes, 0, true)?;
+    let x_bytes = read_bytes_with_offset(&bytes, 0, true);
 
     if flags.is_infinity {
         // Check that the `x` co-ordinate was `0`
-        if !x.is_zero() {
+        if x_bytes != [0u8; 48] {
             return Err(SerializationError::InvalidData);
         }
 
         return Ok(G1Affine::zero());
     }
 
+    let x = deserialize_fq(x_bytes).ok_or(SerializationError::InvalidData)?;
     let p = G1Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
         .ok_or(SerializationError::InvalidData)?;
 
