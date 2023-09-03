@@ -3,7 +3,7 @@ use ark_ec::{
     short_weierstrass::{self, SWCurveConfig},
     twisted_edwards::{Affine, MontCurveConfig, Projective, TECurveConfig},
 };
-use ark_ff::{Field, MontFp};
+use ark_ff::{AdditiveGroup, MontFp};
 
 use crate::{Fq, Fr};
 
