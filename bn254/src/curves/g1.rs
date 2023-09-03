@@ -1,4 +1,5 @@
 use ark_ec::{
+    bn,
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
     scalar_mul::glv::GLVConfig,
     short_weierstrass::{Affine, Projective},
@@ -36,6 +37,15 @@ impl SWCurveConfig for Config {
     #[inline(always)]
     fn mul_by_a(_: Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
+    }
+
+    #[inline]
+    fn mul_projective(
+        p: &bn::G1Projective<crate::Config>,
+        scalar: &[u64],
+    ) -> bn::G1Projective<crate::Config> {
+        let s = Self::ScalarField::from_sign_and_limbs(true, scalar);
+        GLVConfig::glv_mul_projective(*p, s)
     }
 }
 
