@@ -54,6 +54,12 @@ impl SWCurveConfig for Config {
     }
 
     #[inline]
+    fn mul_projective(p: &G1Projective, scalar: &[u64]) -> G1Projective {
+        let s = Self::ScalarField::from_sign_and_limbs(true, scalar);
+        GLVConfig::glv_mul_projective(*p, s)
+    }
+
+    #[inline]
     fn is_in_correct_subgroup_assuming_on_curve(p: &G1Affine) -> bool {
         // Algorithm from Section 6 of https://eprint.iacr.org/2021/1130.
         //
