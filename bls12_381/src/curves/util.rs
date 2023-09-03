@@ -92,7 +92,7 @@ fn read_bytes_with_offset(bytes: &[u8], offset: usize, mask: bool) -> [u8; G1_SE
     tmp
 }
 
-pub(crate) fn read_fq_with_offset(
+fn read_fq_with_offset(
     bytes: &[u8],
     offset: usize,
     mask: bool,
