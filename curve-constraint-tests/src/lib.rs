@@ -321,6 +321,8 @@ pub mod curves {
                 *limb = u64::MAX;
             }
 
+            let num_limbs = max.len();
+
             let modulus_num_bits_mod_64 = <C::ScalarField as PrimeField>::MODULUS_BIT_SIZE % 64;
             if modulus_num_bits_mod_64 != 0 {
                 *max.last_mut().unwrap() >>= 64 - modulus_num_bits_mod_64;
@@ -334,8 +336,8 @@ pub mod curves {
                 (-C::ScalarField::one()).into_bigint().as_ref().to_vec(),
                 <C::ScalarField as PrimeField>::MODULUS.as_ref().to_vec(),
                 max,
-                vec![0; 50],
-                vec![1000012341233u64; 36],
+                vec![0u64; num_limbs],
+                vec![1000012341233u64; num_limbs],
             ];
 
             let mut input = vec![];
