@@ -10,7 +10,7 @@ use ark_ec::{
     },
     CurveConfig,
 };
-use ark_ff::{Field, MontFp, PrimeField, Zero};
+use ark_ff::{AdditiveGroup, Field, MontFp, PrimeField, Zero};
 use ark_std::{ops::Neg, One};
 
 use super::g1_swu_iso::{SwuIsoConfig, ISOGENY_MAP_TO_G1};

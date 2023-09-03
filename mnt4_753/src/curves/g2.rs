@@ -3,7 +3,7 @@ use ark_ec::{
     mnt4::MNT4Config,
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
 };
-use ark_ff::{Field, MontFp};
+use ark_ff::{AdditiveGroup, MontFp};
 
 use crate::{Fq, Fq2, Fr, G1_COEFF_A_NON_RESIDUE};
 

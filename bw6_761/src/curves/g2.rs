@@ -2,7 +2,7 @@ use ark_ec::{
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
     short_weierstrass::{Affine, Projective},
 };
-use ark_ff::{Field, MontFp};
+use ark_ff::{AdditiveGroup, MontFp};
 
 use crate::{Fq, Fr};
 
