@@ -51,6 +51,12 @@ impl SWCurveConfig for Config {
     }
 
     #[inline]
+    fn mul_projective(p: &G1Projective, scalar: &[u64]) -> G1Projective {
+        let s = Self::ScalarField::from_sign_and_limbs(true, scalar);
+        GLVConfig::glv_mul_projective(*p, s)
+    }
+
+    #[inline]
     fn clear_cofactor(p: &G1SWAffine) -> G1SWAffine {
         // Using the effective cofactor.
         //
