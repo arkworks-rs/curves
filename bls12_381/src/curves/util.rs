@@ -15,16 +15,24 @@ pub struct EncodingFlags {
 
 impl EncodingFlags {
     /// Fetches the flags from the byte-string
-    pub fn get_flags(bytes: &[u8]) -> Self {
+    pub fn get_flags(bytes: &[u8]) -> Result<Self, SerializationError> {
         let compression_flag_set = (bytes[0] >> 7) & 1;
         let infinity_flag_set = (bytes[0] >> 6) & 1;
         let sort_flag_set = (bytes[0] >> 5) & 1;
 
-        Self {
-            is_compressed: compression_flag_set == 1,
-            is_infinity: infinity_flag_set == 1,
-            is_lexographically_largest: sort_flag_set == 1,
+        let is_compressed = compression_flag_set == 1;
+        let is_infinity = infinity_flag_set == 1;
+        let is_lexographically_largest = sort_flag_set == 1;
+
+        if is_lexographically_largest && (!is_compressed || is_infinity) {
+            return Err(SerializationError::InvalidData);
         }
+
+        Ok(Self {
+            is_compressed,
+            is_infinity,
+            is_lexographically_largest,
+        })
     }
 
     /// Encodes the flags into the byte-string
@@ -102,7 +110,7 @@ pub(crate) fn read_g1_compressed<R: ark_serialize::Read>(
         .ok_or(SerializationError::InvalidData)?;
 
     // Obtain the three flags from the start of the byte sequence
-    let flags = EncodingFlags::get_flags(&bytes[..]);
+    let flags = EncodingFlags::get_flags(&bytes[..])?;
 
     // We expect to be deserializing a compressed point
     if !flags.is_compressed {
@@ -137,7 +145,7 @@ pub(crate) fn read_g1_uncompressed<R: ark_serialize::Read>(
         .map_err(|_| SerializationError::InvalidData)?;
 
     // Obtain the three flags from the start of the byte sequence
-    let flags = EncodingFlags::get_flags(&bytes[..]);
+    let flags = EncodingFlags::get_flags(&bytes[..])?;
 
     // we expect to be deserializing an uncompressed point
     if flags.is_compressed {
@@ -172,7 +180,7 @@ pub(crate) fn read_g2_compressed<R: ark_serialize::Read>(
         .map_err(|_| SerializationError::InvalidData)?;
 
     // Obtain the three flags from the start of the byte sequence
-    let flags = EncodingFlags::get_flags(&bytes);
+    let flags = EncodingFlags::get_flags(&bytes)?;
 
     // we expect to be deserializing a compressed point
     if !flags.is_compressed {
@@ -209,7 +217,7 @@ pub(crate) fn read_g2_uncompressed<R: ark_serialize::Read>(
         .map_err(|_| SerializationError::InvalidData)?;
 
     // Obtain the three flags from the start of the byte sequence
-    let flags = EncodingFlags::get_flags(&bytes);
+    let flags = EncodingFlags::get_flags(&bytes)?;
 
     // we expect to be deserializing an uncompressed point
     if flags.is_compressed {
