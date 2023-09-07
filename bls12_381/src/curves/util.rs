@@ -92,15 +92,6 @@ fn read_bytes_with_offset(bytes: &[u8], offset: usize, mask: bool) -> [u8; G1_SE
     tmp
 }
 
-fn read_fq_with_offset(
-    bytes: &[u8],
-    offset: usize,
-    mask: bool,
-) -> Result<Fq, ark_serialize::SerializationError> {
-    let tmp = read_bytes_with_offset(bytes, offset, mask);
-    deserialize_fq(tmp).ok_or(SerializationError::InvalidData)
-}
-
 pub(crate) fn read_g1_compressed<R: ark_serialize::Read>(
     mut reader: R,
 ) -> Result<Affine<G1Config>, ark_serialize::SerializationError> {
@@ -153,15 +144,20 @@ pub(crate) fn read_g1_uncompressed<R: ark_serialize::Read>(
         return Err(SerializationError::UnexpectedFlags);
     }
 
+    let x_bytes = read_bytes_with_offset(&bytes, 0, true);
+    let y_bytes = read_bytes_with_offset(&bytes, 1, false);
+
     if flags.is_infinity {
+        if x_bytes != [0u8; 48] || y_bytes != [0u8; 48] {
+            return Err(SerializationError::InvalidData);
+        }
         return Ok(G1Affine::zero());
     }
 
     // Attempt to obtain the x-coordinate
-    let x = read_fq_with_offset(&bytes, 0, true)?;
+    let x = deserialize_fq(x_bytes).ok_or(SerializationError::InvalidData)?;
     // Attempt to obtain the y-coordinate
-    let y = read_fq_with_offset(&bytes, 1, false)?;
-
+    let y = deserialize_fq(y_bytes).ok_or(SerializationError::InvalidData)?;
     let p = G1Affine::new_unchecked(x, y);
 
     Ok(p)
@@ -183,14 +179,19 @@ pub(crate) fn read_g2_compressed<R: ark_serialize::Read>(
         return Err(SerializationError::UnexpectedFlags);
     }
 
+    let xc1_bytes = read_bytes_with_offset(&bytes, 0, true);
+    let xc0_bytes = read_bytes_with_offset(&bytes, 1, false);
+
     if flags.is_infinity {
+        if xc1_bytes != [0u8; 48] || xc0_bytes != [0u8; 48] {
+            return Err(SerializationError::InvalidData);
+        }
         return Ok(G2Affine::zero());
     }
 
     // Attempt to obtain the x-coordinate
-    let xc1 = read_fq_with_offset(&bytes, 0, true)?;
-    let xc0 = read_fq_with_offset(&bytes, 1, false)?;
-
+    let xc1 = deserialize_fq(xc1_bytes).ok_or(SerializationError::InvalidData)?;
+    let xc0 = deserialize_fq(xc0_bytes).ok_or(SerializationError::InvalidData)?;
     let x = Fq2::new(xc0, xc1);
 
     let p = G2Affine::get_point_from_x_unchecked(x, flags.is_lexographically_largest)
@@ -215,18 +216,32 @@ pub(crate) fn read_g2_uncompressed<R: ark_serialize::Read>(
         return Err(SerializationError::UnexpectedFlags);
     }
 
+    let xc1_bytes = read_bytes_with_offset(&bytes, 0, true);
+    let xc0_bytes = read_bytes_with_offset(&bytes, 1, false);
+
+    let yc1_bytes = read_bytes_with_offset(&bytes, 2, false);
+    let yc0_bytes = read_bytes_with_offset(&bytes, 3, false);
+
     if flags.is_infinity {
+        if xc1_bytes != [0u8; 48]
+            || xc0_bytes != [0u8; 48]
+            || yc1_bytes != [0u8; 48]
+            || yc0_bytes != [0u8; 48]
+        {
+            return Err(SerializationError::InvalidData);
+        }
         return Ok(G2Affine::zero());
     }
 
+    let xc1 = deserialize_fq(xc1_bytes).ok_or(SerializationError::InvalidData)?;
+    let xc0 = deserialize_fq(xc0_bytes).ok_or(SerializationError::InvalidData)?;
+    let yc1 = deserialize_fq(yc1_bytes).ok_or(SerializationError::InvalidData)?;
+    let yc0 = deserialize_fq(yc0_bytes).ok_or(SerializationError::InvalidData)?;
+
     // Attempt to obtain the x-coordinate
-    let xc1 = read_fq_with_offset(&bytes, 0, true)?;
-    let xc0 = read_fq_with_offset(&bytes, 1, false)?;
     let x = Fq2::new(xc0, xc1);
 
     // Attempt to obtain the y-coordinate
-    let yc1 = read_fq_with_offset(&bytes, 2, false)?;
-    let yc0 = read_fq_with_offset(&bytes, 3, false)?;
     let y = Fq2::new(yc0, yc1);
 
     let p = G2Affine::new_unchecked(x, y);
