@@ -215,6 +215,15 @@ mod test {
         let maybe_affine_point: Result<G1Affine, ark_serialize::SerializationError> =
             CanonicalDeserialize::deserialize_compressed(&non_canonical_bytes[..]);
 
+        assert!(maybe_affine_point.is_err());
+
+        let non_canonical_hex_uncompressed = "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001";
+        let non_canonical_bytes = hex::decode(non_canonical_hex_uncompressed).unwrap();
+        assert_eq!(non_canonical_bytes.len(), 96);
+
+        let maybe_affine_point: Result<G1Affine, ark_serialize::SerializationError> =
+            CanonicalDeserialize::deserialize_uncompressed(&non_canonical_bytes[..]);
+
         assert!(maybe_affine_point.is_err())
     }
 }
