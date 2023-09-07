@@ -45,10 +45,8 @@ impl SWCurveConfig for GrumpkinConfig {
 }
 
 /// G_GENERATOR_X = 1
-/// Encoded in Montgomery form, so the value here is R mod p.
 pub const G_GENERATOR_X: Fq = MontFp!("1");
 
 /// G_GENERATOR_Y = sqrt(-16)
-/// Encoded in Montgomery form, so the value here is 2R mod p.
 pub const G_GENERATOR_Y: Fq =
     MontFp!("17631683881184975370165255887551781615748388533673675138860");
