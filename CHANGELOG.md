@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## Pending
-
+[\#177](https://github.com/arkworks-rs/curves/pull/177) Add the circom compatible Baby Jubjub curve
 ### Breaking changes
 
 ### Features
