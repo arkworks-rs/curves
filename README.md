@@ -20,6 +20,7 @@ This repository contains implementations of some popular elliptic curves. The cu
 ### BN254 and related curves
 * [`ark-bn254`](bn254): Implements the BN254 pairing-friendly curve
 * [`ark-ed-on-bn254`](ed_on_bn254): Implements a Twisted Edwards curve atop the scalar field of BN254
+* [`ark-grumpkin`](grumpkin): Implements the Grumpkin curve. A curve that forms a cycle with bn254.
 
 ### MNT-298 cycle of curves and related curves
 * [`ark-mnt4-298`](mnt4_298): Implements the MNT4-298 pairing-friendly curve. This curve forms a pairing-friendly cycle with MNT6-298
