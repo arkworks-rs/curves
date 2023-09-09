@@ -315,7 +315,7 @@ pub mod curves {
             }
             assert!(cs.is_satisfied().unwrap());
 
-            let modulus = <C::ScalarField as PrimeField>::MODULUS.as_ref().to_vec();
+            let modulus = C::ScalarField::MODULUS.as_ref().to_vec();
             let mut max = modulus.clone();
             for limb in &mut max {
                 *limb = u64::MAX;
@@ -334,7 +334,7 @@ pub mod curves {
                     .to_vec(),
                 vec![u64::rand(&mut rng)],
                 (-C::ScalarField::one()).into_bigint().as_ref().to_vec(),
-                C::ScalarField::MODULUS.as_ref().to_vec(),
+                modulus,
                 max,
                 vec![0u64; num_limbs],
                 vec![1000012341233u64; num_limbs],
