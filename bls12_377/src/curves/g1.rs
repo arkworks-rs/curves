@@ -3,14 +3,15 @@ use ark_ec::{
     bls12::Bls12Config,
     hashing::curve_maps::wb::{IsogenyMap, WBConfig},
     models::{
-        short_weierstrass::{Affine as SWAffine, SWCurveConfig},
+        short_weierstrass::{Affine as SWAffine, Projective as SWProjective, SWCurveConfig},
         twisted_edwards::{
             Affine as TEAffine, MontCurveConfig, Projective as TEProjective, TECurveConfig,
         },
     },
+    scalar_mul::glv::GLVConfig,
     CurveConfig,
 };
-use ark_ff::{AdditiveGroup, Field, MontFp, PrimeField, Zero};
+use ark_ff::{AdditiveGroup, BigInt, Field, MontFp, PrimeField, Zero};
 use ark_std::{ops::Neg, One};
 
 use super::g1_swu_iso::{SwuIsoConfig, ISOGENY_MAP_TO_G1};
@@ -50,12 +51,46 @@ impl SWCurveConfig for Config {
     }
 
     #[inline]
+    fn mul_projective(p: &G1Projective, scalar: &[u64]) -> G1Projective {
+        let s = Self::ScalarField::from_sign_and_limbs(true, scalar);
+        GLVConfig::glv_mul_projective(*p, s)
+    }
+
+    #[inline]
     fn clear_cofactor(p: &G1SWAffine) -> G1SWAffine {
         // Using the effective cofactor.
         //
         // It is enough to multiply by (x - 1), instead of (x - 1)^2 / 3
         let h_eff = x_minus_one().into_bigint();
         <Config as SWCurveConfig>::mul_affine(p, h_eff.as_ref()).into()
+    }
+}
+
+impl GLVConfig for Config {
+    const ENDO_COEFFS: &'static[Self::BaseField] = &[
+        MontFp!("258664426012969093929703085429980814127835149614277183275038967946009968870203535512256352201271898244626862047231")
+    ];
+
+    const LAMBDA: Self::ScalarField =
+        MontFp!("8444461749428370424248824938781546531284005582649182570233710176290576793600");
+
+    const SCALAR_DECOMP_COEFFS: [(bool, <Self::ScalarField as PrimeField>::BigInt); 4] = [
+        (true, BigInt!("91893752504881257701523279626832445441")),
+        (true, BigInt!("1")),
+        (false, BigInt!("1")),
+        (true, BigInt!("91893752504881257701523279626832445440")),
+    ];
+
+    fn endomorphism(p: &SWProjective<Self>) -> SWProjective<Self> {
+        let mut res = (*p).clone();
+        res.x *= Self::ENDO_COEFFS[0];
+        res
+    }
+
+    fn endomorphism_affine(p: &SWAffine<Self>) -> SWAffine<Self> {
+        let mut res = (*p).clone();
+        res.x *= Self::ENDO_COEFFS[0];
+        res
     }
 }
 

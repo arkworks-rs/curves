@@ -11,6 +11,7 @@
 ### Improvements
 
 - [\#156](https://github.com/arkworks-rs/curves/pull/156) The hard part of the final exponentiation for bw6-761 relocated from arkworks/algebra.
+- [\#158](https://github.com/arkworks-rs/curves/pull/158) Enabled GLV as the default scalar multiplication for BLS12-377, BLS12-381 and BN254.
 
 ### Bugfixes
 
