@@ -215,6 +215,7 @@ mod test {
 
     use super::*;
     use crate::g1;
+    use ark_serialize::CanonicalDeserialize;
     use ark_std::{rand::Rng, UniformRand};
 
     fn sample_unchecked() -> Affine<g1::Config> {
@@ -238,5 +239,56 @@ mod test {
             assert!(p.is_on_curve());
             assert!(p.is_in_correct_subgroup_assuming_on_curve());
         }
+    }
+
+    #[test]
+    fn non_canonical_identity_point() {
+        let non_canonical_hex = "c01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        let non_canonical_bytes = hex::decode(non_canonical_hex).unwrap();
+        assert_eq!(non_canonical_bytes.len(), 48);
+
+        let maybe_affine_point: Result<G1Affine, ark_serialize::SerializationError> =
+            CanonicalDeserialize::deserialize_compressed(&non_canonical_bytes[..]);
+
+        assert!(maybe_affine_point.is_err());
+
+        let non_canonical_hex_uncompressed = "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001";
+        let non_canonical_bytes = hex::decode(non_canonical_hex_uncompressed).unwrap();
+        assert_eq!(non_canonical_bytes.len(), 96);
+
+        let maybe_affine_point: Result<G1Affine, ark_serialize::SerializationError> =
+            CanonicalDeserialize::deserialize_uncompressed(&non_canonical_bytes[..]);
+
+        assert!(maybe_affine_point.is_err())
+    }
+
+    #[test]
+    fn bad_flag_combination() {
+        // See https://github.com/zkcrypto/pairing/tree/fa8103764a07bd273927447d434de18aace252d3/src/bls12_381#serialization
+        // - Bit 1 is compressed/uncompressed
+        // - Bit 2 is infinity
+        // - Bit 3 is lexicographical order for compressed point deserialization
+        // Hence `0b1110` ("e" in hex) or `0b0110` ("6" in hex") are both nonsensical.
+
+        // uncompressed, but lexicographically largest flag is set
+        let non_canonical_hex = "600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        let non_canonical_bytes = hex::decode(non_canonical_hex).unwrap();
+        assert_eq!(non_canonical_bytes.len(), 48);
+
+        let maybe_affine_point: Result<G1Affine, ark_serialize::SerializationError> =
+            CanonicalDeserialize::deserialize_compressed(&non_canonical_bytes[..]);
+
+        assert!(maybe_affine_point.is_err());
+
+        // compressed, but infinity flag is set and lexicographically largest flag is
+        // set
+        let non_canonical_hex_2 = "e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+
+        let non_canonical_bytes = hex::decode(non_canonical_hex_2).unwrap();
+        assert_eq!(non_canonical_bytes.len(), 48);
+
+        let maybe_affine_point: Result<G1Affine, ark_serialize::SerializationError> =
+            CanonicalDeserialize::deserialize_compressed(&non_canonical_bytes[..]);
+        assert!(maybe_affine_point.is_err());
     }
 }
