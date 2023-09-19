@@ -3,10 +3,11 @@ use ark_ec::{
     bls12::Bls12Config,
     hashing::curve_maps::wb::{IsogenyMap, WBConfig},
     models::CurveConfig,
+    scalar_mul::glv::GLVConfig,
     short_weierstrass::{Affine, SWCurveConfig},
     AffineRepr, PrimeGroup,
 };
-use ark_ff::{AdditiveGroup, MontFp, PrimeField, Zero};
+use ark_ff::{AdditiveGroup, BigInt, MontFp, PrimeField, Zero};
 use ark_serialize::{Compress, SerializationError};
 use ark_std::{ops::Neg, One};
 
@@ -50,6 +51,12 @@ impl SWCurveConfig for Config {
     #[inline(always)]
     fn mul_by_a(_: Self::BaseField) -> Self::BaseField {
         Self::BaseField::zero()
+    }
+
+    #[inline]
+    fn mul_projective(p: &G1Projective, scalar: &[u64]) -> G1Projective {
+        let s = Self::ScalarField::from_sign_and_limbs(true, scalar);
+        GLVConfig::glv_mul_projective(*p, s)
     }
 
     #[inline]
@@ -142,6 +149,34 @@ impl SWCurveConfig for Config {
     }
 }
 
+impl GLVConfig for Config {
+    const ENDO_COEFFS: &'static[Self::BaseField] = &[
+        MontFp!("793479390729215512621379701633421447060886740281060493010456487427281649075476305620758731620350")
+    ];
+
+    const LAMBDA: Self::ScalarField =
+        MontFp!("52435875175126190479447740508185965837461563690374988244538805122978187051009");
+
+    const SCALAR_DECOMP_COEFFS: [(bool, <Self::ScalarField as PrimeField>::BigInt); 4] = [
+        (true, BigInt!("228988810152649578064853576960394133504")),
+        (true, BigInt!("1")),
+        (false, BigInt!("1")),
+        (true, BigInt!("228988810152649578064853576960394133503")),
+    ];
+
+    fn endomorphism(p: &G1Projective) -> G1Projective {
+        let mut res = (*p).clone();
+        res.x *= Self::ENDO_COEFFS[0];
+        res
+    }
+
+    fn endomorphism_affine(p: &Affine<Self>) -> Affine<Self> {
+        let mut res = (*p).clone();
+        res.x *= Self::ENDO_COEFFS[0];
+        res
+    }
+}
+
 fn one_minus_x() -> Fr {
     const X: Fr = Fr::from_sign_and_limbs(!crate::Config::X_IS_NEGATIVE, crate::Config::X);
     Fr::one() - X
@@ -180,6 +215,7 @@ mod test {
 
     use super::*;
     use crate::g1;
+    use ark_serialize::CanonicalDeserialize;
     use ark_std::{rand::Rng, UniformRand};
 
     fn sample_unchecked() -> Affine<g1::Config> {
@@ -203,5 +239,56 @@ mod test {
             assert!(p.is_on_curve());
             assert!(p.is_in_correct_subgroup_assuming_on_curve());
         }
+    }
+
+    #[test]
+    fn non_canonical_identity_point() {
+        let non_canonical_hex = "c01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        let non_canonical_bytes = hex::decode(non_canonical_hex).unwrap();
+        assert_eq!(non_canonical_bytes.len(), 48);
+
+        let maybe_affine_point: Result<G1Affine, ark_serialize::SerializationError> =
+            CanonicalDeserialize::deserialize_compressed(&non_canonical_bytes[..]);
+
+        assert!(maybe_affine_point.is_err());
+
+        let non_canonical_hex_uncompressed = "c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001";
+        let non_canonical_bytes = hex::decode(non_canonical_hex_uncompressed).unwrap();
+        assert_eq!(non_canonical_bytes.len(), 96);
+
+        let maybe_affine_point: Result<G1Affine, ark_serialize::SerializationError> =
+            CanonicalDeserialize::deserialize_uncompressed(&non_canonical_bytes[..]);
+
+        assert!(maybe_affine_point.is_err())
+    }
+
+    #[test]
+    fn bad_flag_combination() {
+        // See https://github.com/zkcrypto/pairing/tree/fa8103764a07bd273927447d434de18aace252d3/src/bls12_381#serialization
+        // - Bit 1 is compressed/uncompressed
+        // - Bit 2 is infinity
+        // - Bit 3 is lexicographical order for compressed point deserialization
+        // Hence `0b1110` ("e" in hex) or `0b0110` ("6" in hex") are both nonsensical.
+
+        // uncompressed, but lexicographically largest flag is set
+        let non_canonical_hex = "600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        let non_canonical_bytes = hex::decode(non_canonical_hex).unwrap();
+        assert_eq!(non_canonical_bytes.len(), 48);
+
+        let maybe_affine_point: Result<G1Affine, ark_serialize::SerializationError> =
+            CanonicalDeserialize::deserialize_compressed(&non_canonical_bytes[..]);
+
+        assert!(maybe_affine_point.is_err());
+
+        // compressed, but infinity flag is set and lexicographically largest flag is
+        // set
+        let non_canonical_hex_2 = "e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+
+        let non_canonical_bytes = hex::decode(non_canonical_hex_2).unwrap();
+        assert_eq!(non_canonical_bytes.len(), 48);
+
+        let maybe_affine_point: Result<G1Affine, ark_serialize::SerializationError> =
+            CanonicalDeserialize::deserialize_compressed(&non_canonical_bytes[..]);
+        assert!(maybe_affine_point.is_err());
     }
 }

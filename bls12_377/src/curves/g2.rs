@@ -2,12 +2,12 @@ use ark_ec::{
     bls12,
     bls12::Bls12Config,
     hashing::curve_maps::wb::{IsogenyMap, WBConfig},
-    models::CurveConfig,
+    scalar_mul::glv::GLVConfig,
     short_weierstrass::{Affine, Projective, SWCurveConfig},
-    AffineRepr, CurveGroup, PrimeGroup,
+    AffineRepr, CurveConfig, CurveGroup, PrimeGroup,
 };
 
-use ark_ff::{AdditiveGroup, Field, MontFp, Zero};
+use ark_ff::{AdditiveGroup, BigInt, Field, MontFp, PrimeField, Zero};
 use ark_std::ops::Neg;
 
 use crate::*;
@@ -95,6 +95,36 @@ impl SWCurveConfig for Config {
         psi2_p2 -= x_p;
         psi2_p2 += &-psi_p;
         (psi2_p2 - p_projective).into_affine()
+    }
+}
+
+impl GLVConfig for Config {
+    const ENDO_COEFFS: &'static[Self::BaseField] = &[
+        Fq2::new(
+            MontFp!("258664426012969093929703085429980814127835149614277183275038967946009968870203535512256352201271898244626862047231"),
+            Fq::ZERO
+        )
+    ];
+
+    const LAMBDA: Self::ScalarField = MontFp!("91893752504881257701523279626832445440");
+
+    const SCALAR_DECOMP_COEFFS: [(bool, <Self::ScalarField as PrimeField>::BigInt); 4] = [
+        (false, BigInt!("91893752504881257701523279626832445440")),
+        (true, BigInt!("1")),
+        (false, BigInt!("1")),
+        (false, BigInt!("91893752504881257701523279626832445441")),
+    ];
+
+    fn endomorphism(p: &Projective<Self>) -> Projective<Self> {
+        let mut res = (*p).clone();
+        res.x *= Self::ENDO_COEFFS[0];
+        res
+    }
+
+    fn endomorphism_affine(p: &Affine<Self>) -> Affine<Self> {
+        let mut res = (*p).clone();
+        res.x *= Self::ENDO_COEFFS[0];
+        res
     }
 }
 
