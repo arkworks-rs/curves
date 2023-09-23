@@ -20,7 +20,7 @@ members = [
 
     "bn254",
     "ed_on_bn254",
-    "jubjub",
+    "baby_jubjub",
     "grumpkin",
 
     "mnt4_298",

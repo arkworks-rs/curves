@@ -1,8 +1,8 @@
 use ark_algebra_bench_templates::*;
-use ark_jubjub::{EdwardsProjective as G, Fq, Fr};
+use ark_babyjub::{EdwardsProjective as G, Fq, Fr};
 
 bench!(
-    Name = "jubjub",
+    Name = "babyjub",
     Group = G,
     ScalarField = Fr,
     PrimeBaseField = Fq,
