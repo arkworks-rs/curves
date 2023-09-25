@@ -136,7 +136,6 @@ jobs:
             target
           key: mnt4_753-dependencies-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
       - name: Run tests
-        if: ${{ steps.checkdiff.outputs.mnt4_753_is_updated == 'true' || steps.depencies-updated.outputs.depencies-updated == 'true' }}
         run: |
           cd mnt4_753/
           cargo test --all-features
