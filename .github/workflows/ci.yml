@@ -154,17 +154,17 @@ jobs:
           filters: |
             mnt6_753_is_updated:
               - 'mnt6_753/**'
-      - name: Check if dependenies have been updated
-        id: depencies-updated
+      - name: Check if dependenies are same as previous build
+        id: depencies-not-updated
         uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: mnt6_753-dependencies-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+          key: mnt6_753-dependencies-not-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') && hashFiles('**/Cargo.lock') || $(date +%s) }}
       - name: Run tests
-        if: ${{ steps.checkdiff.outputs.mnt6_753_is_updated == 'true' || steps.depencies-updated.outputs.depencies-updated == 'true' }}
+        if: ${{ steps.checkdiff.outputs.mnt6_753_is_updated == 'true' || steps.depencies-not-updated.outputs.depencies-not-updated == 'false' }}
         run: |
           cd mnt6_753/
           cargo test --all-features
