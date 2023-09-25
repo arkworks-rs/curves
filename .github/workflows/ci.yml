@@ -121,12 +121,13 @@ jobs:
         uses: actions/checkout@v3
       - name: Check if mnt4_753 was updated
         uses: dorny/paths-filter@v2.11.1
+        id: checkdiff
         with:
           filters: |
             mnt4_753_is_updated:
               - 'mnt4_753/**'
       - name: Run tests
-        if: ${{ steps.filter.outputs.mnt4_753_is_updated == true }}
+        if: ${{ steps.checkdiff.outputs.mnt4_753_is_updated == 'true' }}
         run: |
           cd mnt4_753/
           cargo test --all-features
@@ -140,11 +141,13 @@ jobs:
         uses: actions/checkout@v3
       - name: Check if mnt6_753 was updated
         uses: dorny/paths-filter@v2.11.1
+        id: checkdiff
         with:
           filters: |
             mnt6_753_is_updated:
               - 'mnt6_753/**'
       - name: Run tests
+        if: ${{ steps.checkdiff.outputs.mnt6_753_is_updated == 'true' }}
         run: |
           cd mnt6_753/
           cargo test --all-features
