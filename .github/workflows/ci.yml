@@ -128,7 +128,7 @@ jobs:
             mnt4_753_is_updated:
               - 'mnt4_753/**'
 
-      - name: Generate lockfile TEST
+      - name: Generate lockfile
         run: cargo generate-lockfile
 
       - name: Check if deps updated
