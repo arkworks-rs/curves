@@ -139,7 +139,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: mnt4_753-deps-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Conditionally run the tests
         # if source code updated OR dependencies updated
@@ -174,7 +174,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: mnt6_753-deps-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Conditionally run the tests
         # if source code updated OR dependencies updated
@@ -209,7 +209,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: cp6_782-deps-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Conditionally run the tests
         # if source code updated OR dependencies updated
