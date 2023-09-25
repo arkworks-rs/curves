@@ -107,6 +107,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Run tests
+        run: |
+          cd ${{matrix.dir}}
+          cargo test --all-features
+
+  long_tests:
+    name: Long Tests
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Paths Changes Filter
         uses: dorny/paths-filter@v2.11.1
         with:
@@ -115,10 +126,6 @@ jobs:
               - 'mnt4_753/**'
             mnt6_753_is_updated:
               - 'mnt6_753/**'
-      - name: Run tests
-        run: |
-          cd ${{matrix.dir}}
-          cargo test --all-features
 
   test-mnt4-753:
     name: Test (mnt4_753/)
