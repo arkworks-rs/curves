@@ -115,27 +115,31 @@ jobs:
   test-mnt4-753:
     name: Test (mnt4_753/)
     runs-on: macos-latest
-    needs: [directories] # Waits for the directory listing job
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Check if mnt4_753 was updated
+
+      - name: Check if source code updated
         uses: dorny/paths-filter@v2.11.1
-        id: checkdiff
+        id: check-diff
         with:
           filters: |
             mnt4_753_is_updated:
               - 'mnt4_753/**'
-      - name: Check if dependenies have been updated
-        id: depencies-updated
+
+      - name: Check if deps updated
+        id: deps-updated
         uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: mnt4_753-dependencies-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
-      - name: Run tests
+          key: mnt4_753-deps-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Conditionally run the tests
+        # if source code updated OR dependencies updated OR the cache is just empty deps
+        if: ${{ steps.check-diff.outputs.mnt4_753_is_updated == 'true' || steps.deps-updated.outputs.cache-hit != 'true' || hashFiles('**/Cargo.lock') == '' }}
         run: |
           cd mnt4_753/
           cargo test --all-features
@@ -143,28 +147,31 @@ jobs:
   test-mnt6-753:
     name: Test (mnt6_753/)
     runs-on: macos-latest
-    needs: [directories] # Waits for the directory listing job
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Check if mnt6_753 was updated
+
+      - name: Check if source code updated
         uses: dorny/paths-filter@v2.11.1
-        id: checkdiff
+        id: check-diff
         with:
           filters: |
             mnt6_753_is_updated:
               - 'mnt6_753/**'
-      - name: Check if dependenies are same as previous build
-        id: depencies-not-updated
+
+      - name: Check if deps updated
+        id: deps-updated
         uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: mnt6_753-dependencies-not-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') && hashFiles('**/Cargo.lock') || 'randomstring4' }}
-      - name: Run tests
-        if: ${{ steps.depencies-not-updated.outputs.cache-hit != 'true' }}
+          key: mnt6_753-deps-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Conditionally run the tests
+        # if source code updated OR dependencies updated OR the cache is just empty deps
+        if: ${{ steps.check-diff.outputs.mnt6_753_is_updated == 'true' || steps.deps-updated.outputs.cache-hit != 'true' || hashFiles('**/Cargo.lock') == '' }}
         run: |
           cd mnt6_753/
           cargo test --all-features
