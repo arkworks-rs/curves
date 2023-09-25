@@ -127,6 +127,9 @@ jobs:
             mnt4_753_is_updated:
               - 'mnt4_753/**'
 
+      - name: Generate lockfile
+        run: cargo generate-lockfile
+
       - name: Check if deps updated
         id: deps-updated
         uses: actions/cache@v3
@@ -138,8 +141,8 @@ jobs:
           key: mnt4_753-deps-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Conditionally run the tests
-        # if source code updated OR dependencies updated OR the cache is just empty deps
-        if: ${{ steps.check-diff.outputs.mnt4_753_is_updated == 'true' || steps.deps-updated.outputs.cache-hit != 'true' || hashFiles('**/Cargo.lock') == '' }}
+        # if source code updated OR dependencies updated
+        if: ${{ steps.check-diff.outputs.mnt4_753_is_updated == 'true' || steps.deps-updated.outputs.cache-hit != 'true' }}
         run: |
           cd mnt4_753/
           cargo test --all-features
@@ -159,6 +162,9 @@ jobs:
             mnt6_753_is_updated:
               - 'mnt6_753/**'
 
+      - name: Generate lockfile
+        run: cargo generate-lockfile
+
       - name: Check if deps updated
         id: deps-updated
         uses: actions/cache@v3
@@ -170,8 +176,8 @@ jobs:
           key: mnt6_753-deps-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Conditionally run the tests
-        # if source code updated OR dependencies updated OR the cache is just empty deps
-        if: ${{ steps.check-diff.outputs.mnt6_753_is_updated == 'true' || steps.deps-updated.outputs.cache-hit != 'true' || hashFiles('**/Cargo.lock') == '' }}
+        # if source code updated OR dependencies updated
+        if: ${{ steps.check-diff.outputs.mnt6_753_is_updated == 'true' || steps.deps-updated.outputs.cache-hit != 'true' }}
         run: |
           cd mnt6_753/
           cargo test --all-features
