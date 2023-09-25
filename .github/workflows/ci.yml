@@ -126,8 +126,13 @@ jobs:
           filters: |
             mnt4_753_is_updated:
               - 'mnt4_753/**'
+      - name: Check if dependenies have been updated
+        id: depencies-updated
+        uses: actions/cache@v3
+        with:
+          key: mnt4_753-dependencies-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
       - name: Run tests
-        if: ${{ steps.checkdiff.outputs.mnt4_753_is_updated == 'true' }}
+        if: ${{ steps.checkdiff.outputs.mnt4_753_is_updated == 'true' || steps.depencies-updated.outputs.depencies-updated == 'true' }}
         run: |
           cd mnt4_753/
           cargo test --all-features
@@ -146,8 +151,13 @@ jobs:
           filters: |
             mnt6_753_is_updated:
               - 'mnt6_753/**'
+      - name: Check if dependenies have been updated
+        id: depencies-updated
+        uses: actions/cache@v3
+        with:
+          key: mnt6_753-dependencies-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
       - name: Run tests
-        if: ${{ steps.checkdiff.outputs.mnt6_753_is_updated == 'true' }}
+        if: ${{ steps.checkdiff.outputs.mnt6_753_is_updated == 'true' || steps.depencies-updated.outputs.depencies-updated == 'true' }}
         run: |
           cd mnt6_753/
           cargo test --all-features
