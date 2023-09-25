@@ -50,7 +50,7 @@ jobs:
           toolchain: ${{ matrix.rust }}
           override: true
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
@@ -104,6 +104,7 @@ jobs:
           - dir: curve-constraint-tests/
           - dir: mnt4_753/
           - dir: mnt6_753/
+          - dir: cp6_782/
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -115,11 +116,34 @@ jobs:
   test-mnt4-753:
     name: Test (mnt4_753/)
     runs-on: macos-latest
-    needs: [directories] # Waits for the directory listing job
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Run tests
+
+      - name: Check if source code updated
+        uses: dorny/paths-filter@v2.11.1
+        id: check-diff
+        with:
+          filters: |
+            mnt4_753_is_updated:
+              - 'mnt4_753/**'
+
+      - name: Generate lockfile
+        run: cargo generate-lockfile
+
+      - name: Check if deps updated
+        id: deps-updated
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Conditionally run the tests
+        # if source code updated OR dependencies updated
+        if: ${{ steps.check-diff.outputs.mnt4_753_is_updated == 'true' || steps.deps-updated.outputs.cache-hit != 'true' }}
         run: |
           cd mnt4_753/
           cargo test --all-features
@@ -127,14 +151,73 @@ jobs:
   test-mnt6-753:
     name: Test (mnt6_753/)
     runs-on: macos-latest
-    needs: [directories] # Waits for the directory listing job
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Run tests
+
+      - name: Check if source code updated
+        uses: dorny/paths-filter@v2.11.1
+        id: check-diff
+        with:
+          filters: |
+            mnt6_753_is_updated:
+              - 'mnt6_753/**'
+
+      - name: Generate lockfile
+        run: cargo generate-lockfile
+
+      - name: Check if deps updated
+        id: deps-updated
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Conditionally run the tests
+        # if source code updated OR dependencies updated
+        if: ${{ steps.check-diff.outputs.mnt6_753_is_updated == 'true' || steps.deps-updated.outputs.cache-hit != 'true' }}
         run: |
           cd mnt6_753/
           cargo test --all-features
+
+  test-cp6_782:
+    name: Test (cp6_782/)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Check if source code updated
+        uses: dorny/paths-filter@v2.11.1
+        id: check-diff
+        with:
+          filters: |
+            cp6_782_is_updated:
+              - 'cp6_782/**'
+
+      - name: Generate lockfile
+        run: cargo generate-lockfile
+
+      - name: Check if deps updated
+        id: deps-updated
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Conditionally run the tests
+        # if source code updated OR dependencies updated
+        if: ${{ steps.check-diff.outputs.cp6_782_is_updated == 'true' || steps.deps-updated.outputs.cache-hit != 'true' }}
+        run: |
+          cd cp6_782/
+          cargo test --all-features
+
 
   docs:
     name: Check Documentation
@@ -171,7 +254,7 @@ jobs:
           target: thumbv6m-none-eabi
           override: true
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
