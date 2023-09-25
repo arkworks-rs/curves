@@ -112,9 +112,10 @@ jobs:
           cd ${{matrix.dir}}
           cargo test --all-features
 
-  long_tests:
-    name: Long Tests
+  test-mnt4-753:
+    name: Test (mnt4_753/)
     runs-on: macos-latest
+    needs: [directories] # Waits for the directory listing job
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -124,19 +125,29 @@ jobs:
           filters: |
             mnt4_753_is_updated:
               - 'mnt4_753/**'
-            mnt6_753_is_updated:
-              - 'mnt6_753/**'
-
-      - name: Test (mnt4_753/)
+      - name: Run tests
         if: ${{ steps.filter.outputs.mnt4_753_is_updated == 'true' }}
         run: |
-          cd ${{ github.workspace }}/mnt4_753/
+          cd mnt4_753/
           cargo test --all-features
 
-      - name: Test (mnt6_753/)
+  test-mnt6-753:
+    name: Test (mnt6_753/)
+    runs-on: macos-latest
+    needs: [directories] # Waits for the directory listing job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Paths Changes Filter
+        uses: dorny/paths-filter@v2.11.1
+        with:
+          filters: |
+            mnt6_753_is_updated:
+              - 'mnt6_753/**'
+      - name: Run tests
         if: ${{ steps.filter.outputs.mnt6_753_is_updated == 'true' }}
         run: |
-          cd ${{ github.workspace }}/mnt6_753/
+          cd mnt6_753/
           cargo test --all-features
 
   docs:
