@@ -162,7 +162,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: mnt6_753-dependencies-not-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') && hashFiles('**/Cargo.lock') || $(date +%s) }}
+          key: mnt6_753-dependencies-not-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') && hashFiles('**/Cargo.lock') || 'randomstring' }}
       - name: Run tests
         if: ${{ steps.checkdiff.outputs.mnt6_753_is_updated == 'true' || steps.depencies-not-updated.outputs.depencies-not-updated == 'false' }}
         run: |
