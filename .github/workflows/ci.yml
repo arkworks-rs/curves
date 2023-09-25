@@ -130,13 +130,13 @@ jobs:
       - name: Test (mnt4_753/)
         if: ${{ steps.filter.outputs.mnt4_753_is_updated == 'true' }}
         run: |
-          cd mnt4_753/
+          cd ${{ github.workspace }}/mnt4_753/
           cargo test --all-features
 
       - name: Test (mnt6_753/)
         if: ${{ steps.filter.outputs.mnt6_753_is_updated == 'true' }}
         run: |
-          cd mnt6_753/
+          cd ${{ github.workspace }}/mnt6_753/
           cargo test --all-features
 
   docs:
