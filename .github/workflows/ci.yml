@@ -130,6 +130,10 @@ jobs:
         id: depencies-updated
         uses: actions/cache@v3
         with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
           key: mnt4_753-dependencies-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
       - name: Run tests
         if: ${{ steps.checkdiff.outputs.mnt4_753_is_updated == 'true' || steps.depencies-updated.outputs.depencies-updated == 'true' }}
@@ -155,6 +159,10 @@ jobs:
         id: depencies-updated
         uses: actions/cache@v3
         with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
           key: mnt6_753-dependencies-updated-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
       - name: Run tests
         if: ${{ steps.checkdiff.outputs.mnt6_753_is_updated == 'true' || steps.depencies-updated.outputs.depencies-updated == 'true' }}
