@@ -110,19 +110,19 @@ impl MontCurveConfig for BandersnatchConfig {
 //   <https://github.com/zhenfeizhang/bandersnatch/blob/main/bandersnatch/script/bandersnatch.sage>
 
 /// x coordinate for TE curve generator
-const TE_GENERATOR_X: Fq =
+pub const TE_GENERATOR_X: Fq =
     MontFp!("18886178867200960497001835917649091219057080094937609519140440539760939937304");
 
 /// y coordinate for TE curve generator
-const TE_GENERATOR_Y: Fq =
+pub const TE_GENERATOR_Y: Fq =
     MontFp!("19188667384257783945677642223292697773471335439753913231509108946878080696678");
 
 /// x coordinate for SW curve generator
-const SW_GENERATOR_X: Fq =
+pub const SW_GENERATOR_X: Fq =
     MontFp!("30900340493481298850216505686589334086208278925799850409469406976849338430199");
 
 /// y coordinate for SW curve generator
-const SW_GENERATOR_Y: Fq =
+pub const SW_GENERATOR_Y: Fq =
     MontFp!("12663882780877899054958035777720958383845500985908634476792678820121468453298");
 
 impl SWCurveConfig for BandersnatchConfig {
