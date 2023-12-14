@@ -121,7 +121,7 @@ pub(crate) fn read_g1_compressed<R: ark_serialize::Read>(
     let x_bytes = read_bytes_with_offset(&bytes, 0, true);
 
     if flags.is_infinity {
-        // Check that the `x` co-ordinate was `0`
+        // Checks that the `x` coordinate was `0`
         if x_bytes != [0u8; 48] {
             return Err(SerializationError::InvalidData);
         }
