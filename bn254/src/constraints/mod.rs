@@ -1,7 +1,7 @@
 //! This module implements the R1CS equivalent of `ark_bn254`.
 //!
 //! It implements field variables for `crate::Fq`,
-//! and group variables for `crate::Projective`.
+//! and group variables for `crate::G1Projective`.
 //!
 //! The field underlying these constraints is `crate::Fq`.
 //!
@@ -68,9 +68,9 @@
 //! # let cs = ConstraintSystem::<Fq>::new_ref();
 //! # let mut rng = ark_std::test_rng();
 //!
-//! // Generate some random `Projective` elements.
-//! let a_native = Projective::rand(&mut rng);
-//! let b_native = Projective::rand(&mut rng);
+//! // Generate some random `G1Projective` elements.
+//! let a_native = G1Projective::rand(&mut rng);
+//! let b_native = G1Projective::rand(&mut rng);
 //!
 //! // Allocate `a_native` and `b_native` as witness variables in `cs`.
 //! let a = GVar::new_witness(ark_relations::ns!(cs, "a"), || Ok(a_native))?;
