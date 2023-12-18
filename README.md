@@ -1,4 +1,8 @@
-# Curve implementations
+# Notice
+
+This repository is no longer maintained, and PRs to add or modify curves should instead be made against [arkworks-rs/algebra](https://github.com/arkworks-rs/algebra); all the curves implemented here have moved to the `curves` folder of that repository.
+
+## Curve implementations
 
 This repository contains implementations of some popular elliptic curves. The curve API implemented here matches the curve traits defined [here](https://github.com/arkworks-rs/algebra/blob/master/ec/src/lib.rs) in the [arkworks-rs/algebra](https://github.com/arkworks-rs/algebra) repository.
 
