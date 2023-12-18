@@ -1,6 +1,6 @@
 # Notice
 
-This repository is no longer maintained, and PRs to add or modify curves should instead be made against [arkworks-rs/algebra](https://github.com/arkworks-rs/algebra); all the curves implemented here have moved to the `curves` folder of that repository.
+This repository is no longer maintained, and PRs to add or modify curves should instead be made against [arkworks-rs/algebra](https://github.com/arkworks-rs/algebra); all the curves implemented here have moved to the [`curves` folder](https://github.com/arkworks-rs/algebra/tree/master/curves) of that repository.
 
 ## Curve implementations
 
